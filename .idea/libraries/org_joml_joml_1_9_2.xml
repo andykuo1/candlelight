@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="org.joml:joml:1.9.2" type="repository">
+    <properties maven-id="org.joml:joml:1.9.2" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/joml-1.9.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/gwt-user-2.5.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/validation-api-1.0.0.GA.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/json-20090211.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/joml-1.9.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/validation-api-1.0.0.GA-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/joml-1.9.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="lwjgl-opengl">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/lwjgl/lwjgl-opengl.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/lwjgl/lwjgl-opengl-javadoc.jar!/" />
+    </JAVADOC>
+    <NATIVE>
+      <root url="jar://$PROJECT_DIR$/lib/lwjgl/lwjgl-opengl-natives-macos.jar!/" />
+    </NATIVE>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/lwjgl/lwjgl-opengl-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
