@@ -1,4 +1,4 @@
-package net.jimboi.mod.entity;
+package org.qsilver.entity;
 
 /**
  * Created by Andy on 5/21/17.

@@ -82,6 +82,11 @@ public class Poma
 		System.out.println(msg);
 	}
 
+	public static void OUT()
+	{
+		System.out.println();
+	}
+
 	public static void i(Object msg)
 	{
 		System.out.println(msg);

@@ -12,6 +12,7 @@ import net.jimboi.torchlite.World;
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.input.InputManager;
 import org.bstone.mogli.Texture;
+import org.bstone.util.poma.Poma;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -140,7 +141,7 @@ public class SceneBlob extends MainScene
 	@Override
 	public void onSceneDestroy()
 	{
-		System.out.println("Destroying Scene . . .");
+		Poma.OUT("Destroying Scene . . .");
 	}
 
 
@@ -152,9 +153,9 @@ public class SceneBlob extends MainScene
 			for(int x = 0; x < world.getSize(); ++x)
 			{
 				int i = map[x + y * world.getSize()];
-				System.out.print((i == 0 ? " " : i) + " ");
+				Poma.OUT((i == 0 ? " " : i) + " ");
 			}
-			System.out.println();
+			Poma.OUT();
 		}
 
 		MeshData md = World.toMeshBoxData(world, 16, 16);

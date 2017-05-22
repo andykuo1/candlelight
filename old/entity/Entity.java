@@ -1,4 +1,4 @@
-package net.jimboi.mod.entity;
+package org.qsilver.entity;
 
 import net.jimboi.mod.transform.Transform;
 import net.jimboi.mod3.blob.RenderUtil;

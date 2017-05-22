@@ -1,4 +1,4 @@
-package net.jimboi.mod.entity;
+package org.qsilver.entity;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -9,29 +9,24 @@ public abstract class Living
 
 	public Living()
 	{
-
 	}
 
 	public abstract boolean onCreate();
 
 	public void onEarlyUpdate()
 	{
-
 	}
 
 	public void onUpdate(double delta)
 	{
-
 	}
 
 	public void onLateUpdate()
 	{
-
 	}
 
 	public void onDestroy()
 	{
-
 	}
 
 	public final void setDead()
