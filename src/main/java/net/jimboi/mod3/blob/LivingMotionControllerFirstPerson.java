@@ -1,12 +1,9 @@
-package net.jimboi.mod3;
+package net.jimboi.mod3.blob;
 
 import net.jimboi.base.Main;
-import net.jimboi.mod.entity.ComponentHandler;
-import net.jimboi.mod.entity.Entity;
 import net.jimboi.mod.transform.Transform;
 import net.jimboi.mod.transform.Transform3;
 import net.jimboi.mod.transform.Transform3Q;
-import net.jimboi.mod3.blob.Renderer;
 
 import org.bstone.camera.Camera;
 import org.bstone.input.InputEngine;
@@ -18,9 +15,9 @@ import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
 /**
- * Created by Andy on 5/19/17.
+ * Created by Andy on 5/21/17.
  */
-public class ComponentMotionControllerFirstPerson extends ComponentMotion implements InputEngine.Listener
+public abstract class LivingMotionControllerFirstPerson extends LivingMotion implements InputEngine.Listener
 {
 	public static final float MAX_PITCH = Transform.ANG2RAD * 80F;
 
@@ -36,37 +33,31 @@ public class ComponentMotionControllerFirstPerson extends ComponentMotion implem
 	private float up;
 	private float right;
 
-	public ComponentMotionControllerFirstPerson(Entity3D entity, Camera camera)
+	public LivingMotionControllerFirstPerson(float x, float y, float z, Camera camera)
 	{
-		super(entity);
+		super(x, y, z);
 
 		this.camera = camera;
 	}
 
 	@Override
-	public void onComponentSetup(ComponentHandler componentHandler)
-	{
-		super.onComponentSetup(componentHandler);
-	}
-
-	@Override
-	public boolean onEntityCreate(Entity entity)
+	public boolean onCreate()
 	{
 		Main.INPUTENGINE.addListener(this);
 
-		return super.onEntityCreate(entity);
+		return super.onCreate();
 	}
 
 	@Override
-	public void onEntityUpdate(double delta)
+	public void onUpdate(double delta)
 	{
 		this.motion.x += this.right;
 		this.motion.y += this.up;
 		this.motion.z += this.forward;
 
-		super.onEntityUpdate(delta);
+		super.onUpdate(delta);
 
-		Vector3fc pos = this.entity.transform().position();
+		Vector3fc pos = this.transform().position();
 		this.camera.getTransform().setPosition(pos.x(), pos.y(), pos.z());
 	}
 
@@ -93,7 +84,7 @@ public class ComponentMotionControllerFirstPerson extends ComponentMotion implem
 			Vector3f right = cameraTransform.getRight(new Vector3f());
 			cameraTransform.rotate(this.pitch, right);
 
-			Transform3Q transform = (Transform3Q) this.getEntity().transform();
+			Transform3Q transform = (Transform3Q) this.transform();
 			transform.setRotation(Renderer.camera.getTransform().rotation);
 			transform.rotation.x = 0;
 			transform.rotation.z = 0;
@@ -119,9 +110,9 @@ public class ComponentMotionControllerFirstPerson extends ComponentMotion implem
 	}
 
 	@Override
-	public void onEntityDestroy()
+	public void onDestroy()
 	{
-		super.onEntityDestroy();
+		super.onDestroy();
 
 		Main.INPUTENGINE.removeListener(this);
 	}

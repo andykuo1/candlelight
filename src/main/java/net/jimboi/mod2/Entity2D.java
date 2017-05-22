@@ -1,12 +1,12 @@
 package net.jimboi.mod2;
 
-import net.jimboi.mod.entity.Entity;
 import net.jimboi.mod.transform.Transform2;
+import net.jimboi.mod3.blob.LivingBase;
 
 /**
  * Created by Andy on 5/19/17.
  */
-public abstract class Entity2D extends Entity
+public abstract class Entity2D extends LivingBase
 {
 	public Entity2D(float x, float y)
 	{

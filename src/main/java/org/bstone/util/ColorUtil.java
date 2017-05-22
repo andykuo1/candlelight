@@ -104,42 +104,42 @@ public class ColorUtil
 	/**
 	 * Get normalized red from color
 	 */
-	public static float getRedf(Color parColor)
+	public static float getRedf(Color color)
 	{
-		return ColorUtil.getNormalizedChannel(parColor.getRed());
+		return ColorUtil.getNormalizedChannel(color.getRed());
 	}
 
 	/**
 	 * Get normalized green from color
 	 */
-	public static float getGreenf(Color parColor)
+	public static float getGreenf(Color color)
 	{
-		return ColorUtil.getNormalizedChannel(parColor.getGreen());
+		return ColorUtil.getNormalizedChannel(color.getGreen());
 	}
 
 	/**
 	 * Get normalized blue from color
 	 */
-	public static float getBluef(Color parColor)
+	public static float getBluef(Color color)
 	{
-		return ColorUtil.getNormalizedChannel(parColor.getBlue());
+		return ColorUtil.getNormalizedChannel(color.getBlue());
 	}
 
 	/**
 	 * Get normalized alpha from color
 	 */
-	public static float getAlphaf(Color parColor)
+	public static float getAlphaf(Color color)
 	{
-		return ColorUtil.getNormalizedChannel(parColor.getAlpha());
+		return ColorUtil.getNormalizedChannel(color.getAlpha());
 	}
 
 	/**
 	 * Get random color
 	 */
-	public static Color getRandomColor(Random parRandom, float parSaturation, float parBrightness)
+	public static Color getRandomColor(Random random, float saturation, float brightness)
 	{
-		float hue = parRandom.nextFloat();
-		return hexToColor(ColorUtil.HSBtoRGB(hue, parSaturation, parBrightness));
+		float hue = random.nextFloat();
+		return hexToColor(ColorUtil.HSBtoRGB(hue, saturation, brightness));
 	}
 
 	/**
@@ -153,21 +153,21 @@ public class ColorUtil
 	/**
 	 * Get HSB from RGB
 	 */
-	public static int HSBtoRGB(float parHue, float parSaturation, float parBrightness)
+	public static int HSBtoRGB(float hue, float saturation, float brightness)
 	{
-		return Color.HSBtoRGB(parHue, parSaturation, parBrightness);
+		return Color.HSBtoRGB(hue, saturation, brightness);
 	}
 
 	/**
 	 * Get random color using Golden Ratio
 	 */
-	public static Color getRandomColorWithGoldenRatio(Random parRandom, float parSaturation, float parBrightness)
+	public static Color getRandomColorWithGoldenRatio(Random random, float saturation, float brightness)
 	{
 		float goldenRatioConj = 0.618033988749895F;
-		float hue = parRandom.nextFloat();
+		float hue = random.nextFloat();
 		hue += goldenRatioConj;
 		hue %= 1;
-		return hexToColor(ColorUtil.HSBtoRGB(hue, parSaturation, parBrightness));
+		return hexToColor(ColorUtil.HSBtoRGB(hue, saturation, brightness));
 	}
 
 	public static Color valueOf(String parString)

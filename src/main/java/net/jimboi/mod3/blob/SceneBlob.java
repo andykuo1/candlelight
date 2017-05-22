@@ -2,8 +2,6 @@ package net.jimboi.mod3.blob;
 
 import net.jimboi.base.MainScene;
 import net.jimboi.mod.resource.ResourceLocation;
-import net.jimboi.mod3.EntityPlayer;
-import net.jimboi.mod3.EntityZombie;
 import net.jimboi.mod3.meshbuilder.MeshBuilder;
 import net.jimboi.mod3.meshbuilder.MeshData;
 import net.jimboi.mod3.meshbuilder.ModelUtil;
@@ -28,7 +26,7 @@ import java.util.Random;
 public class SceneBlob extends MainScene
 {
 	private World world;
-	private EntityPlayer player;
+	private LivingPlayer player;
 
 	public SceneBlob()
 	{
@@ -41,7 +39,7 @@ public class SceneBlob extends MainScene
 		this.world = new World(new Random(), 45);
 		this.world.generateWorld();
 
-		this.player = new EntityPlayer(0, 0, 0);
+		this.player = new LivingPlayer(0, 0, 0);
 		this.livingManager.add(this.player);
 	}
 
@@ -65,7 +63,7 @@ public class SceneBlob extends MainScene
 		Renderer.lights.add(Light.createPointLight(0, 0, 0, 0xFFFFFF, 1F, 1F, 0));
 		Renderer.lights.add(Light.createDirectionLight(1, 1F, 1F, 0xFFFFFF, 0.1F, 0.06F));
 
-		this.livingManager.add(new EntityZombie(1, 1, 1));
+		this.livingManager.add(new LivingZombie(1, 1, 1));
 	}
 
 	@Override

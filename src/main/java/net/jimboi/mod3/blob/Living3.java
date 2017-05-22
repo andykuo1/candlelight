@@ -1,14 +1,13 @@
-package net.jimboi.mod3;
+package net.jimboi.mod3.blob;
 
-import net.jimboi.mod.entity.Entity;
 import net.jimboi.mod.transform.Transform3;
 
 /**
  * Created by Andy on 5/19/17.
  */
-public abstract class Entity3D extends Entity
+public abstract class Living3 extends LivingBase
 {
-	public Entity3D(float x, float y, float z)
+	public Living3(float x, float y, float z)
 	{
 		super(Transform3.create());
 

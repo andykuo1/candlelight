@@ -1,17 +1,14 @@
-package net.jimboi.mod3;
+package net.jimboi.mod3.blob;
 
-import net.jimboi.mod.entity.Component;
-import net.jimboi.mod.entity.ComponentHandler;
-import net.jimboi.mod.entity.Entity;
 import net.jimboi.mod.transform.Transform3;
 
 import org.bstone.util.MathUtil;
 import org.joml.Vector3f;
 
 /**
- * Created by Andy on 5/19/17.
+ * Created by Andy on 5/21/17.
  */
-public class ComponentMotion extends Component
+public abstract class LivingMotion extends Living3
 {
 	public final Vector3f motion = new Vector3f();
 	public final Vector3f velocity = new Vector3f();
@@ -20,31 +17,17 @@ public class ComponentMotion extends Component
 	public final Vector3f maxVelocity = new Vector3f(1F, 1F, 1F);
 	public float minVelocity = 0.01F;
 
-	public ComponentMotion(Entity3D entity)
+	public LivingMotion(float x, float y, float z)
 	{
-		super(entity);
-	}
-
-	@Override
-	public void onComponentSetup(ComponentHandler componentHandler)
-	{
-		super.onComponentSetup(componentHandler);
-	}
-
-	@Override
-	public boolean onEntityCreate(Entity entity)
-	{
-		return super.onEntityCreate(entity);
+		super(x, y, z);
 	}
 
 	protected static final Vector3f _vec = new Vector3f();
 
 	@Override
-	public void onEntityUpdate(double delta)
+	public void onUpdate(double delta)
 	{
-		super.onEntityUpdate(delta);
-
-		Transform3 transform = this.getEntity().transform();
+		Transform3 transform = this.transform();
 
 		//Motion
 		this.velocity.x += this.motion.x * delta;
@@ -66,18 +49,6 @@ public class ComponentMotion extends Component
 		if (this.velocity.y != 0) transform.translate(this.getUp(_vec), this.velocity.y);
 	}
 
-	@Override
-	public void onEntityDestroy()
-	{
-		super.onEntityDestroy();
-	}
-
-	@Override
-	public Entity3D getEntity()
-	{
-		return (Entity3D) super.getEntity();
-	}
-
 	public Vector3f getForward(Vector3f dst)
 	{
 		return Transform3.YAXIS.cross(this.getRight(dst), dst);
@@ -85,7 +56,7 @@ public class ComponentMotion extends Component
 
 	public Vector3f getRight(Vector3f dst)
 	{
-		return this.entity.transform().getRight(dst);
+		return this.transform().getRight(dst);
 	}
 
 	public Vector3f getUp(Vector3f dst)

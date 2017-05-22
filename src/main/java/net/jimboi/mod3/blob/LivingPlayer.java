@@ -1,7 +1,4 @@
-package net.jimboi.mod3;
-
-import net.jimboi.mod.entity.ComponentHandler;
-import net.jimboi.mod3.blob.Renderer;
+package net.jimboi.mod3.blob;
 
 import org.qsilver.render.Instance;
 import org.qsilver.render.InstanceManager;
@@ -11,11 +8,11 @@ import java.util.List;
 /**
  * Created by Andy on 5/11/17.
  */
-public class EntityPlayer extends Entity3D
+public class LivingPlayer extends LivingMotionControllerFirstPerson
 {
-	public EntityPlayer(float x, float y, float z)
+	public LivingPlayer(float x, float y, float z)
 	{
-		super(x, y, z);
+		super(x, y, z, Renderer.camera);
 	}
 
 	@Override
@@ -29,12 +26,6 @@ public class EntityPlayer extends Entity3D
 	{
 		super.onInstanceUpdate(instanceManager, instance);
 		instance.transformation().translateLocal(0, -2.5F, 0);
-	}
-
-	@Override
-	public void onComponentSetup(ComponentHandler componentHandler)
-	{
-		componentHandler.addComponent(0, new ComponentMotionControllerFirstPerson(this, Renderer.camera));
 	}
 
 	@Override

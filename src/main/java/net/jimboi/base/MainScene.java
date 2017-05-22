@@ -1,6 +1,6 @@
 package net.jimboi.base;
 
-import net.jimboi.mod.entity.Entity;
+import net.jimboi.mod3.blob.LivingBase;
 
 import org.qsilver.living.Living;
 import org.qsilver.living.LivingManager;
@@ -24,7 +24,7 @@ public abstract class MainScene extends Scene implements LivingManager.Listener,
 	protected final RenderManager renderManager;
 	protected final InstanceManager instanceManager;
 
-	protected final Set<Entity> entities = new HashSet<>();
+	protected final Set<LivingBase> entities = new HashSet<>();
 
 	public MainScene()
 	{
@@ -36,7 +36,7 @@ public abstract class MainScene extends Scene implements LivingManager.Listener,
 			return null;
 		});
 
-		this.livingManager.addLivingSet(this.entities, Entity.class);
+		this.livingManager.addLivingSet(this.entities, LivingBase.class);
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public abstract class MainScene extends Scene implements LivingManager.Listener,
 		return this.renderManager;
 	}
 
-	public Iterator<Entity> getEntities()
+	public Iterator<LivingBase> getEntities()
 	{
 		return this.entities.iterator();
 	}
