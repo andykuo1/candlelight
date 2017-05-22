@@ -41,7 +41,7 @@ public class SceneDood extends SceneBase
 	}
 
 	@Override
-	public void onSceneCreate()
+	protected void onSceneCreate()
 	{
 		this.world = new World(new Random(), 45);
 		this.world.generateWorld();
@@ -59,7 +59,7 @@ public class SceneDood extends SceneBase
 	}
 
 	@Override
-	public void onSceneLoad()
+	protected void onSceneLoad()
 	{
 		//Register inputs here
 		InputManager.registerMousePosX("mousex");
@@ -110,12 +110,12 @@ public class SceneDood extends SceneBase
 	}
 
 	@Override
-	public void onSceneStart()
+	protected void onSceneStart()
 	{
 	}
 
 	@Override
-	public void onUpdate(double delta)
+	protected void onUpdate(double delta)
 	{
 		Light light = Renderer.lights.get(0);
 		light.position = new Vector4f(Renderer.camera.getTransform().position, 1);
@@ -128,7 +128,7 @@ public class SceneDood extends SceneBase
 	}
 
 	@Override
-	public void onSceneDestroy()
+	protected void onSceneDestroy()
 	{
 		this.controllerFirstPersonSystem.onDestroy();
 	}

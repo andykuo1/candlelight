@@ -5,12 +5,19 @@ package org.qsilver.scene;
  */
 public abstract class Scene
 {
-	public abstract void onSceneCreate();
-	public abstract void onSceneLoad();
-	public abstract void onSceneStart();
-	public abstract void onUpdate(double delta);
-	public abstract void onRender();
-	public abstract void onSceneStop();
-	public abstract void onSceneUnload();
-	public abstract void onSceneDestroy();
+	protected abstract void onSceneCreate();
+
+	protected abstract void onSceneLoad();
+
+	protected abstract void onSceneStart();
+
+	protected abstract void onUpdate(double delta);
+
+	protected abstract void onRender();
+
+	protected abstract void onSceneStop();
+
+	protected abstract void onSceneUnload();
+
+	protected abstract void onSceneDestroy();
 }

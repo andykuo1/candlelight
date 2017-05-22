@@ -1,12 +1,50 @@
 package org.qsilver.scene;
 
 import org.bstone.poma.Poma;
+import org.bstone.util.listener.Listenable;
 
 /**
  * Created by Andy on 3/1/17.
  */
 public class SceneManager
 {
+	public interface OnSceneCreateListener
+	{
+		void onSceneCreate(Scene scene);
+	}
+
+	public interface OnSceneLoadListener
+	{
+		void onSceneLoad(Scene scene);
+	}
+
+	public interface OnSceneStartListener
+	{
+		void onSceneStart(Scene scene);
+	}
+
+	public interface OnSceneStopListener
+	{
+		void onSceneStop(Scene scene);
+	}
+
+	public interface OnSceneUnloadListener
+	{
+		void onSceneUnload(Scene scene);
+	}
+
+	public interface OnSceneDestroyListener
+	{
+		void onSceneDestroy(Scene scene);
+	}
+
+	public final Listenable<OnSceneCreateListener> onSceneCreate = new Listenable<>((listener, objects) -> listener.onSceneCreate((Scene) objects[0]));
+	public final Listenable<OnSceneLoadListener> onSceneLoad = new Listenable<>((listener, objects) -> listener.onSceneLoad((Scene) objects[0]));
+	public final Listenable<OnSceneStartListener> onSceneStart = new Listenable<>((listener, objects) -> listener.onSceneStart((Scene) objects[0]));
+	public final Listenable<OnSceneStopListener> onSceneStop = new Listenable<>((listener, objects) -> listener.onSceneStop((Scene) objects[0]));
+	public final Listenable<OnSceneUnloadListener> onSceneUnload = new Listenable<>((listener, objects) -> listener.onSceneUnload((Scene) objects[0]));
+	public final Listenable<OnSceneDestroyListener> onSceneDestroy = new Listenable<>((listener, objects) -> listener.onSceneDestroy((Scene) objects[0]));
+
 	private Scene nextScene;
 	private Scene currScene;
 
@@ -150,6 +188,7 @@ public class SceneManager
 				Poma.d("Stopping Scene. . .");
 				this.scene.onSceneStop();
 				this.sceneStopped = true;
+				SceneManager.this.onSceneStop.notifyListeners(this.scene);
 			}
 			else if (this.sceneUnloaded)
 			{
@@ -158,6 +197,7 @@ public class SceneManager
 					Poma.d("Destroying Scene. . .");
 					this.scene.onSceneDestroy();
 					this.sceneDestroyed = true;
+					SceneManager.this.onSceneDestroy.notifyListeners(this.scene);
 				}
 				else
 				{
@@ -178,6 +218,7 @@ public class SceneManager
 					Poma.d("Unloading Scene. . .");
 					this.scene.onSceneUnload();
 					this.sceneUnloaded = true;
+					SceneManager.this.onSceneUnload.notifyListeners(this.scene);
 				}
 			}
 		}
@@ -206,6 +247,7 @@ public class SceneManager
 				Poma.d("Creating Scene. . .");
 				this.scene.onSceneCreate();
 				this.sceneCreated = true;
+				SceneManager.this.onSceneCreate.notifyListeners(this.scene);
 			}
 			else if (this.sceneLoaded)
 			{
@@ -214,6 +256,7 @@ public class SceneManager
 					Poma.d("Starting Scene. . .");
 					this.scene.onSceneStart();
 					this.sceneStarted = true;
+					SceneManager.this.onSceneStart.notifyListeners(this.scene);
 				}
 				else
 				{
@@ -234,6 +277,7 @@ public class SceneManager
 					Poma.d("Loading Scene. . .");
 					this.scene.onSceneLoad();
 					this.sceneLoaded = true;
+					SceneManager.this.onSceneLoad.notifyListeners(this.scene);
 				}
 			}
 		}

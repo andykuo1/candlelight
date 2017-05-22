@@ -37,25 +37,25 @@ public abstract class SceneBase extends Scene implements EntityManager.OnEntityA
 	}
 
 	@Override
-	public void onUpdate(double delta)
+	protected void onUpdate(double delta)
 	{
 		this.entityManager.update();
 	}
 
 	@Override
-	public void onRender()
+	protected void onRender()
 	{
 		this.instanceManager.update();
 	}
 
 	@Override
-	public void onSceneStop()
+	protected void onSceneStop()
 	{
 		this.entityManager.clear();
 	}
 
 	@Override
-	public void onSceneUnload()
+	protected void onSceneUnload()
 	{
 		this.instanceManager.destroyAll();
 	}
