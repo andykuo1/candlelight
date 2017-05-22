@@ -71,43 +71,36 @@ public abstract class Transform3 implements Transform
 		return this.rotation().normalizedPositiveY(dst);
 	}
 
-	@Override
 	public void moveX(float dist)
 	{
 		this.position.x += dist;
 	}
 
-	@Override
 	public void moveY(float dist)
 	{
 		this.position.y += dist;
 	}
 
-	@Override
 	public void moveZ(float dist)
 	{
 		this.position.z += dist;
 	}
 
-	@Override
 	public void moveForward(float magnitude)
 	{
 		this.translate(this.getForward(this._target), magnitude);
 	}
 
-	@Override
 	public void moveUp(float magnitude)
 	{
 		this.translate(this.getUp(this._target), magnitude);
 	}
 
-	@Override
 	public void moveRight(float magnitude)
 	{
 		this.translate(this.getRight(this._target), magnitude);
 	}
 
-	@Override
 	public void setPosition(float x, float y, float z)
 	{
 		this.position.set(x, y, z);
@@ -127,8 +120,6 @@ public abstract class Transform3 implements Transform
 	{
 		this.scale.mul(dx, dy, dz);
 	}
-
-	public abstract Quaternionfc rotation();
 
 	public abstract void rotate(Quaternionfc rot);
 

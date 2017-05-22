@@ -1,4 +1,4 @@
-package net.jimboi.dood;
+package net.jimboi.dood.component;
 
 import org.qsilver.entity.Component;
 

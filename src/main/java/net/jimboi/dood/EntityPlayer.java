@@ -1,5 +1,11 @@
 package net.jimboi.dood;
 
+import net.jimboi.dood.base.LocalDirectionVectorController;
+import net.jimboi.dood.component.ComponentControllerFirstPerson;
+import net.jimboi.dood.component.ComponentInstanceable;
+import net.jimboi.dood.component.ComponentLocalDirection;
+import net.jimboi.dood.component.ComponentMotion;
+import net.jimboi.dood.component.ComponentTransform;
 import net.jimboi.mod.Renderer;
 import net.jimboi.mod.transform.Transform3;
 

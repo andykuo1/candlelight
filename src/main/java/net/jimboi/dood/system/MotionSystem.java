@@ -1,28 +1,32 @@
 package net.jimboi.dood.system;
 
-import net.jimboi.dood.ComponentLocalDirection;
-import net.jimboi.dood.ComponentMotion;
-import net.jimboi.dood.ComponentTransform;
+import net.jimboi.dood.component.ComponentLocalDirection;
+import net.jimboi.dood.component.ComponentMotion;
+import net.jimboi.dood.component.ComponentTransform;
 import net.jimboi.mod.transform.Transform3;
 
 import org.bstone.util.MathUtil;
 import org.joml.Vector3f;
 import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
+import org.qsilver.scene.Scene;
 
 import java.util.Collection;
 
 /**
  * Created by Andy on 5/22/17.
  */
-public class MotionSystem extends EntitySystem
+public class MotionSystem extends EntitySystem implements Scene.OnSceneUpdateListener
 {
-	public MotionSystem(EntityManager entityManager)
+	public MotionSystem(EntityManager entityManager, Scene scene)
 	{
 		super(entityManager);
+
+		scene.onSceneUpdate.addListener(this);
 	}
 
-	public void onUpdate(double delta)
+	@Override
+	public void onSceneUpdate(double delta)
 	{
 		Collection<Entity> entities = this.entityManager.getEntitiesWithComponent(ComponentTransform.class, ComponentLocalDirection.class, ComponentMotion.class);
 

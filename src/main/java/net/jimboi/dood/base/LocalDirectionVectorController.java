@@ -1,6 +1,6 @@
-package net.jimboi.dood;
+package net.jimboi.dood.base;
 
-import net.jimboi.mod.transform.LocalDirectionVector;
+import net.jimboi.mod.transform.DirectionVectors;
 import net.jimboi.mod.transform.Transform3;
 
 import org.joml.Vector3f;
@@ -10,9 +10,9 @@ import org.joml.Vector3f;
  */
 public class LocalDirectionVectorController extends LocalDirectionVectorBase
 {
-	private final LocalDirectionVector camera;
+	private final DirectionVectors camera;
 
-	public LocalDirectionVectorController(Transform3 transform, LocalDirectionVector camera)
+	public LocalDirectionVectorController(Transform3 transform, DirectionVectors camera)
 	{
 		super(transform);
 		this.camera = camera;

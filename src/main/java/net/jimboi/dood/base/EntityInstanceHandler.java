@@ -1,5 +1,7 @@
-package net.jimboi.dood;
+package net.jimboi.dood.base;
 
+import net.jimboi.dood.component.ComponentInstanceable;
+import net.jimboi.dood.component.ComponentTransform;
 import net.jimboi.mod.RenderUtil;
 
 import org.qsilver.entity.Entity;

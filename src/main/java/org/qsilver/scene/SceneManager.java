@@ -8,42 +8,12 @@ import org.bstone.util.listener.Listenable;
  */
 public class SceneManager
 {
-	public interface OnSceneCreateListener
+	public interface OnSceneChanged
 	{
-		void onSceneCreate(Scene scene);
+		void onSceneChanged(Scene scene, Scene prevScene);
 	}
 
-	public interface OnSceneLoadListener
-	{
-		void onSceneLoad(Scene scene);
-	}
-
-	public interface OnSceneStartListener
-	{
-		void onSceneStart(Scene scene);
-	}
-
-	public interface OnSceneStopListener
-	{
-		void onSceneStop(Scene scene);
-	}
-
-	public interface OnSceneUnloadListener
-	{
-		void onSceneUnload(Scene scene);
-	}
-
-	public interface OnSceneDestroyListener
-	{
-		void onSceneDestroy(Scene scene);
-	}
-
-	public final Listenable<OnSceneCreateListener> onSceneCreate = new Listenable<>((listener, objects) -> listener.onSceneCreate((Scene) objects[0]));
-	public final Listenable<OnSceneLoadListener> onSceneLoad = new Listenable<>((listener, objects) -> listener.onSceneLoad((Scene) objects[0]));
-	public final Listenable<OnSceneStartListener> onSceneStart = new Listenable<>((listener, objects) -> listener.onSceneStart((Scene) objects[0]));
-	public final Listenable<OnSceneStopListener> onSceneStop = new Listenable<>((listener, objects) -> listener.onSceneStop((Scene) objects[0]));
-	public final Listenable<OnSceneUnloadListener> onSceneUnload = new Listenable<>((listener, objects) -> listener.onSceneUnload((Scene) objects[0]));
-	public final Listenable<OnSceneDestroyListener> onSceneDestroy = new Listenable<>((listener, objects) -> listener.onSceneDestroy((Scene) objects[0]));
+	public final Listenable<OnSceneChanged> onSceneChanged = new Listenable<>((listener, objects) -> listener.onSceneChanged((Scene) objects[0], (Scene) objects[1]));
 
 	private Scene nextScene;
 	private Scene currScene;
@@ -76,9 +46,12 @@ public class SceneManager
 				else if (this.setupHandler instanceof SceneStartHandler)
 				{
 					this.setupHandler = null;
+					Scene prevScene = this.currScene;
 					this.currScene = this.nextScene;
 					this.nextScene = null;
 					this.setup = false;
+
+					this.onSceneChanged.notifyListeners(this.currScene, prevScene);
 				}
 				else
 				{
@@ -91,7 +64,8 @@ public class SceneManager
 		}
 		else if (this.currScene != null)
 		{
-			this.currScene.onUpdate(delta);
+			this.currScene.onSceneUpdate(delta);
+			this.currScene.onSceneUpdate.notifyListeners(delta);
 		}
 	}
 
@@ -106,7 +80,8 @@ public class SceneManager
 		}
 		else if (this.currScene != null)
 		{
-			this.currScene.onRender();
+			this.currScene.onSceneRender();
+			this.currScene.onSceneRender.notifyListeners();
 		}
 	}
 
@@ -188,7 +163,7 @@ public class SceneManager
 				Poma.d("Stopping Scene. . .");
 				this.scene.onSceneStop();
 				this.sceneStopped = true;
-				SceneManager.this.onSceneStop.notifyListeners(this.scene);
+				this.scene.onSceneStop.notifyListeners();
 			}
 			else if (this.sceneUnloaded)
 			{
@@ -197,7 +172,7 @@ public class SceneManager
 					Poma.d("Destroying Scene. . .");
 					this.scene.onSceneDestroy();
 					this.sceneDestroyed = true;
-					SceneManager.this.onSceneDestroy.notifyListeners(this.scene);
+					this.scene.onSceneDestroy.notifyListeners();
 				}
 				else
 				{
@@ -218,7 +193,7 @@ public class SceneManager
 					Poma.d("Unloading Scene. . .");
 					this.scene.onSceneUnload();
 					this.sceneUnloaded = true;
-					SceneManager.this.onSceneUnload.notifyListeners(this.scene);
+					this.scene.onSceneUnload.notifyListeners();
 				}
 			}
 		}
@@ -247,7 +222,7 @@ public class SceneManager
 				Poma.d("Creating Scene. . .");
 				this.scene.onSceneCreate();
 				this.sceneCreated = true;
-				SceneManager.this.onSceneCreate.notifyListeners(this.scene);
+				this.scene.onSceneCreate.notifyListeners();
 			}
 			else if (this.sceneLoaded)
 			{
@@ -256,7 +231,7 @@ public class SceneManager
 					Poma.d("Starting Scene. . .");
 					this.scene.onSceneStart();
 					this.sceneStarted = true;
-					SceneManager.this.onSceneStart.notifyListeners(this.scene);
+					this.scene.onSceneStart.notifyListeners();
 				}
 				else
 				{
@@ -277,7 +252,7 @@ public class SceneManager
 					Poma.d("Loading Scene. . .");
 					this.scene.onSceneLoad();
 					this.sceneLoaded = true;
-					SceneManager.this.onSceneLoad.notifyListeners(this.scene);
+					this.scene.onSceneLoad.notifyListeners();
 				}
 			}
 		}

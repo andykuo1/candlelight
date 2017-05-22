@@ -1,6 +1,6 @@
 package org.bstone.camera;
 
-import net.jimboi.mod.transform.Transform;
+import net.jimboi.mod.transform.Transform3;
 
 import org.joml.Matrix4fc;
 
@@ -9,7 +9,7 @@ import org.joml.Matrix4fc;
  */
 public interface Camera
 {
-	Transform getTransform();
+	Transform3 getTransform();
 
 	Matrix4fc orientation();
 	Matrix4fc projection();

@@ -67,7 +67,7 @@ public abstract class LivingMotionControllerFirstPerson extends LivingMotion imp
 	{
 		if (this.mouseLock)
 		{
-			Transform3 cameraTransform = (Transform3) this.camera.getTransform();
+			Transform3 cameraTransform = this.camera.getTransform();
 
 			//Update camera rotation
 			Vector2fc mouse = new Vector2f(

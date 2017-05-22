@@ -1,4 +1,4 @@
-package net.jimboi.dood;
+package net.jimboi.dood.component;
 
 import org.joml.Vector3f;
 import org.qsilver.entity.Component;

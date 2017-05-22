@@ -81,12 +81,15 @@ public class World
 		return this.size;
 	}
 
-	public static MeshData toMeshBoxData(World world, int texWidth, int texHeight)
+	public static MeshData toMeshBoxData(World world, int textureWidth, int textureHeight)
 	{
 		MeshBuilder modelBuilder = new MeshBuilder();
 
 		int[] map = world.getMap();
 		int size = world.getSize();
+
+		Vector2f texTopLeft = new Vector2f();
+		Vector2f texBotRight = new Vector2f(1, 1);
 
 		for(int i = 0; i < map.length; ++i)
 		{
@@ -94,65 +97,26 @@ public class World
 
 			if (map[i] != 0)
 			{
-				int tile = map[i];
+				modelBuilder.addBox(wallPos.add(0, -1, 0, new Vector3f()), wallPos.add(1, 0, 1, new Vector3f()), texTopLeft, texBotRight, false, true, false, false, false, false);
+			}
+			else
+			{
+				boolean front = isSolid(map, i + size);
+				boolean back = isSolid(map, i - size);
+				boolean left = isSolid(map, i - 1);
+				boolean right = isSolid(map, i + 1);
 
-				int textureWidth = texWidth;
-				int textureHeight = texHeight;
-
-				int spriteWidth = 16;
-				int spriteHeight = 16;
-
-				float textureSpriteWidth = spriteWidth / (float) textureWidth;
-				float textureSpriteHeight = spriteHeight / (float) textureHeight;
-				Vector2fc sprite = new Vector2f(textureSpriteWidth, textureSpriteHeight);
-
-				//WALL SPRITE
-				int wallSpriteX = (tile % (textureWidth / spriteWidth));
-				int wallSpriteY = (tile / (textureWidth / spriteWidth)) + 1;
-				Vector2fc tc0 = new Vector2f(sprite.x() * wallSpriteX, sprite.y() * wallSpriteY);
-				Vector2fc tc1 = tc0.add(sprite, new Vector2f());
-
-				//FLOOR SPRITE
-				int index = 0;
-				if (i + 1 < map.length && map[i + 1] == tile) //EAST WALL
-				{
-					index += 1;
-				}
-				if (i - size >= 0 && map[i - size] == tile) //NORTH WALL
-				{
-					index += 2;
-				}
-				if (i - 1 >= 0 && map[i - 1] == tile) //WEST WALL
-				{
-					index += 4;
-				}
-				if (i + size < map.length && map[i + size] == tile) //SOUTH WALL
-				{
-					index += 8;
-				}
-
-				int floorSpriteX = (index % (textureWidth / spriteWidth));
-				int floorSpriteY = 0;
-				Vector2fc tc2 = new Vector2f(sprite.x() * floorSpriteX, sprite.y() * floorSpriteY);
-				Vector2fc tc3 = tc2.add(sprite, new Vector2f());
-
-				boolean north = i - size < 0 || map[i - size] != tile;
-				boolean east = i + 1 >= map.length || map[i + 1] != tile;
-				boolean west = i - 1 < 0 || map[i - 1] != tile;
-				boolean south = i + size >= map.length || map[i + size] != tile;
-
-				modelBuilder.addTexturedBox(wallPos, wallPos.add(1, 2, 1, new Vector3f()),
-						tc0, tc1,
-						tc2, tc3,
-						tc2, tc3,
-						tc2, tc3,
-						tc2, tc3,
-						tc2, tc3,
-						true, false, south, north, west, east);
+				modelBuilder.addBox(wallPos, wallPos.add(1, 1, 1, new Vector3f()), texTopLeft, texBotRight, false, true, front, back, left, right);
 			}
 		}
 
-		return modelBuilder.bake(true, false);
+		return modelBuilder.bake(false, false);
+	}
+
+	private static boolean isSolid(int[] map, int index)
+	{
+		if (index < 0 || index >= map.length) return false;
+		return map[index] != 0;
 	}
 
 	public static MeshData toMeshData(World world, int texWidth, int texHeight)

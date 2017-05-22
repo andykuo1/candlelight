@@ -1,6 +1,12 @@
 package net.jimboi.dood;
 
+import net.jimboi.dood.base.EntityInstanceHandler;
+import net.jimboi.dood.base.SceneBase;
+import net.jimboi.dood.component.ComponentInstanceable;
+import net.jimboi.dood.render.RenderBillboard;
+import net.jimboi.dood.render.RenderDiffuse;
 import net.jimboi.dood.system.ControllerFirstPersonSystem;
+import net.jimboi.dood.system.ControllerSideScrollerSystem;
 import net.jimboi.dood.system.MotionSystem;
 import net.jimboi.mod.Light;
 import net.jimboi.mod.RenderUtil;
@@ -32,6 +38,7 @@ public class SceneDood extends SceneBase
 {
 	private World world;
 	private ControllerFirstPersonSystem controllerFirstPersonSystem;
+	private ControllerSideScrollerSystem controllerSideScrollerSystem;
 	private MotionSystem motionSystem;
 	private Entity entityPlayer;
 
@@ -50,10 +57,9 @@ public class SceneDood extends SceneBase
 		Renderer.lights.add(Light.createPointLight(0, 0, 0, 0xFFFFFF, 1F, 1F, 0));
 		Renderer.lights.add(Light.createDirectionLight(1, 1F, 1F, 0xFFFFFF, 0.1F, 0.06F));
 
-		this.controllerFirstPersonSystem = new ControllerFirstPersonSystem(this.entityManager);
-		this.motionSystem = new MotionSystem(this.entityManager);
-
-		this.controllerFirstPersonSystem.onCreate();
+		this.controllerFirstPersonSystem = new ControllerFirstPersonSystem(this.entityManager, this);
+		this.controllerSideScrollerSystem = new ControllerSideScrollerSystem(this.entityManager, this);
+		this.motionSystem = new MotionSystem(this.entityManager, this);
 
 		this.entityPlayer = EntityPlayer.create(this.entityManager);
 	}
@@ -115,22 +121,18 @@ public class SceneDood extends SceneBase
 	}
 
 	@Override
-	protected void onUpdate(double delta)
+	protected void onSceneUpdate(double delta)
 	{
 		Light light = Renderer.lights.get(0);
 		light.position = new Vector4f(Renderer.camera.getTransform().position, 1);
 		light.coneDirection = Renderer.camera.getTransform().getForward(new Vector3f());
 
-		super.onUpdate(delta);
-
-		this.controllerFirstPersonSystem.onUpdate(delta);
-		this.motionSystem.onUpdate(delta);
+		super.onSceneUpdate(delta);
 	}
 
 	@Override
 	protected void onSceneDestroy()
 	{
-		this.controllerFirstPersonSystem.onDestroy();
 	}
 
 	public static Instance createTerrain(World world, Material mat)
@@ -149,6 +151,7 @@ public class SceneDood extends SceneBase
 		MeshData md = World.toMeshBoxData(world, 16, 16);
 		Model model = new Model(ModelUtil.createMesh(md));
 		RenderUtil.registerModel("terrain", model);
+		model.transformation().translateLocal(0, 0, -20);
 
 		Instance inst = new Instance(model, mat);
 		return inst;

@@ -1,4 +1,4 @@
-package net.jimboi.dood;
+package net.jimboi.dood.base;
 
 import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
@@ -37,13 +37,13 @@ public abstract class SceneBase extends Scene implements EntityManager.OnEntityA
 	}
 
 	@Override
-	protected void onUpdate(double delta)
+	protected void onSceneUpdate(double delta)
 	{
 		this.entityManager.update();
 	}
 
 	@Override
-	protected void onRender()
+	protected void onSceneRender()
 	{
 		this.instanceManager.update();
 	}

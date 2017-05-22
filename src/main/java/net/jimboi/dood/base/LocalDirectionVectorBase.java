@@ -1,6 +1,6 @@
-package net.jimboi.dood;
+package net.jimboi.dood.base;
 
-import net.jimboi.mod.transform.LocalDirectionVector;
+import net.jimboi.mod.transform.DirectionVectors;
 import net.jimboi.mod.transform.Transform3;
 
 import org.joml.Vector3f;
@@ -8,7 +8,7 @@ import org.joml.Vector3f;
 /**
  * Created by Andy on 5/22/17.
  */
-public class LocalDirectionVectorBase implements LocalDirectionVector
+public class LocalDirectionVectorBase implements DirectionVectors
 {
 	private final Transform3 transform;
 

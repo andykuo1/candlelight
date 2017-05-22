@@ -46,13 +46,13 @@ public abstract class MainScene extends Scene implements LivingManager.OnLivingA
 	}
 
 	@Override
-	public void onUpdate(double delta)
+	public void onSceneUpdate(double delta)
 	{
 		this.livingManager.update(delta);
 	}
 
 	@Override
-	public void onRender()
+	public void onSceneRender()
 	{
 		this.instanceManager.update();
 	}

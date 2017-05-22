@@ -88,45 +88,38 @@ public class Transform2 implements Transform
 		return dst.set((float) Math.cos(this.radians + HALF_PI), (float) Math.sin(this.radians + HALF_PI));
 	}
 
-	@Override
 	public void moveX(float dist)
 	{
 		this.position.x += dist;
 	}
 
-	@Override
 	public void moveY(float dist)
 	{
 		this.position.y += dist;
 	}
 
-	@Override
 	public void moveZ(float dist)
 	{
 		this.position.z += dist;
 	}
 
-	@Override
 	public void moveForward(float dist)
 	{
 		this.position.z += dist;
 	}
 
-	@Override
 	public void moveRight(float dist)
 	{
 		this.position.x += dist * (float) Math.cos(this.radians);
 		this.position.y += dist * (float) Math.sin(this.radians);
 	}
 
-	@Override
 	public void moveUp(float dist)
 	{
 		this.position.x += dist * (float) Math.cos(this.radians + HALF_PI);
 		this.position.y += dist * (float) Math.sin(this.radians + HALF_PI);
 	}
 
-	@Override
 	public void setPosition(float x, float y, float z)
 	{
 		this.position.set(x, y, z);
@@ -169,6 +162,7 @@ public class Transform2 implements Transform
 		return this.radians;
 	}
 
+	@Override
 	public Quaternionfc rotation()
 	{
 		return this.rotation.rotationXYZ(0, 0, this.radians);

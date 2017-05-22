@@ -131,13 +131,13 @@ public class SceneBlob extends MainScene
 	}
 
 	@Override
-	public void onUpdate(double delta)
+	public void onSceneUpdate(double delta)
 	{
 		Light light = Renderer.lights.get(0);
 		light.position = new Vector4f(Renderer.camera.getTransform().position, 1);
 		light.coneDirection = Renderer.camera.getTransform().getForward(new Vector3f());
 
-		super.onUpdate(delta);
+		super.onSceneUpdate(delta);
 	}
 
 	@Override
