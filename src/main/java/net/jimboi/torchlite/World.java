@@ -1,7 +1,7 @@
 package net.jimboi.torchlite;
 
-import net.jimboi.mod3.meshbuilder.MeshBuilder;
-import net.jimboi.mod3.meshbuilder.MeshData;
+import net.jimboi.mod.meshbuilder.MeshBuilder;
+import net.jimboi.mod.meshbuilder.MeshData;
 
 import org.joml.Vector2f;
 import org.joml.Vector2fc;

@@ -1,4 +1,4 @@
-package net.jimboi.mod3.meshbuilder;
+package net.jimboi.mod.meshbuilder;
 
 /**
  * Created by Andy on 5/10/17.

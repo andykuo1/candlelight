@@ -1,4 +1,4 @@
-package net.jimboi.mod.component;
+package net.jimboi.mod.entity;
 
 import java.util.Collection;
 import java.util.HashMap;

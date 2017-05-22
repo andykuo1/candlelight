@@ -1,6 +1,6 @@
 package net.jimboi.base;
 
-import net.jimboi.mod3.blob.LivingBase;
+import net.jimboi.mod3.blob.livings.LivingBase;
 
 import org.qsilver.living.Living;
 import org.qsilver.living.LivingManager;

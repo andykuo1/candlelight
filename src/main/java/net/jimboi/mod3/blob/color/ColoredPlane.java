@@ -1,6 +1,6 @@
-package net.jimboi.mod3.color;
+package net.jimboi.mod3.blob.color;
 
-import net.jimboi.mod3.meshbuilder.ModelUtil;
+import net.jimboi.mod.meshbuilder.ModelUtil;
 
 import org.bstone.mogli.Mesh;
 import org.qsilver.render.Model;
@@ -8,7 +8,7 @@ import org.qsilver.render.Model;
 /**
  * Created by Andy on 4/27/17.
  */
-public class TexturedPlane
+public class ColoredPlane
 {
 	private static final float[] POSITIONS = new float[]{
 			// VO
@@ -21,15 +21,11 @@ public class TexturedPlane
 			0.5f,  0.5f, 0
 	};
 
-	private static final float[] TEXCOORDS = new float[]{
-			//V0
-			0.5F, 0.0F,
-			//V1
-			0.0F, 1.0F,
-			//V2
-			1.0F, 1.0F,
-			//V3
-			1.0F, 0.0F
+	private static final float[] COLORS = new float[]{
+			0.5f, 0.0f, 0.0f,
+			0.0f, 0.5f, 0.0f,
+			0.0f, 0.0f, 0.5f,
+			0.0f, 0.5f, 0.5f
 	};
 
 	private static final int[] INDICES = new int[]{
@@ -40,7 +36,7 @@ public class TexturedPlane
 	{
 		Mesh mesh = new Mesh();
 		ModelUtil.putVertexBuffer(mesh, POSITIONS, 0, 3, 0);
-		ModelUtil.putVertexBuffer(mesh, TEXCOORDS, 1, 2, 0);
+		ModelUtil.putVertexBuffer(mesh, COLORS, 1, 3, 0);
 		ModelUtil.putIndexBuffer(mesh, INDICES);
 		Model model = new Model(mesh);
 		return model;

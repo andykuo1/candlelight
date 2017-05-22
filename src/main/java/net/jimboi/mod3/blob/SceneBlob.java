@@ -1,10 +1,12 @@
 package net.jimboi.mod3.blob;
 
 import net.jimboi.base.MainScene;
+import net.jimboi.mod.meshbuilder.MeshBuilder;
+import net.jimboi.mod.meshbuilder.MeshData;
+import net.jimboi.mod.meshbuilder.ModelUtil;
 import net.jimboi.mod.resource.ResourceLocation;
-import net.jimboi.mod3.meshbuilder.MeshBuilder;
-import net.jimboi.mod3.meshbuilder.MeshData;
-import net.jimboi.mod3.meshbuilder.ModelUtil;
+import net.jimboi.mod3.blob.livings.LivingPlayer;
+import net.jimboi.mod3.blob.livings.LivingZombie;
 import net.jimboi.torchlite.World;
 
 import org.bstone.camera.PerspectiveCamera;

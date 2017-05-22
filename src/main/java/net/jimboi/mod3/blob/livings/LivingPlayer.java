@@ -1,4 +1,6 @@
-package net.jimboi.mod3.blob;
+package net.jimboi.mod3.blob.livings;
+
+import net.jimboi.mod3.blob.Renderer;
 
 import org.qsilver.render.Instance;
 import org.qsilver.render.InstanceManager;

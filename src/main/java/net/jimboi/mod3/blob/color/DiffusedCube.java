@@ -1,6 +1,6 @@
-package net.jimboi.mod3.color;
+package net.jimboi.mod3.blob.color;
 
-import net.jimboi.mod3.meshbuilder.ModelUtil;
+import net.jimboi.mod.meshbuilder.ModelUtil;
 
 import org.bstone.mogli.Mesh;
 import org.qsilver.render.Model;

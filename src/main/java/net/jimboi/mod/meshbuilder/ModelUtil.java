@@ -1,4 +1,4 @@
-package net.jimboi.mod3.meshbuilder;
+package net.jimboi.mod.meshbuilder;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.VBO;

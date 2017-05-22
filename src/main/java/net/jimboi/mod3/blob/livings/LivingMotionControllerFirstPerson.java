@@ -1,9 +1,10 @@
-package net.jimboi.mod3.blob;
+package net.jimboi.mod3.blob.livings;
 
 import net.jimboi.base.Main;
 import net.jimboi.mod.transform.Transform;
 import net.jimboi.mod.transform.Transform3;
 import net.jimboi.mod.transform.Transform3Q;
+import net.jimboi.mod3.blob.Renderer;
 
 import org.bstone.camera.Camera;
 import org.bstone.input.InputEngine;

@@ -1,4 +1,4 @@
-package net.jimboi.mod3.blob;
+package net.jimboi.mod3.blob.livings;
 
 /**
  * Created by Andy on 5/20/17.

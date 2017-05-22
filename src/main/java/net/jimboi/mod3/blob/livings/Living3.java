@@ -1,4 +1,4 @@
-package net.jimboi.mod3.blob;
+package net.jimboi.mod3.blob.livings;
 
 import net.jimboi.mod.transform.Transform3;
 
