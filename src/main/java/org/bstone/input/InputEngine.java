@@ -1,22 +1,21 @@
 package org.bstone.input;
 
+import org.bstone.util.listener.Listenable;
 import org.bstone.window.Window;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by Andy on 4/26/17.
  */
 public class InputEngine
 {
-	public interface Listener
+	public interface OnInputUpdateListener
 	{
 		void onInputUpdate(InputEngine inputEngine);
 	}
 
+	public final Listenable<OnInputUpdateListener> onInputUpdate = new Listenable<>((listener, objects) -> listener.onInputUpdate((InputEngine) objects[0]));
+
 	private final Window window;
-	private final Set<Listener> listeners = new HashSet<>();
 
 	private final KeyboardHandler keyboard;
 	private final MouseHandler mouse;
@@ -33,26 +32,13 @@ public class InputEngine
 		InputManager.init(this);
 	}
 
-	public void addListener(Listener listener)
-	{
-		this.listeners.add(listener);
-	}
-
-	public void removeListener(Listener listener)
-	{
-		this.listeners.remove(listener);
-	}
-
 	public void update()
 	{
 		this.keyboard.poll();
 		this.mouse.poll();
 		this.joypad.poll();
 
-		for(Listener listener : this.listeners)
-		{
-			listener.onInputUpdate(this);
-		}
+		this.onInputUpdate.notifyListeners(this);
 	}
 
 	public KeyboardHandler getKeyboard()

@@ -1,6 +1,6 @@
 package org.qsilver.scene;
 
-import org.bstone.util.poma.Poma;
+import org.bstone.poma.Poma;
 
 /**
  * Created by Andy on 3/1/17.

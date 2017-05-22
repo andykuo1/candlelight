@@ -2,7 +2,7 @@ package org.bstone.camera;
 
 import net.jimboi.mod.transform.Transform3Q;
 
-import org.bstone.util.poma.Poma;
+import org.bstone.poma.Poma;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector3f;

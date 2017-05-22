@@ -1,6 +1,6 @@
 package org.bstone.mogli;
 
-import org.bstone.util.poma.Poma;
+import org.bstone.poma.Poma;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;

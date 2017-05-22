@@ -1,7 +1,7 @@
 package org.bstone.window;
 
 import org.bstone.input.InputEngine;
-import org.bstone.util.poma.Poma;
+import org.bstone.poma.Poma;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;

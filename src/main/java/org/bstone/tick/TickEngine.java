@@ -1,17 +1,25 @@
 package org.bstone.tick;
 
+import org.bstone.util.listener.Listenable;
+
 /**
  * Created by Andy on 3/1/17.
  */
 public class TickEngine
 {
-	public interface Listener
+	public interface OnFixedUpdateListener
 	{
 		void onUpdate(double delta);
+	}
+
+	public interface OnUpdateListener
+	{
 		void onUpdate();
 	}
 
-	private final Listener listener;
+	public final Listenable<OnFixedUpdateListener> onFixedUpdate = new Listenable<>((listener, objects) -> listener.onUpdate((Double) objects[0]));
+	public final Listenable<OnUpdateListener> onUpdate = new Listenable<>((listener, objects) -> listener.onUpdate());
+
 	private volatile boolean running = false;
 
 	private final double dt = 1 / 60D;
@@ -23,9 +31,8 @@ public class TickEngine
 	private double frameTime;
 	private double currentTime;
 
-	public TickEngine(final Listener listener)
+	public TickEngine()
 	{
-		this.listener = listener;
 		this.running = true;
 	}
 
@@ -39,13 +46,12 @@ public class TickEngine
 
 		while (this.time >= this.dt)
 		{
-			this.listener.onUpdate(this.dt);
-
+			this.onFixedUpdate.notifyListeners(this.dt);
 			this.time -= this.dt;
 			this.t += this.dt;
 		}
 
-		this.listener.onUpdate();
+		this.onUpdate.notifyListeners();
 	}
 
 	public void stop()

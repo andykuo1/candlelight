@@ -1,6 +1,6 @@
 package org.bstone.util.map2d;
 
-import org.bstone.util.poma.Poma;
+import org.bstone.poma.Poma;
 import org.joml.Vector2i;
 
 public class IntMap

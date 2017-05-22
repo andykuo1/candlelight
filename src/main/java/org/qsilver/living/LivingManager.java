@@ -1,5 +1,7 @@
 package org.qsilver.living;
 
+import org.bstone.util.listener.Listenable;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,11 +15,18 @@ import java.util.function.Predicate;
  */
 public class LivingManager
 {
-	public interface Listener
+	public interface OnLivingAddListener
 	{
 		void onLivingAdd(Living living);
+	}
+
+	public interface OnLivingRemoveListener
+	{
 		void onLivingRemove(Living living);
 	}
+
+	public final Listenable<OnLivingAddListener> onLivingAdd = new Listenable<>((listener, objects) -> listener.onLivingAdd((Living) objects[0]));
+	public final Listenable<OnLivingRemoveListener> onLivingRemove = new Listenable<>(((listener, objects) -> listener.onLivingRemove((Living) objects[0])));
 
 	private final List<Living> spawnList = new ArrayList<>();
 	private final List<Living> spawnCache = new ArrayList<>();
@@ -26,12 +35,6 @@ public class LivingManager
 	private volatile boolean cached = false;
 
 	private final Set<LivingSet> livingSets = new HashSet<>();
-	private final Listener listener;
-
-	public LivingManager(Listener listener)
-	{
-		this.listener = listener;
-	}
 
 	class LivingSet<T>
 	{
@@ -247,10 +250,7 @@ public class LivingManager
 			}
 		}
 
-		if (this.listener != null)
-		{
-			this.listener.onLivingAdd(living);
-		}
+		this.onLivingAdd.notifyListeners(living);
 	}
 
 	private void onRemoveLiving(Living living)
@@ -267,9 +267,6 @@ public class LivingManager
 			}
 		}
 
-		if (this.listener != null)
-		{
-			this.listener.onLivingRemove(living);
-		}
+		this.onLivingRemove.notifyListeners(living);
 	}
 }

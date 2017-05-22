@@ -1,6 +1,6 @@
 package org.bstone.util.direction;
 
-import org.bstone.util.poma.Poma;
+import org.bstone.poma.Poma;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 

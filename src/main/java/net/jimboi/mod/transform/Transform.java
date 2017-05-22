@@ -1,13 +1,12 @@
 package net.jimboi.mod.transform;
 
 import org.joml.Matrix4fc;
-import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
 /**
  * Created by Andy on 5/18/17.
  */
-public interface Transform
+public interface Transform extends LocalDirectionVector
 {
 	float PI = (float) Math.PI;
 	float HALF_PI = PI / 2;
@@ -31,8 +30,4 @@ public interface Transform
 	void moveZ(float dist);
 
 	void setPosition(float x, float y, float z);
-
-	Vector3f getForward(Vector3f dst);
-	Vector3f getRight(Vector3f dst);
-	Vector3f getUp(Vector3f dst);
 }

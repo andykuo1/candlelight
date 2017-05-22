@@ -1,5 +1,7 @@
 package org.qsilver.render;
 
+import org.bstone.util.listener.Listenable;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -13,11 +15,18 @@ import java.util.function.Function;
  */
 public class InstanceManager
 {
-	public interface Listener
+	public interface OnInstanceAddListener
 	{
 		void onInstanceAdd(InstanceHandler parent, Instance instance);
+	}
+
+	public interface OnInstanceRemoveListener
+	{
 		void onInstanceRemove(InstanceHandler parent, Instance instance);
 	}
+
+	public final Listenable<OnInstanceAddListener> onInstanceAdd = new Listenable<>((listener, objects) -> listener.onInstanceAdd((InstanceHandler) objects[0], (Instance) objects[1]));
+	public final Listenable<OnInstanceRemoveListener> onInstanceRemove = new Listenable<>((listener, objects) -> listener.onInstanceRemove((InstanceHandler) objects[0], (Instance) objects[1]));
 
 	private class InstanceEntry
 	{
@@ -58,11 +67,8 @@ public class InstanceManager
 
 	private Function<Instance, Void> renderFunction;
 
-	private final Listener listener;
-
-	public InstanceManager(Listener listener, Function<Instance, Void> function)
+	public InstanceManager(Function<Instance, Void> function)
 	{
-		this.listener = listener;
 		this.renderFunction = function;
 	}
 
@@ -197,7 +203,8 @@ public class InstanceManager
 					{
 						InstanceEntry entry = new InstanceEntry(parent, instance);
 						this.instances.add(entry);
-						this.onAddInstance(entry);
+
+						this.onInstanceAdd.notifyListeners(entry.parent, entry.instance);
 					}
 				}
 			}
@@ -221,25 +228,10 @@ public class InstanceManager
 		{
 			entry.parent.onInstanceDestroy(this, entry.instance);
 			this.instances.remove(entry);
-			this.onRemoveInstance(entry);
+
+			this.onInstanceRemove.notifyListeners(entry.parent, entry.instance);
 		}
 
 		this.destroyList.clear();
-	}
-
-	private void onAddInstance(InstanceEntry entry)
-	{
-		if (this.listener != null)
-		{
-			this.listener.onInstanceAdd(entry.parent, entry.instance);
-		}
-	}
-
-	private void onRemoveInstance(InstanceEntry entry)
-	{
-		if (this.listener != null)
-		{
-			this.listener.onInstanceRemove(entry.parent, entry.instance);
-		}
 	}
 }

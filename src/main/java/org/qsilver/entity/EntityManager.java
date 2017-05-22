@@ -1,8 +1,12 @@
 package org.qsilver.entity;
 
+import org.bstone.util.listener.Listenable;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,6 +16,19 @@ import java.util.Set;
 public class EntityManager
 {
 	private static int NEXT_ENTITY_ID = 0;
+
+	public interface OnEntityAddListener
+	{
+		void onEntityAdd(Entity entity);
+	}
+
+	public interface OnEntityRemoveListener
+	{
+		void onEntityRemove(Entity entity);
+	}
+
+	public final Listenable<OnEntityAddListener> onEntityAdd = new Listenable<>(((listener, objects) -> listener.onEntityAdd((Entity) objects[0])));
+	public final Listenable<OnEntityRemoveListener> onEntityRemove = new Listenable<>((listener, objects) -> listener.onEntityRemove((Entity) objects[0]));
 
 	private final Map<Class<? extends Component>, Map<Entity, Component>> components = new HashMap<>();
 	private final Map<Integer, Entity> entities = new HashMap<>();
@@ -41,54 +58,105 @@ public class EntityManager
 		this.destroySet.clear();
 	}
 
+	public void clear()
+	{
+		this.destroySet.addAll(this.entities.values());
+
+		for (Entity entity : this.destroySet)
+		{
+			this.removeEntity(entity);
+		}
+
+		this.destroySet.clear();
+		this.createSet.clear();
+	}
+
 	public void addComponentToEntity(Entity entity, Component component)
 	{
 		Class<? extends Component> componentType = component.getClass();
-		Map<Entity, Component> map = this.getComponents(componentType);
+		Map<Entity, Component> map = this.getComponentMap(componentType);
 		map.put(entity, component);
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T extends Component> T removeComponentFromEntity(Entity entity, Class<T> componentType)
 	{
-		Map<Entity, Component> map = this.getComponents(componentType);
+		Map<Entity, Component> map = this.getComponentMap(componentType);
 		return (T) map.remove(entity);
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T extends Component> T getComponentByEntity(Class<T> componentType, Entity entity)
 	{
-		Map<Entity, ? extends Component> map = this.getComponents(componentType);
+		Map<Entity, Component> map = this.getComponentMap(componentType);
 		return (T) map.get(entity);
 	}
 
 	public boolean hasComponentByEntity(Class<? extends Component> componentType, Entity entity)
 	{
-		Map<Entity, Component> map = this.getComponents(componentType);
+		Map<Entity, Component> map = this.getComponentMap(componentType);
 		return map.containsKey(entity);
 	}
 
-	public Collection<Entity> getEntitiesByComponent(Collection<Entity> dst, Class<? extends Component>... componentTypes)
+	@SuppressWarnings("unchecked")
+	public Collection<Entity> getAllEntitiesByComponent(Collection<Entity> dst, Class... componentTypes)
 	{
-		boolean init = false;
-		for(Class<? extends Component> componentType : componentTypes)
+		for (Class componentType : componentTypes)
 		{
-			Map<Entity, ? extends Component> map = this.getComponents(componentType);
-			if (init)
-			{
-				dst.retainAll(map.keySet());
-			}
-			else
-			{
-				dst.addAll(map.keySet());
-				init = true;
-			}
+			if (!componentType.isAssignableFrom(Component.class))
+				throw new IllegalArgumentException("Invalid component type '" + componentType + "'. This is not a component!");
+
+			Map<Entity, Component> map = this.getComponentMap(componentType);
+			dst.addAll(map.keySet());
 		}
 
 		return dst;
 	}
 
-	private Map<Entity, Component> getComponents(Class<? extends Component> componentType)
+	@SuppressWarnings("unchecked")
+	public Collection<Entity> getEntitiesWithComponent(Class... componentTypes)
+	{
+		List<Entity> entities = new LinkedList<>();
+		boolean init = false;
+		for (Class componentType : componentTypes)
+		{
+			if (!Component.class.isAssignableFrom(componentType))
+				throw new IllegalArgumentException("Invalid component type '" + componentType + "'. This is not a component!");
+
+			Map<Entity, Component> map = this.getComponentMap(componentType);
+			if (init)
+			{
+				entities.retainAll(map.keySet());
+			}
+			else
+			{
+				entities.addAll(map.keySet());
+				init = true;
+			}
+		}
+
+		return entities;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<Entity> retainAllWithComponents(Collection<Entity> dst, Class... componentTypes)
+	{
+		if (dst.isEmpty())
+			throw new UnsupportedOperationException("Unable to retain any entities from an empty collection!");
+
+		for (Class componentType : componentTypes)
+		{
+			if (!componentType.isAssignableFrom(Component.class))
+				throw new IllegalArgumentException("Invalid component type '" + componentType + "'. This is not a component!");
+
+			Map<Entity, Component> map = this.getComponentMap(componentType);
+			dst.retainAll(map.keySet());
+		}
+
+		return dst;
+	}
+
+	private Map<Entity, Component> getComponentMap(Class<? extends Component> componentType)
 	{
 		Map<Entity, Component> map = this.components.get(componentType);
 		if (map == null)
@@ -107,7 +175,9 @@ public class EntityManager
 
 	public Entity createEntity()
 	{
-		return new Entity(this);
+		Entity entity = new Entity(this);
+		this.createSet.add(entity);
+		return entity;
 	}
 
 	public Entity createEntityWithComponents(Component... components)
@@ -123,18 +193,25 @@ public class EntityManager
 	protected  <T extends Entity> T addEntity(T entity)
 	{
 		entity.id = this.getNextAvailableEntityID();
-
 		this.entities.put(entity.getEntityID(), entity);
+
+		this.onEntityAdd.notifyListeners(entity);
 		return entity;
 	}
 
 	protected <T extends Entity> T removeEntity(T entity)
 	{
-		this.entities.remove(entity.getEntityID());
+		Entity e = this.entities.remove(entity.getEntityID());
+
+		if (e == null)
+			throw new IllegalArgumentException("Entity does not exist with id '" + entity.getEntityID() + "'!");
+
 		for(Map<Entity, Component> map : this.components.values())
 		{
 			map.remove(entity);
 		}
+
+		this.onEntityRemove.notifyListeners(entity);
 		return entity;
 	}
 

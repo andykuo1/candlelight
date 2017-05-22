@@ -1,6 +1,6 @@
 package org.bstone.mogli;
 
-import org.bstone.util.poma.Poma;
+import org.bstone.poma.Poma;
 import org.joml.Matrix4fc;
 import org.joml.Vector2fc;
 import org.joml.Vector3fc;
