@@ -1,13 +1,11 @@
 package net.jimboi.dood;
 
 import net.jimboi.dood.component.ComponentBox2DBody;
-import net.jimboi.dood.component.ComponentControllerSideScroll;
 import net.jimboi.dood.component.ComponentInstanceable;
 import net.jimboi.dood.component.ComponentTransform;
-import net.jimboi.mod.Renderer;
 import net.jimboi.mod.transform.Transform3;
 
-import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
@@ -15,9 +13,9 @@ import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
 
 /**
- * Created by Andy on 5/22/17.
+ * Created by Andy on 5/23/17.
  */
-public class EntityPlayer
+public class EntityBall
 {
 	public static Entity create(EntityManager entityManager)
 	{
@@ -28,20 +26,15 @@ public class EntityPlayer
 		bodyDef.position.y = transform.position.y;
 		bodyDef.type = BodyType.DYNAMIC;
 		FixtureDef fixDef = new FixtureDef();
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(0.5F, 0.5F);
+		CircleShape shape = new CircleShape();
+		shape.setRadius(1F);
 		fixDef.shape = shape;
 		fixDef.density = 1.0F;
 		fixDef.friction = 0.3F;
+
 		return entityManager.createEntity()
 				.addComponent(new ComponentTransform(transform))
 				.addComponent(new ComponentBox2DBody(bodyDef, fixDef))
-				.addComponent(new ComponentControllerSideScroll(Renderer.camera))
-				.addComponent(new ComponentInstanceable("plane", "bird"));
-		//.addComponent(new ComponentLocalDirection(new LocalDirectionVectorController(transform, Renderer.camera.getTransform())))
-		//.addComponent(new ComponentMotion())
-		//.addComponent(new ComponentControllerFirstPerson(Renderer.camera));
-		//.addComponent(new ComponentControllerSideScroll(Renderer.camera));
-		//.addComponent(new ComponentInstanceable("player", "bird"));
+				.addComponent(new ComponentInstanceable("ball", "bird"));
 	}
 }

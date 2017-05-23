@@ -25,21 +25,27 @@ import java.util.Collection;
 /**
  * Created by Andy on 5/22/17.
  */
-public class ControllerFirstPersonSystem extends EntitySystem implements Scene.OnSceneCreateListener, Scene.OnSceneDestroyListener, Scene.OnSceneUpdateListener, InputEngine.OnInputUpdateListener
+public class ControllerFirstPersonSystem extends EntitySystem implements Scene.OnSceneUpdateListener, InputEngine.OnInputUpdateListener
 {
+	protected final Scene scene;
+
 	public ControllerFirstPersonSystem(EntityManager entityManager, Scene scene)
 	{
 		super(entityManager);
-
-		scene.onSceneCreate.addListener(this);
-		scene.onSceneUpdate.addListener(this);
-		scene.onSceneDestroy.addListener(this);
+		this.scene = scene;
 	}
 
 	@Override
-	public void onSceneCreate()
+	public void onStart()
 	{
-		Main.INPUTENGINE.onInputUpdate.addListener(this);
+		this.registerListenable(this.scene.onSceneUpdate);
+		this.registerListenable(Main.INPUTENGINE.onInputUpdate);
+	}
+
+	@Override
+	public void onStop()
+	{
+		this.clear();
 	}
 
 	@Override
@@ -124,11 +130,5 @@ public class ControllerFirstPersonSystem extends EntitySystem implements Scene.O
 		componentControllerFirstPerson.right = 0;
 		if (InputManager.isInputDown("right")) componentControllerFirstPerson.right += 1F;
 		if (InputManager.isInputDown("left")) componentControllerFirstPerson.right -= 1F;
-	}
-
-	@Override
-	public void onSceneDestroy()
-	{
-		Main.INPUTENGINE.onInputUpdate.deleteListener(this);
 	}
 }

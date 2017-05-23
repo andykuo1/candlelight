@@ -17,21 +17,29 @@ import java.util.Collection;
 /**
  * Created by Andy on 5/22/17.
  */
-public class ControllerSideScrollerSystem extends EntitySystem implements Scene.OnSceneCreateListener, Scene.OnSceneDestroyListener, Scene.OnSceneUpdateListener, InputEngine.OnInputUpdateListener
+public class ControllerSideScrollerSystem extends EntitySystem implements Scene.OnSceneUpdateListener, InputEngine.OnInputUpdateListener
 {
+	protected final Scene scene;
+	public float distanceFromTarget = 10;
+
 	public ControllerSideScrollerSystem(EntityManager entityManager, Scene scene)
 	{
 		super(entityManager);
 
-		scene.onSceneCreate.addListener(this);
-		scene.onSceneUpdate.addListener(this);
-		scene.onSceneDestroy.addListener(this);
+		this.scene = scene;
 	}
 
 	@Override
-	public void onSceneCreate()
+	public void onStart()
 	{
-		Main.INPUTENGINE.onInputUpdate.addListener(this);
+		this.registerListenable(scene.onSceneUpdate);
+		this.registerListenable(Main.INPUTENGINE.onInputUpdate);
+	}
+
+	@Override
+	public void onStop()
+	{
+		this.clear();
 	}
 
 	@Override
@@ -54,7 +62,7 @@ public class ControllerSideScrollerSystem extends EntitySystem implements Scene.
 		componentMotion.motion.y += componentControllerSideScroll.up;
 
 		Vector3fc pos = componentTransform.transform.position();
-		componentControllerSideScroll.camera.getTransform().setPosition(pos.x(), pos.y(), pos.z());
+		componentControllerSideScroll.camera.getTransform().setPosition(pos.x(), pos.y(), pos.z() + this.distanceFromTarget);
 	}
 
 	@Override
@@ -78,11 +86,5 @@ public class ControllerSideScrollerSystem extends EntitySystem implements Scene.
 		componentControllerSideScroll.right = 0;
 		if (InputManager.isInputDown("right")) componentControllerSideScroll.right += 1F;
 		if (InputManager.isInputDown("left")) componentControllerSideScroll.right -= 1F;
-	}
-
-	@Override
-	public void onSceneDestroy()
-	{
-		Main.INPUTENGINE.onInputUpdate.deleteListener(this);
 	}
 }

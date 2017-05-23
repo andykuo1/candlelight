@@ -18,11 +18,25 @@ import java.util.Collection;
  */
 public class MotionSystem extends EntitySystem implements Scene.OnSceneUpdateListener
 {
+	protected final Scene scene;
+
 	public MotionSystem(EntityManager entityManager, Scene scene)
 	{
 		super(entityManager);
 
-		scene.onSceneUpdate.addListener(this);
+		this.scene = scene;
+	}
+
+	@Override
+	public void onStart()
+	{
+		this.registerListenable(scene.onSceneUpdate);
+	}
+
+	@Override
+	public void onStop()
+	{
+		this.clear();
 	}
 
 	@Override

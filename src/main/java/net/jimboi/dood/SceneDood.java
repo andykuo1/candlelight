@@ -1,21 +1,21 @@
 package net.jimboi.dood;
 
-import net.jimboi.dood.base.EntityInstanceHandler;
 import net.jimboi.dood.base.SceneBase;
-import net.jimboi.dood.component.ComponentInstanceable;
 import net.jimboi.dood.render.RenderBillboard;
 import net.jimboi.dood.render.RenderDiffuse;
+import net.jimboi.dood.system.Box2DSystem;
 import net.jimboi.dood.system.ControllerFirstPersonSystem;
+import net.jimboi.dood.system.ControllerSideScrollBox2DSystem;
 import net.jimboi.dood.system.ControllerSideScrollerSystem;
+import net.jimboi.dood.system.EntitySystem;
+import net.jimboi.dood.system.InstanceSystem;
 import net.jimboi.dood.system.MotionSystem;
 import net.jimboi.mod.Light;
 import net.jimboi.mod.RenderUtil;
 import net.jimboi.mod.Renderer;
 import net.jimboi.mod.meshbuilder.MeshBuilder;
-import net.jimboi.mod.meshbuilder.MeshData;
 import net.jimboi.mod.meshbuilder.ModelUtil;
 import net.jimboi.mod.resource.ResourceLocation;
-import net.jimboi.torchlite.World;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.input.InputManager;
@@ -25,21 +25,24 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 import org.qsilver.entity.Entity;
-import org.qsilver.render.Instance;
 import org.qsilver.render.Material;
 import org.qsilver.render.Model;
-
-import java.util.Random;
 
 /**
  * Created by Andy on 5/21/17.
  */
 public class SceneDood extends SceneBase
 {
-	private World world;
+	private WorldGenTerrain terrain;
+	private WorldGenHills hills;
+
+	private InstanceSystem instanceSystem;
 	private ControllerFirstPersonSystem controllerFirstPersonSystem;
 	private ControllerSideScrollerSystem controllerSideScrollerSystem;
+	private ControllerSideScrollBox2DSystem controllerSideScrollBox2DSystem;
 	private MotionSystem motionSystem;
+	private Box2DSystem box2DSystem;
+
 	private Entity entityPlayer;
 
 	public SceneDood()
@@ -50,18 +53,23 @@ public class SceneDood extends SceneBase
 	@Override
 	protected void onSceneCreate()
 	{
-		this.world = new World(new Random(), 45);
-		this.world.generateWorld();
-
 		//Add Entities Here
 		Renderer.lights.add(Light.createPointLight(0, 0, 0, 0xFFFFFF, 1F, 1F, 0));
 		Renderer.lights.add(Light.createDirectionLight(1, 1F, 1F, 0xFFFFFF, 0.1F, 0.06F));
 
+		this.instanceSystem = new InstanceSystem(this.entityManager, this.instanceManager);
 		this.controllerFirstPersonSystem = new ControllerFirstPersonSystem(this.entityManager, this);
 		this.controllerSideScrollerSystem = new ControllerSideScrollerSystem(this.entityManager, this);
 		this.motionSystem = new MotionSystem(this.entityManager, this);
+		this.box2DSystem = new Box2DSystem(this.entityManager, this);
+		this.controllerSideScrollBox2DSystem = new ControllerSideScrollBox2DSystem(this.entityManager, this);
 
-		this.entityPlayer = EntityPlayer.create(this.entityManager);
+		this.instanceSystem.start();
+		this.controllerFirstPersonSystem.start();
+		this.controllerSideScrollerSystem.start();
+		this.motionSystem.start();
+		this.box2DSystem.start();
+		this.controllerSideScrollBox2DSystem.start();
 	}
 
 	@Override
@@ -99,11 +107,10 @@ public class SceneDood extends SceneBase
 
 		//Models
 		Model mod_ball = new Model(RenderUtil.loadMesh(new ResourceLocation("dood:sphere.obj")));
-		mod_ball.transformation().translateLocal(0, -1.5F, 0);
 		RenderUtil.registerModel("ball", mod_ball);
 
 		MeshBuilder mb = new MeshBuilder();
-		mb.addPlane(new Vector3f(0, 0, 0), new Vector3f(1, 1, 0), new Vector2f(0, 0), new Vector2f(1, 1));
+		mb.addPlane(new Vector2f(0, 0), new Vector2f(1, 1), 0, new Vector2f(0, 0), new Vector2f(1, 1));
 		Model mod_plane = new Model(ModelUtil.createMesh(mb.bake(false, true)));
 		RenderUtil.registerModel("plane", mod_plane);
 
@@ -112,12 +119,28 @@ public class SceneDood extends SceneBase
 		Model mod_box = new Model(ModelUtil.createMesh(mb.bake(false, true)));
 		RenderUtil.registerModel("box", mod_box);
 
-		this.instanceManager.add(createTerrain(this.world, mat_bird));
+		this.hills = new WorldGenHills();
+		hills.generate();
+		Model mod_hills = new Model(hills.createMeshFromVertices());
+		RenderUtil.registerModel("hills", mod_hills);
+
+		this.terrain = new WorldGenTerrain();
+		terrain.generate();
+		Model mod_dungeon = new Model(terrain.createMeshFromVertices());
+		RenderUtil.registerModel("dungeon", mod_dungeon);
+
+		//this.instanceManager.add(new Instance(mod_hills, mat_bird));
+		//this.instanceManager.add(new Instance(mod_dungeon, mat_bird));
 	}
 
 	@Override
 	protected void onSceneStart()
 	{
+		this.entityPlayer = EntityPlayer.create(this.entityManager);
+		EntityBox.create(this.entityManager);
+		EntityBox.create(this.entityManager);
+		EntityBall.create(this.entityManager);
+		EntityHills.create(this.entityManager, this.hills);
 	}
 
 	@Override
@@ -133,38 +156,12 @@ public class SceneDood extends SceneBase
 	@Override
 	protected void onSceneDestroy()
 	{
-	}
-
-	public static Instance createTerrain(World world, Material mat)
-	{
-		int[] map = world.getMap();
-		for (int y = 0; y < world.getSize(); ++y)
-		{
-			for (int x = 0; x < world.getSize(); ++x)
-			{
-				int i = map[x + y * world.getSize()];
-				System.out.print((i == 0 ? " " : i) + " ");
-			}
-			System.out.println();
-		}
-
-		MeshData md = World.toMeshBoxData(world, 16, 16);
-		Model model = new Model(ModelUtil.createMesh(md));
-		RenderUtil.registerModel("terrain", model);
-		model.transformation().translateLocal(0, 0, -20);
-
-		Instance inst = new Instance(model, mat);
-		return inst;
-	}
-
-	@Override
-	public void onEntityAdd(Entity entity)
-	{
-		super.onEntityAdd(entity);
-
-		if (entity.hasComponent(ComponentInstanceable.class))
-		{
-			this.instanceManager.add(new EntityInstanceHandler(entity));
-		}
+		this.instanceSystem.stop();
+		this.controllerFirstPersonSystem.stop();
+		this.controllerSideScrollerSystem.stop();
+		this.motionSystem.stop();
+		this.box2DSystem.stop();
+		this.controllerSideScrollBox2DSystem.stop();
+		EntitySystem.stopAll();
 	}
 }

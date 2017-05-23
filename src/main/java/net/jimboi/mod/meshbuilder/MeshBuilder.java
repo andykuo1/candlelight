@@ -96,17 +96,32 @@ public class MeshBuilder
 		this.indices.clear();
 	}
 
-	public void addPlane(Vector3fc from, Vector3fc to, Vector2fc texTopLeft, Vector2fc texBotRight)
+	public void addPlane(Vector2fc from, Vector2fc to, float z, Vector2fc texTopLeft, Vector2fc texBotRight)
 	{
 		int i = this.getVertexCount();
 		int normal = 1;
 
-		this.addVertex(from.x(), from.y(), to.z(), texBotRight.x(), texTopLeft.y(), 0, 0, normal);
-		this.addVertex(to.x(), from.y(), to.z(), texTopLeft.x(), texTopLeft.y(), 0, 0, normal);
-		this.addVertex(from.x(), to.y(), to.z(), texBotRight.x(), texBotRight.y(), 0, 0, normal);
-		this.addVertex(to.x(), from.y(), to.z(), texTopLeft.x(), texTopLeft.y(), 0, 0, normal);
-		this.addVertex(to.x(), to.y(), to.z(), texTopLeft.x(), texBotRight.y(), 0, 0, normal);
-		this.addVertex(from.x(), to.y(), to.z(), texBotRight.x(), texBotRight.y(), 0, 0, normal);
+		this.addVertex(from.x(), from.y(), z, texBotRight.x(), texTopLeft.y(), 0, 0, normal);
+		this.addVertex(to.x(), from.y(), z, texTopLeft.x(), texTopLeft.y(), 0, 0, normal);
+		this.addVertex(from.x(), to.y(), z, texBotRight.x(), texBotRight.y(), 0, 0, normal);
+		this.addVertex(to.x(), from.y(), z, texTopLeft.x(), texTopLeft.y(), 0, 0, normal);
+		this.addVertex(to.x(), to.y(), z, texTopLeft.x(), texBotRight.y(), 0, 0, normal);
+		this.addVertex(from.x(), to.y(), z, texBotRight.x(), texBotRight.y(), 0, 0, normal);
+
+		this.addVertexIndex(i++, i++, i++);
+		this.addVertexIndex(i++, i++, i++);
+	}
+
+	public void addPlane(Vector3fc botLeft, Vector3fc topLeft, Vector3fc topRight, Vector3fc botRight, Vector2fc texTopLeft, Vector2fc texBotRight)
+	{
+		int i = this.getVertexCount();
+
+		this.addVertex(botLeft.x(), botLeft.y(), botLeft.z(), texBotRight.x(), texTopLeft.y());
+		this.addVertex(botRight.x(), botRight.y(), botRight.z(), texTopLeft.x(), texTopLeft.y());
+		this.addVertex(topLeft.x(), topLeft.y(), topLeft.z(), texBotRight.x(), texBotRight.y());
+		this.addVertex(botRight.x(), botRight.y(), botRight.z(), texTopLeft.x(), texTopLeft.y());
+		this.addVertex(topRight.x(), topRight.y(), topRight.z(), texTopLeft.x(), texBotRight.y());
+		this.addVertex(topLeft.x(), topLeft.y(), topLeft.z(), texBotRight.x(), texBotRight.y());
 
 		this.addVertexIndex(i++, i++, i++);
 		this.addVertexIndex(i++, i++, i++);

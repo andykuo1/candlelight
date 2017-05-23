@@ -9,7 +9,7 @@ import net.jimboi.mod.meshbuilder.MeshBuilder;
 import net.jimboi.mod.meshbuilder.MeshData;
 import net.jimboi.mod.meshbuilder.ModelUtil;
 import net.jimboi.mod.resource.ResourceLocation;
-import net.jimboi.torchlite.World;
+import net.jimboi.torchlite.MazeWorld;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.input.InputManager;
@@ -30,7 +30,7 @@ import java.util.Random;
  */
 public class SceneBlob extends MainScene
 {
-	private World world;
+	private MazeWorld world;
 	private LivingPlayer player;
 
 	public SceneBlob()
@@ -41,7 +41,7 @@ public class SceneBlob extends MainScene
 	@Override
 	public void onSceneCreate()
 	{
-		this.world = new World(new Random(), 45);
+		this.world = new MazeWorld(new Random(), 45);
 		this.world.generateWorld();
 
 		this.player = new LivingPlayer(0, 0, 0);
@@ -117,7 +117,7 @@ public class SceneBlob extends MainScene
 		RenderUtil.registerModel("cube", mod_cube);
 
 		mb.clear();
-		mb.addPlane(new Vector3f(0, 0, 0), new Vector3f(1, 1, 0), new Vector2f(0, 0), new Vector2f(1, 1));
+		mb.addPlane(new Vector2f(0, 0), new Vector2f(1, 1), 0, new Vector2f(0, 0), new Vector2f(1, 1));
 		Model mod_plane = new Model(ModelUtil.createMesh(mb.bake(false, true)));
 		RenderUtil.registerModel("plane", mod_plane);
 
@@ -147,7 +147,7 @@ public class SceneBlob extends MainScene
 	}
 
 
-	public static Instance createTerrain(World world, Material mat)
+	public static Instance createTerrain(MazeWorld world, Material mat)
 	{
 		int[] map = world.getMap();
 		for(int y = 0; y < world.getSize(); ++y)
@@ -160,7 +160,7 @@ public class SceneBlob extends MainScene
 			Poma.OUT();
 		}
 
-		MeshData md = World.toMeshBoxData(world, 16, 16);
+		MeshData md = MazeWorld.toMeshBoxData(world, 16, 16);
 		Model model = new Model(ModelUtil.createMesh(md));
 		RenderUtil.registerModel("terrain", model);
 

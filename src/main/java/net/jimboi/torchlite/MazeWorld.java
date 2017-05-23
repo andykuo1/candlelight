@@ -12,13 +12,13 @@ import java.util.Random;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class World
+public class MazeWorld
 {
 	private Random rand;
 	private int[] map;
 	private int size;
 
-	public World(Random rand, int size)
+	public MazeWorld(Random rand, int size)
 	{
 		this.rand = rand;
 		this.size = size;
@@ -81,7 +81,7 @@ public class World
 		return this.size;
 	}
 
-	public static MeshData toMeshBoxData(World world, int textureWidth, int textureHeight)
+	public static MeshData toMeshBoxData(MazeWorld world, int textureWidth, int textureHeight)
 	{
 		MeshBuilder modelBuilder = new MeshBuilder();
 
@@ -119,7 +119,7 @@ public class World
 		return map[index] != 0;
 	}
 
-	public static MeshData toMeshData(World world, int texWidth, int texHeight)
+	public static MeshData toMeshData(MazeWorld world, int texWidth, int texHeight)
 	{
 		MeshBuilder modelBuilder = new MeshBuilder();
 
