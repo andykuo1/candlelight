@@ -3,13 +3,13 @@ package net.jimboi.dood;
 import net.jimboi.dood.base.SceneBase;
 import net.jimboi.dood.render.RenderBillboard;
 import net.jimboi.dood.render.RenderDiffuse;
-import net.jimboi.dood.system.Box2DSystem;
-import net.jimboi.dood.system.ControllerFirstPersonSystem;
-import net.jimboi.dood.system.ControllerSideScrollBox2DSystem;
-import net.jimboi.dood.system.ControllerSideScrollerSystem;
 import net.jimboi.dood.system.EntitySystem;
-import net.jimboi.dood.system.InstanceSystem;
-import net.jimboi.dood.system.MotionSystem;
+import net.jimboi.dood.system.SystemBox2D;
+import net.jimboi.dood.system.SystemControllerFirstPerson;
+import net.jimboi.dood.system.SystemControllerSideScroll;
+import net.jimboi.dood.system.SystemControllerSideScrollBox2D;
+import net.jimboi.dood.system.SystemInstance;
+import net.jimboi.dood.system.SystemMotion;
 import net.jimboi.mod.Light;
 import net.jimboi.mod.RenderUtil;
 import net.jimboi.mod.Renderer;
@@ -36,12 +36,12 @@ public class SceneDood extends SceneBase
 	private WorldGenTerrain terrain;
 	private WorldGenHills hills;
 
-	private InstanceSystem instanceSystem;
-	private ControllerFirstPersonSystem controllerFirstPersonSystem;
-	private ControllerSideScrollerSystem controllerSideScrollerSystem;
-	private ControllerSideScrollBox2DSystem controllerSideScrollBox2DSystem;
-	private MotionSystem motionSystem;
-	private Box2DSystem box2DSystem;
+	private SystemInstance instanceSystem;
+	private SystemControllerFirstPerson controllerFirstPersonSystem;
+	private SystemControllerSideScroll controllerSideScrollerSystem;
+	private SystemControllerSideScrollBox2D controllerSideScrollBox2DSystem;
+	private SystemMotion motionSystem;
+	private SystemBox2D box2DSystem;
 
 	private Entity entityPlayer;
 
@@ -57,12 +57,12 @@ public class SceneDood extends SceneBase
 		Renderer.lights.add(Light.createPointLight(0, 0, 0, 0xFFFFFF, 1F, 1F, 0));
 		Renderer.lights.add(Light.createDirectionLight(1, 1F, 1F, 0xFFFFFF, 0.1F, 0.06F));
 
-		this.instanceSystem = new InstanceSystem(this.entityManager, this.instanceManager);
-		this.controllerFirstPersonSystem = new ControllerFirstPersonSystem(this.entityManager, this);
-		this.controllerSideScrollerSystem = new ControllerSideScrollerSystem(this.entityManager, this);
-		this.motionSystem = new MotionSystem(this.entityManager, this);
-		this.box2DSystem = new Box2DSystem(this.entityManager, this);
-		this.controllerSideScrollBox2DSystem = new ControllerSideScrollBox2DSystem(this.entityManager, this);
+		this.instanceSystem = new SystemInstance(this.entityManager, this.instanceManager);
+		this.controllerFirstPersonSystem = new SystemControllerFirstPerson(this.entityManager, this);
+		this.controllerSideScrollerSystem = new SystemControllerSideScroll(this.entityManager, this);
+		this.motionSystem = new SystemMotion(this.entityManager, this);
+		this.box2DSystem = new SystemBox2D(this.entityManager, this);
+		this.controllerSideScrollBox2DSystem = new SystemControllerSideScrollBox2D(this.entityManager, this);
 
 		this.instanceSystem.start();
 		this.controllerFirstPersonSystem.start();

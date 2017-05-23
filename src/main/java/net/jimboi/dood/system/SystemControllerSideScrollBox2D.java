@@ -18,12 +18,12 @@ import java.util.Collection;
 /**
  * Created by Andy on 5/23/17.
  */
-public class ControllerSideScrollBox2DSystem extends EntitySystem implements Scene.OnSceneUpdateListener, InputEngine.OnInputUpdateListener
+public class SystemControllerSideScrollBox2D extends EntitySystem implements Scene.OnSceneUpdateListener, InputEngine.OnInputUpdateListener
 {
 	protected final Scene scene;
 	public float distanceFromTarget = 15;
 
-	public ControllerSideScrollBox2DSystem(EntityManager entityManager, Scene scene)
+	public SystemControllerSideScrollBox2D(EntityManager entityManager, Scene scene)
 	{
 		super(entityManager);
 

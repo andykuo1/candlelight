@@ -25,11 +25,11 @@ import java.util.Collection;
 /**
  * Created by Andy on 5/22/17.
  */
-public class ControllerFirstPersonSystem extends EntitySystem implements Scene.OnSceneUpdateListener, InputEngine.OnInputUpdateListener
+public class SystemControllerFirstPerson extends EntitySystem implements Scene.OnSceneUpdateListener, InputEngine.OnInputUpdateListener
 {
 	protected final Scene scene;
 
-	public ControllerFirstPersonSystem(EntityManager entityManager, Scene scene)
+	public SystemControllerFirstPerson(EntityManager entityManager, Scene scene)
 	{
 		super(entityManager);
 		this.scene = scene;

@@ -16,11 +16,11 @@ import java.util.Collection;
 /**
  * Created by Andy on 5/22/17.
  */
-public class MotionSystem extends EntitySystem implements Scene.OnSceneUpdateListener
+public class SystemMotion extends EntitySystem implements Scene.OnSceneUpdateListener
 {
 	protected final Scene scene;
 
-	public MotionSystem(EntityManager entityManager, Scene scene)
+	public SystemMotion(EntityManager entityManager, Scene scene)
 	{
 		super(entityManager);
 

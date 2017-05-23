@@ -17,12 +17,12 @@ import java.util.Collection;
 /**
  * Created by Andy on 5/22/17.
  */
-public class Box2DSystem extends EntitySystem implements Scene.OnSceneUpdateListener, EntityManager.OnEntityAddListener
+public class SystemBox2D extends EntitySystem implements Scene.OnSceneUpdateListener, EntityManager.OnEntityAddListener
 {
 	protected final Scene scene;
 	private final World world;
 
-	public Box2DSystem(EntityManager entityManager, Scene scene)
+	public SystemBox2D(EntityManager entityManager, Scene scene)
 	{
 		super(entityManager);
 

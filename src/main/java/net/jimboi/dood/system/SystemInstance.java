@@ -13,13 +13,13 @@ import java.util.List;
 /**
  * Created by Andy on 5/23/17.
  */
-public class InstanceSystem extends EntitySystem implements EntityManager.OnEntityAddListener
+public class SystemInstance extends EntitySystem implements EntityManager.OnEntityAddListener
 {
 	protected InstanceManager instanceManager;
 
 	private List<EntityInstanceHandler> entities = new ArrayList<>();
 
-	public InstanceSystem(EntityManager entityManager, InstanceManager instanceManager)
+	public SystemInstance(EntityManager entityManager, InstanceManager instanceManager)
 	{
 		super(entityManager);
 

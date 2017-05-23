@@ -17,12 +17,12 @@ import java.util.Collection;
 /**
  * Created by Andy on 5/22/17.
  */
-public class ControllerSideScrollerSystem extends EntitySystem implements Scene.OnSceneUpdateListener, InputEngine.OnInputUpdateListener
+public class SystemControllerSideScroll extends EntitySystem implements Scene.OnSceneUpdateListener, InputEngine.OnInputUpdateListener
 {
 	protected final Scene scene;
 	public float distanceFromTarget = 10;
 
-	public ControllerSideScrollerSystem(EntityManager entityManager, Scene scene)
+	public SystemControllerSideScroll(EntityManager entityManager, Scene scene)
 	{
 		super(entityManager);
 
