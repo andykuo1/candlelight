@@ -1,12 +1,10 @@
 package net.jimboi.dood;
 
 import net.jimboi.dood.component.ComponentBox2DBody;
-import net.jimboi.dood.component.ComponentControllerSideScroll;
 import net.jimboi.dood.component.ComponentInstanceable;
 import net.jimboi.dood.component.ComponentSpriteSheet;
 import net.jimboi.dood.component.ComponentTransform;
 import net.jimboi.mod.RenderUtil;
-import net.jimboi.mod.Renderer;
 import net.jimboi.mod.sprite.SpriteSheet;
 import net.jimboi.mod.sprite.TextureAtlas;
 import net.jimboi.mod.sprite.TiledTextureAtlas;
@@ -44,7 +42,6 @@ public class EntityPlayer
 		return entityManager.createEntity()
 				.addComponent(new ComponentTransform(transform))
 				.addComponent(new ComponentBox2DBody(bodyDef, fixDef))
-				.addComponent(new ComponentControllerSideScroll(Renderer.camera))
 				.addComponent(new ComponentSpriteSheet("font", spriteSheet))
 				.addComponent(new ComponentInstanceable("box", "font"));
 		//.addComponent(new ComponentLocalDirection(new LocalDirectionVectorController(transform, Renderer.camera.getTransform())))
