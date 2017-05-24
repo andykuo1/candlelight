@@ -1,6 +1,8 @@
 package net.jimboi.dood.component;
 
-import org.jbox2d.dynamics.Body;
+import net.jimboi.dood.Box2DHandler;
+import net.jimboi.dood.base.EntityBox2DHandler;
+
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.FixtureDef;
 import org.qsilver.entity.Component;
@@ -10,13 +12,10 @@ import org.qsilver.entity.Component;
  */
 public class ComponentBox2DBody extends Component
 {
-	public final BodyDef bodyDef;
-	public final FixtureDef fixtureDef;
-	public Body body;
+	public final Box2DHandler handler;
 
 	public ComponentBox2DBody(BodyDef bodyDef, FixtureDef fixtureDef)
 	{
-		this.bodyDef = bodyDef;
-		this.fixtureDef = fixtureDef;
+		this.handler = new EntityBox2DHandler(bodyDef, fixtureDef);
 	}
 }

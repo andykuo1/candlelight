@@ -17,6 +17,7 @@ public class SpriteSheet
 
 	public Sprite get()
 	{
+		if (this.index >= this.sprites.length) this.index = 0;
 		return this.sprites[this.index++];
 	}
 

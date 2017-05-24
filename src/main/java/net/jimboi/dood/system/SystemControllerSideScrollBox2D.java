@@ -53,8 +53,8 @@ public class SystemControllerSideScrollBox2D extends EntitySystem implements Sce
 			ComponentControllerSideScroll componentControllerSideScroll = this.entityManager.getComponentByEntity(ComponentControllerSideScroll.class, entity);
 			ComponentBox2DBody componentBox2DBody = this.entityManager.getComponentByEntity(ComponentBox2DBody.class, entity);
 
-			float mag = 11F;
-			componentBox2DBody.body.applyForceToCenter(new Vec2(componentControllerSideScroll.right * mag, componentControllerSideScroll.up * mag));
+			float mag = 14F;
+			componentBox2DBody.handler.getBody().applyForceToCenter(new Vec2(componentControllerSideScroll.right * mag, componentControllerSideScroll.up * mag));
 
 			Vector3fc pos = componentTransform.transform.position();
 			componentControllerSideScroll.camera.getTransform().setPosition(pos.x(), pos.y(), pos.z() + this.distanceFromTarget);

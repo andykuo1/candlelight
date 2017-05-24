@@ -2,16 +2,79 @@ package org.bstone.camera;
 
 import net.jimboi.mod.transform.Transform3;
 
+import org.bstone.input.InputEngine;
+import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 
 /**
  * Created by Andy on 5/19/17.
  */
-public interface Camera
+public abstract class Camera
 {
-	Transform3 getTransform();
+	private CameraController controller;
 
-	Matrix4fc orientation();
-	Matrix4fc projection();
-	Matrix4fc view();
+	protected final Matrix4f viewMatrix = new Matrix4f();
+	protected final Matrix4f rotationMatrix = new Matrix4f();
+	protected final Matrix4f projectionMatrix = new Matrix4f();
+
+	public Camera()
+	{
+	}
+
+	public void update(InputEngine inputEngine)
+	{
+		if (this.controller != null)
+		{
+			this.controller.onCameraUpdate(this, inputEngine);
+		}
+	}
+
+	public final CameraController setCameraController(CameraController controller)
+	{
+		if (this.controller == controller) return controller;
+		CameraController ret = this.controller;
+		if (ret != null)
+		{
+			ret.onCameraStop(this);
+		}
+		this.controller = controller;
+		this.controller.onCameraStart(this);
+		return ret;
+	}
+
+	public final CameraController getCameraController()
+	{
+		return this.controller;
+	}
+
+	public final boolean isCurrentCameraController(CameraController controller)
+	{
+		return this.controller == controller;
+	}
+
+	public abstract Transform3 getTransform();
+
+	public final Matrix4fc orientation()
+	{
+		this.updateRotationMatrix(this.rotationMatrix.identity());
+		return this.rotationMatrix;
+	}
+
+	public final Matrix4fc projection()
+	{
+		this.updateProjectionMatrix(this.projectionMatrix.identity());
+		return this.projectionMatrix;
+	}
+
+	public final Matrix4fc view()
+	{
+		this.updateViewMatrix(this.viewMatrix.identity());
+		return this.viewMatrix;
+	}
+
+	protected abstract void updateProjectionMatrix(Matrix4f mat);
+
+	protected abstract void updateRotationMatrix(Matrix4f mat);
+
+	protected abstract void updateViewMatrix(Matrix4f mat);
 }

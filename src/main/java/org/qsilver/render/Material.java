@@ -1,5 +1,7 @@
 package org.qsilver.render;
 
+import net.jimboi.mod.sprite.Sprite;
+
 import org.bstone.mogli.Texture;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -17,9 +19,9 @@ public class Material
 	public float shininess = 80F;
 
 	public Texture texture;
+	public Sprite sprite;
 	public Texture normalmap;
 	public Vector2f tiling = new Vector2f();
-	public Vector2f offset = new Vector2f();
 
 	public Material(String renderID)
 	{

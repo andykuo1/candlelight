@@ -4,6 +4,7 @@ import net.jimboi.mod.Renderer;
 
 import org.bstone.mogli.Program;
 import org.joml.Matrix4fc;
+import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 import org.qsilver.render.Instance;
 import org.qsilver.render.Material;
@@ -50,6 +51,19 @@ public class RenderBillboard extends Render
 		program.setUniform("u_projection", projectionMatrix);
 		program.setUniform("u_view", viewMatrix);
 		program.setUniform("u_model", modelMatrix);
+
+		if (material.sprite != null)
+		{
+			float rw = 1F / material.sprite.getTexture().width();
+			float rh = 1F / material.sprite.getTexture().height();
+			program.setUniform("u_tex_offset", new Vector2f(material.sprite.getU() * rw, material.sprite.getV() * rh));
+			program.setUniform("u_tex_scale", new Vector2f(material.sprite.getWidth() * rw, material.sprite.getHeight() * rh));
+		}
+		else
+		{
+			program.setUniform("u_tex_offset", new Vector2f(0, 0));
+			program.setUniform("u_tex_scale", new Vector2f(1, 1));
+		}
 
 		program.setUniform("u_billboard_type", this.type.ordinal());
 

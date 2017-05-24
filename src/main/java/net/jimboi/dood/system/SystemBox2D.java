@@ -17,7 +17,7 @@ import java.util.Collection;
 /**
  * Created by Andy on 5/22/17.
  */
-public class SystemBox2D extends EntitySystem implements Scene.OnSceneUpdateListener, EntityManager.OnEntityAddListener
+public class SystemBox2D extends EntitySystem implements Scene.OnSceneUpdateListener, EntityManager.OnEntityAddListener, EntityManager.OnEntityRemoveListener
 {
 	protected final Scene scene;
 	private final World world;
@@ -35,6 +35,7 @@ public class SystemBox2D extends EntitySystem implements Scene.OnSceneUpdateList
 	{
 		this.registerListenable(this.scene.onSceneUpdate);
 		this.registerListenable(this.entityManager.onEntityAdd);
+		this.registerListenable(this.entityManager.onEntityRemove);
 	}
 
 	@Override
@@ -54,8 +55,8 @@ public class SystemBox2D extends EntitySystem implements Scene.OnSceneUpdateList
 			ComponentTransform componentTransform = entity.getComponent(ComponentTransform.class);
 			ComponentBox2DBody componentBox2DBody = entity.getComponent(ComponentBox2DBody.class);
 			Transform3 transform = ((Transform3) componentTransform.transform);
-			Vec2 pos = componentBox2DBody.body.getPosition();
-			float rad = componentBox2DBody.body.getAngle();
+			Vec2 pos = componentBox2DBody.handler.getBody().getPosition();
+			float rad = componentBox2DBody.handler.getBody().getAngle();
 			transform.position.x = pos.x;
 			transform.position.y = pos.y;
 			transform.position.z = 0;
@@ -74,12 +75,21 @@ public class SystemBox2D extends EntitySystem implements Scene.OnSceneUpdateList
 				ComponentTransform componentTransform = entity.getComponent(ComponentTransform.class);
 				Transform transform = componentTransform.transform;
 				Vector3fc pos = transform.position();
-				componentBox2DBody.bodyDef.position.x = pos.x();
-				componentBox2DBody.bodyDef.position.y = pos.y();
-				componentBox2DBody.bodyDef.angle = transform.eulerRadians().z();
+				componentBox2DBody.handler.getBodyDef().position.x = pos.x();
+				componentBox2DBody.handler.getBodyDef().position.y = pos.y();
+				componentBox2DBody.handler.getBodyDef().angle = transform.eulerRadians().z();
 			}
-			componentBox2DBody.body = this.world.createBody(componentBox2DBody.bodyDef);
-			componentBox2DBody.body.createFixture(componentBox2DBody.fixtureDef);
+			componentBox2DBody.handler.create(this.world);
+		}
+	}
+
+	@Override
+	public void onEntityRemove(Entity entity)
+	{
+		if (entity.hasComponent(ComponentBox2DBody.class))
+		{
+			ComponentBox2DBody componentBox2DBody = entity.getComponent(ComponentBox2DBody.class);
+			componentBox2DBody.handler.destroy(this.world);
 		}
 	}
 

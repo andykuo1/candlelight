@@ -1,9 +1,13 @@
 package net.jimboi.dood;
 
+import net.jimboi.base.Main;
 import net.jimboi.dood.base.SceneBase;
+import net.jimboi.dood.component.ComponentBox2DBody;
+import net.jimboi.dood.component.ComponentTransform;
 import net.jimboi.dood.render.RenderBillboard;
 import net.jimboi.dood.render.RenderDiffuse;
 import net.jimboi.dood.system.EntitySystem;
+import net.jimboi.dood.system.SystemAnimatedTexture;
 import net.jimboi.dood.system.SystemBox2D;
 import net.jimboi.dood.system.SystemControllerFirstPerson;
 import net.jimboi.dood.system.SystemControllerSideScroll;
@@ -16,8 +20,10 @@ import net.jimboi.mod.Renderer;
 import net.jimboi.mod.meshbuilder.MeshBuilder;
 import net.jimboi.mod.meshbuilder.ModelUtil;
 import net.jimboi.mod.resource.ResourceLocation;
+import net.jimboi.mod.transform.Transform3;
 
 import org.bstone.camera.PerspectiveCamera;
+import org.bstone.input.InputEngine;
 import org.bstone.input.InputManager;
 import org.bstone.mogli.Texture;
 import org.joml.Vector2f;
@@ -31,23 +37,25 @@ import org.qsilver.render.Model;
 /**
  * Created by Andy on 5/21/17.
  */
-public class SceneDood extends SceneBase
+public class SceneDood extends SceneBase implements InputEngine.OnInputUpdateListener
 {
 	private WorldGenTerrain terrain;
 	private WorldGenHills hills;
 
-	private SystemInstance instanceSystem;
-	private SystemControllerFirstPerson controllerFirstPersonSystem;
-	private SystemControllerSideScroll controllerSideScrollerSystem;
-	private SystemControllerSideScrollBox2D controllerSideScrollBox2DSystem;
-	private SystemMotion motionSystem;
-	private SystemBox2D box2DSystem;
+	private SystemInstance systemInstance;
+	private SystemControllerFirstPerson systemControllerFirstPerson;
+	private SystemControllerSideScroll systemControllerSideScroll;
+	private SystemControllerSideScrollBox2D systemControllerSideScrollBox2D;
+	private SystemMotion systemMotion;
+	private SystemBox2D systemBox2D;
+	private SystemAnimatedTexture systemAnimatedTexture;
 
 	private Entity entityPlayer;
 
 	public SceneDood()
 	{
 		Renderer.camera = new PerspectiveCamera(640, 480);
+		Main.INPUTENGINE.onInputUpdate.addListener(this);
 	}
 
 	@Override
@@ -57,19 +65,21 @@ public class SceneDood extends SceneBase
 		Renderer.lights.add(Light.createPointLight(0, 0, 0, 0xFFFFFF, 1F, 1F, 0));
 		Renderer.lights.add(Light.createDirectionLight(1, 1F, 1F, 0xFFFFFF, 0.1F, 0.06F));
 
-		this.instanceSystem = new SystemInstance(this.entityManager, this.instanceManager);
-		this.controllerFirstPersonSystem = new SystemControllerFirstPerson(this.entityManager, this);
-		this.controllerSideScrollerSystem = new SystemControllerSideScroll(this.entityManager, this);
-		this.motionSystem = new SystemMotion(this.entityManager, this);
-		this.box2DSystem = new SystemBox2D(this.entityManager, this);
-		this.controllerSideScrollBox2DSystem = new SystemControllerSideScrollBox2D(this.entityManager, this);
+		this.systemInstance = new SystemInstance(this.entityManager, this.instanceManager);
+		this.systemControllerFirstPerson = new SystemControllerFirstPerson(this.entityManager, this);
+		this.systemControllerSideScroll = new SystemControllerSideScroll(this.entityManager, this);
+		this.systemMotion = new SystemMotion(this.entityManager, this);
+		this.systemBox2D = new SystemBox2D(this.entityManager, this);
+		this.systemControllerSideScrollBox2D = new SystemControllerSideScrollBox2D(this.entityManager, this);
+		this.systemAnimatedTexture = new SystemAnimatedTexture(this.entityManager, this);
 
-		this.instanceSystem.start();
-		this.controllerFirstPersonSystem.start();
-		this.controllerSideScrollerSystem.start();
-		this.motionSystem.start();
-		this.box2DSystem.start();
-		this.controllerSideScrollBox2DSystem.start();
+		this.systemInstance.start();
+		//this.systemControllerFirstPerson.start();
+		//this.systemControllerSideScroll.start();
+		this.systemMotion.start();
+		this.systemBox2D.start();
+		//this.systemControllerSideScrollBox2D.start();
+		this.systemAnimatedTexture.start();
 	}
 
 	@Override
@@ -100,10 +110,14 @@ public class SceneDood extends SceneBase
 
 		//Textures
 		Texture tex_bird = RenderUtil.loadTexture(new ResourceLocation("dood:bird.png"));
+		Texture tex_font = RenderUtil.loadTexture(new ResourceLocation("dood:font_basic.png"));
 
 		//Materials
 		Material mat_bird = new Material("diffuse").setTexture(tex_bird);
 		RenderUtil.registerMaterial("bird", mat_bird);
+
+		Material mat_font = new Material("diffuse").setTexture(tex_font);
+		RenderUtil.registerMaterial("font", mat_font);
 
 		//Models
 		Model mod_ball = new Model(RenderUtil.loadMesh(new ResourceLocation("dood:sphere.obj")));
@@ -141,6 +155,8 @@ public class SceneDood extends SceneBase
 		EntityBox.create(this.entityManager);
 		EntityBall.create(this.entityManager);
 		EntityHills.create(this.entityManager, this.hills);
+
+		Renderer.camera.setCameraController(new CameraControllerBox2D((Transform3) this.entityPlayer.getComponent(ComponentTransform.class).transform, this.entityPlayer.getComponent(ComponentBox2DBody.class).handler));
 	}
 
 	@Override
@@ -154,14 +170,18 @@ public class SceneDood extends SceneBase
 	}
 
 	@Override
+	public void onInputUpdate(InputEngine inputEngine)
+	{
+		Renderer.camera.update(inputEngine);
+	}
+
+	@Override
 	protected void onSceneDestroy()
 	{
-		this.instanceSystem.stop();
-		this.controllerFirstPersonSystem.stop();
-		this.controllerSideScrollerSystem.stop();
-		this.motionSystem.stop();
-		this.box2DSystem.stop();
-		this.controllerSideScrollBox2DSystem.stop();
+		this.systemInstance.stop();
+		this.systemMotion.stop();
+		this.systemBox2D.stop();
+		this.systemAnimatedTexture.stop();
 		EntitySystem.stopAll();
 	}
 }

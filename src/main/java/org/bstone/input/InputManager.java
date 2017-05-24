@@ -159,4 +159,9 @@ public class InputManager
 		}
 		inputMapping.put(id, inputs);
 	}
+
+	public static InputEngine getInputEngine()
+	{
+		return INPUT_ENGINE;
+	}
 }

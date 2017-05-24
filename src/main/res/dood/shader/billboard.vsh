@@ -12,6 +12,9 @@ uniform mat4 u_model;
 uniform mat4 u_view;
 uniform mat4 u_projection;
 
+uniform vec2 u_tex_offset;
+uniform vec2 u_tex_scale = vec2(1, 1);
+
 #define CYLINDRICAL 0
 #define SPHERICAL 1
 
@@ -42,5 +45,5 @@ void main()
 
     vec4 pos = mv * vec4(a_position, 1);
     gl_Position = p * pos;
-    v_texcoord = a_texcoord;
+    v_texcoord = vec2(a_texcoord.x * u_tex_scale.x, a_texcoord.y * u_tex_scale.y) + u_tex_offset;
 }

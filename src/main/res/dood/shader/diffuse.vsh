@@ -15,6 +15,9 @@ uniform mat4 u_model;
 uniform mat4 u_view;
 uniform mat4 u_projection;
 
+uniform vec2 u_tex_offset;
+uniform vec2 u_tex_scale = vec2(1, 1);
+
 void main()
 {
     mat4 mvp = u_model_view_projection;
@@ -25,6 +28,6 @@ void main()
 
     gl_Position = mvp * vec4(a_position, 1.0);
     v_position = a_position;
-    v_texcoord = a_texcoord;
+    v_texcoord = vec2(a_texcoord.x * u_tex_scale.x, a_texcoord.y * u_tex_scale.y) + u_tex_offset;
     v_normal = a_normal;
 }
