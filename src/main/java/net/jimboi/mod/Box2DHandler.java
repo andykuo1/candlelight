@@ -1,4 +1,4 @@
-package net.jimboi.dood;
+package net.jimboi.mod;
 
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;

@@ -1,6 +1,6 @@
 package net.jimboi.dood.base;
 
-import net.jimboi.dood.Box2DHandler;
+import net.jimboi.mod.Box2DHandler;
 
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;

@@ -1,5 +1,6 @@
-package net.jimboi.dood;
+package net.jimboi.mod.cameracontroller;
 
+import net.jimboi.mod.Box2DHandler;
 import net.jimboi.mod.transform.Transform3;
 
 import org.jbox2d.common.Vec2;

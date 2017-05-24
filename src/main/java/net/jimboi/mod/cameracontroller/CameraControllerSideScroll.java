@@ -1,4 +1,4 @@
-package net.jimboi.dood;
+package net.jimboi.mod.cameracontroller;
 
 import net.jimboi.base.Main;
 import net.jimboi.mod.transform.Transform3;

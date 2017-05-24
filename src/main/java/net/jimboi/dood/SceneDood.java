@@ -9,14 +9,12 @@ import net.jimboi.dood.render.RenderDiffuse;
 import net.jimboi.dood.system.EntitySystem;
 import net.jimboi.dood.system.SystemAnimatedTexture;
 import net.jimboi.dood.system.SystemBox2D;
-import net.jimboi.dood.system.SystemControllerFirstPerson;
-import net.jimboi.dood.system.SystemControllerSideScroll;
-import net.jimboi.dood.system.SystemControllerSideScrollBox2D;
 import net.jimboi.dood.system.SystemInstance;
 import net.jimboi.dood.system.SystemMotion;
 import net.jimboi.mod.Light;
 import net.jimboi.mod.RenderUtil;
 import net.jimboi.mod.Renderer;
+import net.jimboi.mod.cameracontroller.CameraControllerBox2D;
 import net.jimboi.mod.meshbuilder.MeshBuilder;
 import net.jimboi.mod.meshbuilder.ModelUtil;
 import net.jimboi.mod.resource.ResourceLocation;
@@ -43,9 +41,6 @@ public class SceneDood extends SceneBase implements InputEngine.OnInputUpdateLis
 	private WorldGenHills hills;
 
 	private SystemInstance systemInstance;
-	private SystemControllerFirstPerson systemControllerFirstPerson;
-	private SystemControllerSideScroll systemControllerSideScroll;
-	private SystemControllerSideScrollBox2D systemControllerSideScrollBox2D;
 	private SystemMotion systemMotion;
 	private SystemBox2D systemBox2D;
 	private SystemAnimatedTexture systemAnimatedTexture;
@@ -66,11 +61,8 @@ public class SceneDood extends SceneBase implements InputEngine.OnInputUpdateLis
 		Renderer.lights.add(Light.createDirectionLight(1, 1F, 1F, 0xFFFFFF, 0.1F, 0.06F));
 
 		this.systemInstance = new SystemInstance(this.entityManager, this.instanceManager);
-		this.systemControllerFirstPerson = new SystemControllerFirstPerson(this.entityManager, this);
-		this.systemControllerSideScroll = new SystemControllerSideScroll(this.entityManager, this);
 		this.systemMotion = new SystemMotion(this.entityManager, this);
 		this.systemBox2D = new SystemBox2D(this.entityManager, this);
-		this.systemControllerSideScrollBox2D = new SystemControllerSideScrollBox2D(this.entityManager, this);
 		this.systemAnimatedTexture = new SystemAnimatedTexture(this.entityManager, this);
 
 		this.systemInstance.start();

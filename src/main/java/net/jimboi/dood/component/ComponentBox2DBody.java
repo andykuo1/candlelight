@@ -1,7 +1,7 @@
 package net.jimboi.dood.component;
 
-import net.jimboi.dood.Box2DHandler;
 import net.jimboi.dood.base.EntityBox2DHandler;
+import net.jimboi.mod.Box2DHandler;
 
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.FixtureDef;
