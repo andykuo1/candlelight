@@ -24,8 +24,9 @@ public class RenderManager
 		this.renderMapping.remove(id);
 	}
 
-	public Render get(String id)
+	@SuppressWarnings("unchecked")
+	public <T extends Render> T get(String id)
 	{
-		return this.renderMapping.get(id);
+		return (T) this.renderMapping.get(id);
 	}
 }

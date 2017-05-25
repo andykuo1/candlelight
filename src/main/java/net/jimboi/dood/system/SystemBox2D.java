@@ -2,23 +2,30 @@ package net.jimboi.dood.system;
 
 import net.jimboi.dood.component.ComponentBox2DBody;
 import net.jimboi.dood.component.ComponentTransform;
+import net.jimboi.mod.Box2DHandler;
 import net.jimboi.mod.transform.Transform;
 import net.jimboi.mod.transform.Transform3;
 
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.World;
 import org.joml.Vector3fc;
+import org.qsilver.entity.Component;
 import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
 import org.qsilver.scene.Scene;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Andy on 5/22/17.
  */
 public class SystemBox2D extends EntitySystem implements Scene.OnSceneUpdateListener, EntityManager.OnEntityAddListener, EntityManager.OnEntityRemoveListener
 {
+	private Set<Box2DHandler> handlers = new HashSet<>();
+
 	protected final Scene scene;
 	private final World world;
 
@@ -55,8 +62,8 @@ public class SystemBox2D extends EntitySystem implements Scene.OnSceneUpdateList
 			ComponentTransform componentTransform = entity.getComponent(ComponentTransform.class);
 			ComponentBox2DBody componentBox2DBody = entity.getComponent(ComponentBox2DBody.class);
 			Transform3 transform = ((Transform3) componentTransform.transform);
-			Vec2 pos = componentBox2DBody.handler.getBody().getPosition();
-			float rad = componentBox2DBody.handler.getBody().getAngle();
+			Vec2 pos = componentBox2DBody.getBody().getPosition();
+			float rad = componentBox2DBody.getBody().getAngle();
 			transform.position.x = pos.x;
 			transform.position.y = pos.y;
 			transform.position.z = 0;
@@ -75,11 +82,12 @@ public class SystemBox2D extends EntitySystem implements Scene.OnSceneUpdateList
 				ComponentTransform componentTransform = entity.getComponent(ComponentTransform.class);
 				Transform transform = componentTransform.transform;
 				Vector3fc pos = transform.position();
-				componentBox2DBody.handler.getBodyDef().position.x = pos.x();
-				componentBox2DBody.handler.getBodyDef().position.y = pos.y();
-				componentBox2DBody.handler.getBodyDef().angle = transform.eulerRadians().z();
+				componentBox2DBody.getBodyDef().position.x = pos.x();
+				componentBox2DBody.getBodyDef().position.y = pos.y();
+				componentBox2DBody.getBodyDef().angle = transform.eulerRadians().z();
 			}
-			componentBox2DBody.handler.create(this.world);
+			componentBox2DBody.create(this.world);
+			this.handlers.add(componentBox2DBody);
 		}
 	}
 
@@ -89,8 +97,26 @@ public class SystemBox2D extends EntitySystem implements Scene.OnSceneUpdateList
 		if (entity.hasComponent(ComponentBox2DBody.class))
 		{
 			ComponentBox2DBody componentBox2DBody = entity.getComponent(ComponentBox2DBody.class);
-			componentBox2DBody.handler.destroy(this.world);
+			componentBox2DBody.destroy(this.world);
+			this.handlers.remove(componentBox2DBody);
 		}
+	}
+
+	public Set<Box2DHandler> getHandlers()
+	{
+		return this.handlers;
+	}
+
+	public Entity getEntityFromBody(Body body)
+	{
+		for (Box2DHandler handler : this.handlers)
+		{
+			if (handler.getBody() == body)
+			{
+				return this.entityManager.getEntityByComponent((Component) handler);
+			}
+		}
+		return null;
 	}
 
 	public World getWorld()

@@ -3,6 +3,8 @@ package org.bstone.mogli;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL21;
 
+import java.nio.ByteBuffer;
+
 /**
  * Created by Andy on 4/6/17.
  */
@@ -36,10 +38,35 @@ public final class Texture implements AutoCloseable
 
 	private final Bitmap bitmap;
 
-	private final float width;
-	private final float height;
+	private final int width;
+	private final int height;
 
 	private int handle;
+
+	public Texture(int width, int height, int minMagFilter, int wrapMode, int pixelFormat)
+	{
+		this.bitmap = null;
+
+		this.width = width;
+		this.height = height;
+
+		this.handle = GL11.glGenTextures();
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.handle);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, minMagFilter);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, minMagFilter);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, wrapMode);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, wrapMode);
+		GL11.glTexImage2D(GL11.GL_TEXTURE_2D,
+				0,
+				GL11.GL_DEPTH_COMPONENT,
+				this.width,
+				this.height,
+				0,
+				pixelFormat,
+				GL11.GL_FLOAT,
+				(ByteBuffer) null);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+	}
 
 	public Texture(Bitmap bitmap, int minMagFilter, int wrapMode)
 	{

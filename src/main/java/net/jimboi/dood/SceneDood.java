@@ -14,18 +14,22 @@ import net.jimboi.dood.system.SystemMotion;
 import net.jimboi.mod.Light;
 import net.jimboi.mod.RenderUtil;
 import net.jimboi.mod.Renderer;
-import net.jimboi.mod.cameracontroller.CameraControllerBox2D;
 import net.jimboi.mod.meshbuilder.MeshBuilder;
 import net.jimboi.mod.meshbuilder.ModelUtil;
 import net.jimboi.mod.resource.ResourceLocation;
-import net.jimboi.mod.transform.Transform3;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputManager;
 import org.bstone.mogli.Texture;
+import org.bstone.util.MathUtil;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.joints.Joint;
+import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 import org.qsilver.entity.Entity;
@@ -53,12 +57,14 @@ public class SceneDood extends SceneBase implements InputEngine.OnInputUpdateLis
 		Main.INPUTENGINE.onInputUpdate.addListener(this);
 	}
 
+	private Light directionLight;
+
 	@Override
 	protected void onSceneCreate()
 	{
 		//Add Entities Here
-		Renderer.lights.add(Light.createPointLight(0, 0, 0, 0xFFFFFF, 1F, 1F, 0));
-		Renderer.lights.add(Light.createDirectionLight(1, 1F, 1F, 0xFFFFFF, 0.1F, 0.06F));
+		Renderer.lights.add(Light.createPointLight(0, 0, 0, 0xFFFFFF, 1F, 0.1F, 0));
+		Renderer.lights.add(this.directionLight = Light.createDirectionLight(1, 1F, 1F, 0xFFFFFF, 0.1F, 0.06F));
 
 		this.systemInstance = new SystemInstance(this.entityManager, this.instanceManager);
 		this.systemMotion = new SystemMotion(this.entityManager, this);
@@ -66,11 +72,8 @@ public class SceneDood extends SceneBase implements InputEngine.OnInputUpdateLis
 		this.systemAnimatedTexture = new SystemAnimatedTexture(this.entityManager, this);
 
 		this.systemInstance.start();
-		//this.systemControllerFirstPerson.start();
-		//this.systemControllerSideScroll.start();
 		this.systemMotion.start();
 		this.systemBox2D.start();
-		//this.systemControllerSideScrollBox2D.start();
 		this.systemAnimatedTexture.start();
 	}
 
@@ -90,6 +93,7 @@ public class SceneDood extends SceneBase implements InputEngine.OnInputUpdateLis
 		InputManager.registerKey("right", GLFW.GLFW_KEY_D, GLFW.GLFW_KEY_RIGHT);
 		InputManager.registerKey("up", GLFW.GLFW_KEY_E);
 		InputManager.registerKey("down", GLFW.GLFW_KEY_SPACE);
+		InputManager.registerKey("action", GLFW.GLFW_KEY_F);
 
 		//Register Renders
 		this.renderManager.register("diffuse", new RenderDiffuse(RenderUtil.loadShaderProgram(
@@ -145,10 +149,24 @@ public class SceneDood extends SceneBase implements InputEngine.OnInputUpdateLis
 		this.entityPlayer = EntityPlayer.create(this.entityManager);
 		EntityBox.create(this.entityManager);
 		EntityBox.create(this.entityManager);
+		EntityBox.create(this.entityManager);
+		EntityBox.create(this.entityManager);
+		EntityBox.create(this.entityManager);
+		EntityBox.create(this.entityManager);
+		EntityBox.create(this.entityManager);
+		EntityBox.create(this.entityManager);
+		EntityBox.create(this.entityManager);
+		EntityBox.create(this.entityManager);
+		EntityBall.create(this.entityManager);
+		EntityBall.create(this.entityManager);
+		EntityBall.create(this.entityManager);
+		EntityBall.create(this.entityManager);
+		EntityBall.create(this.entityManager);
+		EntityBall.create(this.entityManager);
 		EntityBall.create(this.entityManager);
 		EntityHills.create(this.entityManager, this.hills);
 
-		Renderer.camera.setCameraController(new CameraControllerBox2D((Transform3) this.entityPlayer.getComponent(ComponentTransform.class).transform, this.entityPlayer.getComponent(ComponentBox2DBody.class).handler));
+		Renderer.camera.setCameraController(new CameraControllerDood(this.entityPlayer.getComponent(ComponentTransform.class), this.entityPlayer.getComponent(ComponentBox2DBody.class)));
 	}
 
 	@Override
@@ -161,10 +179,80 @@ public class SceneDood extends SceneBase implements InputEngine.OnInputUpdateLis
 		super.onSceneUpdate(delta);
 	}
 
+	private Entity grabbedEntity;
+	private Joint grabbedJoint;
+
 	@Override
 	public void onInputUpdate(InputEngine inputEngine)
 	{
 		Renderer.camera.update(inputEngine);
+
+		if (this.entityPlayer == null) return;
+
+		Body playerBody = this.entityPlayer.getComponent(ComponentBox2DBody.class).getBody();
+
+		if (InputManager.isInputDown("action"))
+		{
+			if (grabbedEntity == null)
+			{
+				Vector3fc from = this.entityPlayer.getComponent(ComponentTransform.class).transform.position();
+				float dist = 0;
+				Body nearest = null;
+				Body body = this.systemBox2D.getWorld().getBodyList();
+				while (body != null)
+				{
+					if (body != playerBody && body.getType() == BodyType.DYNAMIC)
+					{
+						float f = from.distance(body.getPosition().x, body.getPosition().y, 0);
+						if (nearest == null)
+						{
+							nearest = body;
+							dist = f;
+						}
+						else
+						{
+							if (f < dist)
+							{
+								nearest = body;
+								dist = f;
+							}
+						}
+					}
+					body = body.getNext();
+				}
+
+				if (nearest != null && dist < 2F)
+				{
+					this.grabbedEntity = this.systemBox2D.getEntityFromBody(nearest);
+					if (this.grabbedEntity != null)
+					{
+						RevoluteJointDef def = new RevoluteJointDef();
+						def.bodyA = playerBody;
+						def.bodyB = nearest;
+						def.collideConnected = false;
+						float dir = MathUtil.sign(playerBody.getPosition().x - nearest.getPosition().x);
+						def.localAnchorA.set(-dir, 0);
+						def.localAnchorB.set(0, 0);
+						this.grabbedJoint = this.systemBox2D.getWorld().createJoint(def);
+					}
+				}
+			}
+		}
+		else
+		{
+			if (this.grabbedEntity != null)
+			{
+				this.systemBox2D.getWorld().destroyJoint(this.grabbedJoint);
+				this.grabbedJoint = null;
+				this.grabbedEntity = null;
+			}
+		}
+	}
+
+	@Override
+	protected void onSceneRender()
+	{
+		super.onSceneRender();
 	}
 
 	@Override

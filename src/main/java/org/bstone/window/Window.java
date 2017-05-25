@@ -32,7 +32,7 @@ public class Window
 	{
 		this.width = width;
 		this.height = height;
-		this.dirty = false;//TODO: this needs to be true
+		this.dirty = true;//TODO: this needs to be true
 
 		Poma.OUT("LWJGL " + Version.getVersion() + "!");
 
@@ -117,8 +117,8 @@ public class Window
 	{
 		if (this.dirty)
 		{
-			//TODO: this needs to be fixed . . .
-			GL11.glViewport(0, 0, this.width, this.height);
+			//TODO: Why is this x2?
+			GL11.glViewport(0, 0, this.width * 2, this.height * 2);
 			this.dirty = false;
 		}
 

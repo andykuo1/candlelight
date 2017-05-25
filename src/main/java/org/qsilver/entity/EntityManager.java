@@ -99,6 +99,18 @@ public class EntityManager
 	}
 
 	@SuppressWarnings("unchecked")
+	public Entity getEntityByComponent(Component component)
+	{
+		Class componentType = component.getClass();
+		Map<Entity, Component> map = this.getComponentMap(componentType);
+		for (Map.Entry<Entity, Component> entry : map.entrySet())
+		{
+			if (entry.getValue() == component) return entry.getKey();
+		}
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
 	public Collection<Entity> getAllEntitiesByComponent(Collection<Entity> dst, Class... componentTypes)
 	{
 		for (Class componentType : componentTypes)

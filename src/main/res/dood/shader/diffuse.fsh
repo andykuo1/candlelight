@@ -86,5 +86,6 @@ void main()
     }
 
     vec3 gamma = vec3(1.0 / 2.2);
+
     frag_color = vec4(pow(linearColor, gamma), surfaceColor.a);
 }

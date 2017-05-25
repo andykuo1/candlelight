@@ -10,7 +10,7 @@ import net.jimboi.mod.sprite.TextureAtlas;
 import net.jimboi.mod.sprite.TiledTextureAtlas;
 import net.jimboi.mod.transform.Transform3;
 
-import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
@@ -33,9 +33,14 @@ public class EntityPlayer
 		bodyDef.position.x = transform.position.x;
 		bodyDef.position.y = transform.position.y;
 		bodyDef.type = BodyType.DYNAMIC;
+		bodyDef.fixedRotation = true;
 		FixtureDef fixDef = new FixtureDef();
+		CircleShape shape = new CircleShape();
+		shape.setRadius(0.4F);
+		/*
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(0.5F, 0.5F);
+		*/
 		fixDef.shape = shape;
 		fixDef.density = 1.0F;
 		fixDef.friction = 0.3F;
@@ -44,10 +49,5 @@ public class EntityPlayer
 				.addComponent(new ComponentBox2DBody(bodyDef, fixDef))
 				.addComponent(new ComponentSpriteSheet("font", spriteSheet))
 				.addComponent(new ComponentInstanceable("box", "font"));
-		//.addComponent(new ComponentLocalDirection(new LocalDirectionVectorController(transform, Renderer.camera.getTransform())))
-		//.addComponent(new ComponentMotion())
-		//.addComponent(new ComponentControllerFirstPerson(Renderer.camera));
-		//.addComponent(new ComponentControllerSideScroll(Renderer.camera));
-		//.addComponent(new ComponentInstanceable("player", "bird"));
 	}
 }
