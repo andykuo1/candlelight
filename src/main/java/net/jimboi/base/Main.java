@@ -1,6 +1,7 @@
 package net.jimboi.base;
 
 import net.jimboi.dood.SceneDood;
+import net.jimboi.mod.renderer.RenderEngine;
 
 import org.bstone.input.InputEngine;
 import org.bstone.tick.TickEngine;
@@ -18,6 +19,7 @@ public class Main
 	public static TickEngine TICKENGINE;
 	public static Window WINDOW;
 	public static InputEngine INPUTENGINE;
+	public static RenderEngine RENDERENGINE;
 
 	public static SceneManager SCENEMANAGER;
 
@@ -25,9 +27,12 @@ public class Main
 	{
 		SCENEMANAGER = new SceneManager();
 
+		RENDERENGINE = new RenderEngine();
+
 		TICKENGINE = new TickEngine();
 		TICKENGINE.onFixedUpdate.addListener(SCENEMANAGER::update);
 		TICKENGINE.onUpdate.addListener(SCENEMANAGER::render);
+		TICKENGINE.onUpdate.addListener(RENDERENGINE::update);
 
 		WINDOW = new Window("Application", 640, 480);
 		INPUTENGINE = WINDOW.getInputEngine();

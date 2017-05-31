@@ -33,15 +33,6 @@ public class IntMultiMap extends IntMap
 	}
 
 	@Override
-	public void fill(int value)
-	{
-		for(IntMap map : this.maps.values())
-		{
-			map.fill(value);
-		}
-	}
-
-	@Override
 	public void set(int x, int y, int value)
 	{
 		Poma.ASSERT(this.isValid(x, y));

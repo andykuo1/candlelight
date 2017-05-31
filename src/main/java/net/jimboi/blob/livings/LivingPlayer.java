@@ -1,6 +1,6 @@
 package net.jimboi.blob.livings;
 
-import net.jimboi.mod.Renderer;
+import net.jimboi.blob.Renderer;
 
 import org.qsilver.render.Instance;
 import org.qsilver.render.InstanceManager;

@@ -4,46 +4,31 @@ import net.jimboi.base.Main;
 import net.jimboi.dood.base.SceneBase;
 import net.jimboi.dood.component.ComponentBox2DBody;
 import net.jimboi.dood.component.ComponentTransform;
-import net.jimboi.dood.render.RenderBillboard;
-import net.jimboi.dood.render.RenderDiffuse;
 import net.jimboi.dood.system.EntitySystem;
 import net.jimboi.dood.system.SystemAnimatedTexture;
 import net.jimboi.dood.system.SystemBox2D;
 import net.jimboi.dood.system.SystemInstance;
 import net.jimboi.dood.system.SystemMotion;
 import net.jimboi.mod.Light;
-import net.jimboi.mod.RenderUtil;
-import net.jimboi.mod.Renderer;
-import net.jimboi.mod.meshbuilder.MeshBuilder;
-import net.jimboi.mod.meshbuilder.ModelUtil;
-import net.jimboi.mod.resource.ResourceLocation;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputManager;
-import org.bstone.mogli.Texture;
 import org.bstone.util.MathUtil;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
-import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.joml.Vector4f;
-import org.lwjgl.glfw.GLFW;
 import org.qsilver.entity.Entity;
-import org.qsilver.render.Material;
-import org.qsilver.render.Model;
 
 /**
  * Created by Andy on 5/21/17.
  */
 public class SceneDood extends SceneBase implements InputEngine.OnInputUpdateListener
 {
-	private WorldGenTerrain terrain;
-	private WorldGenHills hills;
-
 	private SystemInstance systemInstance;
 	private SystemMotion systemMotion;
 	private SystemBox2D systemBox2D;
@@ -53,7 +38,7 @@ public class SceneDood extends SceneBase implements InputEngine.OnInputUpdateLis
 
 	public SceneDood()
 	{
-		Renderer.camera = new PerspectiveCamera(640, 480);
+		ResourcesDood.INSTANCE.camera = new PerspectiveCamera(640, 480);
 		Main.INPUTENGINE.onInputUpdate.addListener(this);
 	}
 
@@ -63,8 +48,8 @@ public class SceneDood extends SceneBase implements InputEngine.OnInputUpdateLis
 	protected void onSceneCreate()
 	{
 		//Add Entities Here
-		Renderer.lights.add(Light.createPointLight(0, 0, 0, 0xFFFFFF, 1F, 0.1F, 0));
-		Renderer.lights.add(this.directionLight = Light.createDirectionLight(1, 1F, 1F, 0xFFFFFF, 0.1F, 0.06F));
+		ResourcesDood.INSTANCE.lights.add(Light.createPointLight(0, 0, 0, 0xFFFFFF, 1F, 0.1F, 0));
+		ResourcesDood.INSTANCE.lights.add(this.directionLight = Light.createDirectionLight(1, 1F, 1F, 0xFFFFFF, 0.1F, 0.06F));
 
 		this.systemInstance = new SystemInstance(this.entityManager, this.instanceManager);
 		this.systemMotion = new SystemMotion(this.entityManager, this);
@@ -80,67 +65,7 @@ public class SceneDood extends SceneBase implements InputEngine.OnInputUpdateLis
 	@Override
 	protected void onSceneLoad()
 	{
-		//Register inputs here
-		InputManager.registerMousePosX("mousex");
-		InputManager.registerMousePosY("mousey");
-
-		InputManager.registerMouse("mouseleft", GLFW.GLFW_MOUSE_BUTTON_LEFT);
-		InputManager.registerMouse("mouseright", GLFW.GLFW_MOUSE_BUTTON_LEFT);
-
-		InputManager.registerKey("forward", GLFW.GLFW_KEY_W, GLFW.GLFW_KEY_UP);
-		InputManager.registerKey("backward", GLFW.GLFW_KEY_S, GLFW.GLFW_KEY_DOWN);
-		InputManager.registerKey("left", GLFW.GLFW_KEY_A, GLFW.GLFW_KEY_LEFT);
-		InputManager.registerKey("right", GLFW.GLFW_KEY_D, GLFW.GLFW_KEY_RIGHT);
-		InputManager.registerKey("up", GLFW.GLFW_KEY_E);
-		InputManager.registerKey("down", GLFW.GLFW_KEY_SPACE);
-		InputManager.registerKey("action", GLFW.GLFW_KEY_F);
-
-		//Register Renders
-		this.renderManager.register("diffuse", new RenderDiffuse(RenderUtil.loadShaderProgram(
-				new ResourceLocation("dood:diffuse.vsh"),
-				new ResourceLocation("dood:diffuse.fsh"))));
-		this.renderManager.register("billboard", new RenderBillboard(RenderUtil.loadShaderProgram(
-				new ResourceLocation("dood:billboard.vsh"),
-				new ResourceLocation("dood:billboard.fsh")),
-				RenderBillboard.Type.CYLINDRICAL));
-
-		//Textures
-		Texture tex_bird = RenderUtil.loadTexture(new ResourceLocation("dood:bird.png"));
-		Texture tex_font = RenderUtil.loadTexture(new ResourceLocation("dood:font_basic.png"));
-
-		//Materials
-		Material mat_bird = new Material("diffuse").setTexture(tex_bird);
-		RenderUtil.registerMaterial("bird", mat_bird);
-
-		Material mat_font = new Material("diffuse").setTexture(tex_font);
-		RenderUtil.registerMaterial("font", mat_font);
-
-		//Models
-		Model mod_ball = new Model(RenderUtil.loadMesh(new ResourceLocation("dood:sphere.obj")));
-		RenderUtil.registerModel("ball", mod_ball);
-
-		MeshBuilder mb = new MeshBuilder();
-		mb.addPlane(new Vector2f(0, 0), new Vector2f(1, 1), 0, new Vector2f(0, 0), new Vector2f(1, 1));
-		Model mod_plane = new Model(ModelUtil.createMesh(mb.bake(false, true)));
-		RenderUtil.registerModel("plane", mod_plane);
-
-		mb.clear();
-		mb.addBox(new Vector3f(0, 0, 0), new Vector3f(1, 1, 1), new Vector2f(0, 0), new Vector2f(1, 1), true, true, true, true, true, true);
-		Model mod_box = new Model(ModelUtil.createMesh(mb.bake(false, true)));
-		RenderUtil.registerModel("box", mod_box);
-
-		this.hills = new WorldGenHills();
-		hills.generate();
-		Model mod_hills = new Model(hills.createMeshFromVertices());
-		RenderUtil.registerModel("hills", mod_hills);
-
-		this.terrain = new WorldGenTerrain();
-		terrain.generate();
-		Model mod_dungeon = new Model(terrain.createMeshFromVertices());
-		RenderUtil.registerModel("dungeon", mod_dungeon);
-
-		//this.instanceManager.add(new Instance(mod_hills, mat_bird));
-		//this.instanceManager.add(new Instance(mod_dungeon, mat_bird));
+		ResourcesDood.INSTANCE.load(this.renderManager);
 	}
 
 	@Override
@@ -164,17 +89,17 @@ public class SceneDood extends SceneBase implements InputEngine.OnInputUpdateLis
 		EntityBall.create(this.entityManager);
 		EntityBall.create(this.entityManager);
 		EntityBall.create(this.entityManager);
-		EntityHills.create(this.entityManager, this.hills);
+		EntityHills.create(this.entityManager, ResourcesDood.INSTANCE.hills);
 
-		Renderer.camera.setCameraController(new CameraControllerDood(this.entityPlayer.getComponent(ComponentTransform.class), this.entityPlayer.getComponent(ComponentBox2DBody.class)));
+		ResourcesDood.INSTANCE.camera.setCameraController(new CameraControllerDood(this.entityPlayer.getComponent(ComponentTransform.class), this.entityPlayer.getComponent(ComponentBox2DBody.class)));
 	}
 
 	@Override
 	protected void onSceneUpdate(double delta)
 	{
-		Light light = Renderer.lights.get(0);
-		light.position = new Vector4f(Renderer.camera.getTransform().position, 1);
-		light.coneDirection = Renderer.camera.getTransform().getForward(new Vector3f());
+		Light light = ResourcesDood.INSTANCE.lights.get(0);
+		light.position = new Vector4f(ResourcesDood.INSTANCE.camera.getTransform().position, 1);
+		light.coneDirection = ResourcesDood.INSTANCE.camera.getTransform().getForward(new Vector3f());
 
 		super.onSceneUpdate(delta);
 	}
@@ -185,7 +110,7 @@ public class SceneDood extends SceneBase implements InputEngine.OnInputUpdateLis
 	@Override
 	public void onInputUpdate(InputEngine inputEngine)
 	{
-		Renderer.camera.update(inputEngine);
+		ResourcesDood.INSTANCE.camera.update(inputEngine);
 
 		if (this.entityPlayer == null) return;
 

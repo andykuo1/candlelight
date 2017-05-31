@@ -1,7 +1,5 @@
 package net.jimboi.blob;
 
-import net.jimboi.mod.Renderer;
-
 import org.bstone.mogli.Program;
 import org.joml.Matrix4fc;
 import org.lwjgl.opengl.GL11;

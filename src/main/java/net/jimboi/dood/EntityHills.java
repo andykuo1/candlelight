@@ -3,6 +3,7 @@ package net.jimboi.dood;
 import net.jimboi.dood.component.ComponentBox2DBody;
 import net.jimboi.dood.component.ComponentInstanceable;
 import net.jimboi.dood.component.ComponentTransform;
+import net.jimboi.dood.worldgen.WorldGenHills;
 import net.jimboi.mod.transform.Transform3;
 
 import org.jbox2d.collision.shapes.ChainShape;

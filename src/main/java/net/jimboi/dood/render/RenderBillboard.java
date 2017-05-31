@@ -1,6 +1,6 @@
 package net.jimboi.dood.render;
 
-import net.jimboi.mod.Renderer;
+import net.jimboi.dood.ResourcesDood;
 
 import org.bstone.mogli.Program;
 import org.joml.Matrix4fc;
@@ -42,8 +42,8 @@ public class RenderBillboard extends Render
 	@Override
 	public void doRender(Program program, Model model, Material material, Instance inst)
 	{
-		Matrix4fc projectionMatrix = Renderer.camera.projection();
-		Matrix4fc viewMatrix = Renderer.camera.view();
+		Matrix4fc projectionMatrix = ResourcesDood.INSTANCE.camera.projection();
+		Matrix4fc viewMatrix = ResourcesDood.INSTANCE.camera.view();
 		Matrix4fc modelMatrix = inst.getRenderTransformation(_MAT_A);
 
 		program.setUniform("u_model_view_projection", _MAT_B.set(projectionMatrix).mul(viewMatrix).mul(modelMatrix));

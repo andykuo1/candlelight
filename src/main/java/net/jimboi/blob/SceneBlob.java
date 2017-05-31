@@ -3,8 +3,6 @@ package net.jimboi.blob;
 import net.jimboi.blob.livings.LivingPlayer;
 import net.jimboi.blob.livings.LivingZombie;
 import net.jimboi.mod.Light;
-import net.jimboi.mod.RenderUtil;
-import net.jimboi.mod.Renderer;
 import net.jimboi.mod.meshbuilder.MeshBuilder;
 import net.jimboi.mod.meshbuilder.MeshData;
 import net.jimboi.mod.meshbuilder.ModelUtil;

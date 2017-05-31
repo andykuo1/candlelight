@@ -6,11 +6,16 @@ import org.bstone.util.loader.StringLoader;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by Andy on 4/6/17.
  */
 public final class Shader implements AutoCloseable
 {
+	public static final Set<Shader> SHADERS = new HashSet<>();
+
 	private final int type;
 	private int handle;
 
@@ -41,6 +46,8 @@ public final class Shader implements AutoCloseable
 
 			throw new GLException(infolog);
 		}
+
+		SHADERS.add(this);
 	}
 
 	@Override
@@ -51,6 +58,8 @@ public final class Shader implements AutoCloseable
 			GL20.glDeleteShader(this.handle);
 			this.handle = 0;
 		}
+
+		SHADERS.remove(this);
 	}
 
 	public int handle()

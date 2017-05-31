@@ -1,4 +1,4 @@
-package net.jimboi.mod;
+package net.jimboi.blob;
 
 import net.jimboi.mod.resource.ResourceLocation;
 

@@ -6,12 +6,16 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Andy on 4/26/17.
  */
 public final class Mesh implements AutoCloseable
 {
+	public static final Set<Mesh> MESHES = new HashSet<>();
+
 	private int handle;
 	private VBO[] vertexBuffers;
 	private VBO indexBuffer;
@@ -24,6 +28,8 @@ public final class Mesh implements AutoCloseable
 		this.vertexCount = 0;
 
 		this.handle = GL30.glGenVertexArrays();
+
+		MESHES.add(this);
 	}
 
 	@Override
@@ -45,6 +51,8 @@ public final class Mesh implements AutoCloseable
 
 		GL30.glDeleteVertexArrays(this.handle);
 		this.handle = 0;
+
+		MESHES.remove(this);
 	}
 
 	public Mesh bindElementArrayBuffer(VBO buffer)

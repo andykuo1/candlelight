@@ -1,6 +1,6 @@
 package net.jimboi.blob.livings;
 
-import net.jimboi.mod.RenderUtil;
+import net.jimboi.blob.RenderUtil;
 import net.jimboi.mod.transform.Transform;
 
 import org.qsilver.living.Living;

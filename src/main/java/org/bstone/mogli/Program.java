@@ -11,13 +11,17 @@ import org.lwjgl.system.MemoryStack;
 
 import java.nio.FloatBuffer;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Andy on 4/6/17.
  */
 public final class Program implements AutoCloseable
 {
+	public static final Set<Program> PROGRAMS = new HashSet<>();
+
 	private Shader[] shaders;
 	private int handle;
 
@@ -31,6 +35,8 @@ public final class Program implements AutoCloseable
 		{
 			throw new GLException("Could not create shader program!");
 		}
+
+		PROGRAMS.add(this);
 	}
 
 	@Override
@@ -41,6 +47,8 @@ public final class Program implements AutoCloseable
 			GL20.glDeleteProgram(this.handle);
 			this.handle = 0;
 		}
+
+		PROGRAMS.remove(this);
 	}
 
 	public Program link(Shader... shaders)

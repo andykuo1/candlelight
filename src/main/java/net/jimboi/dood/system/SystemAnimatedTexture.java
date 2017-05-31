@@ -1,7 +1,7 @@
 package net.jimboi.dood.system;
 
+import net.jimboi.dood.Resources;
 import net.jimboi.dood.component.ComponentSpriteSheet;
-import net.jimboi.mod.RenderUtil;
 
 import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
@@ -48,7 +48,7 @@ public class SystemAnimatedTexture extends EntitySystem implements Scene.OnScene
 			for (Entity entity : entities)
 			{
 				ComponentSpriteSheet componentSpriteSheet = entity.getComponent(ComponentSpriteSheet.class);
-				Material material = RenderUtil.getMaterial(componentSpriteSheet.materialID);
+				Material material = Resources.getMaterial(componentSpriteSheet.materialID);
 				material.sprite = componentSpriteSheet.spriteSheet.get();
 			}
 		}

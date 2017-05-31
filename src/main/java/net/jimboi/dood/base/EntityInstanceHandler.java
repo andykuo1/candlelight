@@ -1,8 +1,8 @@
 package net.jimboi.dood.base;
 
+import net.jimboi.dood.Resources;
 import net.jimboi.dood.component.ComponentInstanceable;
 import net.jimboi.dood.component.ComponentTransform;
-import net.jimboi.mod.RenderUtil;
 
 import org.qsilver.entity.Entity;
 import org.qsilver.render.Instance;
@@ -28,8 +28,8 @@ public class EntityInstanceHandler implements InstanceHandler
 	@Override
 	public void onInstanceSetup(InstanceManager instanceManager, List<Instance> instances)
 	{
-		Model model = RenderUtil.getModel(this.entity.getComponent(ComponentInstanceable.class).modelID);
-		Material material = RenderUtil.getMaterial(this.entity.getComponent(ComponentInstanceable.class).materialID);
+		Model model = Resources.getModel(this.entity.getComponent(ComponentInstanceable.class).modelID);
+		Material material = Resources.getMaterial(this.entity.getComponent(ComponentInstanceable.class).materialID);
 		instances.add(new Instance(model, material));
 	}
 

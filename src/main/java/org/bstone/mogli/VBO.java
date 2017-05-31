@@ -5,12 +5,16 @@ import org.lwjgl.opengl.GL15;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Andy on 4/26/17.
  */
 public final class VBO implements AutoCloseable
 {
+	public static final Set<VBO> VBOS = new HashSet<>();
+
 	private int handle;
 	private int target;
 
@@ -25,6 +29,8 @@ public final class VBO implements AutoCloseable
 		this.handle = GL15.glGenBuffers();
 		this.normalized = false;
 		this.length = 0;
+
+		VBOS.add(this);
 	}
 
 	public VBO()
@@ -39,6 +45,8 @@ public final class VBO implements AutoCloseable
 
 		GL15.glDeleteBuffers(this.handle);
 		this.handle = 0;
+
+		VBOS.remove(this);
 	}
 
 	public VBO putData(IntBuffer buffer, boolean normalized, int usage)

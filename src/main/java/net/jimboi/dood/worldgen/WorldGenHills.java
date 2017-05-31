@@ -1,4 +1,4 @@
-package net.jimboi.dood;
+package net.jimboi.dood.worldgen;
 
 import net.jimboi.mod.meshbuilder.MeshBuilder;
 import net.jimboi.mod.meshbuilder.ModelUtil;

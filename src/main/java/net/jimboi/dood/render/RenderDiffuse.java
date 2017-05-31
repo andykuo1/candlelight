@@ -1,7 +1,7 @@
 package net.jimboi.dood.render;
 
+import net.jimboi.dood.ResourcesDood;
 import net.jimboi.mod.Light;
-import net.jimboi.mod.Renderer;
 
 import org.bstone.mogli.Program;
 import org.joml.Matrix4fc;
@@ -36,8 +36,8 @@ public class RenderDiffuse extends Render
 	@Override
 	public void doRender(Program program, Model model, Material material, Instance inst)
 	{
-		Matrix4fc projectionMatrix = Renderer.camera.projection();
-		Matrix4fc viewMatrix = Renderer.camera.view();
+		Matrix4fc projectionMatrix = ResourcesDood.INSTANCE.camera.projection();
+		Matrix4fc viewMatrix = ResourcesDood.INSTANCE.camera.view();
 		Matrix4fc modelMatrix = inst.getRenderTransformation(_MAT_A);
 
 		program.setUniform("u_model_view_projection", _MAT_B.set(projectionMatrix).mul(viewMatrix).mul(modelMatrix));
@@ -45,7 +45,7 @@ public class RenderDiffuse extends Render
 		program.setUniform("u_projection", projectionMatrix);
 		program.setUniform("u_view", viewMatrix);
 		program.setUniform("u_model", modelMatrix);
-		program.setUniform("u_camera_pos", Renderer.camera.getTransform().position());
+		program.setUniform("u_camera_pos", ResourcesDood.INSTANCE.camera.getTransform().position());
 
 		if (material.sprite != null)
 		{
@@ -63,7 +63,7 @@ public class RenderDiffuse extends Render
 		program.setUniform("u_shininess", material.shininess);
 		program.setUniform("u_specular_color", material.specularColor);
 
-		bindLightsToProgram(program, Renderer.lights);
+		bindLightsToProgram(program, ResourcesDood.INSTANCE.lights);
 		GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 	}
 

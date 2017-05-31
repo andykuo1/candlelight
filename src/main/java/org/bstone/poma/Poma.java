@@ -118,6 +118,8 @@ public class Poma
 
 	protected static StackTraceElement getStackTrace(int stackIndex)
 	{
+		StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+		if (stackIndex >= stackTraceElements.length - 1) stackIndex = stackTraceElements.length - 2;
 		return Thread.currentThread().getStackTrace()[stackIndex + 1];
 	}
 }

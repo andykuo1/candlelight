@@ -4,12 +4,16 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL21;
 
 import java.nio.ByteBuffer;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Andy on 4/6/17.
  */
 public final class Texture implements AutoCloseable
 {
+	public static final Set<Texture> TEXTURES = new HashSet<>();
+
 	private static int getInternalTextureFormat(Bitmap.Format format, boolean srgb)
 	{
 		switch (format)
@@ -66,6 +70,8 @@ public final class Texture implements AutoCloseable
 				GL11.GL_FLOAT,
 				(ByteBuffer) null);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+
+		TEXTURES.add(this);
 	}
 
 	public Texture(Bitmap bitmap, int minMagFilter, int wrapMode)
@@ -91,12 +97,16 @@ public final class Texture implements AutoCloseable
 				GL11.GL_UNSIGNED_BYTE,
 				this.bitmap.getPixelBuffer());
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+
+		TEXTURES.add(this);
 	}
 
 	@Override
 	public void close()
 	{
 		GL11.glDeleteTextures(this.handle);
+
+		TEXTURES.remove(this);
 	}
 
 	public int handle()

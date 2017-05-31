@@ -1,7 +1,7 @@
 package net.jimboi.blob.livings;
 
 import net.jimboi.base.Main;
-import net.jimboi.mod.Renderer;
+import net.jimboi.blob.Renderer;
 import net.jimboi.mod.transform.Transform;
 import net.jimboi.mod.transform.Transform3;
 import net.jimboi.mod.transform.Transform3Q;

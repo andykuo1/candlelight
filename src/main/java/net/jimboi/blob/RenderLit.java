@@ -1,7 +1,6 @@
 package net.jimboi.blob;
 
 import net.jimboi.mod.Light;
-import net.jimboi.mod.Renderer;
 
 import org.bstone.mogli.Program;
 import org.joml.Matrix4fc;
