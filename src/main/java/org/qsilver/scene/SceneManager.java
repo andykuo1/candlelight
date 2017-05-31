@@ -78,11 +78,6 @@ public class SceneManager
 				this.setupHandler.onRender();
 			}
 		}
-		else if (this.currScene != null)
-		{
-			this.currScene.onSceneRender();
-			this.currScene.onSceneRender.notifyListeners();
-		}
 	}
 
 	public void nextScene(Scene scene)

@@ -53,7 +53,7 @@ public class SceneDood extends SceneDoodBase implements InputEngine.OnInputUpdat
 		this.systemInstance = new SystemInstance(this.entityManager, ((RendererDood) this.renderer).getInstanceManager());
 		this.systemMotion = new SystemMotion(this.entityManager, this);
 		this.systemBox2D = new SystemBox2D(this.entityManager, this);
-		this.systemAnimatedTexture = new SystemAnimatedTexture(this.entityManager, this);
+		this.systemAnimatedTexture = new SystemAnimatedTexture(this.entityManager, this, this.renderer);
 
 		this.systemInstance.start();
 		this.systemMotion.start();

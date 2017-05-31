@@ -5,7 +5,6 @@ import net.jimboi.blob.livings.LivingZombie;
 import net.jimboi.mod.Light;
 
 import org.bstone.input.InputManager;
-import org.bstone.poma.Poma;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
@@ -23,14 +22,14 @@ public class SceneBlob extends SceneBlobBase
 	}
 
 	@Override
-	public void onSceneCreate()
+	protected void onSceneCreate()
 	{
 		this.player = new LivingPlayer(0, 0, 0);
 		this.livingManager.add(this.player);
 	}
 
 	@Override
-	public void onSceneStart()
+	protected void onSceneStart()
 	{
 		InputManager.registerMousePosX("mousex");
 		InputManager.registerMousePosY("mousey");
@@ -50,7 +49,7 @@ public class SceneBlob extends SceneBlobBase
 	}
 
 	@Override
-	public void onSceneUpdate(double delta)
+	protected void onSceneUpdate(double delta)
 	{
 		Light light = RendererBlob.lights.get(0);
 		light.position = new Vector4f(RendererBlob.camera.getTransform().position, 1);
@@ -60,8 +59,8 @@ public class SceneBlob extends SceneBlobBase
 	}
 
 	@Override
-	public void onSceneDestroy()
+	protected void onSceneDestroy()
 	{
-		Poma.OUT("Destroying Scene . . .");
+
 	}
 }

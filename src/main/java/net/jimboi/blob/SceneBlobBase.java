@@ -19,8 +19,6 @@ public abstract class SceneBlobBase extends LivingSceneBase implements LivingMan
 	{
 		this.renderer = renderer;
 
-		Main.RENDERENGINE.add(this.renderer);
-
 		this.livingManager.onLivingAdd.addListener(this);
 		this.livingManager.onLivingRemove.addListener(this);
 	}
@@ -28,19 +26,13 @@ public abstract class SceneBlobBase extends LivingSceneBase implements LivingMan
 	@Override
 	protected final void onSceneLoad()
 	{
-		//this.renderer.onRenderLoad();
+		Main.RENDERENGINE.add(this.renderer);
 	}
 
 	@Override
-	public final void onSceneRender()
+	protected final void onSceneUnload()
 	{
-		//this.renderer.onRenderUpdate();
-	}
-
-	@Override
-	public final void onSceneUnload()
-	{
-		//this.renderer.onRenderUnload();
+		Main.RENDERENGINE.remove(this.renderer);
 	}
 
 	@Override

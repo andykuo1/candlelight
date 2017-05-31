@@ -31,8 +31,11 @@ public class Main
 
 		TICKENGINE = new TickEngine();
 		TICKENGINE.onFixedUpdate.addListener(SCENEMANAGER::update);
-		TICKENGINE.onUpdate.addListener(SCENEMANAGER::render);
-		TICKENGINE.onUpdate.addListener(RENDERENGINE::update);
+		TICKENGINE.onUpdate.addListener(() ->
+		{
+			SCENEMANAGER.render();
+			RENDERENGINE.update();
+		});
 
 		WINDOW = new Window("Application", 640, 480);
 		INPUTENGINE = WINDOW.getInputEngine();

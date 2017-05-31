@@ -17,26 +17,18 @@ public abstract class SceneDoodBase extends EntitySceneBase implements EntityMan
 	public SceneDoodBase(Renderer renderer)
 	{
 		this.renderer = renderer;
-
-		Main.RENDERENGINE.add(this.renderer);
 	}
 
 	@Override
 	protected final void onSceneLoad()
 	{
-		//this.renderer.onRenderLoad();
-	}
-
-	@Override
-	protected final void onSceneRender()
-	{
-		//this.renderer.onRenderUpdate();
+		Main.RENDERENGINE.add(this.renderer);
 	}
 
 	@Override
 	protected final void onSceneUnload()
 	{
-		//this.renderer.onRenderUnload();
+		Main.RENDERENGINE.remove(this.renderer);
 	}
 
 	@Override

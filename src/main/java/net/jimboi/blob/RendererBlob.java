@@ -63,8 +63,6 @@ public class RendererBlob extends Renderer implements InstanceManager.OnInstance
 	@Override
 	public void onRenderLoad()
 	{
-		System.out.println("LOADED STUFFF");
-
 		RendererBlob.lights.add(Light.createPointLight(0, 0, 0, 0xFFFFFF, 1F, 1F, 0));
 		RendererBlob.lights.add(Light.createDirectionLight(1, 1F, 1F, 0xFFFFFF, 0.1F, 0.06F));
 
@@ -159,16 +157,6 @@ public class RendererBlob extends Renderer implements InstanceManager.OnInstance
 	public static Instance createTerrain(MazeWorld world, Material mat)
 	{
 		int[] map = world.getMap();
-		for (int y = 0; y < world.getSize(); ++y)
-		{
-			for (int x = 0; x < world.getSize(); ++x)
-			{
-				int i = map[x + y * world.getSize()];
-				//Poma.OUT((i == 0 ? " " : i) + " ");
-			}
-			//Poma.OUT();
-		}
-
 		MeshData md = MazeWorld.toMeshBoxData(world, 16, 16);
 		Model model = new Model(ModelUtil.createMesh(md));
 		RenderUtil.registerModel("terrain", model);

@@ -25,13 +25,13 @@ public abstract class LivingSceneBase extends Scene
 	}
 
 	@Override
-	public void onSceneUpdate(double delta)
+	protected void onSceneUpdate(double delta)
 	{
 		this.livingManager.update(delta);
 	}
 
 	@Override
-	public void onSceneStop()
+	protected void onSceneStop()
 	{
 		this.livingManager.destroyAll();
 	}

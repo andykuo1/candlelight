@@ -27,11 +27,6 @@ public abstract class Scene
 		void onSceneUpdate(double delta);
 	}
 
-	public interface OnSceneRenderListener
-	{
-		void onSceneRender();
-	}
-
 	public interface OnSceneStopListener
 	{
 		void onSceneStop();
@@ -51,7 +46,6 @@ public abstract class Scene
 	public final Listenable<OnSceneLoadListener> onSceneLoad = new Listenable<>((listener, objects) -> listener.onSceneLoad());
 	public final Listenable<OnSceneStartListener> onSceneStart = new Listenable<>((listener, objects) -> listener.onSceneStart());
 	public final Listenable<OnSceneUpdateListener> onSceneUpdate = new Listenable<>((listener, objects) -> listener.onSceneUpdate((Double) objects[0]));
-	public final Listenable<OnSceneRenderListener> onSceneRender = new Listenable<>((listener, objects) -> listener.onSceneRender());
 	public final Listenable<OnSceneStopListener> onSceneStop = new Listenable<>((listener, objects) -> listener.onSceneStop());
 	public final Listenable<OnSceneUnloadListener> onSceneUnload = new Listenable<>((listener, objects) -> listener.onSceneUnload());
 	public final Listenable<OnSceneDestroyListener> onSceneDestroy = new Listenable<>((listener, objects) -> listener.onSceneDestroy());
@@ -63,8 +57,6 @@ public abstract class Scene
 	protected abstract void onSceneStart();
 
 	protected abstract void onSceneUpdate(double delta);
-
-	protected abstract void onSceneRender();
 
 	protected abstract void onSceneStop();
 
