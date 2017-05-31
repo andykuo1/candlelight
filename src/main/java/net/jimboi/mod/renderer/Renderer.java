@@ -14,9 +14,9 @@ public abstract class Renderer
 
 	public final Listenable<OnRenderUpdateListener> onRenderUpdate = new Listenable<>((listener, objects) -> listener.onRenderUpdate());
 
-	protected abstract void onRenderLoad();
+	public abstract void onRenderLoad();
 
-	protected abstract void onRenderUpdate();
+	public abstract void onRenderUpdate();
 
-	protected abstract void onRenderUnload();
+	public abstract void onRenderUnload();
 }

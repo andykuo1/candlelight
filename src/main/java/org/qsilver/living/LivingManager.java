@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
-import java.util.function.Predicate;
 
 /**
  * Created by Andy on 3/4/17.
@@ -102,7 +101,7 @@ public class LivingManager
 
 	public void update(double delta)
 	{
-		this.flushCreateList();
+		this.flushCreate();
 
 		for(Living living : this.livings)
 		{
@@ -132,12 +131,12 @@ public class LivingManager
 			}
 		}
 
-		this.flushDestroyList();
+		this.flushDestroy();
 	}
 
-	public void flushAll()
+	public void flush()
 	{
-		this.flushCreateList();
+		this.flushCreate();
 
 		for(Living living : this.livings)
 		{
@@ -147,19 +146,12 @@ public class LivingManager
 			}
 		}
 
-		this.flushDestroyList();
+		this.flushDestroy();
 	}
 
 	public void flushLivingSets()
 	{
-		this.livingSets.removeIf(new Predicate<LivingSet>()
-		{
-			@Override
-			public boolean test(LivingSet livingSet)
-			{
-				return !livingSet.hasSet();
-			}
-		});
+		this.livingSets.removeIf((livingSet) -> !livingSet.hasSet());
 	}
 
 	public void destroyAll()
@@ -170,7 +162,7 @@ public class LivingManager
 			living.onDestroy();
 		}
 
-		this.flushDestroyList();
+		this.flushDestroy();
 
 		this.cached = true;
 		this.spawnList.clear();
@@ -203,7 +195,7 @@ public class LivingManager
 		return this.livings.listIterator();
 	}
 
-	private void flushCreateList()
+	private void flushCreate()
 	{
 		while(!this.spawnList.isEmpty())
 		{
@@ -224,7 +216,7 @@ public class LivingManager
 		}
 	}
 
-	private void flushDestroyList()
+	private void flushDestroy()
 	{
 		for(Living living : this.destroyList)
 		{

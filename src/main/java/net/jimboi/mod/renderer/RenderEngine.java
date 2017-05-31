@@ -40,7 +40,28 @@ public class RenderEngine
 		}
 	}
 
+	public void start()
+	{
+		this.flush();
+	}
+
+	public void stop()
+	{
+		this.destroy();
+	}
+
 	public void update()
+	{
+		this.flush();
+
+		for (Renderer renderer : this.renderers)
+		{
+			renderer.onRenderUpdate();
+			renderer.onRenderUpdate.notifyListeners();
+		}
+	}
+
+	public void flush()
 	{
 		while (!this.createSet.isEmpty())
 		{
@@ -56,12 +77,6 @@ public class RenderEngine
 			this.cachedSet.clear();
 		}
 
-		for (Renderer renderer : this.renderers)
-		{
-			renderer.onRenderUpdate();
-			renderer.onRenderUpdate.notifyListeners();
-		}
-
 		while (!this.destroySet.isEmpty())
 		{
 			this.cacheDestroy = true;
@@ -75,5 +90,20 @@ public class RenderEngine
 			this.cacheDestroy = false;
 			this.cachedSet.clear();
 		}
+	}
+
+	public void destroy()
+	{
+		for (Renderer renderer : this.renderers)
+		{
+			renderer.onRenderUnload();
+		}
+
+		this.cacheCreate = true;
+		this.createSet.clear();
+		this.cacheCreate = false;
+		this.cachedSet.clear();
+
+		this.flush();
 	}
 }

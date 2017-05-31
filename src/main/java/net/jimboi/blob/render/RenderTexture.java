@@ -1,4 +1,6 @@
-package net.jimboi.blob;
+package net.jimboi.blob.render;
+
+import net.jimboi.blob.RendererBlob;
 
 import org.bstone.mogli.Program;
 import org.joml.Matrix4fc;
@@ -25,8 +27,8 @@ public class RenderTexture extends Render
 		model.bind();
 		if (material.hasTexture()) material.getTexture().bind();
 
-		Matrix4fc projectionMatrix = Renderer.camera.projection();
-		Matrix4fc viewMatrix = Renderer.camera.view();
+		Matrix4fc projectionMatrix = RendererBlob.camera.projection();
+		Matrix4fc viewMatrix = RendererBlob.camera.view();
 
 		program.setUniform("projectionMatrix", projectionMatrix);
 		program.setUniform("viewMatrix", viewMatrix);

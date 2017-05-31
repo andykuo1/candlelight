@@ -1,4 +1,6 @@
-package net.jimboi.blob;
+package net.jimboi.blob.render;
+
+import net.jimboi.blob.RendererBlob;
 
 import org.bstone.mogli.Program;
 import org.joml.Matrix4fc;
@@ -11,11 +13,9 @@ import org.qsilver.render.Render;
 /**
  * Created by Andy on 4/30/17.
  */
-public class RenderDiffuse extends Render
+public class RenderColor extends Render
 {
-	private static Material MATERIAL;
-
-	public RenderDiffuse(Program program)
+	public RenderColor(Program program)
 	{
 		super(program);
 	}
@@ -24,23 +24,21 @@ public class RenderDiffuse extends Render
 	public void preRender(Program program, Model model, Material material)
 	{
 		program.bind();
-		model.bind();
-		if (material.hasTexture()) material.getTexture().bind();
+		model.getMesh().bind();
 	}
 
 	@Override
 	public void postRender(Program program, Model model, Material material)
 	{
-		if (material.hasTexture()) material.getTexture().unbind();
-		model.unbind();
 		program.unbind();
+		model.getMesh().unbind();
 	}
 
 	@Override
 	public void doRender(Program program, Model model, Material material, Instance inst)
 	{
-		Matrix4fc projectionMatrix = Renderer.camera.projection();
-		Matrix4fc viewMatrix = Renderer.camera.view();
+		Matrix4fc projectionMatrix = RendererBlob.camera.projection();
+		Matrix4fc viewMatrix = RendererBlob.camera.view();
 
 		program.setUniform("projectionMatrix", projectionMatrix);
 		program.setUniform("viewMatrix", viewMatrix);

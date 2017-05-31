@@ -1,7 +1,6 @@
 package net.jimboi.dood;
 
 import net.jimboi.base.Main;
-import net.jimboi.dood.base.SceneBase;
 import net.jimboi.dood.component.ComponentBox2DBody;
 import net.jimboi.dood.component.ComponentTransform;
 import net.jimboi.dood.system.EntitySystem;
@@ -11,7 +10,6 @@ import net.jimboi.dood.system.SystemInstance;
 import net.jimboi.dood.system.SystemMotion;
 import net.jimboi.mod.Light;
 
-import org.bstone.camera.PerspectiveCamera;
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputManager;
 import org.bstone.util.MathUtil;
@@ -27,7 +25,7 @@ import org.qsilver.entity.Entity;
 /**
  * Created by Andy on 5/21/17.
  */
-public class SceneDood extends SceneBase implements InputEngine.OnInputUpdateListener
+public class SceneDood extends SceneDoodBase implements InputEngine.OnInputUpdateListener
 {
 	private SystemInstance systemInstance;
 	private SystemMotion systemMotion;
@@ -38,7 +36,8 @@ public class SceneDood extends SceneBase implements InputEngine.OnInputUpdateLis
 
 	public SceneDood()
 	{
-		ResourcesDood.INSTANCE.camera = new PerspectiveCamera(640, 480);
+		super(new RendererDood());
+
 		Main.INPUTENGINE.onInputUpdate.addListener(this);
 	}
 
@@ -51,7 +50,7 @@ public class SceneDood extends SceneBase implements InputEngine.OnInputUpdateLis
 		ResourcesDood.INSTANCE.lights.add(Light.createPointLight(0, 0, 0, 0xFFFFFF, 1F, 0.1F, 0));
 		ResourcesDood.INSTANCE.lights.add(this.directionLight = Light.createDirectionLight(1, 1F, 1F, 0xFFFFFF, 0.1F, 0.06F));
 
-		this.systemInstance = new SystemInstance(this.entityManager, this.instanceManager);
+		this.systemInstance = new SystemInstance(this.entityManager, ((RendererDood) this.renderer).getInstanceManager());
 		this.systemMotion = new SystemMotion(this.entityManager, this);
 		this.systemBox2D = new SystemBox2D(this.entityManager, this);
 		this.systemAnimatedTexture = new SystemAnimatedTexture(this.entityManager, this);
@@ -60,12 +59,6 @@ public class SceneDood extends SceneBase implements InputEngine.OnInputUpdateLis
 		this.systemMotion.start();
 		this.systemBox2D.start();
 		this.systemAnimatedTexture.start();
-	}
-
-	@Override
-	protected void onSceneLoad()
-	{
-		ResourcesDood.INSTANCE.load(this.renderManager);
 	}
 
 	@Override
@@ -172,12 +165,6 @@ public class SceneDood extends SceneBase implements InputEngine.OnInputUpdateLis
 				this.grabbedEntity = null;
 			}
 		}
-	}
-
-	@Override
-	protected void onSceneRender()
-	{
-		super.onSceneRender();
 	}
 
 	@Override

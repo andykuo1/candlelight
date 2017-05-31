@@ -1,4 +1,6 @@
-package net.jimboi.blob;
+package net.jimboi.blob.render;
+
+import net.jimboi.blob.RendererBlob;
 
 import org.bstone.mogli.Program;
 import org.joml.Matrix4fc;
@@ -48,8 +50,8 @@ public class RenderBillboard extends Render
 	public void doRender(Program program, Model model, Material material, Instance inst)
 	{
 
-		Matrix4fc projectionMatrix = Renderer.camera.projection();
-		Matrix4fc viewMatrix = Renderer.camera.view();
+		Matrix4fc projectionMatrix = RendererBlob.camera.projection();
+		Matrix4fc viewMatrix = RendererBlob.camera.view();
 		Matrix4fc modelMatrix = inst.getRenderTransformation(_MAT_A);
 
 		program.setUniform("u_model_view", _MAT_B.set(viewMatrix).mul(modelMatrix));

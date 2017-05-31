@@ -1,6 +1,6 @@
 package net.jimboi.blob.livings;
 
-import net.jimboi.blob.Renderer;
+import net.jimboi.blob.RendererBlob;
 
 import org.qsilver.render.Instance;
 import org.qsilver.render.InstanceManager;
@@ -14,7 +14,7 @@ public class LivingPlayer extends LivingMotionControllerFirstPerson
 {
 	public LivingPlayer(float x, float y, float z)
 	{
-		super(x, y, z, Renderer.camera);
+		super(x, y, z, RendererBlob.camera);
 	}
 
 	@Override

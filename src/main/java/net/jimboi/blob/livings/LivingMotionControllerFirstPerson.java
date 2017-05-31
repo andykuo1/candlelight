@@ -1,7 +1,7 @@
 package net.jimboi.blob.livings;
 
 import net.jimboi.base.Main;
-import net.jimboi.blob.Renderer;
+import net.jimboi.blob.RendererBlob;
 import net.jimboi.mod.transform.Transform;
 import net.jimboi.mod.transform.Transform3;
 import net.jimboi.mod.transform.Transform3Q;
@@ -86,7 +86,7 @@ public abstract class LivingMotionControllerFirstPerson extends LivingMotion imp
 			cameraTransform.rotate(this.pitch, right);
 
 			Transform3Q transform = (Transform3Q) this.transform();
-			transform.setRotation(Renderer.camera.getTransform().rotation);
+			transform.setRotation(RendererBlob.camera.getTransform().rotation);
 			transform.rotation.x = 0;
 			transform.rotation.z = 0;
 			transform.rotation.normalize().invert();

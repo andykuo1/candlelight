@@ -39,6 +39,8 @@ public class Main
 
 		SCENEMANAGER.nextScene(SCENE = new SceneDood());
 
+		RENDERENGINE.start();
+
 		while(TICKENGINE.shouldKeepRunning())
 		{
 			if (WINDOW.shouldCloseWindow())
@@ -51,8 +53,9 @@ public class Main
 			TICKENGINE.update();
 			WINDOW.poll();
 		}
-
 		SCENEMANAGER.clear();
+
+		RENDERENGINE.stop();
 		WINDOW.destroy();
 	}
 }

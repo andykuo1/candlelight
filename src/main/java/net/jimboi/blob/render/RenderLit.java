@@ -1,5 +1,6 @@
-package net.jimboi.blob;
+package net.jimboi.blob.render;
 
+import net.jimboi.blob.RendererBlob;
 import net.jimboi.mod.Light;
 
 import org.bstone.mogli.Program;
@@ -43,18 +44,18 @@ public class RenderLit extends Render
 	public void doRender(Program program, Model model, Material material, Instance inst)
 	{
 
-		Matrix4fc projectionMatrix = Renderer.camera.projection();
-		Matrix4fc viewMatrix = Renderer.camera.view();
+		Matrix4fc projectionMatrix = RendererBlob.camera.projection();
+		Matrix4fc viewMatrix = RendererBlob.camera.view();
 
 		program.setUniform("projectionMatrix", projectionMatrix);
 		program.setUniform("viewMatrix", viewMatrix);
 		program.setUniform("worldMatrix", inst.getRenderTransformation(_MAT_A));
-		program.setUniform("cameraPosition", Renderer.camera.getTransform().position());
+		program.setUniform("cameraPosition", RendererBlob.camera.getTransform().position());
 
 		program.setUniform("shininess", material.shininess);
 		program.setUniform("specularColor", material.specularColor);
 
-		bindLightsToProgram(program, Renderer.lights);
+		bindLightsToProgram(program, RendererBlob.lights);
 		GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 	}
 
