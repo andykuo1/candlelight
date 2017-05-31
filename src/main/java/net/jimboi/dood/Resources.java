@@ -138,13 +138,10 @@ public class Resources
 		register("fragment.diffuse", new Shader(new ResourceLocation("dood:diffuse.fsh"), GL_FRAGMENT_SHADER));
 		register("vertex.billboard", new Shader(new ResourceLocation("dood:billboard.vsh"), GL_VERTEX_SHADER));
 		register("fragment.billboard", new Shader(new ResourceLocation("dood:billboard.fsh"), GL_FRAGMENT_SHADER));
-		register("vertex.constant", new Shader(new ResourceLocation("dood:constant.vsh"), GL_VERTEX_SHADER));
-		register("fragment.constant", new Shader(new ResourceLocation("dood:constant.fsh"), GL_FRAGMENT_SHADER));
 
 		//Programs
 		register("diffuse", new Program().link(getShader("vertex.diffuse"), getShader("fragment.diffuse")));
 		register("billboard", new Program().link(getShader("vertex.billboard"), getShader("fragment.billboard")));
-		register("constant", new Program().link(getShader("vertex.constant"), getShader("fragment.constant")));
 
 		//Bitmaps
 		register("bird", new Bitmap(new ResourceLocation("dood:bird.png")));
