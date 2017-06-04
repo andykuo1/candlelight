@@ -103,7 +103,7 @@ public class SceneDood extends SceneDoodBase implements InputEngine.OnInputUpdat
 	@Override
 	public void onInputUpdate(InputEngine inputEngine)
 	{
-		ResourcesDood.INSTANCE.camera.update(inputEngine);
+		ResourcesDood.INSTANCE.camera.update(1);
 
 		if (this.entityPlayer == null) return;
 

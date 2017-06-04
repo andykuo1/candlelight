@@ -2,6 +2,7 @@ package net.jimboi.dood.render;
 
 import net.jimboi.dood.ResourcesDood;
 import net.jimboi.mod.Light;
+import net.jimboi.mod.render.Render;
 
 import org.bstone.mogli.Program;
 import org.joml.Matrix4fc;
@@ -10,7 +11,6 @@ import org.lwjgl.opengl.GL11;
 import org.qsilver.render.Instance;
 import org.qsilver.render.Material;
 import org.qsilver.render.Model;
-import org.qsilver.render.Render;
 
 import java.util.Collection;
 import java.util.Iterator;

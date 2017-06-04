@@ -1,4 +1,4 @@
-package net.jimboi.mod.renderer;
+package org.qsilver.renderer;
 
 import java.util.HashSet;
 import java.util.Set;

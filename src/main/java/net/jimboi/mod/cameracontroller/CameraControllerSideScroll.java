@@ -5,7 +5,6 @@ import net.jimboi.mod.transform.Transform3;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;
-import org.bstone.input.InputEngine;
 import org.bstone.input.InputManager;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
@@ -61,7 +60,7 @@ public class CameraControllerSideScroll implements CameraController, Scene.OnSce
 	private static final Vector3f _VEC = new Vector3f();
 
 	@Override
-	public void onCameraUpdate(Camera camera, InputEngine inputEngine)
+	public void onCameraUpdate(Camera camera, double delta)
 	{
 		if (InputManager.isInputDown("up")) this.forward -= this.speedForward;
 		if (InputManager.isInputDown("down")) this.forward += this.speedForward;

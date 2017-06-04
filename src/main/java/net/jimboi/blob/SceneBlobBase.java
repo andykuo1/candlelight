@@ -1,12 +1,12 @@
 package net.jimboi.blob;
 
 import net.jimboi.base.Main;
-import net.jimboi.mod.renderer.Renderer;
 import net.jimboi.mod.scene.LivingSceneBase;
 
 import org.qsilver.living.Living;
 import org.qsilver.living.LivingManager;
 import org.qsilver.render.InstanceHandler;
+import org.qsilver.renderer.Renderer;
 
 /**
  * Created by Andy on 4/30/17.

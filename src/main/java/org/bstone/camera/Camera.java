@@ -2,7 +2,6 @@ package org.bstone.camera;
 
 import net.jimboi.mod.transform.Transform3;
 
-import org.bstone.input.InputEngine;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 
@@ -21,11 +20,11 @@ public abstract class Camera
 	{
 	}
 
-	public void update(InputEngine inputEngine)
+	public void update(double delta)
 	{
 		if (this.controller != null)
 		{
-			this.controller.onCameraUpdate(this, inputEngine);
+			this.controller.onCameraUpdate(this, delta);
 		}
 	}
 

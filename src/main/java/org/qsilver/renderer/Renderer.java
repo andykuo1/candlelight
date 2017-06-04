@@ -1,4 +1,4 @@
-package net.jimboi.mod.renderer;
+package org.qsilver.renderer;
 
 import org.bstone.util.listener.Listenable;
 

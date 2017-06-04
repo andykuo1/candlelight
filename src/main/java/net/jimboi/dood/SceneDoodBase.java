@@ -1,11 +1,11 @@
 package net.jimboi.dood;
 
 import net.jimboi.base.Main;
-import net.jimboi.mod.renderer.Renderer;
 import net.jimboi.mod.scene.EntitySceneBase;
 
 import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
+import org.qsilver.renderer.Renderer;
 
 /**
  * Created by Andy on 5/21/17.

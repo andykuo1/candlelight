@@ -1,13 +1,13 @@
 package net.jimboi.dood;
 
-import net.jimboi.mod.renderer.Renderer;
+import net.jimboi.mod.render.Render;
+import net.jimboi.mod.render.RenderManager;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.qsilver.render.Instance;
 import org.qsilver.render.InstanceHandler;
 import org.qsilver.render.InstanceManager;
-import org.qsilver.render.Render;
-import org.qsilver.render.RenderManager;
+import org.qsilver.renderer.Renderer;
 
 /**
  * Created by Andy on 5/30/17.

@@ -1,4 +1,4 @@
-package org.qsilver.render;
+package net.jimboi.mod.render;
 
 import java.util.HashMap;
 import java.util.Map;

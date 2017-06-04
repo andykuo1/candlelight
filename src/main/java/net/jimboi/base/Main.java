@@ -1,11 +1,11 @@
 package net.jimboi.base;
 
-import net.jimboi.dood.SceneDood;
-import net.jimboi.mod.renderer.RenderEngine;
+import net.jimboi.glim.SceneGlim;
 
 import org.bstone.input.InputEngine;
 import org.bstone.tick.TickEngine;
 import org.bstone.window.Window;
+import org.qsilver.renderer.RenderEngine;
 import org.qsilver.scene.Scene;
 import org.qsilver.scene.SceneManager;
 
@@ -40,7 +40,7 @@ public class Main
 		WINDOW = new Window("Application", 640, 480);
 		INPUTENGINE = WINDOW.getInputEngine();
 
-		SCENEMANAGER.nextScene(SCENE = new SceneDood());
+		SCENEMANAGER.nextScene(SCENE = new SceneGlim());
 
 		RENDERENGINE.start();
 

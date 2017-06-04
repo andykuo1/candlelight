@@ -9,7 +9,8 @@ import net.jimboi.mod.Light;
 import net.jimboi.mod.meshbuilder.MeshBuilder;
 import net.jimboi.mod.meshbuilder.MeshData;
 import net.jimboi.mod.meshbuilder.ModelUtil;
-import net.jimboi.mod.renderer.Renderer;
+import net.jimboi.mod.render.Render;
+import net.jimboi.mod.render.RenderManager;
 import net.jimboi.mod.resource.ResourceLocation;
 import net.jimboi.torchlite.MazeWorld;
 
@@ -22,8 +23,7 @@ import org.qsilver.render.InstanceHandler;
 import org.qsilver.render.InstanceManager;
 import org.qsilver.render.Material;
 import org.qsilver.render.Model;
-import org.qsilver.render.Render;
-import org.qsilver.render.RenderManager;
+import org.qsilver.renderer.Renderer;
 
 import java.util.ArrayList;
 import java.util.List;

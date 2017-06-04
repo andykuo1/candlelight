@@ -5,10 +5,10 @@ import net.jimboi.dood.render.RenderDiffuse;
 import net.jimboi.dood.worldgen.WorldGenHills;
 import net.jimboi.dood.worldgen.WorldGenTerrain;
 import net.jimboi.mod.Light;
+import net.jimboi.mod.render.RenderManager;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.qsilver.render.Model;
-import org.qsilver.render.RenderManager;
 
 import java.util.ArrayList;
 import java.util.List;

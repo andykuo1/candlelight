@@ -7,7 +7,6 @@ import net.jimboi.mod.transform.Transform3Q;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;
-import org.bstone.input.InputEngine;
 import org.bstone.input.InputManager;
 import org.bstone.util.MathUtil;
 import org.joml.Vector2f;
@@ -65,9 +64,9 @@ public class CameraControllerFirstPerson implements CameraController, Scene.OnSc
 	private static final Vector3f _VEC = new Vector3f();
 
 	@Override
-	public void onCameraUpdate(Camera camera, InputEngine inputEngine)
+	public void onCameraUpdate(Camera camera, double delta)
 	{
-		boolean mouseLocked = inputEngine.getMouse().getCursorMode();
+		boolean mouseLocked = InputManager.getInputEngine().getMouse().getCursorMode();
 		if (mouseLocked)
 		{
 			Transform3 cameraTransform = camera.getTransform();
@@ -97,7 +96,7 @@ public class CameraControllerFirstPerson implements CameraController, Scene.OnSc
 
 		if (InputManager.isInputPressed("mouseleft"))
 		{
-			inputEngine.getMouse().setCursorMode(!mouseLocked);
+			InputManager.getInputEngine().getMouse().setCursorMode(!mouseLocked);
 		}
 
 		this.forward = 0;

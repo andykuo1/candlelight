@@ -89,6 +89,17 @@ public class InstanceManager
 		this.defaultSpawn.add(instance);
 	}
 
+	public void remove(InstanceHandler parent)
+	{
+		for (InstanceEntry entry : this.instances)
+		{
+			if (entry.parent == parent)
+			{
+				entry.instance.setDead();
+			}
+		}
+	}
+
 	public void update()
 	{
 		this.flushCreateList();

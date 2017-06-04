@@ -1,7 +1,10 @@
-package org.qsilver.render;
+package net.jimboi.mod.render;
 
 import org.bstone.mogli.Program;
 import org.joml.Matrix4f;
+import org.qsilver.render.Instance;
+import org.qsilver.render.Material;
+import org.qsilver.render.Model;
 
 import java.util.Iterator;
 
