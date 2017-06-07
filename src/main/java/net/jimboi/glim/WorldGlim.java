@@ -29,31 +29,16 @@ public class WorldGlim
 			for (int x = 0; x < this.data.width; ++x)
 			{
 				int tile = this.data.getTiles().get(x, y);
-				if (tile == 0 && x != this.data.width - 1)
+				if (tile == 0 && x < this.data.width - 1)
 				{
 					tiles++;
 				}
-				else
+				else if (tiles > 0)
 				{
-					if (tiles > 0)
-					{
-						this.boundingManager.create(new AABB(x - tiles / 2F, y + 0.5F, tiles / 2F, 0.5F));
-					}
-
-					while (tiles > 0)
-					{
-						tiles--;
-						System.out.print(" A");
-					}
-
-					if (x != this.data.width - 1)
-					{
-						System.out.print("  ");
-					}
+					this.boundingManager.create(new AABB(x - tiles / 2F, y + 0.5F, tiles / 2F, 0.5F));
+					tiles = 0;
 				}
 			}
-
-			System.out.println();
 		}
 	}
 

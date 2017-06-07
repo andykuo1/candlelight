@@ -2,6 +2,7 @@ package org.bstone.window;
 
 import org.bstone.input.InputEngine;
 import org.bstone.poma.Poma;
+import org.bstone.util.listener.Listenable;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
@@ -13,18 +14,34 @@ import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
 import java.nio.IntBuffer;
+import java.util.Stack;
 
 /**
  * Created by Andy on 4/6/17.
  */
 public class Window
 {
+	public interface OnWindowSizeChanged
+	{
+		void onWindowSizeChanged(int width, int height, int prevWidth, int prevHeight);
+	}
+
+	public interface OnViewPortChanged
+	{
+		void onViewPortChanged(ViewPort viewport, ViewPort prevViewPort);
+	}
+
+	public final Listenable<OnWindowSizeChanged> onWindowSizeChanged = new Listenable<>(((listener, objects) -> listener.onWindowSizeChanged((Integer) objects[0], (Integer) objects[1], (Integer) objects[2], (Integer) objects[3])));
+
+	public final Listenable<OnViewPortChanged> onViewPortChanged = new Listenable<>(((listener, objects) -> listener.onViewPortChanged((ViewPort) objects[0], (ViewPort) objects[1])));
+
 	private final InputEngine inputEngine;
+
+	private final Stack<ViewPort> viewports = new Stack<>();
+	private final ViewPort defaultViewPort;
 
 	private int width;
 	private int height;
-
-	private boolean dirty = true;
 
 	private long handle;
 
@@ -32,7 +49,8 @@ public class Window
 	{
 		this.width = width;
 		this.height = height;
-		this.dirty = true;//TODO: this needs to be true
+
+		this.defaultViewPort = new ViewPort(this.width * 2, this.height * 2);
 
 		Poma.OUT("LWJGL " + Version.getVersion() + "!");
 
@@ -63,10 +81,13 @@ public class Window
 		this.inputEngine = new InputEngine(this);
 
 		//Setup a size callback.
-		GLFW.glfwSetWindowSizeCallback(handle, (window, w, h) -> {
+		GLFW.glfwSetWindowSizeCallback(this.handle, (window, w, h) ->
+		{
+			int prevW = this.width;
+			int prevH = this.height;
 			this.width = w;
 			this.height = h;
-			this.dirty = true;
+			this.onWindowSizeChanged.notifyListeners(this.width, this.height, prevW, prevH);
 		});
 
 		// Get the thread stack and push a new frame
@@ -111,17 +132,13 @@ public class Window
 
 		//Enable depth testing
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
+
+		//Set current viewport
+		this.setCurrentViewPort(this.defaultViewPort);
 	}
 
 	public void update()
 	{
-		if (this.dirty)
-		{
-			//TODO: Why is this x2?
-			GL11.glViewport(0, 0, this.width * 2, this.height * 2);
-			this.dirty = false;
-		}
-
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 	}
 
@@ -152,6 +169,56 @@ public class Window
 	public InputEngine getInputEngine()
 	{
 		return this.inputEngine;
+	}
+
+	public ViewPort getCurrentViewPort()
+	{
+		return this.viewports.peek();
+	}
+
+	public void setCurrentViewPort(ViewPort viewport)
+	{
+		ViewPort prev = !this.viewports.empty() ? this.viewports.peek() : null;
+		this.viewports.push(viewport);
+
+		GL11.glViewport(0, 0, viewport.getWidth(), viewport.getHeight());
+
+		this.onViewPortChanged.notifyListeners(viewport, prev);
+	}
+
+	public ViewPort removeCurrentViewPort()
+	{
+		if (this.viewports.size() <= 1)
+		{
+			throw new IllegalStateException("Window must have at least 1 viewport!");
+		}
+
+		ViewPort prev = this.viewports.pop();
+		ViewPort viewport = this.viewports.peek();
+
+		GL11.glViewport(0, 0, viewport.getWidth(), viewport.getHeight());
+
+		this.onViewPortChanged.notifyListeners(viewport, prev);
+
+		return prev;
+	}
+
+	public ViewPort removeViewPort(ViewPort viewport)
+	{
+		if (this.viewports.peek() == viewport)
+		{
+			return this.removeCurrentViewPort();
+		}
+		else
+		{
+			return this.viewports.remove(viewport) ? viewport : null;
+		}
+	}
+
+	public void resetViewPort()
+	{
+		this.viewports.clear();
+		this.setCurrentViewPort(this.defaultViewPort);
 	}
 
 	public int getWidth()

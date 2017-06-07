@@ -3,6 +3,7 @@ package net.jimboi.glim.controller;
 import net.jimboi.glim.bounding.Bounding;
 import net.jimboi.glim.bounding.BoundingManager;
 import net.jimboi.glim.bounding.IntersectionData;
+import net.jimboi.mod.transform.Transform;
 import net.jimboi.mod.transform.Transform3;
 import net.jimboi.mod.transform.Transform3Q;
 
@@ -17,11 +18,17 @@ import org.joml.Vector3fc;
  */
 public class FirstPersonMoveController
 {
-	protected float speed = 1F;
+	protected Vector3f velocity = new Vector3f();
+	protected float maxSpeed = 0.4F;
+	protected float acceleration = 0.4F;
+	protected float friction = 0.1F;
 
 	protected float forward;
 	protected float up;
 	protected float right;
+	protected boolean sprint;
+
+	protected float counter;
 
 	protected final Transform3Q target;
 	protected final Bounding bounding;
@@ -47,14 +54,14 @@ public class FirstPersonMoveController
 		this.right = 0;
 		if (InputManager.isInputDown("right")) this.right += 1F;
 		if (InputManager.isInputDown("left")) this.right -= 1F;
+
+		this.sprint = InputManager.isInputDown("sprint");
 	}
 
 	private static final Vector3f _VEC = new Vector3f();
 
 	public void update(Camera camera, double delta)
 	{
-		float magnitude = (float) delta * this.speed;
-
 		Transform3 cameraTransform = camera.getTransform();
 		Vector3f vec = new Vector3f();
 		Vector3f right = cameraTransform.getRight(new Vector3f());
@@ -62,19 +69,23 @@ public class FirstPersonMoveController
 
 		if (this.forward != 0 || this.right != 0)
 		{
-			forward.normalize().mul(magnitude * this.forward);
-			right.normalize().mul(magnitude * this.right);
-			vec.add(forward).add(right);
+			forward.normalize().mul(this.forward);
+			right.normalize().mul(this.right);
+			vec.add(forward).add(right).normalize().mul(this.getSpeed());
 
+			this.velocity.lerp(vec, (float) delta * this.acceleration);
+		}
+		this.velocity.lerp(new Vector3f(), this.friction);
+		vec.set(this.velocity);
+
+		float dist = vec.length();
+		if (dist != 0)
+		{
 			boolean solid = cameraTransform.position.y >= 0 && cameraTransform.position.y < 1;
 
 			IntersectionData data = solid ? this.boundingManager.checkIntersection(this.bounding, vec) : null;
 
-			float dist = vec.length();
-			if (dist != 0)
-			{
-				this.target.translate(vec.normalize(), dist);
-			}
+			this.target.translate(vec.normalize(), dist);
 
 			if (data != null)
 			{
@@ -84,15 +95,30 @@ public class FirstPersonMoveController
 
 		if (this.up != 0)
 		{
-			this.target.translate(Transform3.YAXIS, magnitude * this.up);
+			this.target.translate(Transform3.YAXIS, (float) delta * this.up * this.getSpeed() * 4);
 		}
 
+		if (this.velocity.lengthSquared() != 0)
+		{
+			this.counter += this.velocity.length() * 5;
+			if (this.counter > Transform.PI2) this.counter = 0;
+		}
+
+		float wiggleX = 0.02F;
+		float wiggleY = 0.02F;
 		Vector3fc pos = this.target.position();
 		camera.getTransform().setPosition(pos.x(), pos.y(), pos.z());
+		cameraTransform.moveUp((float) Math.abs(Math.cos(this.counter)) * wiggleY - wiggleY / 2F);
+		cameraTransform.moveRight((float) Math.cos(this.counter) * wiggleX);
+	}
+
+	public float getSpeed()
+	{
+		return this.sprint ? this.maxSpeed * 2 : this.maxSpeed;
 	}
 
 	public void setSpeed(float speed)
 	{
-		this.speed = speed;
+		this.maxSpeed = speed;
 	}
 }

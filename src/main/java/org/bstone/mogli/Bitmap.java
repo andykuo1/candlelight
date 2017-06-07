@@ -24,14 +24,22 @@ public final class Bitmap implements AutoCloseable
 
 	public enum Format
 	{
-		Grayscale,
-		GrayscaleAlpha,
-		RGB,
-		RGBA;
+		GRAYSCALE(1),
+		GRAYSCALEALPHA(2),
+		RGB(3),
+		RGBA(4),
+		DEPTH(1);
+
+		private final int channel;
+
+		Format(int channel)
+		{
+			this.channel = channel;
+		}
 
 		public int getChannel()
 		{
-			return this.ordinal();
+			return this.channel;
 		}
 
 		public static Format valueOf(int channel)

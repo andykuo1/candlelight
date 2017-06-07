@@ -140,6 +140,10 @@ public class RendererGlim extends Renderer
 		this.renderManager.register("program.diffuse", new RenderGlimDiffuse(get("program.diffuse")));
 		this.renderManager.register("program.billboard", new RenderGlimBillboard(get("program.billboard"), RenderGlimBillboard.Type.CYLINDRICAL));
 		this.renderManager.register("program.wireframe", new RenderGlimWireframe(get("program.wireframe")));
+
+		RendererGlim.LIGHTS.add(Light.createSpotLight(0, 0, 0, 0xFFFFFF, 0.4F, 0.1F, 0, 15F, 1, 1, 1));
+		RendererGlim.LIGHTS.add(Light.createPointLight(0, 0, 0, 0xFFFFFF, 0.6F, 0.1F, 0));
+		RendererGlim.LIGHTS.add(Light.createDirectionLight(1000, 1000F, 1000F, 0xFFFFFF, 0.1F, 0.06F));
 	}
 
 	@Override

@@ -10,7 +10,6 @@ import net.jimboi.mod.transform.Transform3Q;
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;
 import org.bstone.input.InputEngine;
-import org.bstone.input.InputManager;
 import org.qsilver.entity.Entity;
 
 /**
@@ -40,15 +39,6 @@ public class CameraControllerGlim implements CameraController, InputEngine.OnInp
 	public void onCameraUpdate(Camera camera, double delta)
 	{
 		this.lookController.update(camera, delta);
-
-		if (InputManager.isInputDown("sprint"))
-		{
-			this.moveController.setSpeed(6F);
-		}
-		else
-		{
-			this.moveController.setSpeed(2F);
-		}
 
 		this.moveController.update(camera, delta);
 	}

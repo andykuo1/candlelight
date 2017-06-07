@@ -58,6 +58,21 @@ public class PerspectiveCamera extends Camera
 		this.clippingFar = farPlane;
 	}
 
+	public float getFarPlane()
+	{
+		return this.clippingFar;
+	}
+
+	public float getNearPlane()
+	{
+		return this.clippingNear;
+	}
+
+	public float getFieldOfView()
+	{
+		return this.fieldOfView;
+	}
+
 	@Override
 	protected void updateProjectionMatrix(Matrix4f mat)
 	{

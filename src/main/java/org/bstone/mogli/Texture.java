@@ -1,6 +1,7 @@
 package org.bstone.mogli;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL21;
 
 import java.nio.ByteBuffer;
@@ -14,14 +15,18 @@ public final class Texture implements AutoCloseable
 {
 	public static final Set<Texture> TEXTURES = new HashSet<>();
 
-	private static int getInternalTextureFormat(Bitmap.Format format, boolean srgb)
+	private static int getInternalTextureFormat(Bitmap.Format format)
 	{
 		switch (format)
 		{
-			case Grayscale: return GL11.GL_LUMINANCE;
-			case GrayscaleAlpha: return GL11.GL_LUMINANCE_ALPHA;
+			case GRAYSCALE:
+				return GL11.GL_LUMINANCE;
+			case GRAYSCALEALPHA:
+				return GL11.GL_LUMINANCE_ALPHA;
 			case RGB: return GL21.GL_SRGB;
 			case RGBA: return GL21.GL_SRGB_ALPHA;
+			case DEPTH:
+				return GL14.GL_DEPTH_COMPONENT16;
 			default:
 				throw new UnsupportedOperationException("Unrecognized bitmap format!");
 		}
@@ -31,10 +36,32 @@ public final class Texture implements AutoCloseable
 	{
 		switch (format)
 		{
-			case Grayscale: return GL11.GL_LUMINANCE;
-			case GrayscaleAlpha: return GL11.GL_LUMINANCE_ALPHA;
+			case GRAYSCALE:
+				return GL11.GL_LUMINANCE;
+			case GRAYSCALEALPHA:
+				return GL11.GL_LUMINANCE_ALPHA;
 			case RGB: return GL11.GL_RGB;
 			case RGBA: return GL11.GL_RGBA;
+			case DEPTH:
+				return GL11.GL_DEPTH_COMPONENT;
+			default:
+				throw new UnsupportedOperationException("Unrecognized bitmap format!");
+		}
+	}
+
+	private static int getTextureBufferType(Bitmap.Format format)
+	{
+		switch (format)
+		{
+			case GRAYSCALE:
+			case GRAYSCALEALPHA:
+			case RGB:
+			case RGBA:
+				return GL11.GL_UNSIGNED_BYTE;
+
+			case DEPTH:
+				return GL11.GL_FLOAT;
+
 			default:
 				throw new UnsupportedOperationException("Unrecognized bitmap format!");
 		}
@@ -47,7 +74,7 @@ public final class Texture implements AutoCloseable
 
 	private int handle;
 
-	public Texture(int width, int height, int minMagFilter, int wrapMode, int pixelFormat)
+	public Texture(int width, int height, int minMagFilter, int wrapMode, Bitmap.Format pixelFormat)
 	{
 		this.bitmap = null;
 
@@ -62,12 +89,12 @@ public final class Texture implements AutoCloseable
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, wrapMode);
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D,
 				0,
-				GL11.GL_DEPTH_COMPONENT,
+				getInternalTextureFormat(pixelFormat),
 				this.width,
 				this.height,
 				0,
-				pixelFormat,
-				GL11.GL_FLOAT,
+				getTextureFormat(pixelFormat),
+				getTextureBufferType(pixelFormat),
 				(ByteBuffer) null);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 
@@ -87,14 +114,15 @@ public final class Texture implements AutoCloseable
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, minMagFilter);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, wrapMode);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, wrapMode);
+		Bitmap.Format format = this.bitmap.getFormat();
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D,
 				0,
-				getInternalTextureFormat(this.bitmap.getFormat(), true),
+				getInternalTextureFormat(format),
 				this.bitmap.getWidth(),
 				this.bitmap.getHeight(),
 				0,
-				getTextureFormat(this.bitmap.getFormat()),
-				GL11.GL_UNSIGNED_BYTE,
+				getTextureFormat(format),
+				getTextureBufferType(format),
 				this.bitmap.getPixelBuffer());
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 
