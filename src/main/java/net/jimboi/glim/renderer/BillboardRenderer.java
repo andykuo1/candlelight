@@ -1,7 +1,9 @@
 package net.jimboi.glim.renderer;
 
-import net.jimboi.mod2.instance.Instance;
+import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod2.material.property.PropertyTexture;
 import net.jimboi.mod2.resource.ResourceLocation;
+import net.jimboi.mod2.sprite.Sprite;
 
 import org.bstone.camera.Camera;
 import org.bstone.mogli.Program;
@@ -13,8 +15,8 @@ import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
-import org.qsilver.render.Material;
-import org.qsilver.render.Model;
+import org.qsilver.material.Material;
+import org.qsilver.model.Model;
 
 import java.util.Iterator;
 
@@ -78,7 +80,16 @@ public class BillboardRenderer implements AutoCloseable
 				Instance inst = iterator.next();
 				Model model = inst.getModel();
 				Material material = inst.getMaterial();
-				Texture texture = material.getTexture();
+
+				Texture texture = null;
+				Sprite sprite = null;
+
+				if (material.hasComponent(PropertyTexture.class))
+				{
+					PropertyTexture propTexture = material.getComponent(PropertyTexture.class);
+					texture = propTexture.texture;
+					sprite = propTexture.sprite;
+				}
 
 				Matrix4fc transformation = inst.getRenderTransformation(this.modelMatrix);
 				Matrix4fc modelViewProj = projView.mul(transformation, this.modelViewProjMatrix);
@@ -87,29 +98,28 @@ public class BillboardRenderer implements AutoCloseable
 
 				model.bind();
 				{
-					GL13.glActiveTexture(GL13.GL_TEXTURE0);
-					texture.bind();
+					if (texture != null)
 					{
-						this.program.setUniform("u_sampler", 0);
-
-						if (material.sprite != null)
-						{
-							float rw = 1F / material.sprite.getTexture().width();
-							float rh = 1F / material.sprite.getTexture().height();
-							program.setUniform("u_tex_offset", new Vector2f(material.sprite.getU() * rw, material.sprite.getV() * rh));
-							program.setUniform("u_tex_scale", new Vector2f(material.sprite.getWidth() * rw, material.sprite.getHeight() * rh));
-						}
-						else
-						{
-							program.setUniform("u_tex_offset", new Vector2f(0, 0));
-							program.setUniform("u_tex_scale", new Vector2f(1, 1));
-						}
-
-						program.setUniform("u_billboard_type", this.type.ordinal());
-
-						GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+						GL13.glActiveTexture(GL13.GL_TEXTURE0);
+						texture.bind();
 					}
-					texture.unbind();
+
+					this.program.setUniform("u_sampler", 0);
+
+					if (sprite != null)
+					{
+						program.setUniform("u_tex_offset", new Vector2f(sprite.getU(), sprite.getV()));
+						program.setUniform("u_tex_scale", new Vector2f(sprite.getWidth(), sprite.getHeight()));
+					}
+
+					this.program.setUniform("u_billboard_type", this.type.ordinal());
+
+					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+
+					if (texture != null)
+					{
+						texture.unbind();
+					}
 				}
 				model.unbind();
 			}

@@ -2,14 +2,14 @@ package net.jimboi.blob.render;
 
 import net.jimboi.blob.RendererBlob;
 import net.jimboi.mod.Light;
+import net.jimboi.mod.Material;
+import net.jimboi.mod.instance.Instance;
 import net.jimboi.mod.render.Render;
-import net.jimboi.mod2.instance.Instance;
 
 import org.bstone.mogli.Program;
 import org.joml.Matrix4fc;
 import org.lwjgl.opengl.GL11;
-import org.qsilver.render.Material;
-import org.qsilver.render.Model;
+import org.qsilver.model.Model;
 
 import java.util.Collection;
 import java.util.Iterator;

@@ -8,7 +8,7 @@ import net.jimboi.mod.Light;
 import net.jimboi.mod.render.RenderManager;
 
 import org.bstone.camera.PerspectiveCamera;
-import org.qsilver.render.Model;
+import org.qsilver.model.Model;
 
 import java.util.ArrayList;
 import java.util.List;

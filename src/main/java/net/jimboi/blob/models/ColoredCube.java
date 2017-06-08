@@ -3,7 +3,7 @@ package net.jimboi.blob.models;
 import net.jimboi.mod2.meshbuilder.ModelUtil;
 
 import org.bstone.mogli.Mesh;
-import org.qsilver.render.Model;
+import org.qsilver.model.Model;
 
 /**
  * Created by Andy on 4/27/17.

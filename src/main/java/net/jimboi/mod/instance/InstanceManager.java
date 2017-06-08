@@ -1,4 +1,4 @@
-package net.jimboi.mod2.instance;
+package net.jimboi.mod.instance;
 
 import org.bstone.util.listener.Listenable;
 

@@ -1,4 +1,4 @@
-package org.qsilver.render;
+package net.jimboi.mod;
 
 import net.jimboi.mod2.sprite.Sprite;
 
@@ -25,7 +25,7 @@ public class Material
 
 	public Material setColor(int color)
 	{
-		this.mainColor.set(ColorUtil.getRedf(color), ColorUtil.getGreenf(color), ColorUtil.getBluef(color));
+		ColorUtil.getNormalizedRGB(color, this.mainColor);
 		return this;
 	}
 

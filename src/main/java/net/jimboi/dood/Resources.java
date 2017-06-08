@@ -1,5 +1,6 @@
 package net.jimboi.dood;
 
+import net.jimboi.mod2.material.DiffuseMaterial;
 import net.jimboi.mod2.meshbuilder.MeshBuilder;
 import net.jimboi.mod2.meshbuilder.ModelUtil;
 import net.jimboi.mod2.resource.ResourceLocation;
@@ -16,8 +17,9 @@ import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import org.qsilver.render.Material;
-import org.qsilver.render.Model;
+import org.qsilver.material.Material;
+import org.qsilver.material.MaterialManager;
+import org.qsilver.model.Model;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -116,6 +118,8 @@ public class Resources
 		return MATERIALS.get(id);
 	}
 
+	private static MaterialManager materialManager;
+
 	public static void load()
 	{
 		//Register Inputs
@@ -168,7 +172,9 @@ public class Resources
 		register("box", new Model(getMesh("box")));
 
 		//Materials
-		register("bird", new Material().setTexture(getTexture("bird")));
-		register("font", new Material().setTexture(getTexture("font")));
+		materialManager = new MaterialManager();
+		DiffuseMaterial.setMaterialManager(materialManager);
+		register("bird", DiffuseMaterial.create(getTexture("bird")));
+		register("font", DiffuseMaterial.create(getTexture("font")));
 	}
 }

@@ -1,5 +1,10 @@
 package org.bstone.util;
 
+import org.joml.Vector3f;
+import org.joml.Vector3i;
+import org.joml.Vector4f;
+import org.joml.Vector4i;
+
 import java.awt.Color;
 import java.util.Random;
 
@@ -16,135 +21,71 @@ public class ColorUtil
 	{
 	}
 
-	public static int colorToHex(Color color)
+	public static int hexColor(int r, int g, int b)
 	{
-		return rgbToHex(color.getRed(), color.getGreen(), color.getBlue());
+		return ((r & 0x0FF) << 16) | ((g & 0x0FF) << 8) | (b & 0x0FF);
 	}
 
-	/**
-	 * Get hex from RGB
-	 */
-	public static int rgbToHex(int red, int green, int blue)
+	public static Vector3f getNormalizedRGB(int hexColor, Vector3f dst)
 	{
-		return ((red & 0x0FF) << 16) | ((green & 0x0FF) << 8) | (blue & 0x0FF);
+		dst.x = red(hexColor) / 255F;
+		dst.y = green(hexColor) / 255F;
+		dst.z = blue(hexColor) / 255F;
+		return dst;
 	}
 
-	/**
-	 * Get normalized red from hex
-	 */
-	public static float getRedf(int parHex)
+	public static Vector3i getRGB(int hexColor, Vector3i dst)
 	{
-		return ColorUtil.getNormalizedChannel(ColorUtil.red(parHex));
+		dst.x = red(hexColor);
+		dst.y = red(hexColor);
+		dst.z = red(hexColor);
+		return dst;
 	}
 
-	/**
-	 * Get red from hex
-	 */
+	public static Vector4f getNormalizedRGBA(int hexColor, Vector4f dst)
+	{
+		dst.x = red(hexColor) / 255F;
+		dst.y = green(hexColor) / 255F;
+		dst.z = blue(hexColor) / 255F;
+		dst.w = alpha(hexColor) / 255F;
+		return dst;
+	}
+
+	public static Vector4i getRGBA(int hexColor, Vector4i dst)
+	{
+		dst.x = red(hexColor);
+		dst.y = green(hexColor);
+		dst.z = blue(hexColor);
+		dst.w = alpha(hexColor);
+		return dst;
+	}
+
 	public static int red(int hex)
 	{
 		return (hex >> 16) & 0xFF;
 	}
 
-	/**
-	 * Get normalized color channel out of 255
-	 */
-	public static float getNormalizedChannel(int parChannel)
-	{
-		return parChannel / 255F;
-	}
-
-	/**
-	 * Get normalized green from hex
-	 */
-	public static float getGreenf(int parHex)
-	{
-		return ColorUtil.getNormalizedChannel(ColorUtil.green(parHex));
-	}
-
-	/**
-	 * Get green from hex
-	 */
 	public static int green(int hex)
 	{
 		return (hex >> 8) & 0xFF;
 	}
 
-	/**
-	 * Get normalized blue from hex
-	 */
-	public static float getBluef(int parHex)
+	public static int blue(int hex)
 	{
-		return ColorUtil.getNormalizedChannel(ColorUtil.blue(parHex));
+		return hex & 0xFF;
 	}
 
-	/**
-	 * Get blue from hex
-	 */
-	public static int blue(int parHex)
+	public static int alpha(int hex)
 	{
-		return parHex & 0xFF;
+		return (hex >> 24) & 0xFF;
 	}
 
-	/**
-	 * Get normalized alpha from hex
-	 */
-	public static float getAlphaf(int parHex)
-	{
-		return ColorUtil.getNormalizedChannel(ColorUtil.getAlpha(parHex));
-	}
-
-	/**
-	 * Get alpha from hex
-	 */
-	public static int getAlpha(int parHex)
-	{
-		return (parHex >> 24) & 0xFF;
-	}
-
-	/**
-	 * Get normalized red from color
-	 */
-	public static float getRedf(Color color)
-	{
-		return ColorUtil.getNormalizedChannel(color.getRed());
-	}
-
-	/**
-	 * Get normalized green from color
-	 */
-	public static float getGreenf(Color color)
-	{
-		return ColorUtil.getNormalizedChannel(color.getGreen());
-	}
-
-	/**
-	 * Get normalized blue from color
-	 */
-	public static float getBluef(Color color)
-	{
-		return ColorUtil.getNormalizedChannel(color.getBlue());
-	}
-
-	/**
-	 * Get normalized alpha from color
-	 */
-	public static float getAlphaf(Color color)
-	{
-		return ColorUtil.getNormalizedChannel(color.getAlpha());
-	}
-
-	/**
-	 * Get random color
-	 */
 	public static Color getRandomColor(Random random, float saturation, float brightness)
 	{
 		float hue = random.nextFloat();
 		return hexToColor(ColorUtil.HSBtoRGB(hue, saturation, brightness));
 	}
 
-	/**
-	 * Get Color from hex
-	 */
 	public static Color hexToColor(int hex)
 	{
 		return new Color(red(hex), green(hex), blue(hex));

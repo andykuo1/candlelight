@@ -3,7 +3,7 @@ package net.jimboi.glim.system;
 import net.jimboi.glim.component.GameComponentInstance;
 import net.jimboi.glim.gameentity.GameEntity;
 import net.jimboi.glim.gameentity.GameEntityManager;
-import net.jimboi.mod2.instance.InstanceManager;
+import net.jimboi.mod.instance.InstanceManager;
 
 /**
  * Created by Andy on 6/1/17.

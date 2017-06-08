@@ -1,10 +1,10 @@
-package net.jimboi.mod2.instance;
+package net.jimboi.mod.instance;
 
 import net.jimboi.mod2.transform.Transform;
 
 import org.joml.Matrix4f;
-import org.qsilver.render.Material;
-import org.qsilver.render.Model;
+import org.qsilver.material.Material;
+import org.qsilver.model.Model;
 
 /**
  * Created by Andy on 4/8/17.

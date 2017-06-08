@@ -4,8 +4,10 @@ import net.jimboi.glim.renderer.BillboardRenderer;
 import net.jimboi.glim.renderer.DiffuseRenderer;
 import net.jimboi.glim.renderer.WireframeRenderer;
 import net.jimboi.mod.Light;
-import net.jimboi.mod2.instance.Instance;
-import net.jimboi.mod2.instance.InstanceManager;
+import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod.instance.InstanceManager;
+import net.jimboi.mod2.material.DiffuseMaterial;
+import net.jimboi.mod2.material.property.PropertyDiffuse;
 import net.jimboi.mod2.meshbuilder.MeshBuilder;
 import net.jimboi.mod2.meshbuilder.ModelUtil;
 import net.jimboi.mod2.resource.ResourceLocation;
@@ -27,8 +29,9 @@ import org.joml.Vector3fc;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import org.qsilver.render.Material;
-import org.qsilver.render.Model;
+import org.qsilver.material.Material;
+import org.qsilver.material.MaterialManager;
+import org.qsilver.model.Model;
 import org.qsilver.renderer.Renderer;
 
 import java.util.ArrayList;
@@ -60,6 +63,7 @@ public class RendererGlim extends Renderer
 	public static List<Light> LIGHTS = new ArrayList<>();
 
 	protected InstanceManager instanceManager;
+	protected MaterialManager materialManager;
 
 	protected DiffuseRenderer diffuseRenderer;
 	protected BillboardRenderer billboardRenderer;
@@ -74,6 +78,7 @@ public class RendererGlim extends Renderer
 	public void onRenderLoad()
 	{
 		this.instanceManager = new InstanceManager((inst) -> null);
+		this.materialManager = new MaterialManager();
 
 		//Register Inputs
 		InputManager.registerMousePosX("mousex");
@@ -119,11 +124,14 @@ public class RendererGlim extends Renderer
 		register("model.box", new Model(get("mesh.box")));
 
 		//Materials
-		register("material.bird", new Material().setTexture(get("texture.bird")));
-		register("material.plane", new Material().setTexture(get("texture.bird")));
-		register("material.font", new Material().setTexture(get("texture.font")));
-		register("material.crate", new Material().setTexture(get("texture.crate")));
-		register("material.box", new Material().setColor(0xFF00FF));
+		DiffuseMaterial.setMaterialManager(this.materialManager);
+		register("material.bird", DiffuseMaterial.create(get("texture.bird")));
+		register("material.plane", DiffuseMaterial.create(get("texture.bird")));
+		register("material.font", DiffuseMaterial.create(get("texture.font")));
+		register("material.crate", DiffuseMaterial.create(get("texture.crate")));
+
+		Material mat_box = register("material.box", DiffuseMaterial.create(null));
+		mat_box.getComponent(PropertyDiffuse.class).setDiffuseColor(0xFF00FF);
 
 		this.diffuseRenderer = new DiffuseRenderer(CAMERA);
 		this.billboardRenderer = new BillboardRenderer(CAMERA, BillboardRenderer.Type.CYLINDRICAL);

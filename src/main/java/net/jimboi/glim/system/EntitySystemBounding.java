@@ -8,8 +8,8 @@ import net.jimboi.glim.component.GameComponentBounding;
 import net.jimboi.glim.component.GameComponentTransform;
 import net.jimboi.glim.gameentity.GameEntity;
 import net.jimboi.glim.gameentity.GameEntityManager;
-import net.jimboi.mod2.instance.Instance;
-import net.jimboi.mod2.instance.InstanceManager;
+import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod.instance.InstanceManager;
 
 import org.joml.Vector3fc;
 import org.qsilver.scene.Scene;

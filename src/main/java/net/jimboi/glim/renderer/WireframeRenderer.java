@@ -1,19 +1,19 @@
 package net.jimboi.glim.renderer;
 
-import net.jimboi.mod2.instance.Instance;
+import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod2.material.property.PropertyDiffuse;
 import net.jimboi.mod2.resource.ResourceLocation;
 
 import org.bstone.camera.Camera;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
-import org.bstone.mogli.Texture;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
+import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
-import org.qsilver.render.Material;
-import org.qsilver.render.Model;
+import org.qsilver.material.Material;
+import org.qsilver.model.Model;
 
 import java.util.Iterator;
 
@@ -68,7 +68,14 @@ public class WireframeRenderer implements AutoCloseable
 				Instance inst = iterator.next();
 				Model model = inst.getModel();
 				Material material = inst.getMaterial();
-				Texture texture = material.getTexture();
+
+				Vector3f diffuseColor = null;
+
+				if (material.hasComponent(PropertyDiffuse.class))
+				{
+					PropertyDiffuse propDiffuse = material.getComponent(PropertyDiffuse.class);
+					diffuseColor = propDiffuse.diffuseColor;
+				}
 
 				Matrix4fc transformation = inst.getRenderTransformation(this.modelMatrix);
 				Matrix4fc modelViewProj = projView.mul(transformation, this.modelViewProjMatrix);
@@ -77,20 +84,9 @@ public class WireframeRenderer implements AutoCloseable
 
 				model.bind();
 				{
-					if (texture != null)
-					{
-						GL13.glActiveTexture(GL13.GL_TEXTURE0);
-						texture.bind();
-					}
-
-					program.setUniform("u_color", material.mainColor);
+					program.setUniform("u_color", diffuseColor);
 
 					GL11.glDrawElements(GL11.GL_LINE_LOOP, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
-
-					if (texture != null)
-					{
-						texture.unbind();
-					}
 				}
 				model.unbind();
 			}

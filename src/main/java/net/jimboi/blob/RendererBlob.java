@@ -7,11 +7,12 @@ import net.jimboi.blob.render.RenderLit;
 import net.jimboi.blob.render.RenderTexture;
 import net.jimboi.blob.torchlite.MazeWorld;
 import net.jimboi.mod.Light;
+import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod.instance.InstanceHandler;
+import net.jimboi.mod.instance.InstanceManager;
 import net.jimboi.mod.render.Render;
 import net.jimboi.mod.render.RenderManager;
-import net.jimboi.mod2.instance.Instance;
-import net.jimboi.mod2.instance.InstanceHandler;
-import net.jimboi.mod2.instance.InstanceManager;
+import net.jimboi.mod2.material.DiffuseMaterial;
 import net.jimboi.mod2.meshbuilder.MeshBuilder;
 import net.jimboi.mod2.meshbuilder.MeshData;
 import net.jimboi.mod2.meshbuilder.ModelUtil;
@@ -21,8 +22,9 @@ import org.bstone.camera.PerspectiveCamera;
 import org.bstone.mogli.Texture;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.qsilver.render.Material;
-import org.qsilver.render.Model;
+import org.qsilver.material.Material;
+import org.qsilver.material.MaterialManager;
+import org.qsilver.model.Model;
 import org.qsilver.renderer.Renderer;
 
 import java.util.ArrayList;
@@ -39,6 +41,7 @@ public class RendererBlob extends Renderer implements InstanceManager.OnInstance
 
 	protected final RenderManager renderManager;
 	protected final InstanceManager instanceManager;
+	protected final MaterialManager materialManager;
 
 	private MazeWorld world;
 
@@ -58,6 +61,8 @@ public class RendererBlob extends Renderer implements InstanceManager.OnInstance
 		});
 		this.instanceManager.onInstanceAdd.addListener(this);
 		this.instanceManager.onInstanceRemove.addListener(this);
+
+		this.materialManager = new MaterialManager();
 	}
 
 	@Override
@@ -92,10 +97,11 @@ public class RendererBlob extends Renderer implements InstanceManager.OnInstance
 		Texture tex_woodenCrate = RenderUtil.loadTexture(new ResourceLocation("blob:wooden-crate.jpg"));
 
 		//Materials
-		Material mat_woodenCrate = new Material().setTexture(tex_woodenCrate);
+		DiffuseMaterial.setMaterialManager(this.materialManager);
+		Material mat_woodenCrate = DiffuseMaterial.create(tex_woodenCrate);
 		RenderUtil.registerMaterial("woodenCrate", mat_woodenCrate);
 
-		Material mat_billboard = new Material().setTexture(tex_woodenCrate);
+		Material mat_billboard = DiffuseMaterial.create(tex_woodenCrate);
 		RenderUtil.registerMaterial("billboard", mat_billboard);
 
 		//Models

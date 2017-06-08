@@ -21,10 +21,7 @@ public class Light
 	{
 		Light light = new Light();
 		light.position.set(x, y, z, 1);
-		light.color.set(
-				ColorUtil.getRedf(color) * intensity,
-				ColorUtil.getGreenf(color) * intensity,
-				ColorUtil.getBluef(color) * intensity);
+		ColorUtil.getNormalizedRGB(color, light.color).mul(intensity);
 		light.attentuation = attenuation;
 		light.ambientCoefficient = ambientCoefficient;
 		light.coneAngle = 360;
@@ -36,10 +33,7 @@ public class Light
 	{
 		Light light = new Light();
 		light.position.set(x, y, z, 1);
-		light.color.set(
-				ColorUtil.getRedf(color) * intensity,
-				ColorUtil.getGreenf(color) * intensity,
-				ColorUtil.getBluef(color) * intensity);
+		ColorUtil.getNormalizedRGB(color, light.color).mul(intensity);
 		light.attentuation = attenuation;
 		light.ambientCoefficient = ambientCoefficient;
 		light.coneAngle = coneAngle;
@@ -51,10 +45,7 @@ public class Light
 	{
 		Light light = new Light();
 		light.position.set(x, y, z, 0);
-		light.color.set(
-				ColorUtil.getRedf(color) * intensity,
-				ColorUtil.getGreenf(color) * intensity,
-				ColorUtil.getBluef(color) * intensity);
+		ColorUtil.getNormalizedRGB(color, light.color).mul(intensity);
 		light.attentuation = 0;
 		light.ambientCoefficient = ambientCoefficient;
 		light.coneAngle = 0;

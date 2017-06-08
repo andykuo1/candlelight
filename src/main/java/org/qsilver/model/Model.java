@@ -1,4 +1,4 @@
-package org.qsilver.render;
+package org.qsilver.model;
 
 import org.bstone.mogli.Mesh;
 import org.joml.Matrix4f;

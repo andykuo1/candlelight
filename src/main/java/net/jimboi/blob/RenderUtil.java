@@ -11,8 +11,8 @@ import org.bstone.util.loader.OBJLoader;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL20;
-import org.qsilver.render.Material;
-import org.qsilver.render.Model;
+import org.qsilver.material.Material;
+import org.qsilver.model.Model;
 
 import java.util.HashMap;
 import java.util.Map;

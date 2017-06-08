@@ -1,11 +1,11 @@
 package net.jimboi.blob;
 
-import net.jimboi.mod2.instance.Instance;
+import net.jimboi.mod.instance.Instance;
 import net.jimboi.mod2.transform.Transform3;
 
 import org.qsilver.living.Living;
-import org.qsilver.render.Material;
-import org.qsilver.render.Model;
+import org.qsilver.material.Material;
+import org.qsilver.model.Model;
 
 /**
  * Created by Andy on 4/19/17.

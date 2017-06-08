@@ -1,15 +1,15 @@
 package net.jimboi.dood.render;
 
 import net.jimboi.dood.ResourcesDood;
+import net.jimboi.mod.Material;
+import net.jimboi.mod.instance.Instance;
 import net.jimboi.mod.render.Render;
-import net.jimboi.mod2.instance.Instance;
 
 import org.bstone.mogli.Program;
 import org.joml.Matrix4fc;
 import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
-import org.qsilver.render.Material;
-import org.qsilver.render.Model;
+import org.qsilver.model.Model;
 
 /**
  * Created by Andy on 5/20/17.

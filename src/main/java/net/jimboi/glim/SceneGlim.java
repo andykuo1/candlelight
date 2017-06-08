@@ -10,14 +10,14 @@ import net.jimboi.glim.gameentity.GameEntity;
 import net.jimboi.glim.system.EntitySystemBounding;
 import net.jimboi.glim.system.EntitySystemInstance;
 import net.jimboi.mod.Light;
-import net.jimboi.mod2.instance.Instance;
+import net.jimboi.mod.instance.Instance;
 import net.jimboi.mod2.sprite.TiledTextureAtlas;
 import net.jimboi.mod2.transform.Transform;
 
 import org.bstone.mogli.Mesh;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import org.qsilver.render.Model;
+import org.qsilver.model.Model;
 
 /**
  * Created by Andy on 6/1/17.
