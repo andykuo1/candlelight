@@ -7,12 +7,12 @@ import net.jimboi.glim.bounding.BoundingManager;
 import net.jimboi.glim.bounding.square.AABB;
 import net.jimboi.glim.component.EntityComponentBounding;
 import net.jimboi.glim.component.EntityComponentTransform;
+import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod.instance.InstanceManager;
 
 import org.joml.Vector3fc;
 import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
-import org.qsilver.render.Instance;
-import org.qsilver.render.InstanceManager;
 import org.qsilver.scene.Scene;
 
 import java.util.Collection;
@@ -70,7 +70,8 @@ public class EntitySystemBounding extends EntitySystem implements Scene.OnSceneU
 				AABB aabb = (AABB) bounding;
 				Instance inst = entry.getValue();
 
-				inst.transformation().translation(bounding.position()).scale(aabb.radius.x * 2, 1, aabb.radius.y * 2);
+				Vector3fc vec = bounding.position();
+				inst.transformation().translation(vec.x(), vec.y() + 0.5F, vec.z()).scale(aabb.radius.x * 2, 1, aabb.radius.y * 2);
 			}
 		}
 	}
@@ -80,7 +81,7 @@ public class EntitySystemBounding extends EntitySystem implements Scene.OnSceneU
 	{
 		if (bounding instanceof AABB)
 		{
-			Instance inst = new Instance(RendererGlim.get("model.box"), RendererGlim.get("material.box"));
+			Instance inst = new Instance(RendererGlim.get("model.box"), RendererGlim.get("material.box"), "wireframe");
 			this.instances.put(bounding, inst);
 			this.instanceManager.add(inst);
 		}

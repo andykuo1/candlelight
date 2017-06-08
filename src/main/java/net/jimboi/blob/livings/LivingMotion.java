@@ -1,6 +1,6 @@
 package net.jimboi.blob.livings;
 
-import net.jimboi.mod.transform.Transform3;
+import net.jimboi.mod2.transform.Transform3;
 
 import org.bstone.util.MathUtil;
 import org.joml.Vector3f;

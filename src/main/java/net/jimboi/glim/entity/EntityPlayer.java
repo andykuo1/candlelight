@@ -4,7 +4,7 @@ import net.jimboi.glim.WorldGlim;
 import net.jimboi.glim.bounding.square.AABB;
 import net.jimboi.glim.component.EntityComponentBounding;
 import net.jimboi.glim.component.EntityComponentTransform;
-import net.jimboi.mod.transform.Transform3;
+import net.jimboi.mod2.transform.Transform3;
 
 import org.qsilver.entity.Entity;
 

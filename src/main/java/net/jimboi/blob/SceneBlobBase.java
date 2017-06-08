@@ -1,11 +1,11 @@
 package net.jimboi.blob;
 
 import net.jimboi.base.Main;
+import net.jimboi.mod.instance.InstanceHandler;
 import net.jimboi.mod.scene.LivingSceneBase;
 
 import org.qsilver.living.Living;
 import org.qsilver.living.LivingManager;
-import org.qsilver.render.InstanceHandler;
 import org.qsilver.renderer.Renderer;
 
 /**

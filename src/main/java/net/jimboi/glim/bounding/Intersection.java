@@ -1,6 +1,6 @@
 package net.jimboi.glim.bounding;
 
-import org.bstone.util.Function2;
+import org.bstone.util.function.Function2;
 
 import java.util.HashMap;
 import java.util.Map;

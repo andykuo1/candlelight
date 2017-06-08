@@ -1,7 +1,7 @@
 package net.jimboi.dood.base;
 
-import net.jimboi.mod.transform.DirectionVectors;
-import net.jimboi.mod.transform.Transform3;
+import net.jimboi.mod2.transform.DirectionVectors;
+import net.jimboi.mod2.transform.Transform3;
 
 import org.joml.Vector3f;
 

@@ -5,7 +5,7 @@ import net.jimboi.glim.bounding.square.AABB;
 import net.jimboi.glim.component.EntityComponentBounding;
 import net.jimboi.glim.component.EntityComponentInstance;
 import net.jimboi.glim.component.EntityComponentTransform;
-import net.jimboi.mod.transform.Transform3;
+import net.jimboi.mod2.transform.Transform3;
 
 import org.qsilver.entity.Entity;
 
@@ -20,7 +20,7 @@ public class EntityCrate extends EntityGlim
 		transform.position.set(x, y, z);
 		return MANAGER.createEntity()
 				.addComponent(new EntityComponentTransform(transform))
-				.addComponent(new EntityComponentInstance(transform, "model.box", "material.crate"))
+				.addComponent(new EntityComponentInstance(transform, "model.box", "material.crate", "diffuse"))
 				.addComponent(new EntityComponentBounding(world.getBoundingManager().create(new AABB(transform.position.x, transform.position.z, 0.5F, 0.5F))));
 	}
 }

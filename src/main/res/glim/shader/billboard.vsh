@@ -6,7 +6,6 @@ layout (location=1) in vec2 a_texcoord;
 out vec2 v_texcoord;
 
 uniform mat4 u_model_view_projection;
-uniform mat4 u_model_view;
 
 uniform mat4 u_model;
 uniform mat4 u_view;
@@ -23,7 +22,7 @@ uniform int u_billboard_type;
 void main()
 {
     mat4 mvp = u_model_view_projection;
-    mat4 mv = u_model_view;
+    mat4 mv = u_view * u_model;
     mat4 m = u_model;
     mat4 v = u_view;
     mat4 p = u_projection;

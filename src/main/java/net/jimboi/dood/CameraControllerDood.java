@@ -3,7 +3,7 @@ package net.jimboi.dood;
 import net.jimboi.dood.component.ComponentBox2DBody;
 import net.jimboi.dood.component.ComponentTransform;
 import net.jimboi.mod.cameracontroller.CameraControllerBox2D;
-import net.jimboi.mod.transform.Transform3;
+import net.jimboi.mod2.transform.Transform3;
 
 import org.bstone.util.MathUtil;
 import org.jbox2d.common.Vec2;

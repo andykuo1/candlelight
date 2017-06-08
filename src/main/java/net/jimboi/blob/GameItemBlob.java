@@ -1,9 +1,9 @@
 package net.jimboi.blob;
 
-import net.jimboi.mod.transform.Transform3;
+import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod2.transform.Transform3;
 
 import org.qsilver.living.Living;
-import org.qsilver.render.Instance;
 import org.qsilver.render.Material;
 import org.qsilver.render.Model;
 
@@ -16,9 +16,9 @@ public class GameItemBlob extends Living
 
 	private Instance instance;
 
-	public GameItemBlob(Model model, Material material)
+	public GameItemBlob(Model model, Material material, String renderType)
 	{
-		this.instance = new Instance(model, material);
+		this.instance = new Instance(model, material, renderType);
 	}
 
 	@Override

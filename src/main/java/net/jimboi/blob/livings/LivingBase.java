@@ -1,12 +1,12 @@
 package net.jimboi.blob.livings;
 
 import net.jimboi.blob.RenderUtil;
-import net.jimboi.mod.transform.Transform;
+import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod.instance.InstanceHandler;
+import net.jimboi.mod.instance.InstanceManager;
+import net.jimboi.mod2.transform.Transform;
 
 import org.qsilver.living.Living;
-import org.qsilver.render.Instance;
-import org.qsilver.render.InstanceHandler;
-import org.qsilver.render.InstanceManager;
 import org.qsilver.render.Material;
 import org.qsilver.render.Model;
 
@@ -29,7 +29,7 @@ public abstract class LivingBase extends Living implements InstanceHandler
 	{
 		Model model = RenderUtil.getModel(this.getModelID());
 		Material material = RenderUtil.getMaterial(this.getMaterialID());
-		instances.add(new Instance(model, material));
+		instances.add(new Instance(model, material, getRenderType()));
 	}
 
 	@Override
@@ -81,6 +81,8 @@ public abstract class LivingBase extends Living implements InstanceHandler
 
 	public abstract String getModelID();
 	public abstract String getMaterialID();
+
+	public abstract String getRenderType();
 
 	public Transform transform()
 	{

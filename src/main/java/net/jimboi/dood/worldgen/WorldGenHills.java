@@ -1,7 +1,7 @@
 package net.jimboi.dood.worldgen;
 
-import net.jimboi.mod.meshbuilder.MeshBuilder;
-import net.jimboi.mod.meshbuilder.ModelUtil;
+import net.jimboi.mod2.meshbuilder.MeshBuilder;
+import net.jimboi.mod2.meshbuilder.ModelUtil;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.util.ArrayUtil;

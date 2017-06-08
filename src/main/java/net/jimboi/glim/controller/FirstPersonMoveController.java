@@ -3,9 +3,9 @@ package net.jimboi.glim.controller;
 import net.jimboi.glim.bounding.Bounding;
 import net.jimboi.glim.bounding.BoundingManager;
 import net.jimboi.glim.bounding.IntersectionData;
-import net.jimboi.mod.transform.Transform;
-import net.jimboi.mod.transform.Transform3;
-import net.jimboi.mod.transform.Transform3Q;
+import net.jimboi.mod2.transform.Transform;
+import net.jimboi.mod2.transform.Transform3;
+import net.jimboi.mod2.transform.Transform3Q;
 
 import org.bstone.camera.Camera;
 import org.bstone.input.InputEngine;

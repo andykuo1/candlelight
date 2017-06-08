@@ -3,11 +3,11 @@ package net.jimboi.dood.base;
 import net.jimboi.dood.Resources;
 import net.jimboi.dood.component.ComponentInstanceable;
 import net.jimboi.dood.component.ComponentTransform;
+import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod.instance.InstanceHandler;
+import net.jimboi.mod.instance.InstanceManager;
 
 import org.qsilver.entity.Entity;
-import org.qsilver.render.Instance;
-import org.qsilver.render.InstanceHandler;
-import org.qsilver.render.InstanceManager;
 import org.qsilver.render.Material;
 import org.qsilver.render.Model;
 
@@ -30,7 +30,7 @@ public class EntityInstanceHandler implements InstanceHandler
 	{
 		Model model = Resources.getModel(this.entity.getComponent(ComponentInstanceable.class).modelID);
 		Material material = Resources.getMaterial(this.entity.getComponent(ComponentInstanceable.class).materialID);
-		instances.add(new Instance(model, material));
+		instances.add(new Instance(model, material, this.entity.getComponent(ComponentInstanceable.class).renderType));
 	}
 
 	@Override

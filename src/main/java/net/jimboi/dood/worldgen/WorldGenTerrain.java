@@ -1,8 +1,8 @@
 package net.jimboi.dood.worldgen;
 
-import net.jimboi.mod.meshbuilder.MeshData;
-import net.jimboi.mod.meshbuilder.ModelUtil;
-import net.jimboi.torchlite.MazeWorld;
+import net.jimboi.mod.torchlite.MazeWorld;
+import net.jimboi.mod2.meshbuilder.MeshData;
+import net.jimboi.mod2.meshbuilder.ModelUtil;
 
 import org.bstone.mogli.Mesh;
 

@@ -1,23 +1,24 @@
 package net.jimboi.glim;
 
-import net.jimboi.glim.render.RenderGlimBillboard;
-import net.jimboi.glim.render.RenderGlimDiffuse;
-import net.jimboi.glim.render.RenderGlimWireframe;
+import net.jimboi.glim.renderer.BillboardRenderer;
+import net.jimboi.glim.renderer.DiffuseRenderer;
+import net.jimboi.glim.renderer.WireframeRenderer;
 import net.jimboi.mod.Light;
-import net.jimboi.mod.meshbuilder.MeshBuilder;
-import net.jimboi.mod.meshbuilder.ModelUtil;
-import net.jimboi.mod.render.Render;
-import net.jimboi.mod.render.RenderManager;
-import net.jimboi.mod.resource.ResourceLocation;
+import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod.instance.InstanceManager;
+import net.jimboi.mod2.meshbuilder.MeshBuilder;
+import net.jimboi.mod2.meshbuilder.ModelUtil;
+import net.jimboi.mod2.resource.ResourceLocation;
+import net.jimboi.mod2.sprite.Sprite;
+import net.jimboi.mod2.sprite.TiledTextureAtlas;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.input.InputManager;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
-import org.bstone.mogli.Program;
-import org.bstone.mogli.Shader;
 import org.bstone.mogli.Texture;
+import org.bstone.util.iterator.FilterIterator;
 import org.bstone.util.loader.OBJLoader;
 import org.bstone.util.map2d.IntMap;
 import org.joml.Vector2f;
@@ -26,19 +27,15 @@ import org.joml.Vector3fc;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import org.qsilver.render.Instance;
-import org.qsilver.render.InstanceManager;
 import org.qsilver.render.Material;
 import org.qsilver.render.Model;
 import org.qsilver.renderer.Renderer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
-import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 
 /**
  * Created by Andy on 6/1/17.
@@ -63,7 +60,10 @@ public class RendererGlim extends Renderer
 	public static List<Light> LIGHTS = new ArrayList<>();
 
 	protected InstanceManager instanceManager;
-	protected RenderManager renderManager;
+
+	protected DiffuseRenderer diffuseRenderer;
+	protected BillboardRenderer billboardRenderer;
+	protected WireframeRenderer wireframeRenderer;
 
 	public RendererGlim()
 	{
@@ -73,8 +73,7 @@ public class RendererGlim extends Renderer
 	@Override
 	public void onRenderLoad()
 	{
-		this.instanceManager = new InstanceManager(this::onInstanceRender);
-		this.renderManager = new RenderManager();
+		this.instanceManager = new InstanceManager((inst) -> null);
 
 		//Register Inputs
 		InputManager.registerMousePosX("mousex");
@@ -92,19 +91,6 @@ public class RendererGlim extends Renderer
 		InputManager.registerKey("action", GLFW.GLFW_KEY_F);
 		InputManager.registerKey("sprint", GLFW.GLFW_KEY_LEFT_SHIFT, GLFW.GLFW_KEY_RIGHT_SHIFT);
 
-		//Shaders
-		register("vertex.diffuse", new Shader(new ResourceLocation("glim:diffuse.vsh"), GL_VERTEX_SHADER));
-		register("fragment.diffuse", new Shader(new ResourceLocation("glim:diffuse.fsh"), GL_FRAGMENT_SHADER));
-		register("vertex.billboard", new Shader(new ResourceLocation("glim:billboard.vsh"), GL_VERTEX_SHADER));
-		register("fragment.billboard", new Shader(new ResourceLocation("glim:billboard.fsh"), GL_FRAGMENT_SHADER));
-		register("vertex.wireframe", new Shader(new ResourceLocation("glim:wireframe.vsh"), GL_VERTEX_SHADER));
-		register("fragment.wireframe", new Shader(new ResourceLocation("glim:wireframe.fsh"), GL_FRAGMENT_SHADER));
-
-		//Programs
-		register("program.diffuse", new Program().link(get("vertex.diffuse"), get("fragment.diffuse")));
-		register("program.billboard", new Program().link(get("vertex.billboard"), get("fragment.billboard")));
-		register("program.wireframe", new Program().link(get("vertex.wireframe"), get("fragment.wireframe")));
-
 		//Bitmaps
 		register("bitmap.bird", new Bitmap(new ResourceLocation("glim:bird.png")));
 		register("bitmap.font_basic", new Bitmap(new ResourceLocation("glim:font_basic.png")));
@@ -112,8 +98,9 @@ public class RendererGlim extends Renderer
 
 		//Textures
 		register("texture.bird", new Texture(get("bitmap.bird"), GL11.GL_LINEAR, GL12.GL_CLAMP_TO_EDGE));
-		register("texture.font", new Texture(get("bitmap.font_basic"), GL11.GL_LINEAR, GL12.GL_CLAMP_TO_EDGE));
+		register("texture.font", new Texture(get("bitmap.font_basic"), GL11.GL_NEAREST, GL12.GL_CLAMP_TO_EDGE));
 		register("texture.crate", new Texture(get("bitmap.wooden_crate"), GL11.GL_LINEAR, GL12.GL_CLAMP_TO_EDGE));
+		register("texture.atlas", new Texture(get("bitmap.font_basic"), GL11.GL_NEAREST, GL12.GL_CLAMP_TO_EDGE));
 
 		//Meshes
 		register("mesh.ball", OBJLoader.read(new ResourceLocation("glim:sphere.obj").getFilePath()));
@@ -132,14 +119,15 @@ public class RendererGlim extends Renderer
 		register("model.box", new Model(get("mesh.box")));
 
 		//Materials
-		register("material.bird", new Material("program.diffuse").setTexture(get("texture.bird")));
-		register("material.font", new Material("program.diffuse").setTexture(get("texture.font")));
-		register("material.crate", new Material("program.diffuse").setTexture(get("texture.crate")));
-		register("material.box", new Material("program.wireframe").setColor(0xFF00FF));
+		register("material.bird", new Material().setTexture(get("texture.bird")));
+		register("material.plane", new Material().setTexture(get("texture.bird")));
+		register("material.font", new Material().setTexture(get("texture.font")));
+		register("material.crate", new Material().setTexture(get("texture.crate")));
+		register("material.box", new Material().setColor(0xFF00FF));
 
-		this.renderManager.register("program.diffuse", new RenderGlimDiffuse(get("program.diffuse")));
-		this.renderManager.register("program.billboard", new RenderGlimBillboard(get("program.billboard"), RenderGlimBillboard.Type.CYLINDRICAL));
-		this.renderManager.register("program.wireframe", new RenderGlimWireframe(get("program.wireframe")));
+		this.diffuseRenderer = new DiffuseRenderer(CAMERA);
+		this.billboardRenderer = new BillboardRenderer(CAMERA, BillboardRenderer.Type.CYLINDRICAL);
+		this.wireframeRenderer = new WireframeRenderer(CAMERA);
 
 		RendererGlim.LIGHTS.add(Light.createSpotLight(0, 0, 0, 0xFFFFFF, 0.4F, 0.1F, 0, 15F, 1, 1, 1));
 		RendererGlim.LIGHTS.add(Light.createPointLight(0, 0, 0, 0xFFFFFF, 0.6F, 0.1F, 0));
@@ -149,6 +137,15 @@ public class RendererGlim extends Renderer
 	@Override
 	public void onRenderUpdate()
 	{
+		Iterator<Instance> iter = new FilterIterator<>(this.instanceManager.getInstanceIterator(), (inst) -> inst.getRenderType().equals("diffuse"));
+		this.diffuseRenderer.render(iter);
+
+		iter = new FilterIterator<>(this.instanceManager.getInstanceIterator(), (inst) -> inst.getRenderType().equals("billboard"));
+		this.billboardRenderer.render(iter);
+
+		iter = new FilterIterator<>(this.instanceManager.getInstanceIterator(), (inst) -> inst.getRenderType().equals("wireframe"));
+		this.wireframeRenderer.render(iter);
+
 		this.instanceManager.update();
 	}
 
@@ -158,29 +155,21 @@ public class RendererGlim extends Renderer
 		this.instanceManager.destroyAll();
 	}
 
-	private Void onInstanceRender(Instance instance)
-	{
-		Render render = this.renderManager.get(instance.getMaterial().getRenderID());
-		if (render != null) render.onRender(instance);
-		return null;
-	}
-
 	public InstanceManager getInstanceManager()
 	{
 		return this.instanceManager;
 	}
 
-	public RenderManager getRenderManager()
-	{
-		return this.renderManager;
-	}
-
-	public static Mesh createMeshFromMap(IntMap map)
+	public static Mesh createMeshFromMap(IntMap map, TiledTextureAtlas textureAtlas)
 	{
 		MeshBuilder mb = new MeshBuilder();
 
 		Vector2f texTopLeft = new Vector2f();
 		Vector2f texBotRight = new Vector2f(1, 1);
+
+		Sprite sprite = textureAtlas.getSprite(5, 8);
+		Vector2f texSideTopLeft = new Vector2f(sprite.getU(), sprite.getV());
+		Vector2f texSideBotRight = new Vector2f(texSideTopLeft).add(sprite.getWidth(), sprite.getHeight());
 
 		Vector3f u = new Vector3f();
 		Vector3f v = new Vector3f();
@@ -194,10 +183,18 @@ public class RendererGlim extends Renderer
 
 				if (!isSolid(map, x, y))
 				{
+					int tile = 0;
+					if (!isSolid(map, x + 1, y)) tile += 1;
+					if (!isSolid(map, x, y - 1)) tile += 2;
+					if (!isSolid(map, x - 1, y)) tile += 4;
+					if (!isSolid(map, x, y + 1)) tile += 8;
+					sprite = textureAtlas.getSprite(tile, 9);
+					texTopLeft.set(sprite.getU(), sprite.getV());
+					texBotRight.set(texTopLeft).add(sprite.getWidth(), sprite.getHeight());
+
 					mb.addBox(wallPos.add(0, -1, 0, u),
 							wallPos.add(1, 0, 1, v),
-							texTopLeft,
-							texBotRight,
+							texTopLeft, texBotRight,
 							false,
 							true,
 							false,
@@ -207,21 +204,35 @@ public class RendererGlim extends Renderer
 				}
 				else
 				{
+					int tile = 0;
+					if (isSolid(map, x + 1, y)) tile += 1;
+					if (isSolid(map, x, y - 1)) tile += 2;
+					if (isSolid(map, x - 1, y)) tile += 4;
+					if (isSolid(map, x, y + 1)) tile += 8;
+					sprite = textureAtlas.getSprite(tile, 0);
+					texTopLeft.set(sprite.getU(), sprite.getV());
+					texBotRight.set(texTopLeft).add(sprite.getWidth(), sprite.getHeight());
+
 					boolean front = !isSolid(map, x, y + 1);
 					boolean back = !isSolid(map, x, y - 1);
 					boolean left = !isSolid(map, x - 1, y);
 					boolean right = !isSolid(map, x + 1, y);
 
-					mb.addBox(wallPos,
+					mb.addTexturedBox(wallPos,
 							wallPos.add(1, 1, 1, v),
-							texTopLeft,
-							texBotRight,
+							texSideTopLeft, texSideBotRight,//Front
+							texSideTopLeft, texSideBotRight,//Back
+							texTopLeft, texBotRight,//Top
+							texTopLeft, texBotRight,//Bot
+							texSideTopLeft, texSideBotRight,//Left
+							texSideTopLeft, texSideBotRight,//Right
 							false,
 							true,
 							front,
 							back,
 							left,
-							right);
+							right,
+							true);
 				}
 			}
 		}

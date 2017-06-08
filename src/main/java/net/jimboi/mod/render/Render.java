@@ -1,8 +1,9 @@
 package net.jimboi.mod.render;
 
+import net.jimboi.mod.instance.Instance;
+
 import org.bstone.mogli.Program;
 import org.joml.Matrix4f;
-import org.qsilver.render.Instance;
 import org.qsilver.render.Material;
 import org.qsilver.render.Model;
 

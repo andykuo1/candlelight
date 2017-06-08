@@ -5,7 +5,7 @@ import net.jimboi.glim.component.EntityComponentBounding;
 import net.jimboi.glim.component.EntityComponentTransform;
 import net.jimboi.glim.controller.FirstPersonLookController;
 import net.jimboi.glim.controller.FirstPersonMoveController;
-import net.jimboi.mod.transform.Transform3Q;
+import net.jimboi.mod2.transform.Transform3Q;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;

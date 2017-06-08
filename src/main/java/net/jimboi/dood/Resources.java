@@ -1,8 +1,8 @@
 package net.jimboi.dood;
 
-import net.jimboi.mod.meshbuilder.MeshBuilder;
-import net.jimboi.mod.meshbuilder.ModelUtil;
-import net.jimboi.mod.resource.ResourceLocation;
+import net.jimboi.mod2.meshbuilder.MeshBuilder;
+import net.jimboi.mod2.meshbuilder.ModelUtil;
+import net.jimboi.mod2.resource.ResourceLocation;
 
 import org.bstone.input.InputManager;
 import org.bstone.mogli.Bitmap;
@@ -168,7 +168,7 @@ public class Resources
 		register("box", new Model(getMesh("box")));
 
 		//Materials
-		register("bird", new Material("diffuse").setTexture(getTexture("bird")));
-		register("font", new Material("diffuse").setTexture(getTexture("font")));
+		register("bird", new Material().setTexture(getTexture("bird")));
+		register("font", new Material().setTexture(getTexture("font")));
 	}
 }

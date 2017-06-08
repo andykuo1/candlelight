@@ -3,7 +3,7 @@ package net.jimboi.dood;
 import net.jimboi.dood.component.ComponentBox2DBody;
 import net.jimboi.dood.component.ComponentInstanceable;
 import net.jimboi.dood.component.ComponentTransform;
-import net.jimboi.mod.transform.Transform3;
+import net.jimboi.mod2.transform.Transform3;
 
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.dynamics.BodyDef;
@@ -35,6 +35,6 @@ public class EntityBall
 		return entityManager.createEntity()
 				.addComponent(new ComponentTransform(transform))
 				.addComponent(new ComponentBox2DBody(bodyDef, fixDef))
-				.addComponent(new ComponentInstanceable("ball", "bird"));
+				.addComponent(new ComponentInstanceable("ball", "bird", "diffuse"));
 	}
 }

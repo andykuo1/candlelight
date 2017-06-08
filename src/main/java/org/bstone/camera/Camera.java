@@ -1,6 +1,6 @@
 package org.bstone.camera;
 
-import net.jimboi.mod.transform.Transform3;
+import net.jimboi.mod2.transform.Transform3;
 
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;

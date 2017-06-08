@@ -1,6 +1,6 @@
 package net.jimboi.blob.models;
 
-import net.jimboi.mod.meshbuilder.ModelUtil;
+import net.jimboi.mod2.meshbuilder.ModelUtil;
 
 import org.bstone.mogli.Mesh;
 import org.qsilver.render.Model;

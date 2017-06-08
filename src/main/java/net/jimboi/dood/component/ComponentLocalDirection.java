@@ -1,6 +1,6 @@
 package net.jimboi.dood.component;
 
-import net.jimboi.mod.transform.DirectionVectors;
+import net.jimboi.mod2.transform.DirectionVectors;
 
 import org.qsilver.entity.Component;
 

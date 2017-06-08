@@ -1,6 +1,6 @@
 package org.qsilver.render;
 
-import net.jimboi.mod.sprite.Sprite;
+import net.jimboi.mod2.sprite.Sprite;
 
 import org.bstone.mogli.Texture;
 import org.bstone.util.ColorUtil;
@@ -13,7 +13,6 @@ import org.joml.Vector3f;
 public class Material
 {
 	//Anything related to textures or how it appears on the surface
-	private final String renderID;
 
 	public Vector3f mainColor = new Vector3f(1, 1, 1);
 	public Vector3f specularColor = new Vector3f(1, 1, 1);
@@ -23,11 +22,6 @@ public class Material
 	public Sprite sprite;
 	public Texture normalmap;
 	public Vector2f tiling = new Vector2f();
-
-	public Material(String renderID)
-	{
-		this.renderID = renderID;
-	}
 
 	public Material setColor(int color)
 	{
@@ -49,10 +43,5 @@ public class Material
 	public boolean hasTexture()
 	{
 		return this.texture != null;
-	}
-
-	public final String getRenderID()
-	{
-		return this.renderID;
 	}
 }

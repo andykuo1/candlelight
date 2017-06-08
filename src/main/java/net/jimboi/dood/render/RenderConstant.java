@@ -1,13 +1,13 @@
 package net.jimboi.dood.render;
 
 import net.jimboi.dood.ResourcesDood;
+import net.jimboi.mod.instance.Instance;
 import net.jimboi.mod.render.Render;
 
 import org.bstone.mogli.Program;
 import org.joml.Matrix4fc;
 import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
-import org.qsilver.render.Instance;
 import org.qsilver.render.Material;
 import org.qsilver.render.Model;
 

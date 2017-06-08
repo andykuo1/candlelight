@@ -21,4 +21,10 @@ public class LivingZombie extends Living3
 	{
 		return "billboard";
 	}
+
+	@Override
+	public String getRenderType()
+	{
+		return "billboard";
+	}
 }

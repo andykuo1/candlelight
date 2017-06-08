@@ -1,9 +1,8 @@
 package net.jimboi.blob.livings;
 
 import net.jimboi.blob.RendererBlob;
-
-import org.qsilver.render.Instance;
-import org.qsilver.render.InstanceManager;
+import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod.instance.InstanceManager;
 
 import java.util.List;
 
@@ -52,5 +51,11 @@ public class LivingPlayer extends LivingMotionControllerFirstPerson
 	public String getMaterialID()
 	{
 		return "woodenCrate";
+	}
+
+	@Override
+	public String getRenderType()
+	{
+		return "lit";
 	}
 }

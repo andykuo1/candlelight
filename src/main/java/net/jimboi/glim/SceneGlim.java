@@ -9,13 +9,14 @@ import net.jimboi.glim.entity.EntityPlayer;
 import net.jimboi.glim.system.EntitySystemBounding;
 import net.jimboi.glim.system.EntitySystemInstance;
 import net.jimboi.mod.Light;
-import net.jimboi.mod.transform.Transform;
+import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod2.sprite.TiledTextureAtlas;
+import net.jimboi.mod2.transform.Transform;
 
 import org.bstone.mogli.Mesh;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.qsilver.entity.Entity;
-import org.qsilver.render.Instance;
 import org.qsilver.render.Model;
 
 /**
@@ -45,12 +46,14 @@ public class SceneGlim extends SceneGlimBase
 		this.player = EntityPlayer.create(this.world);
 		RendererGlim.CAMERA.setCameraController(new CameraControllerGlim(this.player, this.world));
 
-		Mesh mesh = RendererGlim.createMeshFromMap(this.world.getMap());
+		Mesh mesh = RendererGlim.createMeshFromMap(this.world.getMap(), new TiledTextureAtlas(RendererGlim.get("texture.atlas"), 16, 16));
 		RendererGlim.register("mesh.dungeon", mesh);
 		RendererGlim.register("model.dungeon", new Model(mesh));
-		this.renderer.getInstanceManager().add(new Instance(RendererGlim.get("model.dungeon"), RendererGlim.get("material.crate")));
+		this.renderer.getInstanceManager().add(new Instance(RendererGlim.get("model.dungeon"), RendererGlim.get("material.font"), "diffuse"));
 
-		this.renderer.getInstanceManager().add(new Instance(RendererGlim.get("model.box"), RendererGlim.get("material.bird")));
+		this.renderer.getInstanceManager().add(new Instance(RendererGlim.get("model.box"), RendererGlim.get("material.bird"), "diffuse"));
+
+		this.renderer.getInstanceManager().add(new Instance(RendererGlim.get("model.plane"), RendererGlim.get("material.plane"), "billboard"));
 
 		EntityCrate.create(this.world, -4, 0, 0);
 	}

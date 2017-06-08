@@ -1,6 +1,6 @@
 package net.jimboi.blob;
 
-import net.jimboi.mod.resource.ResourceLocation;
+import net.jimboi.mod2.resource.ResourceLocation;
 
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;

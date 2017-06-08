@@ -1,6 +1,6 @@
 package net.jimboi.dood.component;
 
-import net.jimboi.mod.transform.Transform;
+import net.jimboi.mod2.transform.Transform;
 
 import org.qsilver.entity.Component;
 

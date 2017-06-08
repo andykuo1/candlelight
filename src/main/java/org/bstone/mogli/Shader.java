@@ -1,6 +1,6 @@
 package org.bstone.mogli;
 
-import net.jimboi.mod.resource.ResourceLocation;
+import net.jimboi.mod2.resource.ResourceLocation;
 
 import org.bstone.util.loader.StringLoader;
 import org.lwjgl.opengl.GL11;

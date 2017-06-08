@@ -1,9 +1,11 @@
 package net.jimboi.glim.shadow;
 
 import net.jimboi.mod.Light;
-import net.jimboi.mod.resource.ResourceLocation;
+import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod2.resource.ResourceLocation;
 
 import org.bstone.camera.PerspectiveCamera;
+import org.bstone.mogli.FBO;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
 import org.bstone.window.Window;
@@ -12,7 +14,6 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
-import org.qsilver.render.Instance;
 
 import java.util.Iterator;
 

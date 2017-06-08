@@ -2,10 +2,10 @@ package net.jimboi.glim.system;
 
 import net.jimboi.dood.system.EntitySystem;
 import net.jimboi.glim.component.EntityComponentInstance;
+import net.jimboi.mod.instance.InstanceManager;
 
 import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
-import org.qsilver.render.InstanceManager;
 
 /**
  * Created by Andy on 6/1/17.

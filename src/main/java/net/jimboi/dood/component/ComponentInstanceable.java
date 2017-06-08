@@ -9,10 +9,12 @@ public class ComponentInstanceable extends Component
 {
 	public final String modelID;
 	public final String materialID;
+	public final String renderType;
 
-	public ComponentInstanceable(String modelID, String materialID)
+	public ComponentInstanceable(String modelID, String materialID, String renderType)
 	{
 		this.modelID = modelID;
 		this.materialID = materialID;
+		this.renderType = renderType;
 	}
 }

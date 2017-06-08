@@ -3,8 +3,8 @@ package net.jimboi.dood.system;
 import net.jimboi.dood.component.ComponentBox2DBody;
 import net.jimboi.dood.component.ComponentTransform;
 import net.jimboi.mod.Box2DHandler;
-import net.jimboi.mod.transform.Transform;
-import net.jimboi.mod.transform.Transform3;
+import net.jimboi.mod2.transform.Transform;
+import net.jimboi.mod2.transform.Transform3;
 
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;

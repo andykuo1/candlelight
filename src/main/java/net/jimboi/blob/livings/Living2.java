@@ -1,6 +1,6 @@
 package net.jimboi.blob.livings;
 
-import net.jimboi.mod.transform.Transform2;
+import net.jimboi.mod2.transform.Transform2;
 
 /**
  * Created by Andy on 5/19/17.

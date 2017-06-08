@@ -6,21 +6,21 @@ import net.jimboi.blob.render.RenderDiffuse;
 import net.jimboi.blob.render.RenderLit;
 import net.jimboi.blob.render.RenderTexture;
 import net.jimboi.mod.Light;
-import net.jimboi.mod.meshbuilder.MeshBuilder;
-import net.jimboi.mod.meshbuilder.MeshData;
-import net.jimboi.mod.meshbuilder.ModelUtil;
+import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod.instance.InstanceHandler;
+import net.jimboi.mod.instance.InstanceManager;
 import net.jimboi.mod.render.Render;
 import net.jimboi.mod.render.RenderManager;
-import net.jimboi.mod.resource.ResourceLocation;
-import net.jimboi.torchlite.MazeWorld;
+import net.jimboi.mod.torchlite.MazeWorld;
+import net.jimboi.mod2.meshbuilder.MeshBuilder;
+import net.jimboi.mod2.meshbuilder.MeshData;
+import net.jimboi.mod2.meshbuilder.ModelUtil;
+import net.jimboi.mod2.resource.ResourceLocation;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.mogli.Texture;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.qsilver.render.Instance;
-import org.qsilver.render.InstanceHandler;
-import org.qsilver.render.InstanceManager;
 import org.qsilver.render.Material;
 import org.qsilver.render.Model;
 import org.qsilver.renderer.Renderer;
@@ -52,7 +52,7 @@ public class RendererBlob extends Renderer implements InstanceManager.OnInstance
 		this.renderManager = new RenderManager();
 		this.instanceManager = new InstanceManager((inst) ->
 		{
-			Render render = this.renderManager.get(inst.getMaterial().getRenderID());
+			Render render = this.renderManager.get(inst.getRenderType());
 			if (render != null) render.onRender(inst);
 			return null;
 		});
@@ -92,10 +92,10 @@ public class RendererBlob extends Renderer implements InstanceManager.OnInstance
 		Texture tex_woodenCrate = RenderUtil.loadTexture(new ResourceLocation("blob:wooden-crate.jpg"));
 
 		//Materials
-		Material mat_woodenCrate = new Material("lit").setTexture(tex_woodenCrate);
+		Material mat_woodenCrate = new Material().setTexture(tex_woodenCrate);
 		RenderUtil.registerMaterial("woodenCrate", mat_woodenCrate);
 
-		Material mat_billboard = new Material("billboard").setTexture(tex_woodenCrate);
+		Material mat_billboard = new Material().setTexture(tex_woodenCrate);
 		RenderUtil.registerMaterial("billboard", mat_billboard);
 
 		//Models
@@ -119,7 +119,7 @@ public class RendererBlob extends Renderer implements InstanceManager.OnInstance
 		this.instanceManager.add(createTerrain(this.world, mat_woodenCrate));
 
 		//Create box
-		this.instanceManager.add(new Instance(mod_cube, mat_woodenCrate));
+		this.instanceManager.add(new Instance(mod_cube, mat_woodenCrate, "lit"));
 	}
 
 	@Override
@@ -161,7 +161,7 @@ public class RendererBlob extends Renderer implements InstanceManager.OnInstance
 		Model model = new Model(ModelUtil.createMesh(md));
 		RenderUtil.registerModel("terrain", model);
 
-		Instance inst = new Instance(model, mat);
+		Instance inst = new Instance(model, mat, "lit");
 		return inst;
 	}
 }

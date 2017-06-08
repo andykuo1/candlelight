@@ -4,10 +4,10 @@ import net.jimboi.dood.component.ComponentBox2DBody;
 import net.jimboi.dood.component.ComponentInstanceable;
 import net.jimboi.dood.component.ComponentSpriteSheet;
 import net.jimboi.dood.component.ComponentTransform;
-import net.jimboi.mod.sprite.SpriteSheet;
-import net.jimboi.mod.sprite.TextureAtlas;
-import net.jimboi.mod.sprite.TiledTextureAtlas;
-import net.jimboi.mod.transform.Transform3;
+import net.jimboi.mod2.sprite.SpriteSheet;
+import net.jimboi.mod2.sprite.TextureAtlas;
+import net.jimboi.mod2.sprite.TiledTextureAtlas;
+import net.jimboi.mod2.transform.Transform3;
 
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.dynamics.BodyDef;
@@ -47,6 +47,6 @@ public class EntityPlayer
 				.addComponent(new ComponentTransform(transform))
 				.addComponent(new ComponentBox2DBody(bodyDef, fixDef))
 				.addComponent(new ComponentSpriteSheet("font", spriteSheet))
-				.addComponent(new ComponentInstanceable("box", "font"));
+				.addComponent(new ComponentInstanceable("box", "font", "diffuse"));
 	}
 }

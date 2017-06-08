@@ -1,7 +1,7 @@
 package net.jimboi.mod.cameracontroller;
 
 import net.jimboi.base.Main;
-import net.jimboi.mod.transform.Transform3;
+import net.jimboi.mod2.transform.Transform3;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;

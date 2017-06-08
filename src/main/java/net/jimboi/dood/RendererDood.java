@@ -1,12 +1,12 @@
 package net.jimboi.dood;
 
+import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod.instance.InstanceHandler;
+import net.jimboi.mod.instance.InstanceManager;
 import net.jimboi.mod.render.Render;
 import net.jimboi.mod.render.RenderManager;
 
 import org.bstone.camera.PerspectiveCamera;
-import org.qsilver.render.Instance;
-import org.qsilver.render.InstanceHandler;
-import org.qsilver.render.InstanceManager;
 import org.qsilver.renderer.Renderer;
 
 /**
@@ -23,7 +23,7 @@ public class RendererDood extends Renderer implements InstanceManager.OnInstance
 
 		this.instanceManager = new InstanceManager((inst) ->
 		{
-			Render render = this.renderManager.get(inst.getMaterial().getRenderID());
+			Render render = this.renderManager.get(inst.getRenderType());
 			if (render != null) render.onRender(inst);
 			return null;
 		});

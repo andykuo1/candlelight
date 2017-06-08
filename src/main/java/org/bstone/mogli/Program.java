@@ -25,7 +25,7 @@ public final class Program implements AutoCloseable
 	private Shader[] shaders;
 	private int handle;
 
-	private Map<String, Integer> uniforms = new HashMap<>();
+	private final Map<String, Integer> uniformLocations = new HashMap<>();
 
 	public Program()
 	{
@@ -117,14 +117,14 @@ public final class Program implements AutoCloseable
 		return GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM) == this.handle;
 	}
 
-	public int uniform(String uniformName)
+	public int findUniformLocation(String uniformName)
 	{
 		if (uniformName == null)
 		{
 			throw new IllegalArgumentException("Missing uniform name!");
 		}
 
-		Integer location = this.uniforms.get(uniformName);
+		Integer location = this.uniformLocations.get(uniformName);
 		if (location == null)
 		{
 			location = GL20.glGetUniformLocation(this.handle, uniformName);
@@ -133,7 +133,7 @@ public final class Program implements AutoCloseable
 				throw new GLException("Could not find uniform with name: " + uniformName);
 			}
 
-			this.uniforms.put(uniformName, location);
+			this.uniformLocations.put(uniformName, location);
 			return location;
 		}
 
@@ -142,27 +142,27 @@ public final class Program implements AutoCloseable
 
 	public void setUniform(String uniformName, int x)
 	{
-		GL20.glUniform1i(this.uniform(uniformName), x);
+		GL20.glUniform1i(this.findUniformLocation(uniformName), x);
 	}
 
 	public void setUniform(String uniformName, float x)
 	{
-		GL20.glUniform1f(this.uniform(uniformName), x);
+		GL20.glUniform1f(this.findUniformLocation(uniformName), x);
 	}
 
 	public void setUniform(String uniformName, Vector2fc vec)
 	{
-		GL20.glUniform2f(this.uniform(uniformName), vec.x(), vec.y());
+		GL20.glUniform2f(this.findUniformLocation(uniformName), vec.x(), vec.y());
 	}
 
 	public void setUniform(String uniformName, Vector3fc vec)
 	{
-		GL20.glUniform3f(this.uniform(uniformName), vec.x(), vec.y(), vec.z());
+		GL20.glUniform3f(this.findUniformLocation(uniformName), vec.x(), vec.y(), vec.z());
 	}
 
 	public void setUniform(String uniformName, Vector4fc vec)
 	{
-		GL20.glUniform4f(this.uniform(uniformName), vec.x(), vec.y(), vec.z(), vec.w());
+		GL20.glUniform4f(this.findUniformLocation(uniformName), vec.x(), vec.y(), vec.z(), vec.w());
 	}
 
 	public void setUniform(String uniformName, Matrix4fc matrix)
@@ -171,7 +171,7 @@ public final class Program implements AutoCloseable
 		{
 			FloatBuffer fb = stack.mallocFloat(16);
 			matrix.get(fb);
-			GL20.glUniformMatrix4fv(this.uniform(uniformName), false, fb);
+			GL20.glUniformMatrix4fv(this.findUniformLocation(uniformName), false, fb);
 		}
 	}
 }

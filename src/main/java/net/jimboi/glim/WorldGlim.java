@@ -2,9 +2,9 @@ package net.jimboi.glim;
 
 import net.jimboi.glim.bounding.BoundingManager;
 import net.jimboi.glim.bounding.square.AABB;
-import net.jimboi.torchlite.dungeon.DungeonBuilder;
-import net.jimboi.torchlite.dungeon.DungeonData;
-import net.jimboi.torchlite.dungeon.maze.MazeDungeonBuilder;
+import net.jimboi.mod2.dungeon.DungeonBuilder;
+import net.jimboi.mod2.dungeon.DungeonData;
+import net.jimboi.mod2.dungeon.maze.MazeDungeonBuilder;
 
 import org.bstone.util.map2d.IntMap;
 import org.joml.Vector3fc;

@@ -3,7 +3,7 @@ package net.jimboi.dood.system;
 import net.jimboi.dood.component.ComponentLocalDirection;
 import net.jimboi.dood.component.ComponentMotion;
 import net.jimboi.dood.component.ComponentTransform;
-import net.jimboi.mod.transform.Transform3;
+import net.jimboi.mod2.transform.Transform3;
 
 import org.bstone.util.MathUtil;
 import org.joml.Vector3f;

@@ -1,6 +1,6 @@
 package org.bstone.util.loader;
 
-import net.jimboi.mod.meshbuilder.ModelUtil;
+import net.jimboi.mod2.meshbuilder.ModelUtil;
 
 import org.bstone.mogli.Mesh;
 import org.joml.Vector2f;

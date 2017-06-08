@@ -4,7 +4,7 @@ import net.jimboi.dood.component.ComponentBox2DBody;
 import net.jimboi.dood.component.ComponentInstanceable;
 import net.jimboi.dood.component.ComponentTransform;
 import net.jimboi.dood.worldgen.WorldGenHills;
-import net.jimboi.mod.transform.Transform3;
+import net.jimboi.mod2.transform.Transform3;
 
 import org.jbox2d.collision.shapes.ChainShape;
 import org.jbox2d.common.Vec2;
@@ -49,6 +49,6 @@ public class EntityHills
 		return entityManager.createEntity()
 				.addComponent(new ComponentTransform(transform))
 				.addComponent(new ComponentBox2DBody(bodyDef, fixDef))
-				.addComponent(new ComponentInstanceable("hills", "bird"));
+				.addComponent(new ComponentInstanceable("hills", "bird", "diffuse"));
 	}
 }

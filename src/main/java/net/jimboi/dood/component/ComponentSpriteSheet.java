@@ -1,6 +1,6 @@
 package net.jimboi.dood.component;
 
-import net.jimboi.mod.sprite.SpriteSheet;
+import net.jimboi.mod2.sprite.SpriteSheet;
 
 import org.qsilver.entity.Component;
 
