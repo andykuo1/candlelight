@@ -1,18 +1,17 @@
 package net.jimboi.glim.system;
 
-import net.jimboi.dood.system.EntitySystem;
 import net.jimboi.glim.RendererGlim;
 import net.jimboi.glim.bounding.Bounding;
 import net.jimboi.glim.bounding.BoundingManager;
 import net.jimboi.glim.bounding.square.AABB;
-import net.jimboi.glim.component.EntityComponentBounding;
-import net.jimboi.glim.component.EntityComponentTransform;
-import net.jimboi.mod.instance.Instance;
-import net.jimboi.mod.instance.InstanceManager;
+import net.jimboi.glim.component.GameComponentBounding;
+import net.jimboi.glim.component.GameComponentTransform;
+import net.jimboi.glim.gameentity.GameEntity;
+import net.jimboi.glim.gameentity.GameEntityManager;
+import net.jimboi.mod2.instance.Instance;
+import net.jimboi.mod2.instance.InstanceManager;
 
 import org.joml.Vector3fc;
-import org.qsilver.entity.Entity;
-import org.qsilver.entity.EntityManager;
 import org.qsilver.scene.Scene;
 
 import java.util.Collection;
@@ -22,13 +21,13 @@ import java.util.Map;
 /**
  * Created by Andy on 6/4/17.
  */
-public class EntitySystemBounding extends EntitySystem implements Scene.OnSceneUpdateListener, BoundingManager.OnBoundingAddListener, BoundingManager.OnBoundingRemoveListener
+public class EntitySystemBounding extends EntitySystemBase implements Scene.OnSceneUpdateListener, BoundingManager.OnBoundingAddListener, BoundingManager.OnBoundingRemoveListener
 {
 	private Map<Bounding, Instance> instances = new HashMap<>();
 
 	private InstanceManager instanceManager;
 
-	public EntitySystemBounding(EntityManager entityManager, Scene scene, BoundingManager boundingManager, InstanceManager instanceManager)
+	public EntitySystemBounding(GameEntityManager entityManager, Scene scene, BoundingManager boundingManager, InstanceManager instanceManager)
 	{
 		super(entityManager);
 
@@ -52,12 +51,12 @@ public class EntitySystemBounding extends EntitySystem implements Scene.OnSceneU
 	@Override
 	public void onSceneUpdate(double delta)
 	{
-		Collection<Entity> entities = this.entityManager.getEntitiesWithComponent(EntityComponentTransform.class, EntityComponentBounding.class);
+		Collection<GameEntity> entities = this.entityManager.getEntitiesWithComponent(GameComponentTransform.class, GameComponentBounding.class);
 
-		for (Entity entity : entities)
+		for (GameEntity entity : entities)
 		{
-			EntityComponentTransform componentTransform = entity.getComponent(EntityComponentTransform.class);
-			EntityComponentBounding componentBounding = entity.getComponent(EntityComponentBounding.class);
+			GameComponentTransform componentTransform = entity.getComponent(GameComponentTransform.class);
+			GameComponentBounding componentBounding = entity.getComponent(GameComponentBounding.class);
 			Vector3fc pos = componentTransform.transform.position();
 			componentBounding.bounding.update(pos.x(), pos.y(), pos.z());
 		}

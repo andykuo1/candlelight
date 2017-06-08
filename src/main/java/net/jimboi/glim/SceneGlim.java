@@ -2,21 +2,21 @@ package net.jimboi.glim;
 
 import net.jimboi.dood.system.EntitySystem;
 import net.jimboi.glim.bounding.BoundingManager;
-import net.jimboi.glim.component.EntityComponentTransform;
+import net.jimboi.glim.component.GameComponentTransform;
 import net.jimboi.glim.entity.EntityCrate;
 import net.jimboi.glim.entity.EntityGlim;
 import net.jimboi.glim.entity.EntityPlayer;
+import net.jimboi.glim.gameentity.GameEntity;
 import net.jimboi.glim.system.EntitySystemBounding;
 import net.jimboi.glim.system.EntitySystemInstance;
 import net.jimboi.mod.Light;
-import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod2.instance.Instance;
 import net.jimboi.mod2.sprite.TiledTextureAtlas;
 import net.jimboi.mod2.transform.Transform;
 
 import org.bstone.mogli.Mesh;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import org.qsilver.entity.Entity;
 import org.qsilver.render.Model;
 
 /**
@@ -30,7 +30,7 @@ public class SceneGlim extends SceneGlimBase
 	private BoundingManager boundingManager;
 
 	private WorldGlim world;
-	private Entity player;
+	private GameEntity player;
 
 	@Override
 	protected void onSceneStart()
@@ -63,7 +63,7 @@ public class SceneGlim extends SceneGlimBase
 	{
 		RendererGlim.CAMERA.update(delta);
 
-		Transform transform = this.player.getComponent(EntityComponentTransform.class).transform;
+		Transform transform = this.player.getComponent(GameComponentTransform.class).transform;
 
 		Light light = RendererGlim.LIGHTS.get(0);
 		light.position = new Vector4f(transform.position(), 1);
@@ -80,7 +80,7 @@ public class SceneGlim extends SceneGlimBase
 		EntitySystem.stopAll();
 	}
 
-	public Entity getPlayer()
+	public GameEntity getPlayer()
 	{
 		return this.player;
 	}

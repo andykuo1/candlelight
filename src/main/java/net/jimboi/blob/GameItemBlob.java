@@ -1,6 +1,6 @@
 package net.jimboi.blob;
 
-import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod2.instance.Instance;
 import net.jimboi.mod2.transform.Transform3;
 
 import org.qsilver.living.Living;

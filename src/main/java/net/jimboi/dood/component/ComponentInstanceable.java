@@ -1,6 +1,6 @@
 package net.jimboi.dood.component;
 
-import org.qsilver.entity.Component;
+import net.jimboi.dood.entity.Component;
 
 /**
  * Created by Andy on 5/22/17.

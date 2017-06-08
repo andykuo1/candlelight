@@ -1,8 +1,8 @@
 package net.jimboi.dood.render;
 
 import net.jimboi.dood.ResourcesDood;
-import net.jimboi.mod.instance.Instance;
 import net.jimboi.mod.render.Render;
+import net.jimboi.mod2.instance.Instance;
 
 import org.bstone.mogli.Program;
 import org.joml.Matrix4fc;

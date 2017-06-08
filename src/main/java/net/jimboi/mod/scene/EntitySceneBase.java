@@ -1,6 +1,7 @@
 package net.jimboi.mod.scene;
 
-import org.qsilver.entity.EntityManager;
+import net.jimboi.dood.entity.EntityManager;
+
 import org.qsilver.scene.Scene;
 
 /**

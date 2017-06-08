@@ -1,16 +1,16 @@
 package net.jimboi.glim;
 
 import net.jimboi.base.Main;
-import net.jimboi.glim.component.EntityComponentBounding;
-import net.jimboi.glim.component.EntityComponentTransform;
+import net.jimboi.glim.component.GameComponentBounding;
+import net.jimboi.glim.component.GameComponentTransform;
 import net.jimboi.glim.controller.FirstPersonLookController;
 import net.jimboi.glim.controller.FirstPersonMoveController;
+import net.jimboi.glim.gameentity.GameEntity;
 import net.jimboi.mod2.transform.Transform3Q;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;
 import org.bstone.input.InputEngine;
-import org.qsilver.entity.Entity;
 
 /**
  * Created by Andy on 6/1/17.
@@ -22,10 +22,10 @@ public class CameraControllerGlim implements CameraController, InputEngine.OnInp
 
 	private WorldGlim world;
 
-	public CameraControllerGlim(Entity target, WorldGlim world)
+	public CameraControllerGlim(GameEntity target, WorldGlim world)
 	{
-		this.lookController = new FirstPersonLookController((Transform3Q) target.getComponent(EntityComponentTransform.class).transform);
-		this.moveController = new FirstPersonMoveController((Transform3Q) target.getComponent(EntityComponentTransform.class).transform, target.getComponent(EntityComponentBounding.class).bounding, world.getBoundingManager());
+		this.lookController = new FirstPersonLookController((Transform3Q) target.getComponent(GameComponentTransform.class).transform);
+		this.moveController = new FirstPersonMoveController((Transform3Q) target.getComponent(GameComponentTransform.class).transform, target.getComponent(GameComponentBounding.class).bounding, world.getBoundingManager());
 		this.world = world;
 	}
 

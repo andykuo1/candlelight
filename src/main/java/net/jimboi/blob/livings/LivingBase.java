@@ -1,9 +1,9 @@
 package net.jimboi.blob.livings;
 
 import net.jimboi.blob.RenderUtil;
-import net.jimboi.mod.instance.Instance;
-import net.jimboi.mod.instance.InstanceHandler;
-import net.jimboi.mod.instance.InstanceManager;
+import net.jimboi.mod2.instance.Instance;
+import net.jimboi.mod2.instance.InstanceHandler;
+import net.jimboi.mod2.instance.InstanceManager;
 import net.jimboi.mod2.transform.Transform;
 
 import org.qsilver.living.Living;

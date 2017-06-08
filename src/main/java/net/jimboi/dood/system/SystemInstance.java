@@ -2,10 +2,9 @@ package net.jimboi.dood.system;
 
 import net.jimboi.dood.base.EntityInstanceHandler;
 import net.jimboi.dood.component.ComponentInstanceable;
-import net.jimboi.mod.instance.InstanceManager;
-
-import org.qsilver.entity.Entity;
-import org.qsilver.entity.EntityManager;
+import net.jimboi.dood.entity.Entity;
+import net.jimboi.dood.entity.EntityManager;
+import net.jimboi.mod2.instance.InstanceManager;
 
 import java.util.ArrayList;
 import java.util.List;

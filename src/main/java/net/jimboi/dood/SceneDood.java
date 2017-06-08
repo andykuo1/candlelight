@@ -3,6 +3,7 @@ package net.jimboi.dood;
 import net.jimboi.base.Main;
 import net.jimboi.dood.component.ComponentBox2DBody;
 import net.jimboi.dood.component.ComponentTransform;
+import net.jimboi.dood.entity.Entity;
 import net.jimboi.dood.system.EntitySystem;
 import net.jimboi.dood.system.SystemAnimatedTexture;
 import net.jimboi.dood.system.SystemBox2D;
@@ -20,7 +21,6 @@ import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.joml.Vector4f;
-import org.qsilver.entity.Entity;
 
 /**
  * Created by Andy on 5/21/17.

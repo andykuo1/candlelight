@@ -3,6 +3,8 @@ package net.jimboi.dood;
 import net.jimboi.dood.component.ComponentBox2DBody;
 import net.jimboi.dood.component.ComponentInstanceable;
 import net.jimboi.dood.component.ComponentTransform;
+import net.jimboi.dood.entity.Entity;
+import net.jimboi.dood.entity.EntityManager;
 import net.jimboi.dood.worldgen.WorldGenHills;
 import net.jimboi.mod2.transform.Transform3;
 
@@ -13,8 +15,6 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
-import org.qsilver.entity.Entity;
-import org.qsilver.entity.EntityManager;
 
 import java.util.List;
 

@@ -1,8 +1,11 @@
 package net.jimboi.dood.system;
 
+import net.jimboi.dood.Box2DHandler;
 import net.jimboi.dood.component.ComponentBox2DBody;
 import net.jimboi.dood.component.ComponentTransform;
-import net.jimboi.mod.Box2DHandler;
+import net.jimboi.dood.entity.Component;
+import net.jimboi.dood.entity.Entity;
+import net.jimboi.dood.entity.EntityManager;
 import net.jimboi.mod2.transform.Transform;
 import net.jimboi.mod2.transform.Transform3;
 
@@ -10,9 +13,6 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.World;
 import org.joml.Vector3fc;
-import org.qsilver.entity.Component;
-import org.qsilver.entity.Entity;
-import org.qsilver.entity.EntityManager;
 import org.qsilver.scene.Scene;
 
 import java.util.Collection;

@@ -1,27 +1,25 @@
 package net.jimboi.glim.system;
 
-import net.jimboi.dood.system.EntitySystem;
-import net.jimboi.glim.component.EntityComponentInstance;
-import net.jimboi.mod.instance.InstanceManager;
-
-import org.qsilver.entity.Entity;
-import org.qsilver.entity.EntityManager;
+import net.jimboi.glim.component.GameComponentInstance;
+import net.jimboi.glim.gameentity.GameEntity;
+import net.jimboi.glim.gameentity.GameEntityManager;
+import net.jimboi.mod2.instance.InstanceManager;
 
 /**
  * Created by Andy on 6/1/17.
  */
-public class EntitySystemInstance extends EntitySystem implements EntityManager.OnEntityAddListener, EntityManager.OnEntityRemoveListener
+public class EntitySystemInstance extends EntitySystemBase implements GameEntityManager.OnGameEntityAddListener, GameEntityManager.OnGameEntityRemoveListener
 {
 	protected final InstanceManager instanceManager;
 
-	public EntitySystemInstance(EntityManager entityManager, InstanceManager instanceManager)
+	public EntitySystemInstance(GameEntityManager entityManager, InstanceManager instanceManager)
 	{
 		super(entityManager);
 
 		this.instanceManager = instanceManager;
 
-		this.registerListenable(entityManager.onEntityAdd);
-		this.registerListenable(entityManager.onEntityRemove);
+		this.registerListenable(entityManager.onGameEntityAdd);
+		this.registerListenable(entityManager.onGameEntityRemove);
 	}
 
 	@Override
@@ -37,21 +35,21 @@ public class EntitySystemInstance extends EntitySystem implements EntityManager.
 	}
 
 	@Override
-	public void onEntityAdd(Entity entity)
+	public void onGameEntityAdd(GameEntity entity)
 	{
-		if (entity.hasComponent(EntityComponentInstance.class))
+		if (entity.hasComponent(GameComponentInstance.class))
 		{
-			EntityComponentInstance c_instance = entity.getComponent(EntityComponentInstance.class);
+			GameComponentInstance c_instance = entity.getComponent(GameComponentInstance.class);
 			this.instanceManager.add(c_instance);
 		}
 	}
 
 	@Override
-	public void onEntityRemove(Entity entity)
+	public void onGameEntityRemove(GameEntity entity)
 	{
-		if (entity.hasComponent(EntityComponentInstance.class))
+		if (entity.hasComponent(GameComponentInstance.class))
 		{
-			EntityComponentInstance c_instance = entity.getComponent(EntityComponentInstance.class);
+			GameComponentInstance c_instance = entity.getComponent(GameComponentInstance.class);
 			this.instanceManager.remove(c_instance);
 		}
 	}

@@ -2,9 +2,9 @@ package net.jimboi.dood.system;
 
 import net.jimboi.dood.Resources;
 import net.jimboi.dood.component.ComponentSpriteSheet;
+import net.jimboi.dood.entity.Entity;
+import net.jimboi.dood.entity.EntityManager;
 
-import org.qsilver.entity.Entity;
-import org.qsilver.entity.EntityManager;
 import org.qsilver.render.Material;
 import org.qsilver.renderer.Renderer;
 import org.qsilver.scene.Scene;

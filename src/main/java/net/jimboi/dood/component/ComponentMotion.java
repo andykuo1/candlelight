@@ -1,7 +1,8 @@
 package net.jimboi.dood.component;
 
+import net.jimboi.dood.entity.Component;
+
 import org.joml.Vector3f;
-import org.qsilver.entity.Component;
 
 /**
  * Created by Andy on 5/22/17.

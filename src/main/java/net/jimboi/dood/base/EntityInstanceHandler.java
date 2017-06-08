@@ -3,11 +3,11 @@ package net.jimboi.dood.base;
 import net.jimboi.dood.Resources;
 import net.jimboi.dood.component.ComponentInstanceable;
 import net.jimboi.dood.component.ComponentTransform;
-import net.jimboi.mod.instance.Instance;
-import net.jimboi.mod.instance.InstanceHandler;
-import net.jimboi.mod.instance.InstanceManager;
+import net.jimboi.dood.entity.Entity;
+import net.jimboi.mod2.instance.Instance;
+import net.jimboi.mod2.instance.InstanceHandler;
+import net.jimboi.mod2.instance.InstanceManager;
 
-import org.qsilver.entity.Entity;
 import org.qsilver.render.Material;
 import org.qsilver.render.Model;
 

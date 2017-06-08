@@ -1,7 +1,8 @@
 package net.jimboi.dood.system;
 
+import net.jimboi.dood.entity.EntityManager;
+
 import org.bstone.util.listener.Listenable;
-import org.qsilver.entity.EntityManager;
 
 import java.util.ArrayList;
 import java.util.List;

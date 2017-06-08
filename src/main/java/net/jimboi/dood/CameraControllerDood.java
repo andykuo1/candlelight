@@ -1,8 +1,8 @@
 package net.jimboi.dood;
 
+import net.jimboi.dood.cameracontroller.CameraControllerBox2D;
 import net.jimboi.dood.component.ComponentBox2DBody;
 import net.jimboi.dood.component.ComponentTransform;
-import net.jimboi.mod.cameracontroller.CameraControllerBox2D;
 import net.jimboi.mod2.transform.Transform3;
 
 import org.bstone.util.MathUtil;

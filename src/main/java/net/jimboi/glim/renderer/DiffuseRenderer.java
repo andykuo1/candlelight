@@ -2,7 +2,7 @@ package net.jimboi.glim.renderer;
 
 import net.jimboi.glim.RendererGlim;
 import net.jimboi.mod.Light;
-import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod2.instance.Instance;
 import net.jimboi.mod2.resource.ResourceLocation;
 
 import org.bstone.camera.Camera;

@@ -1,6 +1,6 @@
 package net.jimboi.dood.worldgen;
 
-import net.jimboi.mod.torchlite.MazeWorld;
+import net.jimboi.blob.torchlite.MazeWorld;
 import net.jimboi.mod2.meshbuilder.MeshData;
 import net.jimboi.mod2.meshbuilder.ModelUtil;
 

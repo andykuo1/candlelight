@@ -1,10 +1,10 @@
 package net.jimboi.dood;
 
 import net.jimboi.base.Main;
+import net.jimboi.dood.entity.Entity;
+import net.jimboi.dood.entity.EntityManager;
 import net.jimboi.mod.scene.EntitySceneBase;
 
-import org.qsilver.entity.Entity;
-import org.qsilver.entity.EntityManager;
 import org.qsilver.renderer.Renderer;
 
 /**

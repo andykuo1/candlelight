@@ -3,12 +3,12 @@ package net.jimboi.dood.system;
 import net.jimboi.dood.component.ComponentLocalDirection;
 import net.jimboi.dood.component.ComponentMotion;
 import net.jimboi.dood.component.ComponentTransform;
+import net.jimboi.dood.entity.Entity;
+import net.jimboi.dood.entity.EntityManager;
 import net.jimboi.mod2.transform.Transform3;
 
 import org.bstone.util.MathUtil;
 import org.joml.Vector3f;
-import org.qsilver.entity.Entity;
-import org.qsilver.entity.EntityManager;
 import org.qsilver.scene.Scene;
 
 import java.util.Collection;

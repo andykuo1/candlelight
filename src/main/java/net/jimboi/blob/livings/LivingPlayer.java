@@ -1,8 +1,8 @@
 package net.jimboi.blob.livings;
 
 import net.jimboi.blob.RendererBlob;
-import net.jimboi.mod.instance.Instance;
-import net.jimboi.mod.instance.InstanceManager;
+import net.jimboi.mod2.instance.Instance;
+import net.jimboi.mod2.instance.InstanceManager;
 
 import java.util.List;
 

@@ -2,8 +2,8 @@ package net.jimboi.dood.render;
 
 import net.jimboi.dood.ResourcesDood;
 import net.jimboi.mod.Light;
-import net.jimboi.mod.instance.Instance;
 import net.jimboi.mod.render.Render;
+import net.jimboi.mod2.instance.Instance;
 
 import org.bstone.mogli.Program;
 import org.joml.Matrix4fc;
@@ -49,10 +49,8 @@ public class RenderDiffuse extends Render
 
 		if (material.sprite != null)
 		{
-			float rw = 1F / material.sprite.getTexture().width();
-			float rh = 1F / material.sprite.getTexture().height();
-			program.setUniform("u_tex_offset", new Vector2f(material.sprite.getU() * rw, material.sprite.getV() * rh));
-			program.setUniform("u_tex_scale", new Vector2f(material.sprite.getWidth() * rw, material.sprite.getHeight() * rh));
+			program.setUniform("u_tex_offset", new Vector2f(material.sprite.getU(), material.sprite.getV()));
+			program.setUniform("u_tex_scale", new Vector2f(material.sprite.getWidth(), material.sprite.getHeight()));
 		}
 		else
 		{
