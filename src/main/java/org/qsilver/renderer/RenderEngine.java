@@ -94,16 +94,12 @@ public class RenderEngine
 
 	public void destroy()
 	{
-		for (Renderer renderer : this.renderers)
-		{
-			renderer.onRenderUnload();
-		}
-
 		this.cacheCreate = true;
 		this.createSet.clear();
 		this.cacheCreate = false;
 		this.cachedSet.clear();
 
+		this.destroySet.addAll(this.renderers);
 		this.flush();
 	}
 }
