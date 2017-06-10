@@ -1,4 +1,4 @@
-package net.jimboi.stage_b.glim.shadow;
+package net.jimboi.stage_b.glim.renderer.shadow;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.window.Window;

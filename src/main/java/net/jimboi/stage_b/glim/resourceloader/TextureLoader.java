@@ -15,14 +15,36 @@ public class TextureLoader implements ResourceLoader<Texture, TextureLoader.Text
 	@Override
 	public Texture load(TextureParameter args)
 	{
-		return new Texture(args.bitmap.getSource(), args.minMagFilter, args.wrapMode);
+		if (args.bitmap != null)
+		{
+			return new Texture(args.bitmap.getSource(), args.minMagFilter, args.wrapMode);
+		}
+		else
+		{
+			return new Texture(args.width, args.height, args.minMagFilter, args.wrapMode, args.pixelFormat);
+		}
 	}
 
 	public static class TextureParameter implements ResourceParameter<Texture>
 	{
 		public Asset<Bitmap> bitmap;
+
 		public int minMagFilter;
 		public int wrapMode;
+
+		public int width;
+		public int height;
+		public Bitmap.Format pixelFormat;
+
+		public TextureParameter(int width, int height, int minMagFilter, int wrapMode, Bitmap.Format pixelFormat)
+		{
+			this.bitmap = null;
+			this.width = width;
+			this.height = height;
+			this.minMagFilter = minMagFilter;
+			this.wrapMode = wrapMode;
+			this.pixelFormat = pixelFormat;
+		}
 
 		public TextureParameter(Asset<Bitmap> bitmap, int minMagFilter, int wrapMode)
 		{

@@ -1,7 +1,7 @@
 package net.jimboi.stage_a.dood.component;
 
 import net.jimboi.stage_a.dood.entity.Component;
-import net.jimboi.stage_b.gnome.sprite.SpriteSheet;
+import net.jimboi.stage_a.mod.sprite.SpriteSheet;
 
 /**
  * Created by Andy on 5/23/17.

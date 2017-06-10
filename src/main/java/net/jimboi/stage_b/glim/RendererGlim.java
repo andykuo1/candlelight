@@ -1,5 +1,7 @@
 package net.jimboi.stage_b.glim;
 
+import net.jimboi.stage_a.mod.sprite.Sprite;
+import net.jimboi.stage_a.mod.sprite.TiledTextureAtlas;
 import net.jimboi.stage_b.glim.renderer.BillboardRenderer;
 import net.jimboi.stage_b.glim.renderer.DiffuseRenderer;
 import net.jimboi.stage_b.glim.renderer.WireframeRenderer;
@@ -7,6 +9,8 @@ import net.jimboi.stage_b.glim.resourceloader.BitmapLoader;
 import net.jimboi.stage_b.glim.resourceloader.MaterialLoader;
 import net.jimboi.stage_b.glim.resourceloader.MeshLoader;
 import net.jimboi.stage_b.glim.resourceloader.ModelLoader;
+import net.jimboi.stage_b.glim.resourceloader.ProgramLoader;
+import net.jimboi.stage_b.glim.resourceloader.ShaderLoader;
 import net.jimboi.stage_b.glim.resourceloader.TextureLoader;
 import net.jimboi.stage_b.gnome.asset.Asset;
 import net.jimboi.stage_b.gnome.asset.AssetManager;
@@ -16,8 +20,6 @@ import net.jimboi.stage_b.gnome.material.DiffuseMaterial;
 import net.jimboi.stage_b.gnome.meshbuilder.MeshBuilder;
 import net.jimboi.stage_b.gnome.meshbuilder.ModelUtil;
 import net.jimboi.stage_b.gnome.resource.ResourceLocation;
-import net.jimboi.stage_b.gnome.sprite.Sprite;
-import net.jimboi.stage_b.gnome.sprite.TiledTextureAtlas;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.input.InputManager;
@@ -25,6 +27,8 @@ import org.bstone.material.Material;
 import org.bstone.material.MaterialManager;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
+import org.bstone.mogli.Program;
+import org.bstone.mogli.Shader;
 import org.bstone.mogli.Texture;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -147,6 +151,12 @@ public class RendererGlim extends Renderer
 				new MaterialLoader.MaterialParameter(DiffuseMaterial.getProperties(txt_crate)));
 		assets.registerAsset(Material.class, "box",
 				new MaterialLoader.MaterialParameter(DiffuseMaterial.getProperties(0xFF00FF)));
+
+		//Shaders
+		assets.registerLoader(Shader.class, new ShaderLoader());
+
+		//Programs
+		assets.registerLoader(Program.class, new ProgramLoader());
 
 		this.diffuseRenderer = new DiffuseRenderer(CAMERA);
 		this.billboardRenderer = new BillboardRenderer(CAMERA, BillboardRenderer.Type.CYLINDRICAL);

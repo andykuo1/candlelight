@@ -1,5 +1,10 @@
 package net.jimboi.stage_b.glim.renderer;
 
+import net.jimboi.stage_b.glim.RendererGlim;
+import net.jimboi.stage_b.glim.resourceloader.ProgramLoader;
+import net.jimboi.stage_b.glim.resourceloader.ShaderLoader;
+import net.jimboi.stage_b.gnome.asset.Asset;
+import net.jimboi.stage_b.gnome.asset.AssetManager;
 import net.jimboi.stage_b.gnome.instance.Instance;
 import net.jimboi.stage_b.gnome.material.property.PropertyTexture;
 import net.jimboi.stage_b.gnome.resource.ResourceLocation;
@@ -18,6 +23,7 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.qsilver.model.Model;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -37,7 +43,7 @@ public class BillboardRenderer implements AutoCloseable
 	private final Camera camera;
 	private final Type type;
 
-	private final Program program;
+	private final Asset<Program> program;
 
 	private final Matrix4f modelViewProjMatrix = new Matrix4f();
 	private final Matrix4f projViewMatrix = new Matrix4f();
@@ -48,17 +54,15 @@ public class BillboardRenderer implements AutoCloseable
 		this.camera = camera;
 		this.type = type;
 
-		Shader vs = new Shader(VERTEX_SHADER_LOCATION, GL20.GL_VERTEX_SHADER);
-		Shader fs = new Shader(FRAGMENT_SHADER_LOCATION, GL20.GL_FRAGMENT_SHADER);
-		Program prgm = new Program();
-		prgm.link(vs, fs);
-		this.program = prgm;
+		final AssetManager assetManager = RendererGlim.INSTANCE.getAssetManager();
+		Asset<Shader> vs = assetManager.registerAsset(Shader.class, "v_billboard", new ShaderLoader.ShaderParameter(VERTEX_SHADER_LOCATION, GL20.GL_VERTEX_SHADER));
+		Asset<Shader> fs = assetManager.registerAsset(Shader.class, "f_billboard", new ShaderLoader.ShaderParameter(FRAGMENT_SHADER_LOCATION, GL20.GL_FRAGMENT_SHADER));
+		this.program = assetManager.registerAsset(Program.class, "billboard", new ProgramLoader.ProgramParameter(Arrays.asList(vs, fs)));
 	}
 
 	@Override
 	public void close()
 	{
-		this.program.close();
 	}
 
 	public void render(Iterator<Instance> iterator)
@@ -67,8 +71,7 @@ public class BillboardRenderer implements AutoCloseable
 		Matrix4fc view = this.camera.view();
 		Matrix4fc projView = proj.mul(view, this.projViewMatrix);
 
-		Program program = this.program;
-
+		final Program program = this.program.getSource();
 		program.bind();
 		{
 			program.setUniform("u_projection", proj);
@@ -76,9 +79,9 @@ public class BillboardRenderer implements AutoCloseable
 
 			while (iterator.hasNext())
 			{
-				Instance inst = iterator.next();
-				Model model = inst.getModel().getSource();
-				Material material = inst.getMaterial().getSource();
+				final Instance inst = iterator.next();
+				final Model model = inst.getModel().getSource();
+				final Material material = inst.getMaterial().getSource();
 
 				Texture texture = null;
 				Sprite sprite = null;
@@ -86,7 +89,7 @@ public class BillboardRenderer implements AutoCloseable
 				if (material.hasComponent(PropertyTexture.class))
 				{
 					PropertyTexture propTexture = material.getComponent(PropertyTexture.class);
-					texture = propTexture.texture;
+					texture = propTexture.texture.getSource();
 					sprite = propTexture.sprite;
 				}
 

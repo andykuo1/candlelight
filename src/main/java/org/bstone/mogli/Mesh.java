@@ -1,12 +1,12 @@
 package org.bstone.mogli;
 
+import org.bstone.RefCountSet;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.qsilver.poma.Poma;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public final class Mesh implements AutoCloseable
 {
-	public static final Set<Mesh> MESHES = new HashSet<>();
+	public static final Set<Mesh> MESHES = new RefCountSet<>();
 
 	private int handle;
 	private VBO[] vertexBuffers;
@@ -35,8 +35,6 @@ public final class Mesh implements AutoCloseable
 	@Override
 	public void close()
 	{
-		this.unbind();
-
 		for(int i = 0; i < this.vertexBuffers.length; ++i)
 		{
 			this.vertexBuffers[i].close();
@@ -69,6 +67,8 @@ public final class Mesh implements AutoCloseable
 		this.indexBuffer = buffer;
 		this.vertexCount = this.indexBuffer.getLength();
 
+		//This is to alter the render state!
+		//DO NOT buffer.unbind();
 		GL30.glBindVertexArray(0);
 
 		return this;

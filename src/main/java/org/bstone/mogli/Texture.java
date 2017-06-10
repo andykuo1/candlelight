@@ -1,11 +1,11 @@
 package org.bstone.mogli;
 
+import org.bstone.RefCountSet;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL21;
 
 import java.nio.ByteBuffer;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public final class Texture implements AutoCloseable
 {
-	public static final Set<Texture> TEXTURES = new HashSet<>();
+	public static final Set<Texture> TEXTURES = new RefCountSet<>();
 
 	private static int getInternalTextureFormat(Bitmap.Format format)
 	{

@@ -26,11 +26,6 @@ public class DiffuseMaterial
 
 	public static Property[] getProperties(Asset<Texture> texture)
 	{
-		return getProperties(texture.getSource());
-	}
-
-	public static Property[] getProperties(Texture texture)
-	{
 		ArrayList<Property> properties = new ArrayList<>();
 		properties.add(new PropertyDiffuse());
 		properties.add(new PropertySpecular());

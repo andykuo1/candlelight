@@ -6,9 +6,9 @@ import net.jimboi.stage_a.dood.component.ComponentSpriteSheet;
 import net.jimboi.stage_a.dood.component.ComponentTransform;
 import net.jimboi.stage_a.dood.entity.Entity;
 import net.jimboi.stage_a.dood.entity.EntityManager;
-import net.jimboi.stage_b.gnome.sprite.SpriteSheet;
-import net.jimboi.stage_b.gnome.sprite.TextureAtlas;
-import net.jimboi.stage_b.gnome.sprite.TiledTextureAtlas;
+import net.jimboi.stage_a.mod.sprite.SpriteSheet;
+import net.jimboi.stage_a.mod.sprite.TextureAtlas;
+import net.jimboi.stage_a.mod.sprite.TiledTextureAtlas;
 import net.jimboi.stage_b.gnome.transform.Transform3;
 
 import org.jbox2d.collision.shapes.CircleShape;

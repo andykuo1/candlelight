@@ -1,6 +1,4 @@
-package net.jimboi.stage_b.gnome.sprite;
-
-import net.jimboi.stage_b.gnome.asset.Asset;
+package net.jimboi.stage_a.mod.sprite;
 
 import org.bstone.mogli.Texture;
 
@@ -9,13 +7,13 @@ import org.bstone.mogli.Texture;
  */
 public class Sprite
 {
-	private final Asset<Texture> texture;
+	private final Texture texture;
 	protected float u;
 	protected float v;
 	protected float width;
 	protected float height;
 
-	public Sprite(Asset<Texture> texture, float u, float v, float width, float height)
+	public Sprite(Texture texture, float u, float v, float width, float height)
 	{
 		this.texture = texture;
 		this.u = u;
@@ -44,7 +42,7 @@ public class Sprite
 		return this.height;
 	}
 
-	public Asset<Texture> getTexture()
+	public Texture getTexture()
 	{
 		return this.texture;
 	}

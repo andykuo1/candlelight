@@ -1,6 +1,4 @@
-package net.jimboi.stage_b.gnome.sprite;
-
-import net.jimboi.stage_b.gnome.asset.Asset;
+package net.jimboi.stage_a.mod.sprite;
 
 import org.bstone.mogli.Texture;
 
@@ -9,14 +7,14 @@ import org.bstone.mogli.Texture;
  */
 public abstract class TextureAtlas
 {
-	protected final Asset<Texture> texture;
+	protected final Texture texture;
 
-	public TextureAtlas(Asset<Texture> texture)
+	public TextureAtlas(Texture texture)
 	{
 		this.texture = texture;
 	}
 
-	public Asset<Texture> getTexture()
+	public Texture getTexture()
 	{
 		return this.texture;
 	}
@@ -24,7 +22,7 @@ public abstract class TextureAtlas
 	public SpriteSheet createSpriteSheet(int... indices)
 	{
 		Sprite[] sprites = new Sprite[indices.length];
-		for(int i = 0; i < sprites.length; ++i)
+		for (int i = 0; i < sprites.length; ++i)
 		{
 			sprites[i] = this.getSprite(indices[i]);
 		}

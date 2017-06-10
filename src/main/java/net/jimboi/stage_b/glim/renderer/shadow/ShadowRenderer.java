@@ -1,6 +1,11 @@
-package net.jimboi.stage_b.glim.shadow;
+package net.jimboi.stage_b.glim.renderer.shadow;
 
 import net.jimboi.stage_b.glim.GlimLight;
+import net.jimboi.stage_b.glim.resourceloader.ProgramLoader;
+import net.jimboi.stage_b.glim.resourceloader.ShaderLoader;
+import net.jimboi.stage_b.glim.resourceloader.TextureLoader;
+import net.jimboi.stage_b.gnome.asset.Asset;
+import net.jimboi.stage_b.gnome.asset.AssetManager;
 import net.jimboi.stage_b.gnome.instance.Instance;
 import net.jimboi.stage_b.gnome.material.property.PropertyShadow;
 import net.jimboi.stage_b.gnome.material.property.PropertyTexture;
@@ -8,6 +13,7 @@ import net.jimboi.stage_b.gnome.resource.ResourceLocation;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.material.Material;
+import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.FBO;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
@@ -17,10 +23,13 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 import org.qsilver.model.Model;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -36,7 +45,9 @@ public class ShadowRenderer
 
 	private ShadowBox shadowBox;
 	private FBO shadowFBO;
-	private Program program;
+
+	private Asset<Texture> shadowMap;
+	private Asset<Program> shadowProgram;
 
 	private PerspectiveCamera camera;
 	private Window window;
@@ -47,20 +58,22 @@ public class ShadowRenderer
 		this.camera = camera;
 	}
 
-	public void load()
+	public void load(AssetManager assetManager)
 	{
 		this.shadowBox = new ShadowBox(this.lightViewMatrix, camera, window);
+		this.shadowMap = assetManager.registerAsset(Texture.class, "shadowmap",
+				new TextureLoader.TextureParameter(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, GL11.GL_NEAREST, GL12.GL_CLAMP_TO_EDGE, Bitmap.Format.DEPTH));
 		this.shadowFBO = new FBO(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, false);
+		this.shadowFBO.attachTexture(this.shadowMap.getSource(), GL30.GL_DEPTH_ATTACHMENT, true);
 
-		Shader vs = new Shader(new ResourceLocation("glim:shadow.vsh"), GL20.GL_VERTEX_SHADER);
-		Shader fs = new Shader(new ResourceLocation("glim:shadow.fsh"), GL20.GL_FRAGMENT_SHADER);
-		this.program = new Program().link(vs, fs);
+		Asset<Shader> vs = assetManager.registerAsset(Shader.class, "v_shadow", new ShaderLoader.ShaderParameter(new ResourceLocation("glim:shadow.vsh"), GL20.GL_VERTEX_SHADER));
+		Asset<Shader> fs = assetManager.registerAsset(Shader.class, "f_shadow", new ShaderLoader.ShaderParameter(new ResourceLocation("glim:shadow.fsh"), GL20.GL_FRAGMENT_SHADER));
+		this.shadowProgram = assetManager.registerAsset(Program.class, "shadow", new ProgramLoader.ProgramParameter(Arrays.asList(vs, fs)));
 	}
 
 	public void unload()
 	{
 		this.shadowFBO.close();
-		this.program.close();
 	}
 
 	public void render(Iterator<Instance> instances, GlimLight light)
@@ -72,18 +85,20 @@ public class ShadowRenderer
 		updateLightView(dir, shadowBox.getCenter());
 		this.projectionMatrix.mul(this.lightViewMatrix, this.projViewMatrix);
 
-		this.shadowFBO.bind(this.window);
+		this.shadowFBO.bind(this.window, true, false);
 
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
 
-		this.program.bind();
+		final Program program = this.shadowProgram.getSource();
+		program.bind();
 		{
 			while (instances.hasNext())
 			{
-				Instance inst = instances.next();
-				Material mat = inst.getMaterial().getSource();
-				Model model = inst.getModel().getSource();
+				final Instance inst = instances.next();
+				final Material mat = inst.getMaterial().getSource();
+				final Model model = inst.getModel().getSource();
+
 				if (!mat.hasComponent(PropertyShadow.class)) continue;
 				if (!mat.getComponent(PropertyShadow.class).castShadow) continue;
 
@@ -92,7 +107,7 @@ public class ShadowRenderer
 				if (mat.hasComponent(PropertyTexture.class))
 				{
 					PropertyTexture prop = mat.getComponent(PropertyTexture.class);
-					texture = prop.texture;
+					texture = prop.texture.getSource();
 				}
 
 				Matrix4f matrix = new Matrix4f();
@@ -118,9 +133,9 @@ public class ShadowRenderer
 				model.unbind();
 			}
 		}
-		this.program.unbind();
+		program.unbind();
 
-		this.shadowFBO.unbind(this.window);
+		this.shadowFBO.unbind(this.window, true, false);
 	}
 
 	public Matrix4f getToShadowMapSpaceMatrix()
@@ -131,6 +146,11 @@ public class ShadowRenderer
 	public FBO getShadowFBO()
 	{
 		return this.shadowFBO;
+	}
+
+	public Asset<Texture> getShadowMap()
+	{
+		return this.shadowMap;
 	}
 
 	private void updateLightView(Vector3f dir, Vector3f center)

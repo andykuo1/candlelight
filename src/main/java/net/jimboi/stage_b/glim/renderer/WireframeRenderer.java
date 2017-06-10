@@ -1,5 +1,10 @@
 package net.jimboi.stage_b.glim.renderer;
 
+import net.jimboi.stage_b.glim.RendererGlim;
+import net.jimboi.stage_b.glim.resourceloader.ProgramLoader;
+import net.jimboi.stage_b.glim.resourceloader.ShaderLoader;
+import net.jimboi.stage_b.gnome.asset.Asset;
+import net.jimboi.stage_b.gnome.asset.AssetManager;
 import net.jimboi.stage_b.gnome.instance.Instance;
 import net.jimboi.stage_b.gnome.material.property.PropertyDiffuse;
 import net.jimboi.stage_b.gnome.resource.ResourceLocation;
@@ -15,6 +20,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.qsilver.model.Model;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -26,9 +32,7 @@ public class WireframeRenderer implements AutoCloseable
 	public static final ResourceLocation FRAGMENT_SHADER_LOCATION = new ResourceLocation("glim:wireframe.fsh");
 
 	private final Camera camera;
-	private final Shader vertexShader;
-	private final Shader fragmentShader;
-	private final Program program;
+	private final Asset<Program> program;
 
 	private final Matrix4f modelViewProjMatrix = new Matrix4f();
 	private final Matrix4f projViewMatrix = new Matrix4f();
@@ -38,18 +42,15 @@ public class WireframeRenderer implements AutoCloseable
 	{
 		this.camera = camera;
 
-		this.vertexShader = new Shader(VERTEX_SHADER_LOCATION, GL20.GL_VERTEX_SHADER);
-		this.fragmentShader = new Shader(FRAGMENT_SHADER_LOCATION, GL20.GL_FRAGMENT_SHADER);
-		this.program = new Program();
-		this.program.link(this.vertexShader, this.fragmentShader);
+		final AssetManager assetManager = RendererGlim.INSTANCE.getAssetManager();
+		Asset<Shader> vs = assetManager.registerAsset(Shader.class, "v_wireframe", new ShaderLoader.ShaderParameter(VERTEX_SHADER_LOCATION, GL20.GL_VERTEX_SHADER));
+		Asset<Shader> fs = assetManager.registerAsset(Shader.class, "f_wireframe", new ShaderLoader.ShaderParameter(FRAGMENT_SHADER_LOCATION, GL20.GL_FRAGMENT_SHADER));
+		this.program = assetManager.registerAsset(Program.class, "wireframe", new ProgramLoader.ProgramParameter(Arrays.asList(vs, fs)));
 	}
 
 	@Override
 	public void close()
 	{
-		this.vertexShader.close();
-		this.fragmentShader.close();
-		this.program.close();
 	}
 
 	public void render(Iterator<Instance> iterator)
@@ -58,16 +59,17 @@ public class WireframeRenderer implements AutoCloseable
 		Matrix4fc view = this.camera.view();
 		Matrix4fc projView = proj.mul(view, this.projViewMatrix);
 
-		this.program.bind();
+		final Program program = this.program.getSource();
+		program.bind();
 		{
-			this.program.setUniform("u_projection", proj);
-			this.program.setUniform("u_view", view);
+			program.setUniform("u_projection", proj);
+			program.setUniform("u_view", view);
 
 			while (iterator.hasNext())
 			{
-				Instance inst = iterator.next();
-				Model model = inst.getModel().getSource();
-				Material material = inst.getMaterial().getSource();
+				final Instance inst = iterator.next();
+				final Model model = inst.getModel().getSource();
+				final Material material = inst.getMaterial().getSource();
 
 				Vector3f diffuseColor = null;
 
@@ -79,8 +81,8 @@ public class WireframeRenderer implements AutoCloseable
 
 				Matrix4fc transformation = inst.getRenderTransformation(this.modelMatrix);
 				Matrix4fc modelViewProj = projView.mul(transformation, this.modelViewProjMatrix);
-				this.program.setUniform("u_model", transformation);
-				this.program.setUniform("u_model_view_projection", modelViewProj);
+				program.setUniform("u_model", transformation);
+				program.setUniform("u_model_view_projection", modelViewProj);
 
 				model.bind();
 				{
@@ -91,6 +93,6 @@ public class WireframeRenderer implements AutoCloseable
 				model.unbind();
 			}
 		}
-		this.program.unbind();
+		program.unbind();
 	}
 }

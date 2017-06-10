@@ -2,11 +2,11 @@ package org.bstone.mogli;
 
 import net.jimboi.stage_b.gnome.resource.ResourceLocation;
 
+import org.bstone.RefCountSet;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.qsilver.loader.StringLoader;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public final class Shader implements AutoCloseable
 {
-	public static final Set<Shader> SHADERS = new HashSet<>();
+	public static final Set<Shader> SHADERS = new RefCountSet<>();
 
 	private final int type;
 	private int handle;
@@ -53,11 +53,8 @@ public final class Shader implements AutoCloseable
 	@Override
 	public void close()
 	{
-		if (this.handle != 0)
-		{
-			GL20.glDeleteShader(this.handle);
-			this.handle = 0;
-		}
+		GL20.glDeleteShader(this.handle);
+		this.handle = 0;
 
 		SHADERS.remove(this);
 	}

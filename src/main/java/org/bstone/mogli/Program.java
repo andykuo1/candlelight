@@ -1,5 +1,6 @@
 package org.bstone.mogli;
 
+import org.bstone.RefCountSet;
 import org.joml.Matrix4fc;
 import org.joml.Vector2fc;
 import org.joml.Vector3fc;
@@ -11,7 +12,6 @@ import org.qsilver.poma.Poma;
 
 import java.nio.FloatBuffer;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,7 +20,7 @@ import java.util.Set;
  */
 public final class Program implements AutoCloseable
 {
-	public static final Set<Program> PROGRAMS = new HashSet<>();
+	public static final Set<Program> PROGRAMS = new RefCountSet<>();
 
 	private Shader[] shaders;
 	private int handle;
@@ -42,11 +42,8 @@ public final class Program implements AutoCloseable
 	@Override
 	public void close()
 	{
-		if (this.handle != 0)
-		{
-			GL20.glDeleteProgram(this.handle);
-			this.handle = 0;
-		}
+		GL20.glDeleteProgram(this.handle);
+		this.handle = 0;
 
 		PROGRAMS.remove(this);
 	}

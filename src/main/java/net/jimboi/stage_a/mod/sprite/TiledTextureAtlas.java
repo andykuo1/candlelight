@@ -1,6 +1,4 @@
-package net.jimboi.stage_b.gnome.sprite;
-
-import net.jimboi.stage_b.gnome.asset.Asset;
+package net.jimboi.stage_a.mod.sprite;
 
 import org.bstone.mogli.Texture;
 
@@ -17,16 +15,15 @@ public class TiledTextureAtlas extends TextureAtlas
 	private final int rowSize;
 	private final int colSize;
 
-	public TiledTextureAtlas(Asset<Texture> texture, int spriteWidth, int spriteHeight)
+	public TiledTextureAtlas(Texture texture, int spriteWidth, int spriteHeight)
 	{
 		super(texture);
 
 		this.spriteWidth = spriteWidth;
 		this.spriteHeight = spriteHeight;
 
-		Texture t = this.texture.getSource();
-		this.rowSize = ((int) t.width()) / (this.spriteWidth);
-		this.colSize = ((int) t.height()) / (this.spriteHeight);
+		this.rowSize = ((int) this.texture.width()) / (this.spriteWidth);
+		this.colSize = ((int) this.texture.height()) / (this.spriteHeight);
 
 		this.sprites = new Sprite[this.rowSize * this.colSize];
 	}
@@ -46,9 +43,8 @@ public class TiledTextureAtlas extends TextureAtlas
 			float v = (index / this.rowSize) * this.spriteHeight;
 			float w = this.spriteWidth;
 			float h = this.spriteHeight;
-			Texture t = this.texture.getSource();
-			float tw = t.width();
-			float th = t.height();
+			float tw = this.texture.width();
+			float th = this.texture.height();
 
 			sprite = this.sprites[index] = new Sprite(this.texture, u / tw, v / th, w / tw, h / th);
 		}

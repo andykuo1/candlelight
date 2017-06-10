@@ -1,11 +1,11 @@
 package org.bstone.mogli;
 
+import org.bstone.RefCountSet;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public final class VBO implements AutoCloseable
 {
-	public static final Set<VBO> VBOS = new HashSet<>();
+	public static final Set<VBO> VBOS = new RefCountSet<>();
 
 	private int handle;
 	private int target;
@@ -41,8 +41,6 @@ public final class VBO implements AutoCloseable
 	@Override
 	public void close()
 	{
-		this.unbind();
-
 		GL15.glDeleteBuffers(this.handle);
 		this.handle = 0;
 

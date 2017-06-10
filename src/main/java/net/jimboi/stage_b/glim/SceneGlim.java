@@ -1,6 +1,7 @@
 package net.jimboi.stage_b.glim;
 
 import net.jimboi.stage_a.dood.system.EntitySystem;
+import net.jimboi.stage_a.mod.sprite.TiledTextureAtlas;
 import net.jimboi.stage_b.glim.bounding.BoundingManager;
 import net.jimboi.stage_b.glim.entity.EntityCrate;
 import net.jimboi.stage_b.glim.entity.EntityGlim;
@@ -13,7 +14,6 @@ import net.jimboi.stage_b.glim.system.EntitySystemBounding;
 import net.jimboi.stage_b.glim.system.EntitySystemInstance;
 import net.jimboi.stage_b.gnome.asset.Asset;
 import net.jimboi.stage_b.gnome.instance.Instance;
-import net.jimboi.stage_b.gnome.sprite.TiledTextureAtlas;
 import net.jimboi.stage_b.gnome.transform.Transform;
 
 import org.bstone.material.Material;

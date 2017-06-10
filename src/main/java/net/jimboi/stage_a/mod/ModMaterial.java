@@ -1,6 +1,6 @@
 package net.jimboi.stage_a.mod;
 
-import net.jimboi.stage_b.gnome.sprite.Sprite;
+import net.jimboi.stage_a.mod.sprite.Sprite;
 
 import org.bstone.mogli.Texture;
 import org.joml.Vector2f;

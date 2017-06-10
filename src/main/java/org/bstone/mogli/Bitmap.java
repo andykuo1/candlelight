@@ -2,13 +2,13 @@ package org.bstone.mogli;
 
 import net.jimboi.stage_b.gnome.resource.ResourceLocation;
 
+import org.bstone.RefCountSet;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBImage;
 import org.qsilver.loader.BitmapLoader;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.util.HashSet;
 import java.util.Set;
 
 import static org.lwjgl.stb.STBImage.stbi_failure_reason;
@@ -20,7 +20,7 @@ import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
  */
 public final class Bitmap implements AutoCloseable
 {
-	public static final Set<Bitmap> BITMAPS = new HashSet<>();
+	public static final Set<Bitmap> BITMAPS = new RefCountSet<>();
 
 	public enum Format
 	{
