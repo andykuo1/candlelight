@@ -37,8 +37,6 @@ public class BillboardRenderer implements AutoCloseable
 	private final Camera camera;
 	private final Type type;
 
-	private final Shader vertexShader;
-	private final Shader fragmentShader;
 	private final Program program;
 
 	private final Matrix4f modelViewProjMatrix = new Matrix4f();
@@ -50,17 +48,16 @@ public class BillboardRenderer implements AutoCloseable
 		this.camera = camera;
 		this.type = type;
 
-		this.vertexShader = new Shader(VERTEX_SHADER_LOCATION, GL20.GL_VERTEX_SHADER);
-		this.fragmentShader = new Shader(FRAGMENT_SHADER_LOCATION, GL20.GL_FRAGMENT_SHADER);
-		this.program = new Program();
-		this.program.link(this.vertexShader, this.fragmentShader);
+		Shader vs = new Shader(VERTEX_SHADER_LOCATION, GL20.GL_VERTEX_SHADER);
+		Shader fs = new Shader(FRAGMENT_SHADER_LOCATION, GL20.GL_FRAGMENT_SHADER);
+		Program prgm = new Program();
+		prgm.link(vs, fs);
+		this.program = prgm;
 	}
 
 	@Override
 	public void close()
 	{
-		this.vertexShader.close();
-		this.fragmentShader.close();
 		this.program.close();
 	}
 
@@ -70,10 +67,12 @@ public class BillboardRenderer implements AutoCloseable
 		Matrix4fc view = this.camera.view();
 		Matrix4fc projView = proj.mul(view, this.projViewMatrix);
 
-		this.program.bind();
+		Program program = this.program;
+
+		program.bind();
 		{
-			this.program.setUniform("u_projection", proj);
-			this.program.setUniform("u_view", view);
+			program.setUniform("u_projection", proj);
+			program.setUniform("u_view", view);
 
 			while (iterator.hasNext())
 			{
@@ -93,8 +92,8 @@ public class BillboardRenderer implements AutoCloseable
 
 				Matrix4fc transformation = inst.getRenderTransformation(this.modelMatrix);
 				Matrix4fc modelViewProj = projView.mul(transformation, this.modelViewProjMatrix);
-				this.program.setUniform("u_model", transformation);
-				this.program.setUniform("u_model_view_projection", modelViewProj);
+				program.setUniform("u_model", transformation);
+				program.setUniform("u_model_view_projection", modelViewProj);
 
 				model.bind();
 				{
@@ -104,7 +103,7 @@ public class BillboardRenderer implements AutoCloseable
 						texture.bind();
 					}
 
-					this.program.setUniform("u_sampler", 0);
+					program.setUniform("u_sampler", 0);
 
 					if (sprite != null)
 					{
@@ -112,7 +111,7 @@ public class BillboardRenderer implements AutoCloseable
 						program.setUniform("u_tex_scale", new Vector2f(sprite.getWidth(), sprite.getHeight()));
 					}
 
-					this.program.setUniform("u_billboard_type", this.type.ordinal());
+					program.setUniform("u_billboard_type", this.type.ordinal());
 
 					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 
@@ -124,6 +123,6 @@ public class BillboardRenderer implements AutoCloseable
 				model.unbind();
 			}
 		}
-		this.program.unbind();
+		program.unbind();
 	}
 }

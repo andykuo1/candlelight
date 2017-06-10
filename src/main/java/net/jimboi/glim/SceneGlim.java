@@ -7,16 +7,21 @@ import net.jimboi.glim.entity.EntityGlim;
 import net.jimboi.glim.entity.EntityPlayer;
 import net.jimboi.glim.gameentity.GameEntity;
 import net.jimboi.glim.gameentity.component.GameComponentTransform;
+import net.jimboi.glim.resourceloader.MeshLoader;
+import net.jimboi.glim.resourceloader.ModelLoader;
 import net.jimboi.glim.system.EntitySystemBounding;
 import net.jimboi.glim.system.EntitySystemInstance;
 import net.jimboi.mod.Light;
 import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod2.asset.Asset;
 import net.jimboi.mod2.sprite.TiledTextureAtlas;
 import net.jimboi.mod2.transform.Transform;
 
 import org.bstone.mogli.Mesh;
+import org.bstone.mogli.Texture;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import org.qsilver.material.Material;
 import org.qsilver.model.Model;
 
 /**
@@ -47,12 +52,22 @@ public class SceneGlim extends SceneGlimBase
 		this.player = EntityPlayer.create(this.world);
 		RendererGlim.CAMERA.setCameraController(new CameraControllerGlim(this.player, this.world));
 
-		Mesh mesh = RendererGlim.createMeshFromMap(this.world.getMap(), new TiledTextureAtlas(RendererGlim.get("texture.atlas"), 16, 16));
-		RendererGlim.register("mesh.dungeon", mesh);
-		RendererGlim.register("model.dungeon", new Model(mesh));
-		this.renderer.getInstanceManager().add(new Instance(RendererGlim.get("model.dungeon"), RendererGlim.get("material.font"), "diffuse"));
+		Mesh mesh = RendererGlim.createMeshFromMap(this.world.getMap(), new TiledTextureAtlas(
+				RendererGlim.INSTANCE.getAssetManager().getAsset(Texture.class, "atlas").getSource(),
+				16, 16));
+		Asset<Mesh> msh_dungeon = RendererGlim.INSTANCE.getAssetManager().registerAsset(Mesh.class, "dungeon",
+				new MeshLoader.MeshParameter(mesh));
+		Asset<Model> mdl_dungeon = RendererGlim.INSTANCE.getAssetManager().registerAsset(Model.class, "dungeon",
+				new ModelLoader.ModelParameter(msh_dungeon));
+		this.renderer.getInstanceManager().add(new Instance(
+				mdl_dungeon.getSource(),
+				RendererGlim.INSTANCE.getAssetManager().getAsset(Material.class, "font").getSource(),
+				"diffuse"));
 
-		this.renderer.getInstanceManager().add(this.plane = new Instance(RendererGlim.get("model.plane"), RendererGlim.get("material.plane"), "billboard"));
+		this.renderer.getInstanceManager().add(this.plane = new Instance(
+				RendererGlim.INSTANCE.getAssetManager().getAsset(Model.class, "plane").getSource(),
+				RendererGlim.INSTANCE.getAssetManager().getAsset(Material.class, "plane").getSource(),
+				"billboard"));
 
 		EntityCrate.create(this.world, -4, 0, 0);
 		EntityCrate.create(this.world, 20, 5, 30);

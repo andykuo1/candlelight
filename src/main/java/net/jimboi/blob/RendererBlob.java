@@ -97,11 +97,10 @@ public class RendererBlob extends Renderer implements InstanceManager.OnInstance
 		Texture tex_woodenCrate = RenderUtil.loadTexture(new ResourceLocation("blob:wooden-crate.jpg"));
 
 		//Materials
-		DiffuseMaterial.setMaterialManager(this.materialManager);
-		Material mat_woodenCrate = DiffuseMaterial.create(tex_woodenCrate);
+		Material mat_woodenCrate = this.materialManager.createMaterial(DiffuseMaterial.getProperties(tex_woodenCrate));
 		RenderUtil.registerMaterial("woodenCrate", mat_woodenCrate);
 
-		Material mat_billboard = DiffuseMaterial.create(tex_woodenCrate);
+		Material mat_billboard = this.materialManager.createMaterial(DiffuseMaterial.getProperties(tex_woodenCrate));
 		RenderUtil.registerMaterial("billboard", mat_billboard);
 
 		//Models

@@ -40,6 +40,4 @@ public class MaterialManager extends ComponentManager<Material, Property>
 
 		return (T) this.getDefaultProperty(componentType);
 	}
-
-
 }

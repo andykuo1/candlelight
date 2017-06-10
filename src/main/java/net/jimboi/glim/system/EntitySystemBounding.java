@@ -12,6 +12,8 @@ import net.jimboi.mod.instance.Instance;
 import net.jimboi.mod.instance.InstanceManager;
 
 import org.joml.Vector3fc;
+import org.qsilver.material.Material;
+import org.qsilver.model.Model;
 import org.qsilver.scene.Scene;
 
 import java.util.Collection;
@@ -80,7 +82,10 @@ public class EntitySystemBounding extends EntitySystemBase implements Scene.OnSc
 	{
 		if (bounding instanceof AABB)
 		{
-			Instance inst = new Instance(RendererGlim.get("model.box"), RendererGlim.get("material.box"), "wireframe");
+			Instance inst = new Instance(
+					RendererGlim.INSTANCE.getAssetManager().getAsset(Model.class, "box").getSource(),
+					RendererGlim.INSTANCE.getAssetManager().getAsset(Material.class, "box").getSource(),
+					"wireframe");
 			this.instances.put(bounding, inst);
 			this.instanceManager.add(inst);
 		}

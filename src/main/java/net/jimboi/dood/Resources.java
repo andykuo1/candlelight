@@ -173,8 +173,7 @@ public class Resources
 
 		//Materials
 		materialManager = new MaterialManager();
-		DiffuseMaterial.setMaterialManager(materialManager);
-		register("bird", DiffuseMaterial.create(getTexture("bird")));
-		register("font", DiffuseMaterial.create(getTexture("font")));
+		register("bird", materialManager.createMaterial(DiffuseMaterial.getProperties(getTexture("bird"))));
+		register("font", materialManager.createMaterial(DiffuseMaterial.getProperties(getTexture("font"))));
 	}
 }

@@ -3,12 +3,17 @@ package net.jimboi.glim;
 import net.jimboi.glim.renderer.BillboardRenderer;
 import net.jimboi.glim.renderer.DiffuseRenderer;
 import net.jimboi.glim.renderer.WireframeRenderer;
+import net.jimboi.glim.resourceloader.BitmapLoader;
+import net.jimboi.glim.resourceloader.MaterialLoader;
+import net.jimboi.glim.resourceloader.MeshLoader;
+import net.jimboi.glim.resourceloader.ModelLoader;
+import net.jimboi.glim.resourceloader.TextureLoader;
 import net.jimboi.mod.Light;
 import net.jimboi.mod.instance.Instance;
 import net.jimboi.mod.instance.InstanceManager;
+import net.jimboi.mod2.asset.Asset;
+import net.jimboi.mod2.asset.AssetManager;
 import net.jimboi.mod2.material.DiffuseMaterial;
-import net.jimboi.mod2.material.property.PropertyDiffuse;
-import net.jimboi.mod2.material.property.PropertyShadow;
 import net.jimboi.mod2.meshbuilder.MeshBuilder;
 import net.jimboi.mod2.meshbuilder.ModelUtil;
 import net.jimboi.mod2.resource.ResourceLocation;
@@ -17,7 +22,6 @@ import net.jimboi.mod2.sprite.TiledTextureAtlas;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.input.InputManager;
-import org.bstone.loader.OBJLoader;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
@@ -35,35 +39,21 @@ import org.qsilver.model.Model;
 import org.qsilver.renderer.Renderer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Andy on 6/1/17.
  */
 public class RendererGlim extends Renderer
 {
-	private static final Map<String, Object> RESOURCES = new HashMap<>();
-
-	public static <T> T register(String id, T value)
-	{
-		RESOURCES.put(id, value);
-		return value;
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T> T get(String id)
-	{
-		return (T) RESOURCES.get(id);
-	}
-
+	public static RendererGlim INSTANCE;
 	public static PerspectiveCamera CAMERA;
 	public static List<Light> LIGHTS = new ArrayList<>();
 
 	protected InstanceManager instanceManager;
 	protected MaterialManager materialManager;
+	protected AssetManager assetManager;
 
 	protected DiffuseRenderer diffuseRenderer;
 	protected BillboardRenderer billboardRenderer;
@@ -71,6 +61,7 @@ public class RendererGlim extends Renderer
 
 	public RendererGlim()
 	{
+		INSTANCE = this;
 		CAMERA = new PerspectiveCamera(640, 480);
 	}
 
@@ -79,6 +70,7 @@ public class RendererGlim extends Renderer
 	{
 		this.instanceManager = new InstanceManager((inst) -> null);
 		this.materialManager = new MaterialManager();
+		this.assetManager = new AssetManager();
 
 		//Register Inputs
 		InputManager.registerMousePosX("mousex");
@@ -96,43 +88,66 @@ public class RendererGlim extends Renderer
 		InputManager.registerKey("action", GLFW.GLFW_KEY_F);
 		InputManager.registerKey("sprint", GLFW.GLFW_KEY_LEFT_SHIFT, GLFW.GLFW_KEY_RIGHT_SHIFT);
 
+		final AssetManager assets = this.assetManager;
+
 		//Bitmaps
-		register("bitmap.bird", new Bitmap(new ResourceLocation("glim:bird.png")));
-		register("bitmap.font_basic", new Bitmap(new ResourceLocation("glim:font_basic.png")));
-		register("bitmap.wooden_crate", new Bitmap(new ResourceLocation("glim:wooden_crate.jpg")));
+		assets.registerLoader(Bitmap.class, new BitmapLoader());
+		Asset<Bitmap> bmp_bird = assets.registerAsset(Bitmap.class, "bird",
+				new BitmapLoader.BitmapParameter(new ResourceLocation("glim:bird.png")));
+		Asset<Bitmap> bmp_font_basic = assets.registerAsset(Bitmap.class, "font_basic",
+				new BitmapLoader.BitmapParameter(new ResourceLocation("glim:font_basic.png")));
+		Asset<Bitmap> bmp_wooden_crate = assets.registerAsset(Bitmap.class, "wooden_crate",
+				new BitmapLoader.BitmapParameter(new ResourceLocation("glim:wooden_crate.jpg")));
 
 		//Textures
-		register("texture.bird", new Texture(get("bitmap.bird"), GL11.GL_LINEAR, GL12.GL_CLAMP_TO_EDGE));
-		register("texture.font", new Texture(get("bitmap.font_basic"), GL11.GL_NEAREST, GL12.GL_CLAMP_TO_EDGE));
-		register("texture.crate", new Texture(get("bitmap.wooden_crate"), GL11.GL_LINEAR, GL12.GL_CLAMP_TO_EDGE));
-		register("texture.atlas", new Texture(get("bitmap.font_basic"), GL11.GL_NEAREST, GL12.GL_CLAMP_TO_EDGE));
+		assets.registerLoader(Texture.class, new TextureLoader());
+		Asset<Texture> txt_bird = assets.registerAsset(Texture.class, "bird",
+				new TextureLoader.TextureParameter(bmp_bird, GL11.GL_LINEAR, GL12.GL_CLAMP_TO_EDGE));
+		Asset<Texture> txt_font = assets.registerAsset(Texture.class, "font",
+				new TextureLoader.TextureParameter(bmp_font_basic, GL11.GL_NEAREST, GL12.GL_CLAMP_TO_EDGE));
+		Asset<Texture> txt_crate = assets.registerAsset(Texture.class, "crate",
+				new TextureLoader.TextureParameter(bmp_wooden_crate, GL11.GL_LINEAR, GL12.GL_CLAMP_TO_EDGE));
+		Asset<Texture> txt_atlas = assets.registerAsset(Texture.class, "atlas",
+				new TextureLoader.TextureParameter(bmp_font_basic, GL11.GL_NEAREST, GL12.GL_CLAMP_TO_EDGE));
 
 		//Meshes
-		register("mesh.ball", OBJLoader.read(new ResourceLocation("glim:sphere.obj").getFilePath()));
+		assets.registerLoader(Mesh.class, new MeshLoader());
+		Asset<Mesh> msh_ball = assets.registerAsset(Mesh.class, "ball",
+				new MeshLoader.MeshParameter(new ResourceLocation("glim:sphere.obj")));
 
 		MeshBuilder mb = new MeshBuilder();
 		mb.addPlane(new Vector2f(0, 0), new Vector2f(1, 1), 0, new Vector2f(0, 0), new Vector2f(1, 1));
-		register("mesh.plane", ModelUtil.createMesh(mb.bake(false, true)));
+		Asset<Mesh> msh_plane = assets.registerAsset(Mesh.class, "plane",
+				new MeshLoader.MeshParameter(ModelUtil.createMesh(mb.bake(false, true))));
 		mb.clear();
 
 		mb.addBox(new Vector3f(0, 0, 0), new Vector3f(1, 1, 1), new Vector2f(0, 0), new Vector2f(1, 1), true, true, true, true, true, true);
-		register("mesh.box", ModelUtil.createMesh(mb.bake(false, true)));
+		Asset<Mesh> msh_box = assets.registerAsset(Mesh.class, "box",
+				new MeshLoader.MeshParameter(ModelUtil.createMesh(mb.bake(false, true))));
+		mb.clear();
 
 		//Models
-		register("model.ball", new Model(get("mesh.ball")));
-		register("model.plane", new Model(get("mesh.plane")));
-		register("model.box", new Model(get("mesh.box")));
+		assets.registerLoader(Model.class, new ModelLoader());
+		assets.registerAsset(Model.class, "ball",
+				new ModelLoader.ModelParameter(msh_ball));
+		assets.registerAsset(Model.class, "plane",
+				new ModelLoader.ModelParameter(msh_plane));
+		assets.registerAsset(Model.class, "box",
+				new ModelLoader.ModelParameter(msh_box));
 
 		//Materials
+		assets.registerLoader(Material.class, new MaterialLoader(this.materialManager));
 		DiffuseMaterial.setMaterialManager(this.materialManager);
-		register("material.bird", DiffuseMaterial.create(get("texture.bird")));
-		register("material.plane", DiffuseMaterial.create(get("texture.bird")));
-		register("material.font", DiffuseMaterial.create(get("texture.font")));
-		register("material.crate", DiffuseMaterial.create(get("texture.crate")));
-
-		Material mat_box = register("material.box", DiffuseMaterial.create(null));
-		mat_box.getComponent(PropertyDiffuse.class).setDiffuseColor(0xFF00FF);
-		this.materialManager.removeComponentFromEntity(mat_box, PropertyShadow.class);
+		assets.registerAsset(Material.class, "bird",
+				new MaterialLoader.MaterialParameter(DiffuseMaterial.getProperties(txt_bird)));
+		assets.registerAsset(Material.class, "plane",
+				new MaterialLoader.MaterialParameter(DiffuseMaterial.getProperties(txt_bird)));
+		assets.registerAsset(Material.class, "font",
+				new MaterialLoader.MaterialParameter(DiffuseMaterial.getProperties(txt_font)));
+		assets.registerAsset(Material.class, "crate",
+				new MaterialLoader.MaterialParameter(DiffuseMaterial.getProperties(txt_crate)));
+		assets.registerAsset(Material.class, "box",
+				new MaterialLoader.MaterialParameter(DiffuseMaterial.getProperties(0xFF00FF)));
 
 		this.diffuseRenderer = new DiffuseRenderer(CAMERA);
 		this.billboardRenderer = new BillboardRenderer(CAMERA, BillboardRenderer.Type.CYLINDRICAL);
@@ -161,21 +176,33 @@ public class RendererGlim extends Renderer
 		this.wireframeRenderer.render(iter);
 
 		this.instanceManager.update();
+		this.assetManager.update();
 	}
 
 	@Override
 	public void onRenderUnload()
 	{
 		this.instanceManager.destroyAll();
+		this.assetManager.destroy();
 
 		this.diffuseRenderer.close();
-		this.billboardRenderer.close();
 		this.wireframeRenderer.close();
+		this.billboardRenderer.close();
 	}
 
 	public InstanceManager getInstanceManager()
 	{
 		return this.instanceManager;
+	}
+
+	public MaterialManager getMaterialManager()
+	{
+		return this.materialManager;
+	}
+
+	public AssetManager getAssetManager()
+	{
+		return this.assetManager;
 	}
 
 	public static Mesh createMeshFromMap(IntMap map, TiledTextureAtlas textureAtlas)

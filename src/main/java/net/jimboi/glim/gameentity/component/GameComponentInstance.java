@@ -32,8 +32,8 @@ public class GameComponentInstance extends GameComponent implements InstanceHand
 	@Override
 	public void onInstanceSetup(InstanceManager instanceManager, List<Instance> instances)
 	{
-		Model model = RendererGlim.get(this.modelID);
-		Material material = RendererGlim.get(this.materialID);
+		Model model = RendererGlim.INSTANCE.getAssetManager().getAsset(Model.class, this.modelID).getSource();
+		Material material = RendererGlim.INSTANCE.getAssetManager().getAsset(Material.class, this.materialID).getSource();
 		instances.add(new Instance(model, material, this.renderType));
 	}
 

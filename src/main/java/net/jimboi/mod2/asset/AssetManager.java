@@ -8,54 +8,103 @@ import java.util.Map;
  */
 public class AssetManager
 {
-	protected final Map<Class, Map<String, AutoCloseable>> assets = new HashMap<>();
+	protected final Map<Class, Map<String, Asset>> assets = new HashMap<>();
+	protected final Map<String, Object> resources = new HashMap<>();
+	protected final Map<Class, ResourceLoader> loaders = new HashMap<>();
+
+	public <T> void registerLoader(Class<T> assetType, ResourceLoader<T, ? extends ResourceParameter<T>> loader)
+	{
+		if (this.loaders.containsKey(assetType))
+			throw new IllegalArgumentException("Loader for asset type '" + assetType.getSimpleName() + "' already exists!");
+		this.loaders.put(assetType, loader);
+	}
+
+	public <T> ResourceLoader getLoader(Class<T> assetType)
+	{
+		return this.loaders.get(assetType);
+	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends AutoCloseable> T getAsset(Class<? super T> assetType, String id)
+	public <T> Asset<T> registerAsset(Class<T> assetType, String id, ResourceParameter<T> params)
 	{
-		Map<String, AutoCloseable> assetMap = this.getAssetMap(assetType);
-		AutoCloseable asset = assetMap.get(id);
+		Map<String, Asset> assetMap = this.getAssetMap(assetType);
+		Asset asset = assetMap.get(id);
+		if (asset != null)
+		{
+			if (!assetType.equals(asset.getType()))
+				throw new IllegalStateException("Asset '" + assetType.getSimpleName() + "' does not match type '" + asset.getType().getSimpleName() + "' which already exists!");
+
+			asset.params = params;
+			asset.id = id;
+		}
+		else
+		{
+			asset = new Asset<>(this, assetType, id, params);
+			assetMap.put(id, asset);
+		}
+		return asset;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> Asset<T> getAsset(Class<T> assetType, String id)
+	{
+		Map<String, Asset> assetMap = this.getAssetMap(assetType);
+		Asset asset = assetMap.get(id);
 		if (asset == null)
-			throw new IllegalArgumentException("Asset '" + assetType + "' with id '" + id + "' does not exist!");
+			throw new IllegalArgumentException("Asset '" + assetType.getSimpleName() + "' with id '" + id + "' does not exist!");
+		if (!assetType.equals(asset.getType()))
+			throw new IllegalArgumentException("Asset '" + assetType.getSimpleName() + "' does not match type '" + asset.getType().getSimpleName() + "'!");
 
-		return (T) asset;
+		return asset;
 	}
 
-	public <T extends AutoCloseable> void register(Class<? super T> assetType, String id, T source)
+	@SuppressWarnings("unchecked")
+	public <T, P extends ResourceParameter<T>> T loadResource(Class<T> assetType, String id, P params)
 	{
-		Map<String, AutoCloseable> assetMap = this.getAssetMap(assetType);
-		if (assetMap.containsKey(id))
-			throw new IllegalArgumentException("Asset '" + assetType + "' with id '" + id + "' already exists!");
-
-		assetMap.put(id, source);
+		String resourceID = this.getResourceID(assetType, id);
+		Object resource = this.resources.get(resourceID);
+		if (resource == null)
+		{
+			ResourceLoader<T, P> loader = this.loaders.get(assetType);
+			resource = loader.load(params);
+		}
+		return (T) resource;
 	}
+
 
 	public void update()
 	{
-
 	}
 
 	public void destroy()
 	{
-		for (Map<String, AutoCloseable> assetMap : this.assets.values())
+		this.assets.clear();
+
+		for (Object resource : this.resources.values())
 		{
-			for (AutoCloseable asset : assetMap.values())
+			if (resource instanceof AutoCloseable)
 			{
 				try
 				{
-					asset.close();
+					((AutoCloseable) resource).close();
 				}
 				catch (Exception e)
 				{
 					e.printStackTrace();
 				}
 			}
-			assetMap.clear();
 		}
-		this.assets.clear();
+
+		this.resources.clear();
+		this.loaders.clear();
 	}
 
-	protected Map<String, AutoCloseable> getAssetMap(Class assetType)
+	protected String getResourceID(Class assetType, String id)
+	{
+		return assetType.getSimpleName().toLowerCase() + ":" + id;
+	}
+
+	protected Map<String, Asset> getAssetMap(Class assetType)
 	{
 		return this.assets.computeIfAbsent(assetType, (key) -> new HashMap<>());
 	}

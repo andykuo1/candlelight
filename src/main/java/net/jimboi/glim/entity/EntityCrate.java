@@ -19,7 +19,7 @@ public class EntityCrate extends EntityGlim
 		transform.position.set(x, y, z);
 		return MANAGER.createEntity(
 				new GameComponentTransform(transform),
-				new GameComponentInstance(transform, "model.box", "material.crate", "diffuse"),
+				new GameComponentInstance(transform, "box", "crate", "diffuse"),
 				new GameComponentBounding(world.getBoundingManager().create(new AABB(transform.position.x, transform.position.z, 0.5F, 0.5F))));
 	}
 }

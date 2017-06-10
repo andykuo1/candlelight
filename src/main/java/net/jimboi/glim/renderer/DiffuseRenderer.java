@@ -55,7 +55,8 @@ public class DiffuseRenderer implements AutoCloseable
 
 		this.shadowRenderer = new ShadowRenderer(camera, Main.WINDOW);
 		this.shadowRenderer.load();
-		Material mat = RendererGlim.get("material.plane");
+		//TOOD: this will crash on destory since, it will call close twice! By FBO and manager
+		Material mat = RendererGlim.INSTANCE.getAssetManager().getAsset(Material.class, "plane").getSource();
 		mat.getComponent(PropertyTexture.class).texture = this.shadowRenderer.getShadowFBO().getTexture();
 
 		this.vertexShader = new Shader(VERTEX_SHADER_LOCATION, GL20.GL_VERTEX_SHADER);
