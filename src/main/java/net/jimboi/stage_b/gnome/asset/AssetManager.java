@@ -67,6 +67,7 @@ public class AssetManager
 		{
 			ResourceLoader<T, P> loader = this.loaders.get(assetType);
 			resource = loader.load(params);
+			this.resources.put(resourceID, resource);
 		}
 		return (T) resource;
 	}
