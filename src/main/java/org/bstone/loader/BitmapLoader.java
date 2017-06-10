@@ -1,4 +1,4 @@
-package org.bstone.util.loader;
+package org.bstone.loader;
 
 import org.bstone.util.FileUtil;
 import org.lwjgl.BufferUtils;

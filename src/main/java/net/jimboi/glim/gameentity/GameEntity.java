@@ -1,6 +1,6 @@
 package net.jimboi.glim.gameentity;
 
-import net.jimboi.glim.component.GameComponent;
+import net.jimboi.glim.gameentity.component.GameComponent;
 
 import org.bstone.component.EntityManifest;
 

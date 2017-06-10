@@ -12,6 +12,7 @@ public class PropertyTexture extends Property
 {
 	public Texture texture;
 	public Sprite sprite;
+	public boolean transparent = false;
 
 	public PropertyTexture(Texture texture, Sprite sprite)
 	{

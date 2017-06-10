@@ -1,6 +1,7 @@
 package net.jimboi.mod2.material;
 
 import net.jimboi.mod2.material.property.PropertyDiffuse;
+import net.jimboi.mod2.material.property.PropertyShadow;
 import net.jimboi.mod2.material.property.PropertySpecular;
 import net.jimboi.mod2.material.property.PropertyTexture;
 
@@ -22,7 +23,7 @@ public class DiffuseMaterial
 
 	public static Material create(Texture texture)
 	{
-		Material mat = MANAGER.createMaterial(new PropertyDiffuse(), new PropertySpecular());
+		Material mat = MANAGER.createMaterial(new PropertyDiffuse(), new PropertySpecular(), new PropertyShadow(true, true));
 		if (texture != null) MANAGER.addComponentToEntity(mat, new PropertyTexture(texture));
 		return mat;
 	}

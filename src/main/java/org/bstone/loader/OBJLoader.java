@@ -1,4 +1,4 @@
-package org.bstone.util.loader;
+package org.bstone.loader;
 
 import net.jimboi.mod2.meshbuilder.ModelUtil;
 

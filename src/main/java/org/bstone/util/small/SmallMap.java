@@ -74,6 +74,11 @@ public class SmallMap<Key, Value> extends AbstractMap<Key, Value>
 		return this.valueArray().get(index);
 	}
 
+	public int indexOf(Key key)
+	{
+		return this.keyArray().indexOf(key);
+	}
+
 	@Override
 	public Value put(Key key, Value value)
 	{

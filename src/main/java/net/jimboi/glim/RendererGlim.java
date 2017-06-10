@@ -8,20 +8,20 @@ import net.jimboi.mod.instance.Instance;
 import net.jimboi.mod.instance.InstanceManager;
 import net.jimboi.mod2.material.DiffuseMaterial;
 import net.jimboi.mod2.material.property.PropertyDiffuse;
+import net.jimboi.mod2.material.property.PropertyShadow;
 import net.jimboi.mod2.meshbuilder.MeshBuilder;
 import net.jimboi.mod2.meshbuilder.ModelUtil;
 import net.jimboi.mod2.resource.ResourceLocation;
 import net.jimboi.mod2.sprite.Sprite;
 import net.jimboi.mod2.sprite.TiledTextureAtlas;
 
-import org.bstone.camera.Camera;
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.input.InputManager;
+import org.bstone.loader.OBJLoader;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
 import org.bstone.util.iterator.FilterIterator;
-import org.bstone.util.loader.OBJLoader;
 import org.bstone.util.map2d.IntMap;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -59,7 +59,7 @@ public class RendererGlim extends Renderer
 		return (T) RESOURCES.get(id);
 	}
 
-	public static Camera CAMERA;
+	public static PerspectiveCamera CAMERA;
 	public static List<Light> LIGHTS = new ArrayList<>();
 
 	protected InstanceManager instanceManager;
@@ -132,6 +132,7 @@ public class RendererGlim extends Renderer
 
 		Material mat_box = register("material.box", DiffuseMaterial.create(null));
 		mat_box.getComponent(PropertyDiffuse.class).setDiffuseColor(0xFF00FF);
+		this.materialManager.removeComponentFromEntity(mat_box, PropertyShadow.class);
 
 		this.diffuseRenderer = new DiffuseRenderer(CAMERA);
 		this.billboardRenderer = new BillboardRenderer(CAMERA, BillboardRenderer.Type.CYLINDRICAL);
@@ -139,12 +140,17 @@ public class RendererGlim extends Renderer
 
 		RendererGlim.LIGHTS.add(Light.createSpotLight(0, 0, 0, 0xFFFFFF, 0.4F, 0.1F, 0, 15F, 1, 1, 1));
 		RendererGlim.LIGHTS.add(Light.createPointLight(0, 0, 0, 0xFFFFFF, 0.6F, 0.1F, 0));
-		RendererGlim.LIGHTS.add(Light.createDirectionLight(1000, 1000F, 1000F, 0xFFFFFF, 0.1F, 0.06F));
+		RendererGlim.LIGHTS.add(Light.createDirectionLight(10000F, 10000F, 10000F, 0xFFFFFF, 0.2F, 0.1F));
+
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glCullFace(GL11.GL_BACK);
 	}
 
 	@Override
 	public void onRenderUpdate()
 	{
+		this.diffuseRenderer.preRender(this.instanceManager.getInstanceIterator());
+
 		Iterator<Instance> iter = new FilterIterator<>(this.instanceManager.getInstanceIterator(), (inst) -> inst.getRenderType().equals("diffuse"));
 		this.diffuseRenderer.render(iter);
 
@@ -161,6 +167,10 @@ public class RendererGlim extends Renderer
 	public void onRenderUnload()
 	{
 		this.instanceManager.destroyAll();
+
+		this.diffuseRenderer.close();
+		this.billboardRenderer.close();
+		this.wireframeRenderer.close();
 	}
 
 	public InstanceManager getInstanceManager()
@@ -227,7 +237,7 @@ public class RendererGlim extends Renderer
 					boolean right = !isSolid(map, x + 1, y);
 
 					mb.addTexturedBox(wallPos,
-							wallPos.add(1, 1, 1, v),
+							wallPos.add(1, 2, 1, v),
 							texSideTopLeft, texSideBotRight,//Front
 							texSideTopLeft, texSideBotRight,//Back
 							texTopLeft, texBotRight,//Top

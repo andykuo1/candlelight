@@ -3,6 +3,7 @@
 in vec3 v_position;
 in vec2 v_texcoord;
 in vec3 v_normal;
+in vec4 v_shadow;
 
 out vec4 frag_color;
 
@@ -25,10 +26,15 @@ uniform int u_light_count;
 uniform Light u_light [MAX_LIGHTS];
 
 uniform sampler2D u_sampler;
+uniform bool u_transparent = false;
 uniform float u_shininess;
 uniform vec3 u_specular_color;
 
-vec3 applyLight(Light light, vec3 surfaceColor, vec3 surfaceNormal, vec3 surfacePos, vec3 surfaceToCamera, float shininess, vec3 specularColor)
+uniform sampler2D u_shadow_sampler;
+uniform float u_shadow_map_size;
+uniform int u_pcf_kernel_size;
+
+vec3 applyLight(Light light, vec3 surfaceColor, vec3 surfaceNormal, vec3 surfacePos, vec3 surfaceToCamera, float shininess, vec3 specularColor, float lightFactor)
 {
     vec3 surfaceToLight;
     float attenuation = 1.0;
@@ -69,20 +75,42 @@ vec3 applyLight(Light light, vec3 surfaceColor, vec3 surfaceNormal, vec3 surface
     vec3 specular = specularCoefficient * specularColor * light.intensity;
 
     //linear color (color before gamma correction)
-    return ambient + attenuation * (diffuse + specular);
+    return ambient + attenuation * (diffuse * lightFactor + specular);
 }
 
 void main()
 {
+    float texelSize = 1.0 / u_shadow_map_size;
+    float texelCount = pow(u_pcf_kernel_size * 2 + 1.0, 2);
+    float total = 0.0;
+
+    for(int x = -u_pcf_kernel_size; x <= u_pcf_kernel_size; x++)
+    {
+        for(int y = -u_pcf_kernel_size; y <= u_pcf_kernel_size; y++)
+        {
+            float objNearestLight = texture(u_shadow_sampler, v_shadow.xy + vec2(x, y) * texelSize).r;
+            if (v_shadow.z > objNearestLight + 0.002)
+            {
+                total += 1.0;
+            }
+        }
+    }
+
+    total /= texelCount;
+
+    float lightFactor = clamp(1.0 - (total * v_shadow.w), 0.0, 1.0);
+
+    vec4 surfaceColor = texture(u_sampler, v_texcoord);
+    if (u_transparent && surfaceColor.a < 0.5) discard;
+
     vec3 surfaceNormal = normalize(transpose(inverse(mat3(u_model))) * v_normal);
     vec3 surfacePos = vec3(u_model * vec4(v_position, 1));
-    vec4 surfaceColor = texture(u_sampler, v_texcoord);
     vec3 surfaceToCamera = normalize(u_camera_pos - surfacePos);
 
     vec3 linearColor = vec3(0, 0, 0);
     for(int i = 0; i < u_light_count; ++i)
     {
-        linearColor += applyLight(u_light[i], surfaceColor.rgb, surfaceNormal, surfacePos, surfaceToCamera, u_shininess, u_specular_color);
+        linearColor += applyLight(u_light[i], surfaceColor.rgb, surfaceNormal, surfacePos, surfaceToCamera, u_shininess, u_specular_color, lightFactor);
     }
 
     vec3 gamma = vec3(1.0 / 2.2);

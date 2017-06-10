@@ -1,4 +1,4 @@
-package org.bstone.util.loader;
+package org.bstone.loader;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

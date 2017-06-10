@@ -2,12 +2,12 @@ package net.jimboi.blob;
 
 import net.jimboi.mod2.resource.ResourceLocation;
 
+import org.bstone.loader.OBJLoader;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
 import org.bstone.mogli.Texture;
-import org.bstone.util.loader.OBJLoader;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL20;

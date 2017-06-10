@@ -2,18 +2,24 @@ package net.jimboi.glim.shadow;
 
 import net.jimboi.mod.Light;
 import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod2.material.property.PropertyShadow;
+import net.jimboi.mod2.material.property.PropertyTexture;
 import net.jimboi.mod2.resource.ResourceLocation;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.mogli.FBO;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
+import org.bstone.mogli.Texture;
 import org.bstone.window.Window;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
+import org.qsilver.material.Material;
+import org.qsilver.model.Model;
 
 import java.util.Iterator;
 
@@ -22,7 +28,7 @@ import java.util.Iterator;
  */
 public class ShadowRenderer
 {
-	private static final int SHADOW_MAP_SIZE = 2048;
+	public static final int SHADOW_MAP_SIZE = 4096;
 	private Matrix4f lightViewMatrix = new Matrix4f();
 	private Matrix4f projectionMatrix = new Matrix4f();
 	private Matrix4f projViewMatrix = new Matrix4f();
@@ -67,6 +73,7 @@ public class ShadowRenderer
 		this.projectionMatrix.mul(this.lightViewMatrix, this.projViewMatrix);
 
 		this.shadowFBO.bind(this.window);
+
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
 
@@ -75,12 +82,40 @@ public class ShadowRenderer
 			while (instances.hasNext())
 			{
 				Instance inst = instances.next();
-				Matrix4f mat = new Matrix4f();
-				inst.getRenderTransformation(mat);
-				inst.getModel().bind();
-				program.setUniform("u_model_view_projection", projViewMatrix.mul(mat, mat));
+				Material mat = inst.getMaterial();
+				Model model = inst.getModel();
+				if (!mat.hasComponent(PropertyShadow.class)) continue;
+				if (!mat.getComponent(PropertyShadow.class).castShadow) continue;
+
+				Texture texture = null;
+
+				if (mat.hasComponent(PropertyTexture.class))
+				{
+					PropertyTexture prop = mat.getComponent(PropertyTexture.class);
+					texture = prop.texture;
+				}
+
+				Matrix4f matrix = new Matrix4f();
+				inst.getRenderTransformation(matrix);
+				model.bind();
+				if (texture != null)
+				{
+					GL13.glActiveTexture(GL13.GL_TEXTURE0);
+					texture.bind();
+				}
+
+				//TODO: disable culling if transparent . . .
+
+				program.setUniform("u_model_view_projection", projViewMatrix.mul(matrix, matrix));
 				GL11.glDrawElements(GL11.GL_TRIANGLES, inst.getModel().getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
-				inst.getModel().unbind();
+
+				if (texture != null)
+				{
+					GL13.glActiveTexture(GL13.GL_TEXTURE0);
+					texture.unbind();
+				}
+
+				model.unbind();
 			}
 		}
 		this.program.unbind();
@@ -91,6 +126,11 @@ public class ShadowRenderer
 	public Matrix4f getToShadowMapSpaceMatrix()
 	{
 		return this.offset.mul(this.projViewMatrix, new Matrix4f());
+	}
+
+	public FBO getShadowFBO()
+	{
+		return this.shadowFBO;
 	}
 
 	private void updateLightView(Vector3f dir, Vector3f center)

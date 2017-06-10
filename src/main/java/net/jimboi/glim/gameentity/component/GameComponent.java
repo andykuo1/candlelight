@@ -1,4 +1,4 @@
-package net.jimboi.glim.component;
+package net.jimboi.glim.gameentity.component;
 
 import org.bstone.component.Component;
 

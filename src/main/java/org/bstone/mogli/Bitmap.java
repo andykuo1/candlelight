@@ -2,7 +2,7 @@ package org.bstone.mogli;
 
 import net.jimboi.mod2.resource.ResourceLocation;
 
-import org.bstone.util.loader.BitmapLoader;
+import org.bstone.loader.BitmapLoader;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBImage;
 

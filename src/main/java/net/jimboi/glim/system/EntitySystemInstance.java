@@ -1,8 +1,8 @@
 package net.jimboi.glim.system;
 
-import net.jimboi.glim.component.GameComponentInstance;
 import net.jimboi.glim.gameentity.GameEntity;
 import net.jimboi.glim.gameentity.GameEntityManager;
+import net.jimboi.glim.gameentity.component.GameComponentInstance;
 import net.jimboi.mod.instance.InstanceManager;
 
 /**

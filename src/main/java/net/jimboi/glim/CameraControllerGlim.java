@@ -1,11 +1,11 @@
 package net.jimboi.glim;
 
 import net.jimboi.base.Main;
-import net.jimboi.glim.component.GameComponentBounding;
-import net.jimboi.glim.component.GameComponentTransform;
 import net.jimboi.glim.controller.FirstPersonLookController;
 import net.jimboi.glim.controller.FirstPersonMoveController;
 import net.jimboi.glim.gameentity.GameEntity;
+import net.jimboi.glim.gameentity.component.GameComponentBounding;
+import net.jimboi.glim.gameentity.component.GameComponentTransform;
 import net.jimboi.mod2.transform.Transform3Q;
 
 import org.bstone.camera.Camera;

@@ -2,10 +2,10 @@ package net.jimboi.glim.entity;
 
 import net.jimboi.glim.WorldGlim;
 import net.jimboi.glim.bounding.square.AABB;
-import net.jimboi.glim.component.GameComponentBounding;
-import net.jimboi.glim.component.GameComponentInstance;
-import net.jimboi.glim.component.GameComponentTransform;
 import net.jimboi.glim.gameentity.GameEntity;
+import net.jimboi.glim.gameentity.component.GameComponentBounding;
+import net.jimboi.glim.gameentity.component.GameComponentInstance;
+import net.jimboi.glim.gameentity.component.GameComponentTransform;
 import net.jimboi.mod2.transform.Transform3;
 
 /**

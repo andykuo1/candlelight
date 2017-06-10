@@ -6,12 +6,12 @@ import net.jimboi.mod2.meshbuilder.ModelUtil;
 import net.jimboi.mod2.resource.ResourceLocation;
 
 import org.bstone.input.InputManager;
+import org.bstone.loader.OBJLoader;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
 import org.bstone.mogli.Texture;
-import org.bstone.util.loader.OBJLoader;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;

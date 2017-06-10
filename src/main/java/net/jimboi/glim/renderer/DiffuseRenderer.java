@@ -1,14 +1,19 @@
 package net.jimboi.glim.renderer;
 
+import net.jimboi.base.Main;
 import net.jimboi.glim.RendererGlim;
+import net.jimboi.glim.shadow.ShadowBox;
+import net.jimboi.glim.shadow.ShadowRenderer;
 import net.jimboi.mod.Light;
 import net.jimboi.mod.instance.Instance;
+import net.jimboi.mod2.material.property.PropertyShadow;
 import net.jimboi.mod2.material.property.PropertySpecular;
 import net.jimboi.mod2.material.property.PropertyTexture;
 import net.jimboi.mod2.resource.ResourceLocation;
 import net.jimboi.mod2.sprite.Sprite;
 
 import org.bstone.camera.Camera;
+import org.bstone.camera.PerspectiveCamera;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
 import org.bstone.mogli.Texture;
@@ -42,11 +47,19 @@ public class DiffuseRenderer implements AutoCloseable
 	private final Matrix4f projViewMatrix = new Matrix4f();
 	private final Matrix4f modelMatrix = new Matrix4f();
 
-	public DiffuseRenderer(Camera camera)
+	private final ShadowRenderer shadowRenderer;
+
+	public DiffuseRenderer(PerspectiveCamera camera)
 	{
 		this.camera = camera;
 
+		this.shadowRenderer = new ShadowRenderer(camera, Main.WINDOW);
+		this.shadowRenderer.load();
+		Material mat = RendererGlim.get("material.plane");
+		mat.getComponent(PropertyTexture.class).texture = this.shadowRenderer.getShadowFBO().getTexture();
+
 		this.vertexShader = new Shader(VERTEX_SHADER_LOCATION, GL20.GL_VERTEX_SHADER);
+
 		this.fragmentShader = new Shader(FRAGMENT_SHADER_LOCATION, GL20.GL_FRAGMENT_SHADER);
 		this.program = new Program();
 		this.program.link(this.vertexShader, this.fragmentShader);
@@ -58,6 +71,13 @@ public class DiffuseRenderer implements AutoCloseable
 		this.vertexShader.close();
 		this.fragmentShader.close();
 		this.program.close();
+
+		this.shadowRenderer.unload();
+	}
+
+	public void preRender(Iterator<Instance> iterator)
+	{
+		this.shadowRenderer.render(iterator, RendererGlim.LIGHTS.get(2));
 	}
 
 	public void render(Iterator<Instance> iterator)
@@ -81,6 +101,7 @@ public class DiffuseRenderer implements AutoCloseable
 				Sprite sprite = null;
 				Vector3f specularColor = null;
 				float shininess = 0;
+				boolean shadow = false;
 
 				if (material.hasComponent(PropertyTexture.class))
 				{
@@ -94,6 +115,20 @@ public class DiffuseRenderer implements AutoCloseable
 					PropertySpecular propSpecular = material.getComponent(PropertySpecular.class);
 					specularColor = propSpecular.specularColor;
 					shininess = propSpecular.shininess;
+				}
+
+				if (material.hasComponent(PropertyShadow.class))
+				{
+					shadow = material.getComponent(PropertyShadow.class).receiveShadow;
+					if (shadow)
+					{
+						this.program.setUniform("u_shadow_transform", this.shadowRenderer.getToShadowMapSpaceMatrix());
+						this.program.setUniform("u_shadow_sampler", 1);
+						this.program.setUniform("u_shadow_dist", ShadowBox.SHADOW_DISTANCE);
+						this.program.setUniform("u_shadow_transition", ShadowBox.SHADOW_DISTANCE / 10F);
+						this.program.setUniform("u_shadow_map_size", (float) ShadowRenderer.SHADOW_MAP_SIZE);
+						this.program.setUniform("u_pcf_kernel_size", 2);
+					}
 				}
 
 				Matrix4fc transformation = inst.getRenderTransformation(this.modelMatrix);
@@ -125,10 +160,23 @@ public class DiffuseRenderer implements AutoCloseable
 					}
 
 					bindLightsToProgram(program, RendererGlim.LIGHTS);
+
+					if (shadow)
+					{
+						GL13.glActiveTexture(GL13.GL_TEXTURE1);
+						this.shadowRenderer.getShadowFBO().getTexture().bind();
+					}
+
 					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+
+					if (shadow)
+					{
+						this.shadowRenderer.getShadowFBO().getTexture().unbind();
+					}
 
 					if (texture != null)
 					{
+						GL13.glActiveTexture(GL13.GL_TEXTURE0);
 						texture.unbind();
 					}
 				}

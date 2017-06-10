@@ -2,11 +2,11 @@ package net.jimboi.glim;
 
 import net.jimboi.dood.system.EntitySystem;
 import net.jimboi.glim.bounding.BoundingManager;
-import net.jimboi.glim.component.GameComponentTransform;
 import net.jimboi.glim.entity.EntityCrate;
 import net.jimboi.glim.entity.EntityGlim;
 import net.jimboi.glim.entity.EntityPlayer;
 import net.jimboi.glim.gameentity.GameEntity;
+import net.jimboi.glim.gameentity.component.GameComponentTransform;
 import net.jimboi.glim.system.EntitySystemBounding;
 import net.jimboi.glim.system.EntitySystemInstance;
 import net.jimboi.mod.Light;
@@ -31,6 +31,7 @@ public class SceneGlim extends SceneGlimBase
 
 	private WorldGlim world;
 	private GameEntity player;
+	private Instance plane;
 
 	@Override
 	protected void onSceneStart()
@@ -51,11 +52,10 @@ public class SceneGlim extends SceneGlimBase
 		RendererGlim.register("model.dungeon", new Model(mesh));
 		this.renderer.getInstanceManager().add(new Instance(RendererGlim.get("model.dungeon"), RendererGlim.get("material.font"), "diffuse"));
 
-		this.renderer.getInstanceManager().add(new Instance(RendererGlim.get("model.box"), RendererGlim.get("material.bird"), "diffuse"));
-
-		this.renderer.getInstanceManager().add(new Instance(RendererGlim.get("model.plane"), RendererGlim.get("material.plane"), "billboard"));
+		this.renderer.getInstanceManager().add(this.plane = new Instance(RendererGlim.get("model.plane"), RendererGlim.get("material.plane"), "billboard"));
 
 		EntityCrate.create(this.world, -4, 0, 0);
+		EntityCrate.create(this.world, 20, 5, 30);
 	}
 
 	@Override
@@ -70,6 +70,10 @@ public class SceneGlim extends SceneGlimBase
 		light.coneDirection.lerp(RendererGlim.CAMERA.getTransform().getForward(new Vector3f()), 0.2F);
 		Light pt = RendererGlim.LIGHTS.get(1);
 		pt.position = light.position;
+
+		Transform playerTransform = player.getComponent(GameComponentTransform.class).transform;
+		this.plane.transformation().translation(playerTransform.position());
+		this.plane.transformation().translate(RendererGlim.CAMERA.getTransform().getForward(new Vector3f()).mul(3));
 
 		super.onSceneUpdate(delta);
 	}

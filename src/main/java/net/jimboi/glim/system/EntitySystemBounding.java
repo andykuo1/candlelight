@@ -4,10 +4,10 @@ import net.jimboi.glim.RendererGlim;
 import net.jimboi.glim.bounding.Bounding;
 import net.jimboi.glim.bounding.BoundingManager;
 import net.jimboi.glim.bounding.square.AABB;
-import net.jimboi.glim.component.GameComponentBounding;
-import net.jimboi.glim.component.GameComponentTransform;
 import net.jimboi.glim.gameentity.GameEntity;
 import net.jimboi.glim.gameentity.GameEntityManager;
+import net.jimboi.glim.gameentity.component.GameComponentBounding;
+import net.jimboi.glim.gameentity.component.GameComponentTransform;
 import net.jimboi.mod.instance.Instance;
 import net.jimboi.mod.instance.InstanceManager;
 

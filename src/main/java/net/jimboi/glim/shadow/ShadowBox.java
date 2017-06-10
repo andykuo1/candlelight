@@ -20,11 +20,9 @@ import org.joml.Vector4f;
  */
 public class ShadowBox
 {
-
-	private static final float OFFSET = 10;
+	private static final float OFFSET = 3;
+	public static final float SHADOW_DISTANCE = 10;
 	private static final Vector4f UP = new Vector4f(0, 1, 0, 0);
-	private static final Vector4f FORWARD = new Vector4f(0, 0, -1, 0);
-	private static final float SHADOW_DISTANCE = 100;
 
 	private float minX, maxX;
 	private float minY, maxY;
@@ -62,9 +60,8 @@ public class ShadowBox
 	 */
 	protected void update()
 	{
-		Matrix4f rotation = calculateCameraRotationMatrix();
-		Vector4f forward4 = rotation.transform(FORWARD, new Vector4f());
-		Vector3f forwardVector = new Vector3f(forward4.x(), forward4.y(), forward4.z());
+		Matrix4f rotation = new Matrix4f().set(cam.getTransform().rotation());
+		Vector3f forwardVector = cam.getTransform().getForward(new Vector3f());
 
 		Vector3f toFar = new Vector3f(forwardVector);
 		toFar.mul(SHADOW_DISTANCE);
@@ -214,17 +211,6 @@ public class ShadowBox
 		Vector4f point4f = new Vector4f(point.x, point.y, point.z, 1f);
 		this.lightViewMatrix.transform(point4f, point4f);
 		return point4f;
-	}
-
-	/**
-	 * @return The rotation of the camera represented as a matrix.
-	 */
-	private Matrix4f calculateCameraRotationMatrix()
-	{
-		Matrix4f rotation = new Matrix4f();
-		rotation.rotate(-cam.getTransform().eulerRadians().y(), new Vector3f(0, 1, 0));
-		rotation.rotate(-cam.getTransform().eulerRadians().x(), new Vector3f(1, 0, 0));
-		return rotation;
 	}
 
 	/**
