@@ -1,8 +1,8 @@
 package org.bstone.util.direction;
 
-import org.bstone.poma.Poma;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
+import org.qsilver.poma.Poma;
 
 /**Enum of cardinal directions*/
 public enum Direction

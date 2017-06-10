@@ -1,6 +1,5 @@
 package org.bstone.mogli;
 
-import org.bstone.poma.Poma;
 import org.joml.Matrix4fc;
 import org.joml.Vector2fc;
 import org.joml.Vector3fc;
@@ -8,6 +7,7 @@ import org.joml.Vector4fc;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.system.MemoryStack;
+import org.qsilver.poma.Poma;
 
 import java.nio.FloatBuffer;
 import java.util.HashMap;

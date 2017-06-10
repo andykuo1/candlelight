@@ -1,11 +1,11 @@
 package org.bstone.camera;
 
-import net.jimboi.mod2.transform.Transform3Q;
+import net.jimboi.stage_b.gnome.transform.Transform3Q;
 
-import org.bstone.poma.Poma;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
+import org.qsilver.poma.Poma;
 
 /**
  * Created by Andy on 4/6/17.

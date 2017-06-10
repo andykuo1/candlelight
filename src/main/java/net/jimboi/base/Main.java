@@ -1,6 +1,6 @@
 package net.jimboi.base;
 
-import net.jimboi.glim.SceneGlim;
+import net.jimboi.stage_b.glim.SceneGlim;
 
 import org.bstone.input.InputEngine;
 import org.bstone.tick.TickEngine;

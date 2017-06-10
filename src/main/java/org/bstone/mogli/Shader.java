@@ -1,10 +1,10 @@
 package org.bstone.mogli;
 
-import net.jimboi.mod2.resource.ResourceLocation;
+import net.jimboi.stage_b.gnome.resource.ResourceLocation;
 
-import org.bstone.loader.StringLoader;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.qsilver.loader.StringLoader;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,6 +1,6 @@
 package org.bstone.util.listener;
 
-import org.bstone.util.function.Consumer2;
+import org.qsilver.util.function.Consumer2;
 
 import java.util.Vector;
 

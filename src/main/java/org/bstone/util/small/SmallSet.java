@@ -13,20 +13,20 @@ public class SmallSet<Value> extends AbstractSet<Value>
 		this.values = new ArrayList<Value>();
 	}
 
-	public Value get(int parIndex)
+	public Value get(int index)
 	{
-		return this.values.get(parIndex);
+		return this.values.get(index);
 	}
 
-	public int indexOf(Value parValue)
+	public int indexOf(Value value)
 	{
-		return this.values.indexOf(parValue);
+		return this.values.indexOf(value);
 	}
 
-	public boolean add(int parIndex, Value parValue)
+	public boolean add(int index, Value value)
 	{
-		if (this.values.contains(parValue)) return false;
-		this.values.add(parIndex, parValue);
+		if (this.values.contains(value)) return false;
+		this.values.add(index, value);
 		return true;
 	}
 
@@ -66,27 +66,27 @@ public class SmallSet<Value> extends AbstractSet<Value>
 	}
 
 	@Override
-	public boolean contains(Object parValue)
+	public boolean contains(Object value)
 	{
-		for (Value value : this.values)
+		for (Value v : this.values)
 		{
-			if (value == parValue) return true;
+			if (value == v) return true;
 		}
 
 		return false;
 	}
 
 	@Override
-	public boolean add(Value parValue)
+	public boolean add(Value value)
 	{
-		if (this.values.contains(parValue)) return false;
-		return this.values.add(parValue);
+		if (this.values.contains(value)) return false;
+		return this.values.add(value);
 	}
 
 	@Override
-	public boolean remove(Object parValue)
+	public boolean remove(Object value)
 	{
-		return this.values.remove(parValue);
+		return this.values.remove(value);
 	}
 
 	public ArrayList<Value> toArrayList()

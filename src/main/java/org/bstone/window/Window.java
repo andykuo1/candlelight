@@ -1,7 +1,6 @@
 package org.bstone.window;
 
 import org.bstone.input.InputEngine;
-import org.bstone.poma.Poma;
 import org.bstone.util.listener.Listenable;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
@@ -12,6 +11,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
+import org.qsilver.poma.Poma;
 
 import java.nio.IntBuffer;
 import java.util.Stack;
