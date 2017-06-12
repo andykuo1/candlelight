@@ -56,7 +56,6 @@ public class MeshBuilderBase
 		Vector3f offset = new Vector3f();
 		if (centered)
 		{
-			//TODO: get a proper implementation of this
 			Vector3f min = new Vector3f();
 			Vector3f max = new Vector3f();
 			for (Vertex vertex : this.vertices)

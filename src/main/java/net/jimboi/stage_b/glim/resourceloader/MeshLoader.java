@@ -22,7 +22,7 @@ public class MeshLoader implements ResourceLoader<Mesh, MeshLoader.MeshParameter
 
 		if (args.location != null)
 		{
-			return OBJLoader.read(args.location.getFilePath());
+			return OBJLoader.read(args.location);
 		}
 
 		return new Mesh();

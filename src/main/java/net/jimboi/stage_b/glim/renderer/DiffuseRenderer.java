@@ -5,22 +5,17 @@ import net.jimboi.stage_b.glim.GlimLight;
 import net.jimboi.stage_b.glim.RendererGlim;
 import net.jimboi.stage_b.glim.renderer.shadow.ShadowBox;
 import net.jimboi.stage_b.glim.renderer.shadow.ShadowRenderer;
-import net.jimboi.stage_b.glim.resourceloader.ProgramLoader;
-import net.jimboi.stage_b.glim.resourceloader.ShaderLoader;
 import net.jimboi.stage_b.gnome.asset.Asset;
-import net.jimboi.stage_b.gnome.asset.AssetManager;
 import net.jimboi.stage_b.gnome.instance.Instance;
 import net.jimboi.stage_b.gnome.material.property.PropertyShadow;
 import net.jimboi.stage_b.gnome.material.property.PropertySpecular;
 import net.jimboi.stage_b.gnome.material.property.PropertyTexture;
-import net.jimboi.stage_b.gnome.resource.ResourceLocation;
 import net.jimboi.stage_b.gnome.sprite.Sprite;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.material.Material;
 import org.bstone.mogli.Program;
-import org.bstone.mogli.Shader;
 import org.bstone.mogli.Texture;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
@@ -28,10 +23,8 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL20;
 import org.qsilver.model.Model;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -40,32 +33,17 @@ import java.util.Iterator;
  */
 public class DiffuseRenderer implements AutoCloseable
 {
-	public static final ResourceLocation VERTEX_SHADER_LOCATION = new ResourceLocation("glim:diffuse.vsh");
-	public static final ResourceLocation FRAGMENT_SHADER_LOCATION = new ResourceLocation("glim:diffuse.fsh");
-
-	private final Camera camera;
 	private final Asset<Program> program;
 
 	private final Matrix4f modelViewProjMatrix = new Matrix4f();
 	private final Matrix4f projViewMatrix = new Matrix4f();
 	private final Matrix4f modelMatrix = new Matrix4f();
 
-	private final ShadowRenderer shadowRenderer;
+	private ShadowRenderer shadowRenderer;
 
-	public DiffuseRenderer(PerspectiveCamera camera)
+	public DiffuseRenderer(Asset<Program> program)
 	{
-		this.camera = camera;
-
-		this.shadowRenderer = new ShadowRenderer(camera, Main.WINDOW);
-		this.shadowRenderer.load(RendererGlim.INSTANCE.getAssetManager());
-		//TOOD: this will crash on destory since, it will call close twice! By FBO and manager
-		Material mat = RendererGlim.INSTANCE.getAssetManager().getAsset(Material.class, "plane").getSource();
-		mat.getComponent(PropertyTexture.class).texture = this.shadowRenderer.getShadowMap();
-
-		final AssetManager assetManager = RendererGlim.INSTANCE.getAssetManager();
-		Asset<Shader> vs = assetManager.registerAsset(Shader.class, "v_diffuse", new ShaderLoader.ShaderParameter(VERTEX_SHADER_LOCATION, GL20.GL_VERTEX_SHADER));
-		Asset<Shader> fs = assetManager.registerAsset(Shader.class, "f_diffuse", new ShaderLoader.ShaderParameter(FRAGMENT_SHADER_LOCATION, GL20.GL_FRAGMENT_SHADER));
-		this.program = assetManager.registerAsset(Program.class, "diffuse", new ProgramLoader.ProgramParameter(Arrays.asList(vs, fs)));
+		this.program = program;
 	}
 
 	@Override
@@ -74,15 +52,23 @@ public class DiffuseRenderer implements AutoCloseable
 		this.shadowRenderer.unload();
 	}
 
-	public void preRender(Iterator<Instance> iterator)
+	public void preRender(PerspectiveCamera camera, Iterator<Instance> iterator)
 	{
+		if (this.shadowRenderer == null)
+		{
+			this.shadowRenderer = new ShadowRenderer(camera, Main.WINDOW);
+			this.shadowRenderer.load(RendererGlim.INSTANCE.getAssetManager());
+			Material mat = RendererGlim.INSTANCE.getAssetManager().getAsset(Material.class, "plane").getSource();
+			mat.getComponent(PropertyTexture.class).texture = this.shadowRenderer.getShadowMap();
+		}
+
 		this.shadowRenderer.render(iterator, RendererGlim.LIGHTS.get(2));
 	}
 
-	public void render(Iterator<Instance> iterator)
+	public void render(Camera camera, Iterator<Instance> iterator)
 	{
-		Matrix4fc proj = this.camera.projection();
-		Matrix4fc view = this.camera.view();
+		Matrix4fc proj = camera.projection();
+		Matrix4fc view = camera.view();
 		Matrix4fc projView = proj.mul(view, this.projViewMatrix);
 
 		final Program program = this.program.getSource();
@@ -145,7 +131,7 @@ public class DiffuseRenderer implements AutoCloseable
 					}
 
 					program.setUniform("u_sampler", 0);
-					program.setUniform("u_camera_pos", this.camera.getTransform().position());
+					program.setUniform("u_camera_pos", camera.getTransform().position());
 
 					if (sprite != null)
 					{

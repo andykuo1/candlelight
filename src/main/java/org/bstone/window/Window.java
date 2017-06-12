@@ -11,7 +11,6 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
-import org.qsilver.poma.Poma;
 
 import java.nio.IntBuffer;
 import java.util.Stack;
@@ -52,7 +51,8 @@ public class Window
 
 		this.defaultViewPort = new ViewPort(this.width * 2, this.height * 2);
 
-		Poma.OUT("LWJGL " + Version.getVersion() + "!");
+		System.out.println("LWJGL " + Version.getVersion());
+		System.out.println("JOML 1.9.2");
 
 		// Setup an error callback. The default implementation
 		// will print the error message in System.err.

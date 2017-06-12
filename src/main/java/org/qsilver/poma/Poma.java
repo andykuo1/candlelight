@@ -8,10 +8,19 @@ public class Poma
 {
 	public static final boolean __DEBUG = true; //"true".equals(System.getProperty("debug"));
 
+	public static final PomaStream out = new PomaStream(System.out);
+	public static final PomaStream err = new PomaStream(System.err);
+
 	static
 	{
-		System.setOut(new PomaStream(System.out, false, __DEBUG));
-		System.setErr(new PomaStream(System.err, true, true));
+		out.setWrapMode(PomaStream.WrapMode.WRAP);
+		err.setWrapMode(PomaStream.WrapMode.NONE).setFormat(PomaStream.Format.IMPORTANT).removeFormat(PomaStream.Format.LINETRACE);
+	}
+
+	public static void makeSystemLogger()
+	{
+		System.setOut(Poma.out);
+		System.setErr(Poma.err);
 	}
 
 	public static void ASSERT(boolean condition)
@@ -20,7 +29,7 @@ public class Poma
 
 		if (!condition)
 		{
-			StackTraceElement stackTraceElement = getStackTrace(2);
+			StackTraceElement stackTraceElement = getCallerStackTrace();
 			String className = stackTraceElement.getClassName();
 			int lineNumber = stackTraceElement.getLineNumber();
 			throw new AssertionError("(" + className + ".java:" + lineNumber + ") Expected true, but was " + condition);
@@ -33,7 +42,7 @@ public class Poma
 
 		if (!condition)
 		{
-			StackTraceElement stackTraceElement = getStackTrace(2);
+			StackTraceElement stackTraceElement = getCallerStackTrace();
 			String className = stackTraceElement.getClassName();
 			int lineNumber = stackTraceElement.getLineNumber();
 			throw new AssertionError("(" + className + ".java:" + lineNumber + ") " + message);
@@ -46,7 +55,7 @@ public class Poma
 
 		if (!condition)
 		{
-			StackTraceElement stackTraceElement = getStackTrace(2);
+			StackTraceElement stackTraceElement = getCallerStackTrace();
 			String className = stackTraceElement.getClassName();
 			int lineNumber = stackTraceElement.getLineNumber();
 			throw new AssertionError("(" + className + ".java:" + lineNumber + ") " + (message == null ? "null" : message.toString()));
@@ -70,56 +79,37 @@ public class Poma
 
 		if (s != null)
 		{
-			StackTraceElement stackTraceElement = getStackTrace(2);
+			StackTraceElement stackTraceElement = getCallerStackTrace();
 			String className = stackTraceElement.getClassName();
 			int lineNumber = stackTraceElement.getLineNumber();
 			throw new AssertionError("(" + className + ".java:" + lineNumber + ") " + s + " - " + message);
 		}
 	}
 
-	public static void OUT(Object msg)
+	public static void info(Object x)
 	{
-		System.out.println(msg);
+		out.ignore(PomaStream.Format.LINETRACE).println(String.valueOf(x), 1);
 	}
 
-	public static void OUT()
+	public static void debug(Object x)
 	{
-		System.out.println();
+		if (!Poma.__DEBUG) return;
+		out.println(String.valueOf(x), 1);
 	}
 
-	public static void i(Object msg)
+	public static void warn(Object x)
 	{
-		System.out.println(msg);
+		out.format(PomaStream.Format.IMPORTANT).println(String.valueOf(x), 1);
 	}
 
-	public static void d(Object msg)
+	public static void div()
 	{
-		if (!__DEBUG) return;
-		System.out.println(msg);
+		out.printdiv();
 	}
 
-	public static void e(Object msg)
+	private static StackTraceElement getCallerStackTrace()
 	{
-		System.err.println(msg);
-	}
-
-	public static void e(Object msg, Throwable throwable)
-	{
-		System.err.println(msg);
-		throwable.printStackTrace();
-	}
-
-	public static String tag()
-	{
-		StackTraceElement traceElement = Poma.getStackTrace(4);
-		String className = traceElement.getClassName();
-		return className.substring(className.lastIndexOf('.') + 1);
-	}
-
-	protected static StackTraceElement getStackTrace(int stackIndex)
-	{
-		StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-		if (stackIndex >= stackTraceElements.length - 1) stackIndex = stackTraceElements.length - 2;
-		return Thread.currentThread().getStackTrace()[stackIndex + 1];
+		StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+		return stacktrace[stacktrace.length - 2];
 	}
 }

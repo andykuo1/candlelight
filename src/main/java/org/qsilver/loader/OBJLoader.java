@@ -1,6 +1,7 @@
 package org.qsilver.loader;
 
 import net.jimboi.stage_b.gnome.meshbuilder.ModelUtil;
+import net.jimboi.stage_b.gnome.resource.ResourceLocation;
 
 import org.bstone.mogli.Mesh;
 import org.joml.Vector2f;
@@ -16,6 +17,28 @@ import java.util.List;
 
 public class OBJLoader
 {
+	public static Mesh read(ResourceLocation location)
+	{
+		return read(location.getFilePath());
+		/*
+		Mesh result = null;
+		FileReader reader;
+		try
+		{
+			reader = new FileReader(location.getFilePath());
+			OBJFormatParser parser = new OBJFormatParser(2048);
+			result = parser.parse(reader).createMesh();
+			reader.close();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		return result;
+		*/
+	}
+
 	public static Mesh read(String filepath)
 	{
 		FileReader fileReader = null;

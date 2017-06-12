@@ -1,7 +1,7 @@
 package org.qsilver.loader;
 
-import org.bstone.util.json.JSON;
-import org.bstone.util.json.JSONValue;
+import org.bstone.json.JSON;
+import org.bstone.json.JSONValue;
 
 import java.io.FileReader;
 import java.io.IOException;

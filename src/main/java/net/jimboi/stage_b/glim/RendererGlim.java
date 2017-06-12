@@ -2,6 +2,7 @@ package net.jimboi.stage_b.glim;
 
 import net.jimboi.stage_a.mod.sprite.Sprite;
 import net.jimboi.stage_a.mod.sprite.TiledTextureAtlas;
+import net.jimboi.stage_b.glim.bounding.BoundingRenderer;
 import net.jimboi.stage_b.glim.renderer.BillboardRenderer;
 import net.jimboi.stage_b.glim.renderer.DiffuseRenderer;
 import net.jimboi.stage_b.glim.renderer.WireframeRenderer;
@@ -36,12 +37,14 @@ import org.joml.Vector3fc;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL20;
 import org.qsilver.model.Model;
 import org.qsilver.renderer.Renderer;
 import org.qsilver.util.iterator.FilterIterator;
 import org.qsilver.util.map2d.IntMap;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -53,6 +56,7 @@ public class RendererGlim extends Renderer
 	public static RendererGlim INSTANCE;
 	public static PerspectiveCamera CAMERA;
 	public static List<GlimLight> LIGHTS = new ArrayList<>();
+	public static SceneGlim SCENE;
 
 	protected InstanceManager instanceManager;
 	protected MaterialManager materialManager;
@@ -61,10 +65,12 @@ public class RendererGlim extends Renderer
 	protected DiffuseRenderer diffuseRenderer;
 	protected BillboardRenderer billboardRenderer;
 	protected WireframeRenderer wireframeRenderer;
+	protected BoundingRenderer boundingRenderer;
 
-	public RendererGlim()
+	public RendererGlim(SceneGlim scene)
 	{
 		INSTANCE = this;
+		SCENE = scene;
 		CAMERA = new PerspectiveCamera(640, 480);
 	}
 
@@ -154,13 +160,34 @@ public class RendererGlim extends Renderer
 
 		//Shaders
 		assets.registerLoader(Shader.class, new ShaderLoader());
+		Asset<Shader> v_diffuse = assets.registerAsset(Shader.class, "v_diffuse",
+				new ShaderLoader.ShaderParameter(new ResourceLocation("glim:diffuse.vsh"), GL20.GL_VERTEX_SHADER));
+		Asset<Shader> f_diffuse = assets.registerAsset(Shader.class, "f_diffuse",
+				new ShaderLoader.ShaderParameter(new ResourceLocation("glim:diffuse.fsh"), GL20.GL_FRAGMENT_SHADER));
+		Asset<Shader> v_billboard = assets.registerAsset(Shader.class, "v_billboard",
+				new ShaderLoader.ShaderParameter(new ResourceLocation("glim:billboard.vsh"), GL20.GL_VERTEX_SHADER));
+		Asset<Shader> f_billboard = assets.registerAsset(Shader.class, "f_billboard",
+				new ShaderLoader.ShaderParameter(new ResourceLocation("glim:billboard.fsh"), GL20.GL_FRAGMENT_SHADER));
+		Asset<Shader> v_wireframe = assets.registerAsset(Shader.class, "v_wireframe",
+				new ShaderLoader.ShaderParameter(new ResourceLocation("glim:wireframe.vsh"), GL20.GL_VERTEX_SHADER));
+		Asset<Shader> f_wireframe = assets.registerAsset(Shader.class, "f_wireframe",
+				new ShaderLoader.ShaderParameter(new ResourceLocation("glim:wireframe.fsh"), GL20.GL_FRAGMENT_SHADER));
 
 		//Programs
 		assets.registerLoader(Program.class, new ProgramLoader());
+		Asset<Program> p_diffuse = assets.registerAsset(Program.class, "diffuse",
+				new ProgramLoader.ProgramParameter(Arrays.asList(v_diffuse, f_diffuse)));
+		Asset<Program> p_billboard = assets.registerAsset(Program.class, "billboard",
+				new ProgramLoader.ProgramParameter(Arrays.asList(v_billboard, f_billboard)));
+		Asset<Program> p_wireframe = assets.registerAsset(Program.class, "wireframe",
+				new ProgramLoader.ProgramParameter(Arrays.asList(v_wireframe, f_wireframe)));
 
-		this.diffuseRenderer = new DiffuseRenderer(CAMERA);
-		this.billboardRenderer = new BillboardRenderer(CAMERA, BillboardRenderer.Type.CYLINDRICAL);
-		this.wireframeRenderer = new WireframeRenderer(CAMERA);
+
+		this.diffuseRenderer = new DiffuseRenderer(p_diffuse);
+		this.billboardRenderer = new BillboardRenderer(p_billboard, BillboardRenderer.Type.CYLINDRICAL);
+		this.wireframeRenderer = new WireframeRenderer(p_wireframe);
+		this.boundingRenderer = new BoundingRenderer(p_wireframe);
+		this.boundingRenderer.setup(assets);
 
 		RendererGlim.LIGHTS.add(GlimLight.createSpotLight(0, 0, 0, 0xFFFFFF, 0.4F, 0.1F, 0, 15F, 1, 1, 1));
 		RendererGlim.LIGHTS.add(GlimLight.createPointLight(0, 0, 0, 0xFFFFFF, 0.6F, 0.1F, 0));
@@ -173,16 +200,18 @@ public class RendererGlim extends Renderer
 	@Override
 	public void onRenderUpdate()
 	{
-		this.diffuseRenderer.preRender(this.instanceManager.getInstanceIterator());
+		this.diffuseRenderer.preRender(CAMERA, this.instanceManager.getInstanceIterator());
 
 		Iterator<Instance> iter = new FilterIterator<>(this.instanceManager.getInstanceIterator(), (inst) -> inst.getRenderType().equals("diffuse"));
-		this.diffuseRenderer.render(iter);
+		this.diffuseRenderer.render(CAMERA, iter);
 
 		iter = new FilterIterator<>(this.instanceManager.getInstanceIterator(), (inst) -> inst.getRenderType().equals("billboard"));
-		this.billboardRenderer.render(iter);
+		this.billboardRenderer.render(CAMERA, iter);
 
 		iter = new FilterIterator<>(this.instanceManager.getInstanceIterator(), (inst) -> inst.getRenderType().equals("wireframe"));
-		this.wireframeRenderer.render(iter);
+		//this.wireframeRenderer.render(CAMERA, iter);
+
+		this.boundingRenderer.render(CAMERA, SCENE.getBoundingManager().getBoundingIterator());
 
 		this.instanceManager.update();
 		this.assetManager.update();
@@ -237,12 +266,12 @@ public class RendererGlim extends Renderer
 
 				if (!isSolid(map, x, y))
 				{
-					int tile = 0;
+					int tile = map.get(x, y) - 1;
 					if (!isSolid(map, x + 1, y)) tile += 1;
 					if (!isSolid(map, x, y - 1)) tile += 2;
 					if (!isSolid(map, x - 1, y)) tile += 4;
 					if (!isSolid(map, x, y + 1)) tile += 8;
-					sprite = textureAtlas.getSprite(tile, 9);
+					sprite = textureAtlas.getSprite(tile, 0);//9
 					texTopLeft.set(sprite.getU(), sprite.getV());
 					texBotRight.set(texTopLeft).add(sprite.getWidth(), sprite.getHeight());
 

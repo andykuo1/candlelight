@@ -38,10 +38,16 @@ public class SceneGlim extends SceneGlimBase
 	private Instance plane;
 
 	@Override
+	protected void onSceneCreate()
+	{
+		super.onSceneCreate();
+
+		this.boundingManager = new BoundingManager();
+	}
+
+	@Override
 	protected void onSceneStart()
 	{
-		this.boundingManager = new BoundingManager();
-
 		this.sys_instance = new EntitySystemInstance(this.entityManager, this.renderer.getInstanceManager());
 		this.sys_bounding = new EntitySystemBounding(this.entityManager, this, this.boundingManager, this.renderer.getInstanceManager());
 
@@ -106,5 +112,10 @@ public class SceneGlim extends SceneGlimBase
 	public WorldGlim getWorld()
 	{
 		return this.world;
+	}
+
+	public BoundingManager getBoundingManager()
+	{
+		return this.boundingManager;
 	}
 }

@@ -2,8 +2,6 @@ package net.jimboi.stage_b.gnome.dungeon;
 
 import net.jimboi.stage_b.gnome.dungeon.maze.RegionHandler;
 
-import org.qsilver.util.map2d.IntMap;
-
 import java.util.Random;
 
 /**
@@ -70,13 +68,5 @@ public class RoomBuilder
 
 		RoomData room = new RoomData(regionHandler.getNextAvailableRegion(), x, y, width, height);
 		return room;
-	}
-
-	public RoomData decorate(RoomData roomData)
-	{
-		IntMap map = roomData.getTiles();
-		IntMap.fill(map, 0, 0, map.width, map.height, 1);
-
-		return roomData;
 	}
 }

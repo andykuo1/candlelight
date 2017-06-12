@@ -4,6 +4,7 @@ import net.jimboi.stage_b.gnome.dungeon.DungeonBuilder;
 import net.jimboi.stage_b.gnome.dungeon.DungeonData;
 import net.jimboi.stage_b.gnome.dungeon.RoomBuilder;
 import net.jimboi.stage_b.gnome.dungeon.RoomData;
+import net.jimboi.stage_b.gnome.dungeon.RoomDecorator;
 
 import org.qsilver.util.map2d.IntMap;
 
@@ -41,6 +42,8 @@ public class MazeDungeonBuilder extends DungeonBuilder
 		RoomBuilder roomBuilder = new RoomBuilder(0, 0, this.data.width, this.data.height);
 		CorridorBuilder corridorBuilder = new CorridorBuilder();
 		RegionHandler regionHandler = new RegionHandler();
+		RoomDecorator spawnDecorator = new RoomDecorator();
+		RoomDecorator roomDecorator = new RoomDecorator();
 
 		//Rooms
 		{
@@ -48,12 +51,12 @@ public class MazeDungeonBuilder extends DungeonBuilder
 			int minRoomSize = 2;
 			int maxRoomSize = 9;
 
-			MazeGenRooms genRooms = new MazeGenRooms(roomBuilder, regionHandler);
+			MazeGenRooms genRooms = new MazeGenRooms(roomBuilder, roomDecorator, regionHandler);
 
 			//Spawn Room
 			{
 				RoomData spawnRoom = new RoomData(regionHandler.getNextAvailableRegion(), centerX - 3, centerY - 3, 7, 7);
-				roomBuilder.decorate(spawnRoom);
+				spawnDecorator.decorate(spawnRoom);
 				spawnRoom.getTiles().set(3, 3, 2);
 				genRooms.addRoom(spawnRoom);
 			}

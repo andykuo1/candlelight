@@ -5,6 +5,7 @@ import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -65,5 +66,10 @@ public class BoundingManager
 
 		bounding.offset(-offset.x(), -offset.y(), -offset.z());
 		return data;
+	}
+
+	public Iterator<Bounding> getBoundingIterator()
+	{
+		return this.boundings.iterator();
 	}
 }

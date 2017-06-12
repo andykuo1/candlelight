@@ -27,7 +27,7 @@ public abstract class SceneGlimBase extends Scene
 	@Override
 	protected final void onSceneLoad()
 	{
-		this.renderer = new RendererGlim();
+		this.renderer = new RendererGlim((SceneGlim) this);
 		Main.RENDERENGINE.add(this.renderer);
 	}
 

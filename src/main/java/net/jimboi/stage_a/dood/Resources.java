@@ -134,14 +134,14 @@ public class Resources
 		InputManager.registerKey("action", GLFW.GLFW_KEY_F);
 
 		//Shaders
-		register("vertex.diffuse", new Shader(new ResourceLocation("dood:diffuse.vsh"), GL_VERTEX_SHADER));
+		register("geometry.diffuse", new Shader(new ResourceLocation("dood:diffuse.vsh"), GL_VERTEX_SHADER));
 		register("fragment.diffuse", new Shader(new ResourceLocation("dood:diffuse.fsh"), GL_FRAGMENT_SHADER));
-		register("vertex.billboard", new Shader(new ResourceLocation("dood:billboard.vsh"), GL_VERTEX_SHADER));
+		register("geometry.billboard", new Shader(new ResourceLocation("dood:billboard.vsh"), GL_VERTEX_SHADER));
 		register("fragment.billboard", new Shader(new ResourceLocation("dood:billboard.fsh"), GL_FRAGMENT_SHADER));
 
 		//Programs
-		register("diffuse", new Program().link(getShader("vertex.diffuse"), getShader("fragment.diffuse")));
-		register("billboard", new Program().link(getShader("vertex.billboard"), getShader("fragment.billboard")));
+		register("diffuse", new Program().link(getShader("geometry.diffuse"), getShader("fragment.diffuse")));
+		register("billboard", new Program().link(getShader("geometry.billboard"), getShader("fragment.billboard")));
 
 		//Bitmaps
 		register("bird", new Bitmap(new ResourceLocation("dood:bird.png")));

@@ -3,6 +3,7 @@ package net.jimboi.stage_b.gnome.dungeon.maze;
 import net.jimboi.stage_b.gnome.dungeon.DungeonData;
 import net.jimboi.stage_b.gnome.dungeon.RoomBuilder;
 import net.jimboi.stage_b.gnome.dungeon.RoomData;
+import net.jimboi.stage_b.gnome.dungeon.RoomDecorator;
 
 import org.qsilver.util.map2d.IntMap;
 
@@ -17,12 +18,14 @@ public class MazeGenRooms extends AbstractMazeGen
 {
 	protected final RoomBuilder roomBuilder;
 	protected final RegionHandler regionHandler;
+	protected final RoomDecorator roomDecorator;
 
 	private final List<RoomData> rooms = new ArrayList<>();
 
-	public MazeGenRooms(RoomBuilder roomBuilder, RegionHandler regionHandler)
+	public MazeGenRooms(RoomBuilder roomBuilder, RoomDecorator roomDecorator, RegionHandler regionHandler)
 	{
 		this.roomBuilder = roomBuilder;
+		this.roomDecorator = roomDecorator;
 		this.regionHandler = regionHandler;
 	}
 
@@ -46,7 +49,7 @@ public class MazeGenRooms extends AbstractMazeGen
 		}
 
 		this.rooms.add(nextRoom);
-		this.roomBuilder.decorate(nextRoom);
+		this.roomDecorator.decorate(nextRoom);
 		return nextRoom;
 	}
 
@@ -57,7 +60,6 @@ public class MazeGenRooms extends AbstractMazeGen
 		IntMap regions = data.getRegions();
 		for (RoomData room : this.rooms)
 		{
-			System.out.println(room);
 			IntMap.set(tiles, room.x, room.y, room.getTiles());
 			IntMap.fill(regions, room.x, room.y, room.width, room.height, room.getRegionID());
 		}

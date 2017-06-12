@@ -1,7 +1,6 @@
 package org.qsilver.scene;
 
 import org.bstone.util.listener.Listenable;
-import org.qsilver.poma.Poma;
 
 /**
  * Created by Andy on 3/1/17.
@@ -155,7 +154,7 @@ public class SceneManager
 
 			if (!this.sceneStopped)
 			{
-				Poma.d("Stopping Scene. . .");
+				System.out.println("Stopping Scene. . .");
 				this.scene.onSceneStop();
 				this.sceneStopped = true;
 				this.scene.onSceneStop.notifyListeners();
@@ -164,7 +163,7 @@ public class SceneManager
 			{
 				if (!this.sceneDestroyed)
 				{
-					Poma.d("Destroying Scene. . .");
+					System.out.println("Destroying Scene. . .");
 					this.scene.onSceneDestroy();
 					this.sceneDestroyed = true;
 					this.scene.onSceneDestroy.notifyListeners();
@@ -185,7 +184,7 @@ public class SceneManager
 			{
 				if (!this.sceneUnloaded)
 				{
-					Poma.d("Unloading Scene. . .");
+					System.out.println("Unloading Scene. . .");
 					this.scene.onSceneUnload();
 					this.sceneUnloaded = true;
 					this.scene.onSceneUnload.notifyListeners();
@@ -214,7 +213,7 @@ public class SceneManager
 
 			if (!this.sceneCreated)
 			{
-				Poma.d("Creating Scene. . .");
+				System.out.println("Creating Scene. . .");
 				this.scene.onSceneCreate();
 				this.sceneCreated = true;
 				this.scene.onSceneCreate.notifyListeners();
@@ -223,7 +222,7 @@ public class SceneManager
 			{
 				if (!this.sceneStarted)
 				{
-					Poma.d("Starting Scene. . .");
+					System.out.println("Starting Scene. . .");
 					this.scene.onSceneStart();
 					this.sceneStarted = true;
 					this.scene.onSceneStart.notifyListeners();
@@ -244,7 +243,7 @@ public class SceneManager
 			{
 				if (!this.sceneLoaded)
 				{
-					Poma.d("Loading Scene. . .");
+					System.out.println("Loading Scene. . .");
 					this.scene.onSceneLoad();
 					this.sceneLoaded = true;
 					this.scene.onSceneLoad.notifyListeners();

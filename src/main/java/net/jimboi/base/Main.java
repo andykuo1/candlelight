@@ -5,9 +5,12 @@ import net.jimboi.stage_b.glim.SceneGlim;
 import org.bstone.input.InputEngine;
 import org.bstone.tick.TickEngine;
 import org.bstone.window.Window;
+import org.qsilver.poma.Poma;
 import org.qsilver.renderer.RenderEngine;
 import org.qsilver.scene.Scene;
 import org.qsilver.scene.SceneManager;
+
+import java.util.Arrays;
 
 /**
  * Created by Andy on 4/27/17.
@@ -25,6 +28,14 @@ public class Main
 
 	public static void main(String[] args)
 	{
+		Poma.makeSystemLogger();
+
+		Poma.div();
+		Poma.info("THE AWESOME PROGRAM");
+		Poma.info("By: Andrew Kuo");
+		Poma.info("Running program with args: " + Arrays.asList(args));
+		Poma.div();
+
 		SCENEMANAGER = new SceneManager();
 
 		RENDERENGINE = new RenderEngine();

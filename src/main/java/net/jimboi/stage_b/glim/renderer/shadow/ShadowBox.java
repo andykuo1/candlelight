@@ -159,7 +159,7 @@ public class ShadowBox
 	}
 
 	/**
-	 * Calculates the position of the vertex at each corner of the view frustum
+	 * Calculates the position of the geometry at each corner of the view frustum
 	 * in light space (8 vertices in total, so this returns 8 positions).
 	 *
 	 * @param rotation      - camera's rotation.
@@ -202,7 +202,7 @@ public class ShadowBox
 	 * @param direction  - the direction of the corner from the start point.
 	 * @param width      - the distance of the corner from the start point.
 	 *
-	 * @return - The relevant corner vertex of the view frustum in light space.
+	 * @return - The relevant corner geometry of the view frustum in light space.
 	 */
 	private Vector4f calculateLightSpaceFrustumCorner(Vector3f startPoint, Vector3f direction,
 	                                                  float width)
