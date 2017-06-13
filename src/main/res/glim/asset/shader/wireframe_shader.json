@@ -5,27 +5,27 @@
   },
   "asset": [
     {
-      "id": "v_billboard",
+      "id": "v_wireframe",
       "type": "shader",
       "param": [
-        "res:shader/billboard.vsh",
+        "res:shader/wireframe.vsh",
         "int:GL20.GL_VERTEX_SHADER"
       ]
     },
     {
-      "id": "f_billboard",
+      "id": "f_wireframe",
       "type": "shader",
       "param": [
-        "res:shader/billboard.fsh",
+        "res:shader/wireframe.fsh",
         "int:GL20.GL_FRAGMENT_SHADER"
       ]
     },
     {
-      "id": "billboard",
+      "id": "wireframe",
       "type": "program",
       "param": [
-        "asset:shader.v_billboard",
-        "asset:shader.f_billboard"
+        "asset:shader.v_wireframe",
+        "asset:shader.f_wireframe"
       ]
     }
   ]

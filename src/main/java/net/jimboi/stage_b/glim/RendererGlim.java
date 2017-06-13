@@ -39,14 +39,12 @@ import org.joml.Vector3fc;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL20;
 import org.qsilver.model.Model;
 import org.qsilver.renderer.Renderer;
 import org.qsilver.util.iterator.FilterIterator;
 import org.qsilver.util.map2d.IntMap;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -166,35 +164,15 @@ public class RendererGlim extends Renderer
 
 		//Shaders
 		assets.registerLoader(Shader.class, new ShaderLoader());
-		/*
-		Asset<Shader> v_diffuse = assets.registerAsset(Shader.class, "v_diffuse",
-				new ShaderLoader.ShaderParameter(new ResourceLocation("glim:diffuse.vsh"), GL20.GL_VERTEX_SHADER));
-		Asset<Shader> f_diffuse = assets.registerAsset(Shader.class, "f_diffuse",
-				new ShaderLoader.ShaderParameter(new ResourceLocation("glim:diffuse.fsh"), GL20.GL_FRAGMENT_SHADER));
-		*/
-		Asset<Shader> v_billboard = assets.registerAsset(Shader.class, "v_billboard",
-				new ShaderLoader.ShaderParameter(new ResourceLocation("glim:billboard.vsh"), GL20.GL_VERTEX_SHADER));
-		Asset<Shader> f_billboard = assets.registerAsset(Shader.class, "f_billboard",
-				new ShaderLoader.ShaderParameter(new ResourceLocation("glim:billboard.fsh"), GL20.GL_FRAGMENT_SHADER));
-		Asset<Shader> v_wireframe = assets.registerAsset(Shader.class, "v_wireframe",
-				new ShaderLoader.ShaderParameter(new ResourceLocation("glim:wireframe.vsh"), GL20.GL_VERTEX_SHADER));
-		Asset<Shader> f_wireframe = assets.registerAsset(Shader.class, "f_wireframe",
-				new ShaderLoader.ShaderParameter(new ResourceLocation("glim:wireframe.fsh"), GL20.GL_FRAGMENT_SHADER));
 
 		//Programs
 		assets.registerLoader(Program.class, new ProgramLoader());
-		//Asset<Program> p_diffuse = assets.registerAsset(Program.class, "diffuse",
-		//		new ProgramLoader.ProgramParameter(Arrays.asList(v_diffuse, f_diffuse)));
-		Asset<Program> p_billboard = assets.registerAsset(Program.class, "billboard",
-				new ProgramLoader.ProgramParameter(Arrays.asList(v_billboard, f_billboard)));
-		Asset<Program> p_wireframe = assets.registerAsset(Program.class, "wireframe",
-				new ProgramLoader.ProgramParameter(Arrays.asList(v_wireframe, f_wireframe)));
 
 
 		this.diffuseRenderer = new DiffuseRenderer(assets.getAsset(Program.class, "diffuse"));
-		this.billboardRenderer = new BillboardRenderer(p_billboard, BillboardRenderer.Type.CYLINDRICAL);
-		this.wireframeRenderer = new WireframeRenderer(p_wireframe);
-		this.boundingRenderer = new BoundingRenderer(p_wireframe);
+		this.billboardRenderer = new BillboardRenderer(assets.getAsset(Program.class, "billboard"), BillboardRenderer.Type.CYLINDRICAL);
+		this.wireframeRenderer = new WireframeRenderer(assets.getAsset(Program.class, "wireframe"));
+		this.boundingRenderer = new BoundingRenderer(assets.getAsset(Program.class, "wireframe"));
 		this.boundingRenderer.setup(assets);
 
 		RendererGlim.LIGHTS.add(GlimLight.createSpotLight(0, 0, 0, 0xFFFFFF, 0.4F, 0.1F, 0, 15F, 1, 1, 1));

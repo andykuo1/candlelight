@@ -1,9 +1,8 @@
 package net.jimboi.stage_b.glim.bounding;
 
-import org.qsilver.util.function.Function2;
-
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 /**
  * Created by Andy on 6/2/17.
@@ -25,7 +24,7 @@ public class Intersection
 	private static final Map<IntersectionEntry, IntersectionEntry> BOUNDING_ENTRY_FUNCTION = new HashMap<>();
 	private static final IntersectionEntryPointer BOUNDING_ENTRY_POINTER = new IntersectionEntryPointer(null, null);
 
-	public static <A extends Bounding, B extends Bounding> void register(Class<? extends A> a, Class<? extends B> b, Function2<A, B, IntersectionData> intersectionFunction)
+	public static <A extends Bounding, B extends Bounding> void register(Class<? extends A> a, Class<? extends B> b, BiFunction<A, B, IntersectionData> intersectionFunction)
 	{
 		IntersectionEntry entry = new IntersectionEntry<>(a, b, intersectionFunction);
 		entry = BOUNDING_ENTRY_FUNCTION.put(entry, entry);
@@ -39,9 +38,9 @@ public class Intersection
 	{
 		private final Class<? extends A> typeA;
 		private final Class<? extends B> typeB;
-		private final Function2<A, B, IntersectionData> intersectionFunction;
+		private final BiFunction<A, B, IntersectionData> intersectionFunction;
 
-		public IntersectionEntry(Class<? extends A> typeA, Class<? extends B> typeB, Function2<A, B, IntersectionData> intersectionFunction)
+		public IntersectionEntry(Class<? extends A> typeA, Class<? extends B> typeB, BiFunction<A, B, IntersectionData> intersectionFunction)
 		{
 			this.typeA = typeA;
 			this.typeB = typeB;

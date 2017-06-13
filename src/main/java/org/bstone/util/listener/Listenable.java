@@ -1,8 +1,7 @@
 package org.bstone.util.listener;
 
-import org.qsilver.util.function.Consumer2;
-
 import java.util.Vector;
+import java.util.function.BiConsumer;
 
 /**
  * Created by Andy on 5/22/17.
@@ -10,10 +9,10 @@ import java.util.Vector;
 public class Listenable<T>
 {
 	private Vector<T> lis;
-	private Consumer2<T, Object[]> notifyFunction;
+	private BiConsumer<T, Object[]> notifyFunction;
 
 	/** Construct an Listenable with zero Listeners. */
-	public Listenable(Consumer2<T, Object[]> notifyFunction)
+	public Listenable(BiConsumer<T, Object[]> notifyFunction)
 	{
 		lis = new Vector<>();
 		this.notifyFunction = notifyFunction;

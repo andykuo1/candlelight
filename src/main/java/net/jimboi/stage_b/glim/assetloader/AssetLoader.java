@@ -18,14 +18,12 @@ import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
 import org.bstone.util.SemanticVersion;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -38,6 +36,15 @@ import java.util.List;
  */
 public class AssetLoader
 {
+	enum Mode
+	{
+		RELEASE,
+		DEBUG,
+		STRICT
+	}
+
+	public static Mode STATE = Mode.DEBUG;
+
 	private final AssetManager assetManager;
 	private final SemanticVersion version;
 	private final String domain;
@@ -47,6 +54,107 @@ public class AssetLoader
 		this.assetManager = assetManager;
 		this.version = version;
 		this.domain = domain;
+
+		this.setup();
+	}
+
+	public void setup()
+	{
+		AssetConstants.clear();
+		AssetConstants.registerClassFields(GL11.class);
+		AssetConstants.registerClassFields(GL20.class);
+		AssetConstants.registerClassFields(GL30.class);
+
+		AssetTypes.clear();
+		AssetTypes.registerAssetType(Shader.class, Asset::new,
+				(type, args) ->
+				{
+					ResourceParameterProducer.validateArgumentLength(type, args, 2);
+					ResourceParameterProducer.validateArgument(type, ResourceLocation.class, args[0]);
+					ResourceParameterProducer.validateArgument(type, Integer.class, args[1]);
+					return new ShaderLoader.ShaderParameter((ResourceLocation) args[0], (int) args[1]);
+				});
+		AssetTypes.registerAssetType(Program.class, Asset::new,
+				(type, args) ->
+				{
+					ResourceParameterProducer.validateArgumentLength(type, args, 1);
+					ResourceParameterProducer.validateArgument(type, Asset.class, args[0]);
+					ResourceParameterProducer.validateArgumentEquals(type, Shader.class, ((Asset) args[0]).getType());
+
+					ArrayList<Asset<Shader>> shaders = new ArrayList<>();
+					shaders.add((Asset<Shader>) args[0]);
+
+					for (int i = 1; i < args.length; ++i)
+					{
+						Object o = args[i];
+						if (o instanceof Asset)
+						{
+							if (((Asset) o).getType().equals(Shader.class))
+							{
+								shaders.add((Asset<Shader>) o);
+							}
+						}
+					}
+					return new ProgramLoader.ProgramParameter(shaders);
+				});
+
+		AssetArguments.clear();
+		AssetArguments.registerArgument("res", (body) ->
+		{
+			System.out.println("    Creating ResourceLocation at '" + this.domain + ":" + body + "'...");
+			return new ResourceLocation(this.domain + ":" + body);
+		});
+		AssetArguments.registerArgument("asset", (body) ->
+		{
+			System.out.println("    Creating Asset as '" + body + "'...");
+			int i = body.indexOf('.');
+			if (i != -1)
+			{
+				Class type = AssetTypes.getAssetType(body.substring(0, i));
+				String id = body.substring(i + 1);
+				Asset asset = this.assetManager.getUnsafeAsset(type, id);
+				if (asset == null)
+				{
+					if (STATE == Mode.STRICT)
+						throw new AssetFormatException("Unable to find asset '" + body + "'!");
+					System.err.println("Unable to find asset '" + body + "' (this is a dependency problem!) => Creating a placeholder instead...");
+					asset = this.createUnsafeAsset(this.assetManager, type, id);
+					if (!this.assetManager.registerAsset(type, id, asset, false))
+					{
+						throw new IllegalStateException("Found another asset that already exists (although it should not)!");
+					}
+				}
+				return asset;
+			}
+			else
+			{
+				throw new AssetFormatException("Must be prefixed with asset type using '.'!");
+			}
+		});
+		AssetArguments.registerArgument("int", (body) ->
+		{
+			System.out.println("    Finding integer constant for '" + body + "'...");
+			int c = body.indexOf('.');
+			Class src = AssetConstants.getClass(body.substring(0, c));
+			String field = body.substring(c + 1);
+			return AssetConstants.getInteger(src, field);
+		});
+		AssetArguments.registerArgument("float", (body) ->
+		{
+			System.out.println("    Finding float constant for '" + body + "'...");
+			int c = body.indexOf('.');
+			Class src = AssetConstants.getClass(body.substring(0, c));
+			String field = body.substring(c + 1);
+			return AssetConstants.getFloat(src, field);
+		});
+		AssetArguments.registerArgument("bool", (body) ->
+		{
+			System.out.println("    Finding boolean constant for '" + body + "'...");
+			int c = body.indexOf('.');
+			Class src = AssetConstants.getClass(body.substring(0, c));
+			String field = body.substring(c + 1);
+			return AssetConstants.getBoolean(src, field);
+		});
 	}
 
 	public void loadAssets()
@@ -71,7 +179,6 @@ public class AssetLoader
 				try
 				{
 					JSONValue value = JSON.read(reader);
-					System.out.println("Reading file...");
 					if (value instanceof JSONObject)
 					{
 						JSONObject root = (JSONObject) value;
@@ -84,7 +191,6 @@ public class AssetLoader
 							if (value instanceof JSONString)
 							{
 								SemanticVersion version = new SemanticVersion(((JSONString) value).get());
-								System.out.println("Found version: " + version);
 								if (!this.version.isCompatibleWith(version))
 								{
 									System.out.println("Found asset with incompatible version '" + version + "'!");
@@ -141,7 +247,7 @@ public class AssetLoader
 				System.out.println("Loading asset: " + obj);
 				id = ((JSONString) obj.get("id")).get();
 				System.out.println("...with id: '" + id + "'...");
-				type = this.getAssetTypeClass(((JSONString) obj.get("type")).get());
+				type = AssetTypes.getAssetType(((JSONString) obj.get("type")).get());
 				System.out.println("...with type: '" + type + "'...");
 				JSONArray requireArray = ((JSONArray) obj.get("require"));
 				System.out.println("...with requires: " + requireArray + "...");
@@ -152,7 +258,27 @@ public class AssetLoader
 					args = new Object[paramArray.size()];
 					for (int i = 0; i < paramArray.size(); ++i)
 					{
-						args[i] = this.createArgument(paramArray.get(i));
+						JSONValue value = paramArray.get(i);
+						if (value instanceof JSONString)
+						{
+							String string = ((JSONString) value).get();
+							int colon = string.indexOf(':');
+							if (colon != -1)
+							{
+								String head = string.substring(0, colon).trim();
+								String body = string.substring(colon + 1).trim();
+
+								args[i] = this.createArgument(head, body);
+							}
+							else
+							{
+								args[i] = string;
+							}
+						}
+						else
+						{
+							throw new UnsupportedOperationException("Unable to create argument for '" + value + "'");
+						}
 					}
 				}
 				else
@@ -161,11 +287,8 @@ public class AssetLoader
 				}
 			}
 
-			System.out.println("Creating parameters...");
 			params = this.createParameter(type, args);
-			System.out.println("Creating asset...");
 			asset = this.createAsset(this.assetManager, type, id, params);
-			System.out.println("Registering asset...");
 			if (!this.assetManager.registerAsset(type, id, asset, true))
 			{
 				throw new IllegalStateException("Unable to register asset!");
@@ -174,241 +297,43 @@ public class AssetLoader
 		}
 	}
 
-	protected int getClassIntegerConstant(Class constantClass, String fieldName)
+	protected Object createArgument(String argType, String arg)
 	{
-		System.out.println("Getting integer constant: " + fieldName);
-		try
+		if (AssetArguments.isArgumentType(argType))
 		{
-			Field field = constantClass.getField(fieldName);
-			return field.getInt(null);
-		}
-		catch (NoSuchFieldException | IllegalAccessException e)
-		{
-			e.printStackTrace();
-		}
-
-		throw new UnsupportedOperationException("Unable to find class '" + constantClass.getSimpleName() + "' with field '" + fieldName + "'!");
-	}
-
-	protected float getClassFloatConstant(Class constantClass, String fieldName)
-	{
-		System.out.println("Getting float constant: " + fieldName);
-		try
-		{
-			Field field = constantClass.getField(fieldName);
-			return field.getFloat(null);
-		}
-		catch (NoSuchFieldException | IllegalAccessException e)
-		{
-			e.printStackTrace();
-		}
-
-		throw new UnsupportedOperationException("Unable to find class '" + constantClass.getSimpleName() + "' with field '" + fieldName + "'!");
-	}
-
-	protected boolean getClassBooleanConstant(Class constantClass, String fieldName)
-	{
-		System.out.println("Getting boolean constant: " + fieldName);
-		try
-		{
-			Field field = constantClass.getField(fieldName);
-			return field.getBoolean(null);
-		}
-		catch (NoSuchFieldException | IllegalAccessException e)
-		{
-			e.printStackTrace();
-		}
-
-		throw new UnsupportedOperationException("Unable to find class '" + constantClass.getSimpleName() + "' with field '" + fieldName + "'!");
-	}
-
-	protected Class getClass(String className)
-	{
-		switch (className)
-		{
-			case "GL11":
-				return GL11.class;
-			case "GL15":
-				return GL15.class;
-			case "GL20":
-				return GL20.class;
-			case "GL30":
-				return GL30.class;
-			default:
-				throw new UnsupportedOperationException("Unable to find supported class with name '" + className + "'!");
-		}
-	}
-
-	protected Object createArgument(JSONValue value)
-	{
-		System.out.println("Creating argument(" + value + ")...");
-		if (value instanceof JSONString)
-		{
-			String string = ((JSONString) value).get();
-			int colon = string.indexOf(':');
-			if (colon != -1)
-			{
-				String head = string.substring(0, colon).trim();
-				String body = string.substring(colon + 1).trim();
-				switch (head)
-				{
-					case "res":
-						System.out.println("    Creating ResourceLocation at '" + this.domain + ":" + body + "'...");
-						return new ResourceLocation(this.domain + ":" + body);
-					case "asset":
-						System.out.println("    Creating Asset as '" + body + "'...");
-						int i = body.indexOf('.');
-						if (i != -1)
-						{
-							Class type = this.getAssetTypeClass(body.substring(0, i));
-							String id = body.substring(i + 1);
-							Asset asset = this.assetManager.getUnsafeAsset(type, id);
-							if (asset == null)
-							{
-								asset = this.createUnsafeAsset(this.assetManager, type, id);
-								if (!this.assetManager.registerAsset(type, id, asset, false))
-								{
-									throw new IllegalStateException("Found another asset that already exists!");
-								}
-							}
-							return asset;
-						}
-						else
-						{
-							throw new AssetFormatException("Must be prefixed with asset type using '.'!");
-						}
-					case "int":
-					{
-						System.out.println("    Finding integer constant for '" + body + "'...");
-						int c = body.indexOf('.');
-						Class src = this.getClass(body.substring(0, c));
-						String field = body.substring(c + 1);
-						return this.getClassIntegerConstant(src, field);
-					}
-					case "float":
-					{
-						System.out.println("    Finding float constant for '" + body + "'...");
-						int c = body.indexOf('.');
-						Class src = this.getClass(body.substring(0, c));
-						String field = body.substring(c + 1);
-						return this.getClassFloatConstant(src, field);
-					}
-					case "bool":
-					{
-						System.out.println("    Finding boolean constant for '" + body + "'...");
-						int c = body.indexOf('.');
-						Class src = this.getClass(body.substring(0, c));
-						String field = body.substring(c + 1);
-						return this.getClassIntegerConstant(src, field);
-					}
-					default:
-						throw new UnsupportedOperationException("Unable to find variable reference type '" + head + "'!");
-				}
-			}
-			else
-			{
-				return string;
-			}
+			System.out.println("     Creating argument: " + arg);
+			return AssetArguments.getArgument(argType, arg);
 		}
 		else
 		{
-			throw new UnsupportedOperationException("Unable to create argument for '" + value + "'");
+			throw new UnsupportedOperationException("Unable to find argument type '" + argType + "'!");
 		}
 	}
 
-	private void validateArgumentLength(Class type, Object[] args, int length)
-	{
-		if (args.length >= length) return;
-
-		throw new IllegalArgumentException("Invalid number of arguments for asset type '" + type.getSimpleName() + "'. Must be at least " + length + "!");
-	}
-
-	@SuppressWarnings("unchecked")
-	private void validateArgument(Class type, Class argType, Object arg)
-	{
-		if (argType.isInstance(arg)) return;
-
-		throw new IllegalArgumentException("Invalid argument for asset type '" + type.getSimpleName() + "': Expected '" + argType.getSimpleName() + "', but found '" + arg + "'!");
-	}
-
-	private void validateArgumentEquals(Class type, Object valid, Object arg)
-	{
-		if (valid.equals(arg)) return;
-
-		throw new IllegalArgumentException("Invalid argument for asset type '" + type.getSimpleName() + "': Expected '" + valid + "', but found '" + arg + "'!");
-	}
-
-	@SuppressWarnings("unchecked")
 	protected ResourceParameter createParameter(Class type, Object[] args)
 	{
 		System.out.println("Creating parameter(" + type.getSimpleName() + ", " + Arrays.asList(args) + ")...");
-		if (type.equals(Shader.class))
+		ResourceParameter param = AssetTypes.getAssetParameter(type, args);
+		if (param == null)
 		{
-			this.validateArgumentLength(type, args, 2);
-			this.validateArgument(type, ResourceLocation.class, args[0]);
-			this.validateArgument(type, Integer.class, args[1]);
-			return new ShaderLoader.ShaderParameter((ResourceLocation) args[0], (int) args[1]);
+			throw new IllegalArgumentException("Unable to create parameters for asset type '" + type.getSimpleName() + "' with arguments: " + Arrays.asList(args) + "!");
 		}
-		else if (type.equals(Program.class))
-		{
-			this.validateArgumentLength(type, args, 1);
-			this.validateArgument(type, Asset.class, args[0]);
-			this.validateArgumentEquals(type, Shader.class, ((Asset) args[0]).getType());
-
-			ArrayList<Asset<Shader>> shaders = new ArrayList<>();
-			shaders.add((Asset<Shader>) args[0]);
-
-			for (int i = 1; i < args.length; ++i)
-			{
-				Object o = args[i];
-				if (o instanceof Asset)
-				{
-					if (((Asset) o).getType().equals(Shader.class))
-					{
-						shaders.add((Asset<Shader>) o);
-					}
-				}
-			}
-			return new ProgramLoader.ProgramParameter(shaders);
-		}
-		else
-		{
-			throw new UnsupportedOperationException("Unable to create parameters for asset type '" + type.getSimpleName() + "'!");
-		}
+		return param;
 	}
 
 	protected Asset createAsset(AssetManager assetManager, Class type, String id, ResourceParameter params)
 	{
 		System.out.println("Creating asset(" + type.getSimpleName() + ", " + id + ", " + params + ")...");
-		if (type.equals(Shader.class))
-		{
-			return new Asset<Shader>(assetManager, type, id, params);
-		}
-		else if (type.equals(Program.class))
-		{
-			return new Asset<Program>(assetManager, type, id, params);
-		}
-		else
+		Asset asset = AssetTypes.getAsset(assetManager, type, id, params);
+		if (asset == null)
 		{
 			throw new UnsupportedOperationException("Unable to create asset for asset type'" + type.getSimpleName() + "'!");
 		}
+		return asset;
 	}
 
 	protected Asset createUnsafeAsset(AssetManager assetManager, Class type, String id)
 	{
 		return this.createAsset(assetManager, type, id, null);
-	}
-
-	protected Class getAssetTypeClass(String type)
-	{
-		switch (type)
-		{
-			case "shader":
-				return Shader.class;
-			case "program":
-				return Program.class;
-		}
-
-		return Object.class;
 	}
 }
