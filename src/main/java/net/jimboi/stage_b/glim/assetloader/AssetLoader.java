@@ -66,7 +66,7 @@ public class AssetLoader
 		AssetConstants.registerClassFields(GL30.class);
 
 		AssetTypes.clear();
-		AssetTypes.registerAssetType(Shader.class, Asset::new,
+		AssetTypes.registerAssetType(Shader.class, Asset<Shader>::new,
 				(type, args) ->
 				{
 					ResourceParameterProducer.validateArgumentLength(type, args, 2);
@@ -74,7 +74,7 @@ public class AssetLoader
 					ResourceParameterProducer.validateArgument(type, Integer.class, args[1]);
 					return new ShaderLoader.ShaderParameter((ResourceLocation) args[0], (int) args[1]);
 				});
-		AssetTypes.registerAssetType(Program.class, Asset::new,
+		AssetTypes.registerAssetType(Program.class, Asset<Program>::new,
 				(type, args) ->
 				{
 					ResourceParameterProducer.validateArgumentLength(type, args, 1);
