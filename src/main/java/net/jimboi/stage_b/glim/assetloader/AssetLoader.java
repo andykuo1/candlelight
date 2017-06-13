@@ -10,13 +10,17 @@ import net.jimboi.stage_b.gnome.resource.ResourceManager;
 
 import org.bstone.json.JSON;
 import org.bstone.json.JSONArray;
+import org.bstone.json.JSONBoolean;
 import org.bstone.json.JSONObject;
 import org.bstone.json.JSONString;
 import org.bstone.json.JSONValue;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
 import org.bstone.util.SemanticVersion;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -85,6 +89,12 @@ public class AssetLoader
 								{
 									System.out.println("Found asset with incompatible version '" + version + "'!");
 									return;
+								}
+
+								value = header.get("deprecated");
+								if (value instanceof JSONBoolean)
+								{
+									if (((JSONBoolean) value).toBoolean()) return;
 								}
 
 								value = header.get("type");
@@ -180,6 +190,55 @@ public class AssetLoader
 		throw new UnsupportedOperationException("Unable to find class '" + constantClass.getSimpleName() + "' with field '" + fieldName + "'!");
 	}
 
+	protected float getClassFloatConstant(Class constantClass, String fieldName)
+	{
+		System.out.println("Getting float constant: " + fieldName);
+		try
+		{
+			Field field = constantClass.getField(fieldName);
+			return field.getFloat(null);
+		}
+		catch (NoSuchFieldException | IllegalAccessException e)
+		{
+			e.printStackTrace();
+		}
+
+		throw new UnsupportedOperationException("Unable to find class '" + constantClass.getSimpleName() + "' with field '" + fieldName + "'!");
+	}
+
+	protected boolean getClassBooleanConstant(Class constantClass, String fieldName)
+	{
+		System.out.println("Getting boolean constant: " + fieldName);
+		try
+		{
+			Field field = constantClass.getField(fieldName);
+			return field.getBoolean(null);
+		}
+		catch (NoSuchFieldException | IllegalAccessException e)
+		{
+			e.printStackTrace();
+		}
+
+		throw new UnsupportedOperationException("Unable to find class '" + constantClass.getSimpleName() + "' with field '" + fieldName + "'!");
+	}
+
+	protected Class getClass(String className)
+	{
+		switch (className)
+		{
+			case "GL11":
+				return GL11.class;
+			case "GL15":
+				return GL15.class;
+			case "GL20":
+				return GL20.class;
+			case "GL30":
+				return GL30.class;
+			default:
+				throw new UnsupportedOperationException("Unable to find supported class with name '" + className + "'!");
+		}
+	}
+
 	protected Object createArgument(JSONValue value)
 	{
 		System.out.println("Creating argument(" + value + ")...");
@@ -218,9 +277,30 @@ public class AssetLoader
 						{
 							throw new AssetFormatException("Must be prefixed with asset type using '.'!");
 						}
-					case "GL20":
-						System.out.println("    Finding OpenGL constant for '" + body + "'...");
-						return this.getClassIntegerConstant(GL20.class, body);
+					case "int":
+					{
+						System.out.println("    Finding integer constant for '" + body + "'...");
+						int c = body.indexOf('.');
+						Class src = this.getClass(body.substring(0, c));
+						String field = body.substring(c + 1);
+						return this.getClassIntegerConstant(src, field);
+					}
+					case "float":
+					{
+						System.out.println("    Finding float constant for '" + body + "'...");
+						int c = body.indexOf('.');
+						Class src = this.getClass(body.substring(0, c));
+						String field = body.substring(c + 1);
+						return this.getClassFloatConstant(src, field);
+					}
+					case "bool":
+					{
+						System.out.println("    Finding boolean constant for '" + body + "'...");
+						int c = body.indexOf('.');
+						Class src = this.getClass(body.substring(0, c));
+						String field = body.substring(c + 1);
+						return this.getClassIntegerConstant(src, field);
+					}
 					default:
 						throw new UnsupportedOperationException("Unable to find variable reference type '" + head + "'!");
 				}

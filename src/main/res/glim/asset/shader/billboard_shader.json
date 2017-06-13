@@ -1,31 +1,32 @@
 {
   "header": {
     "version": "0.0.0",
-    "type": "asset"
+    "type": "asset",
+    "deprecated": true
   },
   "asset": [
     {
-      "id": "v_diffuse",
+      "id": "v_billboard",
       "type": "shader",
       "param": [
-        "res:shader/diffuse.vsh",
+        "res:shader/billboard.vsh",
         "int:GL20.GL_VERTEX_SHADER"
       ]
     },
     {
-      "id": "f_diffuse",
+      "id": "f_billboard",
       "type": "shader",
       "param": [
-        "res:shader/diffuse.fsh",
+        "res:shader/billboard.fsh",
         "int:GL20.GL_FRAGMENT_SHADER"
       ]
     },
     {
-      "id": "diffuse",
+      "id": "billboard",
       "type": "program",
       "param": [
-        "asset:shader.v_diffuse",
-        "asset:shader.f_diffuse"
+        "asset:shader.v_billboard",
+        "asset:shader.f_billboard"
       ]
     }
   ]
