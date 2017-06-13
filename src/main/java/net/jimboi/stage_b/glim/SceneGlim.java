@@ -49,7 +49,7 @@ public class SceneGlim extends SceneGlimBase
 	protected void onSceneStart()
 	{
 		this.sys_instance = new EntitySystemInstance(this.entityManager, this.renderer.getInstanceManager());
-		this.sys_bounding = new EntitySystemBounding(this.entityManager, this, this.boundingManager, this.renderer.getInstanceManager());
+		this.sys_bounding = new EntitySystemBounding(this.entityManager, this, this.boundingManager);
 
 		this.world = new WorldGlim(this.boundingManager);
 

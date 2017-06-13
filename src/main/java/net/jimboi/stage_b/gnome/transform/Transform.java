@@ -12,8 +12,8 @@ public interface Transform extends DirectionVectors
 	float PI = (float) Math.PI;
 	float PI2 = PI * 2;
 	float HALF_PI = PI / 2;
-	float RAD2ANG = 180F / PI;
-	float ANG2RAD = PI / 180F;
+	float RAD2DEG = 180F / PI;
+	float DEG2RAD = PI / 180F;
 
 	Matrix4fc transformation();
 

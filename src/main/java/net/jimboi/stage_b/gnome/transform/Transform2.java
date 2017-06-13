@@ -149,12 +149,12 @@ public class Transform2 implements Transform
 	@Override
 	public Vector3fc eulerAngles()
 	{
-		return this.eulerAngles.set(0, 0, this.radians * RAD2ANG);
+		return this.eulerAngles.set(0, 0, this.radians * RAD2DEG);
 	}
 
 	public float angles()
 	{
-		return RAD2ANG * this.radians;
+		return RAD2DEG * this.radians;
 	}
 
 	public float radians()

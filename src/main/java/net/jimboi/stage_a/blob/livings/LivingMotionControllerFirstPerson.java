@@ -20,7 +20,7 @@ import org.qsilver.util.MathUtil;
  */
 public abstract class LivingMotionControllerFirstPerson extends LivingMotion implements InputEngine.OnInputUpdateListener
 {
-	public static final float MAX_PITCH = Transform.ANG2RAD * 80F;
+	public static final float MAX_PITCH = Transform.DEG2RAD * 80F;
 
 	protected final Camera camera;
 

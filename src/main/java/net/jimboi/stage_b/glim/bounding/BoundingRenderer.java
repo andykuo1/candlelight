@@ -78,7 +78,7 @@ public class BoundingRenderer
 				Mesh mesh;
 				if (bounding instanceof AABB)
 				{
-					mesh = this.sphere.getSource();
+					mesh = this.box.getSource();
 					Vector2fc radius = ((AABB) bounding).radius;
 					scale.set(radius.x() * 2, 1, radius.y() * 2);
 				}

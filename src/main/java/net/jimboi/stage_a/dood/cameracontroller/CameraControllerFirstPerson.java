@@ -20,7 +20,7 @@ import org.qsilver.util.MathUtil;
  */
 public class CameraControllerFirstPerson implements CameraController, Scene.OnSceneUpdateListener
 {
-	public static float MAX_PITCH = Transform.ANG2RAD * 80F;
+	public static float MAX_PITCH = Transform.DEG2RAD * 80F;
 
 	protected float sensitivity = 0.01F;
 	protected float speed = 1F;

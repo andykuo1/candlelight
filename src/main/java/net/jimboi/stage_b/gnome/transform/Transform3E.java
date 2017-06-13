@@ -28,7 +28,7 @@ public class Transform3E extends Transform3
 	@Override
 	public Vector3fc eulerAngles()
 	{
-		return this.eulerAngles.set(this.radians).mul(RAD2ANG);
+		return this.eulerAngles.set(this.radians).mul(RAD2DEG);
 	}
 
 	@Override

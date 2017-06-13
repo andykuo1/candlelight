@@ -1,0 +1,32 @@
+{
+  "header": {
+    "version": 1
+  },
+  "asset_dir": [
+    {
+      "desc": "Wavefront OBJ",
+      "ext": "obj",
+      "dir": "model"
+    },
+    {
+      "desc": "Vertex Shader",
+      "ext": "vsh",
+      "dir": "shader"
+    },
+    {
+      "desc": "Fragment Shader",
+      "ext": "fsh",
+      "dir": "shader"
+    },
+    {
+      "desc": "PNG Texture",
+      "ext": "png",
+      "dir": "texture"
+    },
+    {
+      "desc": "JPEG Texture",
+      "ext": "jpg",
+      "dir": "texture"
+    }
+  ]
+}

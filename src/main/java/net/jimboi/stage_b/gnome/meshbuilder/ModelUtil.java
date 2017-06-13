@@ -15,6 +15,28 @@ import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
  */
 public class ModelUtil
 {
+	public static void putVertexBuffer(Mesh mesh, FloatBuffer data, int location, int size, int stride)
+	{
+		VBO vbo = new VBO();
+		vbo.bind();
+		{
+			vbo.putData(data, false, GL15.GL_STATIC_DRAW);
+			mesh.bindVertexArrayBuffer(location, size, stride, vbo);
+		}
+		vbo.unbind();
+	}
+
+	public static void putIndexBuffer(Mesh mesh, IntBuffer data)
+	{
+		VBO ibo = new VBO(GL15.GL_ELEMENT_ARRAY_BUFFER);
+		ibo.bind();
+		{
+			ibo.putData(data, false, GL15.GL_STATIC_DRAW);
+			mesh.bindElementArrayBuffer(ibo);
+		}
+		ibo.unbind();
+	}
+
 	public static void putVertexBuffer(Mesh mesh, float[] data, int location, int size, int stride)
 	{
 		FloatBuffer buffer = null;
@@ -56,10 +78,10 @@ public class ModelUtil
 	public static Mesh createMesh(MeshData data)
 	{
 		Mesh mesh = new Mesh();
-		ModelUtil.putVertexBuffer(mesh, data.positions, 0, 3, 0);
-		ModelUtil.putVertexBuffer(mesh, data.texcoords, 1, 2, 0);
-		ModelUtil.putVertexBuffer(mesh, data.normals, 2, 3, 0);
-		ModelUtil.putIndexBuffer(mesh, data.indices);
+		ModelUtil.putVertexBuffer(mesh, data.getPositions(), 0, data.getPositionVertexSize(), 0);
+		ModelUtil.putVertexBuffer(mesh, data.getTexcoords(), 1, data.getTexcoordVertexSize(), 0);
+		ModelUtil.putVertexBuffer(mesh, data.getNormals(), 2, data.getNormalVertexSize(), 0);
+		ModelUtil.putIndexBuffer(mesh, data.getIndices());
 		return mesh;
 	}
 }

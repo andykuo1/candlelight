@@ -11,7 +11,7 @@ public final class Asset<T>
 	protected String id;
 	protected ResourceParameter<T> params;
 
-	Asset(AssetManager assetManager, Class<T> type, String id, ResourceParameter<T> params)
+	public Asset(AssetManager assetManager, Class<T> type, String id, ResourceParameter<T> params)
 	{
 		this.assetManager = assetManager;
 		this.type = type;

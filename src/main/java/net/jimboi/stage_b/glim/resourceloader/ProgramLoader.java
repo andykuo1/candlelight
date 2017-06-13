@@ -9,6 +9,7 @@ import org.bstone.mogli.Shader;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,6 +31,11 @@ public class ProgramLoader implements ResourceLoader<Program, ProgramLoader.Prog
 	public static class ProgramParameter implements ResourceParameter<Program>
 	{
 		public List<Asset<Shader>> shaders = new ArrayList<>();
+
+		public ProgramParameter(Asset<Shader>... shaders)
+		{
+			Collections.addAll(this.shaders, shaders);
+		}
 
 		public ProgramParameter(Collection<Asset<Shader>> shaders)
 		{

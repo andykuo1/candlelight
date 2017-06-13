@@ -28,7 +28,7 @@ public class Transform3Q extends Transform3
 	@Override
 	public Vector3fc eulerAngles()
 	{
-		return this.rotation.getEulerAnglesXYZ(this.eulerRadians).mul(RAD2ANG);
+		return this.rotation.getEulerAnglesXYZ(this.eulerRadians).mul(RAD2DEG);
 	}
 
 	@Override

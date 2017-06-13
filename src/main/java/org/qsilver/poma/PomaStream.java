@@ -33,7 +33,7 @@ final class PomaStream extends PrintStream
 		FADE
 	}
 
-	private static final int PRINT_MARGIN = 100;
+	private static final int PRINT_MARGIN = 200;
 	private static final String PRINT_TAB = "          ";
 	private static final String PRINT_FADE = "... ";
 	private static final String PRINT_DIVIDER = "-=(*)=-";

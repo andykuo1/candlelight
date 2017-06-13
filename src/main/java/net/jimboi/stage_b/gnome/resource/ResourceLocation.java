@@ -7,7 +7,7 @@ public class ResourceLocation
 	public ResourceLocation(String path)
 	{
 		int i = path.indexOf(':');
-		int j = path.indexOf('.');
+		int j = path.lastIndexOf('.');
 		if (i == -1)
 		{
 			this.filepath = path;

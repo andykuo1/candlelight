@@ -45,6 +45,33 @@ public class AssetManager
 		return asset;
 	}
 
+	public boolean registerAsset(Class assetType, String id, Asset asset, boolean overwrite)
+	{
+		Map<String, Asset> assetMap = this.getAssetMap(assetType);
+		Asset other = assetMap.get(id);
+		if (other != null)
+		{
+			if (!assetType.equals(asset.getType()))
+				throw new IllegalStateException("Asset '" + assetType.getSimpleName() + "' does not match type '" + other.getType().getSimpleName() + "' which already exists!");
+
+			if (overwrite)
+			{
+				other.params = asset.params;
+				other.id = id;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			assetMap.put(id, asset);
+		}
+		return true;
+	}
+
 	@SuppressWarnings("unchecked")
 	public <T> Asset<T> getAsset(Class<T> assetType, String id)
 	{
@@ -56,6 +83,11 @@ public class AssetManager
 			throw new IllegalArgumentException("Asset '" + assetType.getSimpleName() + "' does not match type '" + asset.getType().getSimpleName() + "'!");
 
 		return asset;
+	}
+
+	public Asset getUnsafeAsset(Class assetType, String id)
+	{
+		return this.getAssetMap(assetType).get(id);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -71,7 +103,6 @@ public class AssetManager
 		}
 		return (T) resource;
 	}
-
 
 	public void update()
 	{

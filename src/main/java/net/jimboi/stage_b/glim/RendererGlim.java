@@ -2,6 +2,7 @@ package net.jimboi.stage_b.glim;
 
 import net.jimboi.stage_a.mod.sprite.Sprite;
 import net.jimboi.stage_a.mod.sprite.TiledTextureAtlas;
+import net.jimboi.stage_b.glim.assetloader.AssetLoader;
 import net.jimboi.stage_b.glim.bounding.BoundingRenderer;
 import net.jimboi.stage_b.glim.renderer.BillboardRenderer;
 import net.jimboi.stage_b.glim.renderer.DiffuseRenderer;
@@ -31,6 +32,7 @@ import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
 import org.bstone.mogli.Texture;
+import org.bstone.util.SemanticVersion;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
@@ -67,6 +69,8 @@ public class RendererGlim extends Renderer
 	protected WireframeRenderer wireframeRenderer;
 	protected BoundingRenderer boundingRenderer;
 
+	protected AssetLoader assetLoader;
+
 	public RendererGlim(SceneGlim scene)
 	{
 		INSTANCE = this;
@@ -80,6 +84,8 @@ public class RendererGlim extends Renderer
 		this.instanceManager = new InstanceManager((inst) -> null);
 		this.materialManager = new MaterialManager();
 		this.assetManager = new AssetManager();
+		this.assetLoader = new AssetLoader(this.assetManager, new SemanticVersion("0.0.0"), "glim");
+		this.assetLoader.loadAssets();
 
 		//Register Inputs
 		InputManager.registerMousePosX("mousex");
@@ -160,10 +166,12 @@ public class RendererGlim extends Renderer
 
 		//Shaders
 		assets.registerLoader(Shader.class, new ShaderLoader());
+		/*
 		Asset<Shader> v_diffuse = assets.registerAsset(Shader.class, "v_diffuse",
 				new ShaderLoader.ShaderParameter(new ResourceLocation("glim:diffuse.vsh"), GL20.GL_VERTEX_SHADER));
 		Asset<Shader> f_diffuse = assets.registerAsset(Shader.class, "f_diffuse",
 				new ShaderLoader.ShaderParameter(new ResourceLocation("glim:diffuse.fsh"), GL20.GL_FRAGMENT_SHADER));
+		*/
 		Asset<Shader> v_billboard = assets.registerAsset(Shader.class, "v_billboard",
 				new ShaderLoader.ShaderParameter(new ResourceLocation("glim:billboard.vsh"), GL20.GL_VERTEX_SHADER));
 		Asset<Shader> f_billboard = assets.registerAsset(Shader.class, "f_billboard",
@@ -175,15 +183,15 @@ public class RendererGlim extends Renderer
 
 		//Programs
 		assets.registerLoader(Program.class, new ProgramLoader());
-		Asset<Program> p_diffuse = assets.registerAsset(Program.class, "diffuse",
-				new ProgramLoader.ProgramParameter(Arrays.asList(v_diffuse, f_diffuse)));
+		//Asset<Program> p_diffuse = assets.registerAsset(Program.class, "diffuse",
+		//		new ProgramLoader.ProgramParameter(Arrays.asList(v_diffuse, f_diffuse)));
 		Asset<Program> p_billboard = assets.registerAsset(Program.class, "billboard",
 				new ProgramLoader.ProgramParameter(Arrays.asList(v_billboard, f_billboard)));
 		Asset<Program> p_wireframe = assets.registerAsset(Program.class, "wireframe",
 				new ProgramLoader.ProgramParameter(Arrays.asList(v_wireframe, f_wireframe)));
 
 
-		this.diffuseRenderer = new DiffuseRenderer(p_diffuse);
+		this.diffuseRenderer = new DiffuseRenderer(assets.getAsset(Program.class, "diffuse"));
 		this.billboardRenderer = new BillboardRenderer(p_billboard, BillboardRenderer.Type.CYLINDRICAL);
 		this.wireframeRenderer = new WireframeRenderer(p_wireframe);
 		this.boundingRenderer = new BoundingRenderer(p_wireframe);
@@ -209,7 +217,7 @@ public class RendererGlim extends Renderer
 		this.billboardRenderer.render(CAMERA, iter);
 
 		iter = new FilterIterator<>(this.instanceManager.getInstanceIterator(), (inst) -> inst.getRenderType().equals("wireframe"));
-		//this.wireframeRenderer.render(CAMERA, iter);
+		this.wireframeRenderer.render(CAMERA, iter);
 
 		this.boundingRenderer.render(CAMERA, SCENE.getBoundingManager().getBoundingIterator());
 

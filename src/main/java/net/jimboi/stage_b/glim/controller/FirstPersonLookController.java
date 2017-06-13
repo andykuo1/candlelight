@@ -17,7 +17,7 @@ import org.qsilver.util.MathUtil;
  */
 public class FirstPersonLookController
 {
-	public static final float MAX_PITCH = Transform.ANG2RAD * 80F;
+	public static final float MAX_PITCH = Transform.DEG2RAD * 80F;
 
 	protected float sensitivity = 0.01F;
 
