@@ -1,4 +1,4 @@
-package org.qsilver.model;
+package net.jimboi.stage_a.mod.model;
 
 import org.bstone.mogli.Mesh;
 import org.joml.Matrix4f;

@@ -1,22 +1,19 @@
 package net.jimboi.stage_b.glim;
 
 import net.jimboi.stage_b.glim.resourceloader.BitmapLoader;
-import net.jimboi.stage_b.glim.resourceloader.MaterialLoader;
 import net.jimboi.stage_b.glim.resourceloader.ProgramLoader;
 import net.jimboi.stage_b.glim.resourceloader.ShaderLoader;
 import net.jimboi.stage_b.glim.resourceloader.TextureLoader;
 import net.jimboi.stage_b.gnome.asset.Asset;
 import net.jimboi.stage_b.gnome.asset.AssetManager;
-import net.jimboi.stage_b.gnome.assetloader.AssetArguments;
-import net.jimboi.stage_b.gnome.assetloader.AssetConstants;
-import net.jimboi.stage_b.gnome.assetloader.AssetFormatException;
-import net.jimboi.stage_b.gnome.assetloader.AssetLoader;
-import net.jimboi.stage_b.gnome.assetloader.AssetTypes;
-import net.jimboi.stage_b.gnome.assetloader.ResourceParameterProducer;
+import net.jimboi.stage_b.gnome.asset.assetloader.AssetArguments;
+import net.jimboi.stage_b.gnome.asset.assetloader.AssetConstants;
+import net.jimboi.stage_b.gnome.asset.assetloader.AssetFormatException;
+import net.jimboi.stage_b.gnome.asset.assetloader.AssetLoader;
+import net.jimboi.stage_b.gnome.asset.assetloader.AssetTypes;
+import net.jimboi.stage_b.gnome.asset.assetloader.ResourceParameterProducer;
 import net.jimboi.stage_b.gnome.resource.ResourceLocation;
 
-import org.bstone.material.Material;
-import org.bstone.material.Property;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
@@ -114,17 +111,6 @@ public class AssetsGlim
 						ResourceParameterProducer.validateArgument(type, String.class, args[4]);
 						return new TextureLoader.TextureParameter((int) args[0], (int) args[1], (int) args[2], (int) args[3], Bitmap.Format.valueOf((String) args[4]));
 					}
-				});
-		AssetTypes.registerAssetType(Material.class, Asset<Material>::new,
-				(type, args) ->
-				{
-					Property[] properties = new Property[args.length];
-					for(int i = 0; i < properties.length; ++i)
-					{
-						ResourceParameterProducer.validateArgument(type, Property.class, args[i]);
-						properties[i] = (Property) args[i];
-					}
-					return new MaterialLoader.MaterialParameter(properties);
 				});
 
 		AssetArguments.clear();

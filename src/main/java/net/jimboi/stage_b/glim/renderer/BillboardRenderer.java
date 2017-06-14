@@ -3,10 +3,12 @@ package net.jimboi.stage_b.glim.renderer;
 import net.jimboi.stage_b.gnome.asset.Asset;
 import net.jimboi.stage_b.gnome.instance.Instance;
 import net.jimboi.stage_b.gnome.material.property.PropertyTexture;
+import net.jimboi.stage_b.gnome.model.Model;
 import net.jimboi.stage_b.gnome.sprite.Sprite;
 
 import org.bstone.camera.Camera;
 import org.bstone.material.Material;
+import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Texture;
 import org.joml.Matrix4f;
@@ -14,7 +16,6 @@ import org.joml.Matrix4fc;
 import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.qsilver.model.Model;
 
 import java.util.Iterator;
 
@@ -62,8 +63,9 @@ public class BillboardRenderer implements AutoCloseable
 			while (iterator.hasNext())
 			{
 				final Instance inst = iterator.next();
-				final Model model = inst.getModel().getSource();
-				final Material material = inst.getMaterial().getSource();
+				final Model model = inst.getModel();
+				final Mesh mesh = model.getMesh().getSource();
+				final Material material = model.getMaterial();
 
 				Texture texture = null;
 				Sprite sprite = null;
@@ -80,7 +82,7 @@ public class BillboardRenderer implements AutoCloseable
 				program.setUniform("u_model", transformation);
 				program.setUniform("u_model_view_projection", modelViewProj);
 
-				model.bind();
+				mesh.bind();
 				{
 					if (texture != null)
 					{
@@ -98,14 +100,14 @@ public class BillboardRenderer implements AutoCloseable
 
 					program.setUniform("u_billboard_type", this.type.ordinal());
 
-					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+					GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 
 					if (texture != null)
 					{
 						texture.unbind();
 					}
 				}
-				model.unbind();
+				mesh.unbind();
 			}
 		}
 		program.unbind();

@@ -1,9 +1,9 @@
 package net.jimboi.stage_a.blob.models;
 
+import net.jimboi.stage_a.mod.model.Model;
 import net.jimboi.stage_b.gnome.meshbuilder.ModelUtil;
 
 import org.bstone.mogli.Mesh;
-import org.qsilver.model.Model;
 
 /**
  * Created by Andy on 4/27/17.

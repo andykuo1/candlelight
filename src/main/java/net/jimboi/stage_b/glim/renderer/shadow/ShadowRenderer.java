@@ -9,12 +9,14 @@ import net.jimboi.stage_b.gnome.asset.AssetManager;
 import net.jimboi.stage_b.gnome.instance.Instance;
 import net.jimboi.stage_b.gnome.material.property.PropertyShadow;
 import net.jimboi.stage_b.gnome.material.property.PropertyTexture;
+import net.jimboi.stage_b.gnome.model.Model;
 import net.jimboi.stage_b.gnome.resource.ResourceLocation;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.material.Material;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.FBO;
+import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
 import org.bstone.mogli.Texture;
@@ -27,7 +29,6 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.qsilver.model.Model;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -96,23 +97,24 @@ public class ShadowRenderer
 			while (instances.hasNext())
 			{
 				final Instance inst = instances.next();
-				final Material mat = inst.getMaterial().getSource();
-				final Model model = inst.getModel().getSource();
+				final Model model = inst.getModel();
+				final Mesh mesh = model.getMesh().getSource();
+				final Material material = model.getMaterial();
 
-				if (!mat.hasComponent(PropertyShadow.class)) continue;
-				if (!mat.getComponent(PropertyShadow.class).castShadow) continue;
+				if (!material.hasComponent(PropertyShadow.class)) continue;
+				if (!material.getComponent(PropertyShadow.class).castShadow) continue;
 
 				Texture texture = null;
 
-				if (mat.hasComponent(PropertyTexture.class))
+				if (material.hasComponent(PropertyTexture.class))
 				{
-					PropertyTexture prop = mat.getComponent(PropertyTexture.class);
+					PropertyTexture prop = material.getComponent(PropertyTexture.class);
 					texture = prop.texture.getSource();
 				}
 
 				Matrix4f matrix = new Matrix4f();
 				inst.getRenderTransformation(matrix);
-				model.bind();
+				mesh.bind();
 				if (texture != null)
 				{
 					GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -122,7 +124,7 @@ public class ShadowRenderer
 				//TODO: disable culling if transparent . . .
 
 				program.setUniform("u_model_view_projection", projViewMatrix.mul(matrix, matrix));
-				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+				GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 
 				if (texture != null)
 				{
@@ -130,7 +132,7 @@ public class ShadowRenderer
 					texture.unbind();
 				}
 
-				model.unbind();
+				mesh.unbind();
 			}
 		}
 		program.unbind();

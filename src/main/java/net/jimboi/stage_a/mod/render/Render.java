@@ -2,10 +2,10 @@ package net.jimboi.stage_a.mod.render;
 
 import net.jimboi.stage_a.mod.ModMaterial;
 import net.jimboi.stage_a.mod.instance.Instance;
+import net.jimboi.stage_a.mod.model.Model;
 
 import org.bstone.mogli.Program;
 import org.joml.Matrix4f;
-import org.qsilver.model.Model;
 
 /**
  * Created by Andy on 4/30/17.

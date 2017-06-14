@@ -1,4 +1,4 @@
-package net.jimboi.stage_b.gnome.assetloader;
+package net.jimboi.stage_b.gnome.asset.assetloader;
 
 import net.jimboi.stage_b.gnome.asset.ResourceParameter;
 

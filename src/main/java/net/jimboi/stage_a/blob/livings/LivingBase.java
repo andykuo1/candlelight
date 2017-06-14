@@ -5,10 +5,10 @@ import net.jimboi.stage_a.mod.ModMaterial;
 import net.jimboi.stage_a.mod.instance.Instance;
 import net.jimboi.stage_a.mod.instance.InstanceHandler;
 import net.jimboi.stage_a.mod.instance.InstanceManager;
+import net.jimboi.stage_a.mod.model.Model;
 import net.jimboi.stage_b.gnome.transform.Transform;
 
 import org.qsilver.living.Living;
-import org.qsilver.model.Model;
 
 import java.util.List;
 

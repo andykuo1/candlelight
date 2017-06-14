@@ -1,14 +1,10 @@
 package net.jimboi.stage_b.glim.gameentity.component;
 
-import net.jimboi.stage_b.glim.RendererGlim;
-import net.jimboi.stage_b.gnome.asset.Asset;
 import net.jimboi.stage_b.gnome.instance.Instance;
 import net.jimboi.stage_b.gnome.instance.InstanceHandler;
 import net.jimboi.stage_b.gnome.instance.InstanceManager;
+import net.jimboi.stage_b.gnome.model.Model;
 import net.jimboi.stage_b.gnome.transform.Transform;
-
-import org.bstone.material.Material;
-import org.qsilver.model.Model;
 
 import java.util.List;
 
@@ -18,24 +14,18 @@ import java.util.List;
 public class GameComponentInstance extends GameComponent implements InstanceHandler
 {
 	private final Transform transform;
-	private final String modelID;
-	private final String materialID;
-	private final String renderType;
+	private final Model model;
 
-	public GameComponentInstance(Transform transform, String modelID, String materialID, String renderType)
+	public GameComponentInstance(Transform transform, Model model)
 	{
 		this.transform = transform;
-		this.modelID = modelID;
-		this.materialID = materialID;
-		this.renderType = renderType;
+		this.model = model;
 	}
 
 	@Override
 	public void onInstanceSetup(InstanceManager instanceManager, List<Instance> instances)
 	{
-		Asset<Model> model = RendererGlim.INSTANCE.getAssetManager().getAsset(Model.class, this.modelID);
-		Asset<Material> material = RendererGlim.INSTANCE.getAssetManager().getAsset(Material.class, this.materialID);
-		instances.add(new Instance(model, material, this.renderType));
+		instances.add(new Instance(this.model));
 	}
 
 	@Override
@@ -50,13 +40,8 @@ public class GameComponentInstance extends GameComponent implements InstanceHand
 
 	}
 
-	public String getModelID()
+	public Model getModel()
 	{
-		return this.modelID;
-	}
-
-	public String getMaterialID()
-	{
-		return this.materialID;
+		return this.model;
 	}
 }

@@ -10,11 +10,13 @@ import net.jimboi.stage_b.gnome.instance.Instance;
 import net.jimboi.stage_b.gnome.material.property.PropertyShadow;
 import net.jimboi.stage_b.gnome.material.property.PropertySpecular;
 import net.jimboi.stage_b.gnome.material.property.PropertyTexture;
+import net.jimboi.stage_b.gnome.model.Model;
 import net.jimboi.stage_b.gnome.sprite.Sprite;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.material.Material;
+import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Texture;
 import org.joml.Matrix4f;
@@ -23,7 +25,6 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.qsilver.model.Model;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -58,8 +59,6 @@ public class DiffuseRenderer implements AutoCloseable
 		{
 			this.shadowRenderer = new ShadowRenderer(camera, Main.WINDOW);
 			this.shadowRenderer.load(RendererGlim.INSTANCE.getAssetManager());
-			Material mat = RendererGlim.INSTANCE.getAssetManager().getAsset(Material.class, "plane").getSource();
-			mat.getComponent(PropertyTexture.class).texture = this.shadowRenderer.getShadowMap();
 		}
 
 		this.shadowRenderer.render(iterator, RendererGlim.LIGHTS.get(2));
@@ -79,9 +78,10 @@ public class DiffuseRenderer implements AutoCloseable
 
 			while (iterator.hasNext())
 			{
-				Instance inst = iterator.next();
-				Model model = inst.getModel().getSource();
-				Material material = inst.getMaterial().getSource();
+				final Instance inst = iterator.next();
+				final Model model = inst.getModel();
+				final Mesh mesh = model.getMesh().getSource();
+				final Material material = model.getMaterial();
 
 				Texture texture = null;
 				Sprite sprite = null;
@@ -122,7 +122,7 @@ public class DiffuseRenderer implements AutoCloseable
 				program.setUniform("u_model", transformation);
 				program.setUniform("u_model_view_projection", modelViewProj);
 
-				model.bind();
+				mesh.bind();
 				{
 					if (texture != null)
 					{
@@ -153,7 +153,7 @@ public class DiffuseRenderer implements AutoCloseable
 						this.shadowRenderer.getShadowFBO().getTexture().bind();
 					}
 
-					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+					GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 
 					if (shadow)
 					{
@@ -166,7 +166,7 @@ public class DiffuseRenderer implements AutoCloseable
 						texture.unbind();
 					}
 				}
-				model.unbind();
+				mesh.unbind();
 			}
 		}
 		program.unbind();

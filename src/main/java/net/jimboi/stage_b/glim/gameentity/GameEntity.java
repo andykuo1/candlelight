@@ -11,6 +11,8 @@ public class GameEntity extends EntityManifest<GameComponent>
 {
 	private boolean dead = false;
 
+	GameEntity() {}
+
 	public final void setDead()
 	{
 		this.dead = true;

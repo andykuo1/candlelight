@@ -4,12 +4,12 @@ import net.jimboi.stage_a.blob.RendererBlob;
 import net.jimboi.stage_a.mod.ModLight;
 import net.jimboi.stage_a.mod.ModMaterial;
 import net.jimboi.stage_a.mod.instance.Instance;
+import net.jimboi.stage_a.mod.model.Model;
 import net.jimboi.stage_a.mod.render.Render;
 
 import org.bstone.mogli.Program;
 import org.joml.Matrix4fc;
 import org.lwjgl.opengl.GL11;
-import org.qsilver.model.Model;
 
 import java.util.Collection;
 import java.util.Iterator;

@@ -3,15 +3,16 @@ package net.jimboi.stage_b.glim.renderer;
 import net.jimboi.stage_b.gnome.asset.Asset;
 import net.jimboi.stage_b.gnome.instance.Instance;
 import net.jimboi.stage_b.gnome.material.property.PropertyDiffuse;
+import net.jimboi.stage_b.gnome.model.Model;
 
 import org.bstone.camera.Camera;
 import org.bstone.material.Material;
+import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
-import org.qsilver.model.Model;
 
 import java.util.Iterator;
 
@@ -51,8 +52,9 @@ public class WireframeRenderer implements AutoCloseable
 			while (iterator.hasNext())
 			{
 				final Instance inst = iterator.next();
-				final Model model = inst.getModel().getSource();
-				final Material material = inst.getMaterial().getSource();
+				final Model model = inst.getModel();
+				final Mesh mesh = model.getMesh().getSource();
+				final Material material = model.getMaterial();
 
 				Vector3f diffuseColor = null;
 
@@ -67,13 +69,13 @@ public class WireframeRenderer implements AutoCloseable
 				program.setUniform("u_model", transformation);
 				program.setUniform("u_model_view_projection", modelViewProj);
 
-				model.bind();
+				mesh.bind();
 				{
 					program.setUniform("u_color", diffuseColor);
 
-					GL11.glDrawElements(GL11.GL_LINE_LOOP, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+					GL11.glDrawElements(GL11.GL_LINE_LOOP, mesh.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 				}
-				model.unbind();
+				mesh.unbind();
 			}
 		}
 		program.unbind();

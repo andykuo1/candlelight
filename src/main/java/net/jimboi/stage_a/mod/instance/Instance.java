@@ -1,10 +1,10 @@
 package net.jimboi.stage_a.mod.instance;
 
 import net.jimboi.stage_a.mod.ModMaterial;
+import net.jimboi.stage_a.mod.model.Model;
 import net.jimboi.stage_b.gnome.transform.Transform;
 
 import org.joml.Matrix4f;
-import org.qsilver.model.Model;
 
 /**
  * Created by Andy on 4/8/17.

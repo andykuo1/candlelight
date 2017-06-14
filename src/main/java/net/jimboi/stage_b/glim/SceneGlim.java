@@ -9,26 +9,29 @@ import net.jimboi.stage_b.glim.entity.EntityPlayer;
 import net.jimboi.stage_b.glim.gameentity.GameEntity;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentTransform;
 import net.jimboi.stage_b.glim.resourceloader.MeshLoader;
-import net.jimboi.stage_b.glim.resourceloader.ModelLoader;
 import net.jimboi.stage_b.glim.system.EntitySystemBounding;
 import net.jimboi.stage_b.glim.system.EntitySystemInstance;
-import net.jimboi.stage_b.gnome.asset.Asset;
 import net.jimboi.stage_b.gnome.instance.Instance;
+import net.jimboi.stage_b.gnome.material.property.PropertyDiffuse;
+import net.jimboi.stage_b.gnome.material.property.PropertyShadow;
+import net.jimboi.stage_b.gnome.material.property.PropertySpecular;
+import net.jimboi.stage_b.gnome.material.property.PropertyTexture;
 import net.jimboi.stage_b.gnome.meshbuilder.MeshData;
+import net.jimboi.stage_b.gnome.model.Model;
 import net.jimboi.stage_b.gnome.transform.Transform;
 
-import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import org.qsilver.model.Model;
 
 /**
  * Created by Andy on 6/1/17.
  */
 public class SceneGlim extends SceneGlimBase
 {
+	public static int MATERIAL_ID = -1;
+
 	private EntitySystemInstance sys_instance;
 	private EntitySystemBounding sys_bounding;
 
@@ -61,22 +64,32 @@ public class SceneGlim extends SceneGlimBase
 		MeshData mesh = RendererGlim.createMeshFromMap(this.world.getMap(), new TiledTextureAtlas(
 				RendererGlim.INSTANCE.getAssetManager().getAsset(Texture.class, "font").getSource(),
 				16, 16));
-		Asset<Mesh> msh_dungeon = RendererGlim.INSTANCE.getAssetManager().registerAsset(Mesh.class, "dungeon",
+		RendererGlim.INSTANCE.getAssetManager().registerAsset(Mesh.class, "dungeon",
 				new MeshLoader.MeshParameter(mesh));
-		Asset<Model> mdl_dungeon = RendererGlim.INSTANCE.getAssetManager().registerAsset(Model.class, "dungeon",
-				new ModelLoader.ModelParameter(msh_dungeon));
-		this.renderer.getInstanceManager().add(new Instance(
-				mdl_dungeon,
-				RendererGlim.INSTANCE.getAssetManager().getAsset(Material.class, "font"),
-				"diffuse"));
 
-		this.renderer.getInstanceManager().add(this.plane = new Instance(
-				RendererGlim.INSTANCE.getAssetManager().getAsset(Model.class, "plane"),
-				RendererGlim.INSTANCE.getAssetManager().getAsset(Material.class, "plane"),
-				"billboard"));
+		this.renderer.getInstanceManager().add(new Instance(new Model(
+				RendererGlim.INSTANCE.getAssetManager().getAsset(Mesh.class, "dungeon"),
+				RendererGlim.INSTANCE.getMaterialManager().createMaterial(
+						new PropertyDiffuse(),
+						new PropertySpecular(),
+						new PropertyShadow(false, true),
+						new PropertyTexture(RendererGlim.INSTANCE.getAssetManager().getAsset(Texture.class, "font"))),
+				"diffuse")));
+
+		this.renderer.getInstanceManager().add(this.plane = new Instance(new Model(
+				RendererGlim.INSTANCE.getAssetManager().getAsset(Mesh.class, "plane"),
+				RendererGlim.INSTANCE.getMaterialManager().createMaterial(
+						new PropertyDiffuse(),
+						new PropertySpecular(),
+						new PropertyShadow(true, true),
+						new PropertyTexture(
+								RendererGlim.INSTANCE.getAssetManager().getAsset(Texture.class, "shadowmap"))),
+				"billboard")));
 
 		EntityCrate.create(this.world, -4, 0, 0);
 		EntityCrate.create(this.world, 20, 5, 30);
+
+		//EntityBunny.create(this.world, 10, 1, 14);
 	}
 
 	@Override

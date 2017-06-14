@@ -7,6 +7,8 @@ import org.bstone.component.EntityManifest;
  */
 public class Material extends EntityManifest<Property>
 {
+	Material(){}
+
 	public boolean allowDefaultProperty(Class<? extends Property> property)
 	{
 		return true;

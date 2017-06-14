@@ -11,6 +11,7 @@ import net.jimboi.stage_a.mod.ModMaterial;
 import net.jimboi.stage_a.mod.instance.Instance;
 import net.jimboi.stage_a.mod.instance.InstanceHandler;
 import net.jimboi.stage_a.mod.instance.InstanceManager;
+import net.jimboi.stage_a.mod.model.Model;
 import net.jimboi.stage_a.mod.render.Render;
 import net.jimboi.stage_a.mod.render.RenderManager;
 import net.jimboi.stage_a.mod.resource.ModResourceLocation;
@@ -22,7 +23,6 @@ import org.bstone.camera.PerspectiveCamera;
 import org.bstone.mogli.Texture;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.qsilver.model.Model;
 import org.qsilver.renderer.Renderer;
 
 import java.util.ArrayList;

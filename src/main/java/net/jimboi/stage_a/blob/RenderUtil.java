@@ -1,6 +1,7 @@
 package net.jimboi.stage_a.blob;
 
 import net.jimboi.stage_a.mod.ModMaterial;
+import net.jimboi.stage_a.mod.model.Model;
 import net.jimboi.stage_a.mod.resource.ModResourceLocation;
 
 import org.bstone.mogli.Bitmap;
@@ -12,7 +13,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL20;
 import org.qsilver.loader.OBJLoader;
-import org.qsilver.model.Model;
 
 import java.util.HashMap;
 import java.util.Map;

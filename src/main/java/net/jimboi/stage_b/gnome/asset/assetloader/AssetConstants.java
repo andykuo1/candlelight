@@ -1,4 +1,4 @@
-package net.jimboi.stage_b.gnome.assetloader;
+package net.jimboi.stage_b.gnome.asset.assetloader;
 
 import java.lang.reflect.Field;
 import java.util.HashSet;

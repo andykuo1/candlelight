@@ -7,9 +7,7 @@ import net.jimboi.stage_b.glim.renderer.BillboardRenderer;
 import net.jimboi.stage_b.glim.renderer.DiffuseRenderer;
 import net.jimboi.stage_b.glim.renderer.WireframeRenderer;
 import net.jimboi.stage_b.glim.resourceloader.BitmapLoader;
-import net.jimboi.stage_b.glim.resourceloader.MaterialLoader;
 import net.jimboi.stage_b.glim.resourceloader.MeshLoader;
-import net.jimboi.stage_b.glim.resourceloader.ModelLoader;
 import net.jimboi.stage_b.glim.resourceloader.ProgramLoader;
 import net.jimboi.stage_b.glim.resourceloader.ShaderLoader;
 import net.jimboi.stage_b.glim.resourceloader.TextureLoader;
@@ -17,14 +15,12 @@ import net.jimboi.stage_b.gnome.asset.Asset;
 import net.jimboi.stage_b.gnome.asset.AssetManager;
 import net.jimboi.stage_b.gnome.instance.Instance;
 import net.jimboi.stage_b.gnome.instance.InstanceManager;
-import net.jimboi.stage_b.gnome.material.DiffuseMaterial;
 import net.jimboi.stage_b.gnome.meshbuilder.MeshBuilder;
 import net.jimboi.stage_b.gnome.meshbuilder.MeshData;
 import net.jimboi.stage_b.gnome.resource.ResourceLocation;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.input.InputManager;
-import org.bstone.material.Material;
 import org.bstone.material.MaterialManager;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
@@ -37,7 +33,6 @@ import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
-import org.qsilver.model.Model;
 import org.qsilver.renderer.Renderer;
 import org.qsilver.util.iterator.FilterIterator;
 import org.qsilver.util.map2d.IntMap;
@@ -124,34 +119,14 @@ public class RendererGlim extends Renderer
 				new MeshLoader.MeshParameter(mb.bake(false, true)));
 		mb.clear();
 
-		//Models
-		assets.registerLoader(Model.class, new ModelLoader());
-		assets.registerAsset(Model.class, "ball",
-				new ModelLoader.ModelParameter(msh_ball));
-		assets.registerAsset(Model.class, "plane",
-				new ModelLoader.ModelParameter(msh_plane));
-		assets.registerAsset(Model.class, "box",
-				new ModelLoader.ModelParameter(msh_box));
-
-		//Materials
-		assets.registerLoader(Material.class, new MaterialLoader(this.materialManager));
-		assets.registerAsset(Material.class, "bird",
-				new MaterialLoader.MaterialParameter(DiffuseMaterial.getProperties(assets.getAsset(Texture.class, "bird"))));
-		assets.registerAsset(Material.class, "plane",
-				new MaterialLoader.MaterialParameter(DiffuseMaterial.getProperties(assets.getAsset(Texture.class, "bird"))));
-		assets.registerAsset(Material.class, "font",
-				new MaterialLoader.MaterialParameter(DiffuseMaterial.getProperties(assets.getAsset(Texture.class, "font"))));
-		assets.registerAsset(Material.class, "crate",
-				new MaterialLoader.MaterialParameter(DiffuseMaterial.getProperties(assets.getAsset(Texture.class, "crate"))));
-		assets.registerAsset(Material.class, "box",
-				new MaterialLoader.MaterialParameter(DiffuseMaterial.getProperties(0xFF00FF)));
-
+		//Renderers
 		this.diffuseRenderer = new DiffuseRenderer(assets.getAsset(Program.class, "diffuse"));
 		this.billboardRenderer = new BillboardRenderer(assets.getAsset(Program.class, "billboard"), BillboardRenderer.Type.CYLINDRICAL);
 		this.wireframeRenderer = new WireframeRenderer(assets.getAsset(Program.class, "wireframe"));
 		this.boundingRenderer = new BoundingRenderer(assets.getAsset(Program.class, "wireframe"));
 		this.boundingRenderer.setup(assets);
 
+		//Lights
 		RendererGlim.LIGHTS.add(GlimLight.createSpotLight(0, 0, 0, 0xFFFFFF, 0.4F, 0.1F, 0, 15F, 1, 1, 1));
 		RendererGlim.LIGHTS.add(GlimLight.createPointLight(0, 0, 0, 0xFFFFFF, 0.6F, 0.1F, 0));
 		RendererGlim.LIGHTS.add(GlimLight.createDirectionLight(10000F, 10000F, 10000F, 0xFFFFFF, 0.2F, 0.1F));
@@ -165,13 +140,13 @@ public class RendererGlim extends Renderer
 	{
 		this.diffuseRenderer.preRender(CAMERA, this.instanceManager.getInstanceIterator());
 
-		Iterator<Instance> iter = new FilterIterator<>(this.instanceManager.getInstanceIterator(), (inst) -> inst.getRenderType().equals("diffuse"));
+		Iterator<Instance> iter = new FilterIterator<>(this.instanceManager.getInstanceIterator(), (inst) -> inst.getModel().getRenderType().equals("diffuse"));
 		this.diffuseRenderer.render(CAMERA, iter);
 
-		iter = new FilterIterator<>(this.instanceManager.getInstanceIterator(), (inst) -> inst.getRenderType().equals("billboard"));
+		iter = new FilterIterator<>(this.instanceManager.getInstanceIterator(), (inst) -> inst.getModel().getRenderType().equals("billboard"));
 		this.billboardRenderer.render(CAMERA, iter);
 
-		iter = new FilterIterator<>(this.instanceManager.getInstanceIterator(), (inst) -> inst.getRenderType().equals("wireframe"));
+		iter = new FilterIterator<>(this.instanceManager.getInstanceIterator(), (inst) -> inst.getModel().getRenderType().equals("wireframe"));
 		this.wireframeRenderer.render(CAMERA, iter);
 
 		this.boundingRenderer.render(CAMERA, SCENE.getBoundingManager().getBoundingIterator());

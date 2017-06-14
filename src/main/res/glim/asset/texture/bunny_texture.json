@@ -1,0 +1,24 @@
+{
+  "header": {
+    "version": "0.0.0",
+    "type": "asset"
+  },
+  "asset": [
+    {
+      "id": "bunny",
+      "type": "bitmap",
+      "param": [
+        "res:texture/bunny.png"
+      ]
+    },
+    {
+      "id": "bunny",
+      "type": "texture",
+      "param": [
+        "asset:bitmap.bunny",
+        "int:GL11.GL_LINEAR",
+        "int:GL12.GL_CLAMP_TO_EDGE"
+      ]
+    }
+  ]
+}
