@@ -1,7 +1,7 @@
 package net.jimboi.stage_a.blob;
 
 import net.jimboi.stage_a.mod.ModMaterial;
-import net.jimboi.stage_b.gnome.resource.ResourceLocation;
+import net.jimboi.stage_a.mod.resource.ModResourceLocation;
 
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
@@ -52,17 +52,17 @@ public class RenderUtil
 		return material;
 	}
 
-	public static Mesh loadMesh(ResourceLocation meshLocation)
+	public static Mesh loadMesh(ModResourceLocation meshLocation)
 	{
 		return OBJLoader.read(meshLocation.getFilePath());
 	}
 
-	public static Texture loadTexture(ResourceLocation bitmapLocation)
+	public static Texture loadTexture(ModResourceLocation bitmapLocation)
 	{
 		return new Texture(new Bitmap(bitmapLocation), GL11.GL_LINEAR, GL12.GL_CLAMP_TO_EDGE);
 	}
 
-	public static Program loadShaderProgram(ResourceLocation vertexShaderLocation, ResourceLocation fragmentShaderLocation)
+	public static Program loadShaderProgram(ModResourceLocation vertexShaderLocation, ModResourceLocation fragmentShaderLocation)
 	{
 		Shader vs = new Shader(vertexShaderLocation, GL20.GL_VERTEX_SHADER);
 		Shader fs = new Shader(fragmentShaderLocation, GL20.GL_FRAGMENT_SHADER);

@@ -13,10 +13,10 @@ import net.jimboi.stage_a.mod.instance.InstanceHandler;
 import net.jimboi.stage_a.mod.instance.InstanceManager;
 import net.jimboi.stage_a.mod.render.Render;
 import net.jimboi.stage_a.mod.render.RenderManager;
+import net.jimboi.stage_a.mod.resource.ModResourceLocation;
 import net.jimboi.stage_b.gnome.meshbuilder.MeshBuilder;
 import net.jimboi.stage_b.gnome.meshbuilder.MeshData;
 import net.jimboi.stage_b.gnome.meshbuilder.ModelUtil;
-import net.jimboi.stage_b.gnome.resource.ResourceLocation;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.mogli.Texture;
@@ -68,28 +68,28 @@ public class RendererBlob extends Renderer implements InstanceManager.OnInstance
 
 		//LOAD RESOURCES
 		this.renderManager.register("color", new RenderColor(RenderUtil.loadShaderProgram(
-				new ResourceLocation("blob:colorcube.vsh"),
-				new ResourceLocation("blob:colorcube.fsh")
+				new ModResourceLocation("blob:colorcube.vsh"),
+				new ModResourceLocation("blob:colorcube.fsh")
 		)));
 		this.renderManager.register("texture", new RenderTexture(RenderUtil.loadShaderProgram(
-				new ResourceLocation("blob:texcube.vsh"),
-				new ResourceLocation("blob:texcube.fsh")
+				new ModResourceLocation("blob:texcube.vsh"),
+				new ModResourceLocation("blob:texcube.fsh")
 		)));
 		this.renderManager.register("diffuse", new RenderDiffuse(RenderUtil.loadShaderProgram(
-				new ResourceLocation("blob:diffcube.vsh"),
-				new ResourceLocation("blob:diffcube.fsh")
+				new ModResourceLocation("blob:diffcube.vsh"),
+				new ModResourceLocation("blob:diffcube.fsh")
 		)));
 		this.renderManager.register("lit", new RenderLit(RenderUtil.loadShaderProgram(
-				new ResourceLocation("blob:litcube.vsh"),
-				new ResourceLocation("blob:litcube.fsh")
+				new ModResourceLocation("blob:litcube.vsh"),
+				new ModResourceLocation("blob:litcube.fsh")
 		)));
 		this.renderManager.register("billboard", new RenderBillboard(RenderUtil.loadShaderProgram(
-				new ResourceLocation("blob:billboard.vsh"),
-				new ResourceLocation("blob:billboard.fsh")
+				new ModResourceLocation("blob:billboard.vsh"),
+				new ModResourceLocation("blob:billboard.fsh")
 		), RenderBillboard.Type.CYLINDRICAL));
 
 		//Textures
-		Texture tex_woodenCrate = RenderUtil.loadTexture(new ResourceLocation("blob:wooden-crate.jpg"));
+		Texture tex_woodenCrate = RenderUtil.loadTexture(new ModResourceLocation("blob:wooden-crate.jpg"));
 
 		//Materials
 		ModMaterial mat_woodenCrate = new ModMaterial();
@@ -101,7 +101,7 @@ public class RendererBlob extends Renderer implements InstanceManager.OnInstance
 		RenderUtil.registerMaterial("billboard", mat_billboard);
 
 		//Models
-		Model mod_woodenCrate = new Model(RenderUtil.loadMesh(new ResourceLocation("blob:cube.obj")));
+		Model mod_woodenCrate = new Model(RenderUtil.loadMesh(new ModResourceLocation("blob:cube.obj")));
 		RenderUtil.registerModel("woodenCrate", mod_woodenCrate);
 
 		//Custom Models

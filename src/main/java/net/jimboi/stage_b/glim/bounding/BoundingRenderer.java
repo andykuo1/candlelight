@@ -6,7 +6,7 @@ import net.jimboi.stage_b.glim.resourceloader.MeshLoader;
 import net.jimboi.stage_b.gnome.asset.Asset;
 import net.jimboi.stage_b.gnome.asset.AssetManager;
 import net.jimboi.stage_b.gnome.meshbuilder.MeshBuilder;
-import net.jimboi.stage_b.gnome.meshbuilder.ModelUtil;
+import net.jimboi.stage_b.gnome.meshbuilder.MeshData;
 import net.jimboi.stage_b.gnome.resource.ResourceLocation;
 
 import org.bstone.camera.Camera;
@@ -45,15 +45,15 @@ public class BoundingRenderer
 	{
 		MeshBuilder mb = new MeshBuilder();
 		mb.addCircle(0, 0, 1, 6);
-		Mesh mesh = ModelUtil.createMesh(mb.bake(false, false));
+		MeshData data = mb.bake(false, false);
 		mb.clear();
 
 		//Mesh
 		this.box = assetManager.getAsset(Mesh.class, "box");
 		this.sphere = assetManager.registerAsset(Mesh.class, "b_circle",
-				new MeshLoader.MeshParameter(mesh));
+				new MeshLoader.MeshParameter(data));
 		this.cylinder = assetManager.registerAsset(Mesh.class, "b_cylinder",
-				new MeshLoader.MeshParameter(new ResourceLocation("glim:cylinder.obj")));
+				new MeshLoader.MeshParameter(new ResourceLocation("glim:model/cylinder.obj")));
 	}
 
 	public void render(Camera camera, Iterator<Bounding> iterator)

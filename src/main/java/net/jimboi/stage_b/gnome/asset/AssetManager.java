@@ -126,7 +126,6 @@ public class AssetManager
 				}
 			}
 		}
-
 		this.resources.clear();
 		this.loaders.clear();
 	}

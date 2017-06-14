@@ -3,7 +3,6 @@ package net.jimboi.stage_b.glim.renderer;
 import net.jimboi.stage_b.gnome.asset.Asset;
 import net.jimboi.stage_b.gnome.instance.Instance;
 import net.jimboi.stage_b.gnome.material.property.PropertyTexture;
-import net.jimboi.stage_b.gnome.resource.ResourceLocation;
 import net.jimboi.stage_b.gnome.sprite.Sprite;
 
 import org.bstone.camera.Camera;
@@ -29,9 +28,6 @@ public class BillboardRenderer implements AutoCloseable
 		CYLINDRICAL,
 		SPHERICAL
 	}
-
-	public static final ResourceLocation VERTEX_SHADER_LOCATION = new ResourceLocation("glim:billboard.vsh");
-	public static final ResourceLocation FRAGMENT_SHADER_LOCATION = new ResourceLocation("glim:billboard.fsh");
 
 	private final Asset<Program> program;
 	private final Type type;

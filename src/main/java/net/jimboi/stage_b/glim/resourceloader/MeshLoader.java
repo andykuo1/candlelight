@@ -2,6 +2,8 @@ package net.jimboi.stage_b.glim.resourceloader;
 
 import net.jimboi.stage_b.gnome.asset.ResourceLoader;
 import net.jimboi.stage_b.gnome.asset.ResourceParameter;
+import net.jimboi.stage_b.gnome.meshbuilder.MeshData;
+import net.jimboi.stage_b.gnome.meshbuilder.ModelUtil;
 import net.jimboi.stage_b.gnome.resource.ResourceLocation;
 
 import org.bstone.mogli.Mesh;
@@ -15,9 +17,9 @@ public class MeshLoader implements ResourceLoader<Mesh, MeshLoader.MeshParameter
 	@Override
 	public Mesh load(MeshParameter args)
 	{
-		if (args.mesh != null)
+		if (args.data != null)
 		{
-			return args.mesh;
+			return ModelUtil.createMesh(args.data);
 		}
 
 		if (args.location != null)
@@ -31,16 +33,16 @@ public class MeshLoader implements ResourceLoader<Mesh, MeshLoader.MeshParameter
 	public static class MeshParameter implements ResourceParameter<Mesh>
 	{
 		public ResourceLocation location;
-		public Mesh mesh;
+		public MeshData data;
 
 		public MeshParameter(ResourceLocation location)
 		{
 			this.location = location;
 		}
 
-		public MeshParameter(Mesh mesh)
+		public MeshParameter(MeshData data)
 		{
-			this.mesh = mesh;
+			this.data = data;
 		}
 	}
 }

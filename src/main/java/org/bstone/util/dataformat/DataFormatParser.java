@@ -54,6 +54,13 @@ public abstract class DataFormatParser<T>
 		return true;
 	}
 
+	protected boolean readLetter(Cursor cursor) throws IOException
+	{
+		if (!isLetter(cursor.getChar())) return false;
+		cursor.read(this.reader, this.capture);
+		return true;
+	}
+
 	protected boolean readWhiteSpace(Cursor cursor) throws IOException
 	{
 		if (!isWhiteSpace(cursor.getChar())) return false;
@@ -110,6 +117,13 @@ public abstract class DataFormatParser<T>
 		while (cursor.getChar() == c)
 		{
 			cursor.read(this.reader, this.capture);
+		}
+	}
+
+	protected void consumeLetters(Cursor cursor) throws IOException
+	{
+		while (this.readLetter(cursor))
+		{
 		}
 	}
 
@@ -193,6 +207,11 @@ public abstract class DataFormatParser<T>
 	protected static boolean isDigit(char c)
 	{
 		return c >= '0' && c <= '9';
+	}
+
+	protected static boolean isLetter(char c)
+	{
+		return c >= 'a' && c <= 'Z';
 	}
 
 	protected static boolean isHexDigit(char c)

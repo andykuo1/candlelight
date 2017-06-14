@@ -66,8 +66,8 @@ public class ShadowRenderer
 		this.shadowFBO = new FBO(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, false);
 		this.shadowFBO.attachTexture(this.shadowMap.getSource(), GL30.GL_DEPTH_ATTACHMENT, true);
 
-		Asset<Shader> vs = assetManager.registerAsset(Shader.class, "v_shadow", new ShaderLoader.ShaderParameter(new ResourceLocation("glim:shadow.vsh"), GL20.GL_VERTEX_SHADER));
-		Asset<Shader> fs = assetManager.registerAsset(Shader.class, "f_shadow", new ShaderLoader.ShaderParameter(new ResourceLocation("glim:shadow.fsh"), GL20.GL_FRAGMENT_SHADER));
+		Asset<Shader> vs = assetManager.registerAsset(Shader.class, "v_shadow", new ShaderLoader.ShaderParameter(new ResourceLocation("glim:shader/shadow.vsh"), GL20.GL_VERTEX_SHADER));
+		Asset<Shader> fs = assetManager.registerAsset(Shader.class, "f_shadow", new ShaderLoader.ShaderParameter(new ResourceLocation("glim:shader/shadow.fsh"), GL20.GL_FRAGMENT_SHADER));
 		this.shadowProgram = assetManager.registerAsset(Program.class, "shadow", new ProgramLoader.ProgramParameter(Arrays.asList(vs, fs)));
 	}
 

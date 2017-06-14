@@ -14,6 +14,7 @@ import net.jimboi.stage_b.glim.system.EntitySystemBounding;
 import net.jimboi.stage_b.glim.system.EntitySystemInstance;
 import net.jimboi.stage_b.gnome.asset.Asset;
 import net.jimboi.stage_b.gnome.instance.Instance;
+import net.jimboi.stage_b.gnome.meshbuilder.MeshData;
 import net.jimboi.stage_b.gnome.transform.Transform;
 
 import org.bstone.material.Material;
@@ -57,8 +58,8 @@ public class SceneGlim extends SceneGlimBase
 		this.player = EntityPlayer.create(this.world);
 		RendererGlim.CAMERA.setCameraController(new CameraControllerGlim(this.player, this.world));
 
-		Mesh mesh = RendererGlim.createMeshFromMap(this.world.getMap(), new TiledTextureAtlas(
-				RendererGlim.INSTANCE.getAssetManager().getAsset(Texture.class, "atlas").getSource(),
+		MeshData mesh = RendererGlim.createMeshFromMap(this.world.getMap(), new TiledTextureAtlas(
+				RendererGlim.INSTANCE.getAssetManager().getAsset(Texture.class, "font").getSource(),
 				16, 16));
 		Asset<Mesh> msh_dungeon = RendererGlim.INSTANCE.getAssetManager().registerAsset(Mesh.class, "dungeon",
 				new MeshLoader.MeshParameter(mesh));

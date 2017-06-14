@@ -1,4 +1,4 @@
-package net.jimboi.stage_b.glim.assetloader;
+package net.jimboi.stage_b.gnome.assetloader;
 
 /**
  * Created by Andy on 6/12/17.

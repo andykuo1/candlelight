@@ -94,7 +94,7 @@ public class Poma
 	public static void debug(Object x)
 	{
 		if (!Poma.__DEBUG) return;
-		out.println(String.valueOf(x), 1);
+		out.println(" #: " + String.valueOf(x), 1);
 	}
 
 	public static void warn(Object x)

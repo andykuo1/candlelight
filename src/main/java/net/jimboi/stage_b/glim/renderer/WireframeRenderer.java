@@ -3,7 +3,6 @@ package net.jimboi.stage_b.glim.renderer;
 import net.jimboi.stage_b.gnome.asset.Asset;
 import net.jimboi.stage_b.gnome.instance.Instance;
 import net.jimboi.stage_b.gnome.material.property.PropertyDiffuse;
-import net.jimboi.stage_b.gnome.resource.ResourceLocation;
 
 import org.bstone.camera.Camera;
 import org.bstone.material.Material;
@@ -21,9 +20,6 @@ import java.util.Iterator;
  */
 public class WireframeRenderer implements AutoCloseable
 {
-	public static final ResourceLocation VERTEX_SHADER_LOCATION = new ResourceLocation("glim:wireframe.vsh");
-	public static final ResourceLocation FRAGMENT_SHADER_LOCATION = new ResourceLocation("glim:wireframe.fsh");
-
 	private final Asset<Program> program;
 
 	private final Matrix4f modelViewProjMatrix = new Matrix4f();

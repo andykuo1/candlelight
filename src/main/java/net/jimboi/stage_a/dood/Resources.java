@@ -1,9 +1,9 @@
 package net.jimboi.stage_a.dood;
 
 import net.jimboi.stage_a.mod.ModMaterial;
+import net.jimboi.stage_a.mod.resource.ModResourceLocation;
 import net.jimboi.stage_b.gnome.meshbuilder.MeshBuilder;
 import net.jimboi.stage_b.gnome.meshbuilder.ModelUtil;
-import net.jimboi.stage_b.gnome.resource.ResourceLocation;
 
 import org.bstone.input.InputManager;
 import org.bstone.mogli.Bitmap;
@@ -134,25 +134,25 @@ public class Resources
 		InputManager.registerKey("action", GLFW.GLFW_KEY_F);
 
 		//Shaders
-		register("geometry.diffuse", new Shader(new ResourceLocation("dood:diffuse.vsh"), GL_VERTEX_SHADER));
-		register("fragment.diffuse", new Shader(new ResourceLocation("dood:diffuse.fsh"), GL_FRAGMENT_SHADER));
-		register("geometry.billboard", new Shader(new ResourceLocation("dood:billboard.vsh"), GL_VERTEX_SHADER));
-		register("fragment.billboard", new Shader(new ResourceLocation("dood:billboard.fsh"), GL_FRAGMENT_SHADER));
+		register("geometry.diffuse", new Shader(new ModResourceLocation("dood:diffuse.vsh"), GL_VERTEX_SHADER));
+		register("fragment.diffuse", new Shader(new ModResourceLocation("dood:diffuse.fsh"), GL_FRAGMENT_SHADER));
+		register("geometry.billboard", new Shader(new ModResourceLocation("dood:billboard.vsh"), GL_VERTEX_SHADER));
+		register("fragment.billboard", new Shader(new ModResourceLocation("dood:billboard.fsh"), GL_FRAGMENT_SHADER));
 
 		//Programs
 		register("diffuse", new Program().link(getShader("geometry.diffuse"), getShader("fragment.diffuse")));
 		register("billboard", new Program().link(getShader("geometry.billboard"), getShader("fragment.billboard")));
 
 		//Bitmaps
-		register("bird", new Bitmap(new ResourceLocation("dood:bird.png")));
-		register("font_basic", new Bitmap(new ResourceLocation("dood:font_basic.png")));
+		register("bird", new Bitmap(new ModResourceLocation("dood:bird.png")));
+		register("font_basic", new Bitmap(new ModResourceLocation("dood:font_basic.png")));
 
 		//Textures
 		register("bird", new Texture(getBitmap("bird"), GL11.GL_LINEAR, GL12.GL_CLAMP_TO_EDGE));
 		register("font", new Texture(getBitmap("font_basic"), GL11.GL_LINEAR, GL12.GL_CLAMP_TO_EDGE));
 
 		//Meshes
-		register("ball", OBJLoader.read(new ResourceLocation("dood:sphere.obj").getFilePath()));
+		register("ball", OBJLoader.read(new ModResourceLocation("dood:sphere.obj").getFilePath()));
 
 		MeshBuilder mb = new MeshBuilder();
 		mb.addPlane(new Vector2f(0, 0), new Vector2f(1, 1), 0, new Vector2f(0, 0), new Vector2f(1, 1));

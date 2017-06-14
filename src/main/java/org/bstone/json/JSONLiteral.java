@@ -17,6 +17,11 @@ public class JSONLiteral extends JSONValue
 		return this.value;
 	}
 
+	public boolean isNull()
+	{
+		return "null".equals(this.value);
+	}
+
 	@Override
 	public String toString()
 	{

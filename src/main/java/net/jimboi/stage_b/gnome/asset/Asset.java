@@ -22,6 +22,8 @@ public final class Asset<T>
 
 	public T getSource()
 	{
+		if (this.params == null) throw new IllegalStateException("Unable to load unsafe asset!");
+
 		return this.assetManager.loadResource(this.type, this.id, this.params);
 	}
 

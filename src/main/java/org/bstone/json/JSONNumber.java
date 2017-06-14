@@ -12,6 +12,11 @@ public class JSONNumber extends JSONValue
 		this.string = string;
 	}
 
+	public boolean isDecimal()
+	{
+		return this.string.indexOf('.') != -1 || this.string.indexOf('E') != -1 || this.string.indexOf('e') != -1;
+	}
+
 	public int toInt()
 	{
 		return Integer.parseInt(this.string, 10);

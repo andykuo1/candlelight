@@ -1,4 +1,4 @@
-package net.jimboi.stage_b.glim.assetloader;
+package net.jimboi.stage_b.gnome.assetloader;
 
 import java.util.HashMap;
 import java.util.Map;
