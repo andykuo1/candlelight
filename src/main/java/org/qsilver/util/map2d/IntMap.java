@@ -130,6 +130,16 @@ public class IntMap
 		return x >= 0 && x < this.width && y >= 0 && y < this.height;
 	}
 
+	public void set(int index, int value)
+	{
+		this.map[index] = value;
+	}
+
+	public int get(int index)
+	{
+		return this.map[index];
+	}
+
 	public void set(int x, int y, int value)
 	{
 		Poma.ASSERT(this.isValid(x, y), new Vector2i(x, y));
@@ -154,5 +164,24 @@ public class IntMap
 	public int size()
 	{
 		return this.width * this.height;
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append('[');
+		for(int y = 0; y < this.height; ++y)
+		{
+			for(int x = 0; x < this.width; ++x)
+			{
+				sb.append(this.map[x + y * this.width]);
+				sb.append(',');
+				sb.append(' ');
+			}
+			sb.append('\n');
+		}
+		sb.append(']');
+		return sb.toString();
 	}
 }

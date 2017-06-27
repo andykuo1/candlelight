@@ -24,4 +24,9 @@ public class MathUtil
 	{
 		return value < 0 ? -1 : 1;
 	}
+
+	public static float lerp(float a, float b, float f)
+	{
+		return a + f * (b - a);
+	}
 }
