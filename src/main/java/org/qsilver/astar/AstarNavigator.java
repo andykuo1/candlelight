@@ -46,6 +46,7 @@ public final class AstarNavigator<A>
 
 		Stack<Integer> nodes = navigate(this.costFunction, this.map, this.map.getNodeIndexOf(start), this.map.getNodeIndexOf(end));
 		Stack<A> result = new Stack<>();
+		if (nodes == null) return result;
 
 		for (Integer node : nodes)
 		{
@@ -157,7 +158,7 @@ public final class AstarNavigator<A>
 	}
 
 	/**
-	 * Class to hold node data by index; <br>Used only by {@link AstarNavigator#navigate(FunctionNavigationCost,
+	 * Class to stop node data by index; <br>Used only by {@link AstarNavigator#navigate(FunctionNavigationCost,
 	 * NavigatorMap, int, int)}
 	 */
 	private static final class WeightMap

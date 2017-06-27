@@ -27,10 +27,10 @@ public class NavigatorInterCardinalMap extends NavigatorCardinalMap
 		result[1] = cardinal[1];
 		result[2] = cardinal[2];
 		result[3] = cardinal[3];
-		result[4] = this.isValid(c0.x, c0.y) && !this.map[c0.toIndex()] ? c0.toIndex() : -1;
-		result[5] = this.isValid(c1.x, c1.y) && !this.map[c1.toIndex()] ? c1.toIndex() : -1;
-		result[6] = this.isValid(c2.x, c2.y) && !this.map[c2.toIndex()] ? c2.toIndex() : -1;
-		result[7] = this.isValid(c3.x, c3.y) && !this.map[c3.toIndex()] ? c3.toIndex() : -1;
+		result[4] = this.isValid(c0.x, c0.y) && !this.map[this.getNodeIndexOf(c0)] ? this.getNodeIndexOf(c0) : -1;
+		result[5] = this.isValid(c1.x, c1.y) && !this.map[this.getNodeIndexOf(c1)] ? this.getNodeIndexOf(c1) : -1;
+		result[6] = this.isValid(c2.x, c2.y) && !this.map[this.getNodeIndexOf(c2)] ? this.getNodeIndexOf(c2) : -1;
+		result[7] = this.isValid(c3.x, c3.y) && !this.map[this.getNodeIndexOf(c3)] ? this.getNodeIndexOf(c3) : -1;
 		return result;
 	}
 

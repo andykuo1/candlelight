@@ -49,10 +49,10 @@ public class NavigatorCardinalMap extends NavigatorMap<NavigatorCardinalMap.Cell
 		Cell c3 = new Cell(cell.x, cell.y + 1);
 
 		int[] result = new int[4];
-		result[0] = this.isValid(c0.x, c0.y) && !this.map[c0.toIndex()] ? c0.toIndex() : -1;
-		result[1] = this.isValid(c1.x, c1.y) && !this.map[c1.toIndex()] ? c1.toIndex() : -1;
-		result[2] = this.isValid(c2.x, c2.y) && !this.map[c2.toIndex()] ? c2.toIndex() : -1;
-		result[3] = this.isValid(c3.x, c3.y) && !this.map[c3.toIndex()] ? c3.toIndex() : -1;
+		result[0] = this.isValid(c0.x, c0.y) && !this.map[this.getNodeIndexOf(c0)] ? this.getNodeIndexOf(c0) : -1;
+		result[1] = this.isValid(c1.x, c1.y) && !this.map[this.getNodeIndexOf(c1)] ? this.getNodeIndexOf(c1) : -1;
+		result[2] = this.isValid(c2.x, c2.y) && !this.map[this.getNodeIndexOf(c2)] ? this.getNodeIndexOf(c2) : -1;
+		result[3] = this.isValid(c3.x, c3.y) && !this.map[this.getNodeIndexOf(c3)] ? this.getNodeIndexOf(c3) : -1;
 		return result;
 	}
 
@@ -65,7 +65,7 @@ public class NavigatorCardinalMap extends NavigatorMap<NavigatorCardinalMap.Cell
 	@Override
 	protected int getNodeIndexOf(Cell node)
 	{
-		return node.toIndex();
+		return node.x + node.y * this.width;
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class NavigatorCardinalMap extends NavigatorMap<NavigatorCardinalMap.Cell
 		return this.width * this.height;
 	}
 
-	public class Cell
+	public static class Cell
 	{
 		public final int x;
 		public final int y;
@@ -109,11 +109,6 @@ public class NavigatorCardinalMap extends NavigatorMap<NavigatorCardinalMap.Cell
 		{
 			this.x = x;
 			this.y = y;
-		}
-
-		public int toIndex()
-		{
-			return this.x + this.y * NavigatorCardinalMap.this.width;
 		}
 
 		public String toString()
