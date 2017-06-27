@@ -70,7 +70,7 @@ public class SmallSet<Value> extends AbstractSet<Value>
 	{
 		for (Value v : this.values)
 		{
-			if (value == v) return true;
+			if (value.equals(v)) return true;
 		}
 
 		return false;
