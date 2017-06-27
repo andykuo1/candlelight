@@ -39,7 +39,7 @@ public class Main
 			try
 			{
 				Class<?> newclass = Class.forName(classpath);
-				if (newclass.isAssignableFrom(Scene.class))
+				if (Scene.class.isAssignableFrom(newclass))
 				{
 					scene = (Class<? extends Scene>) newclass;
 				}
