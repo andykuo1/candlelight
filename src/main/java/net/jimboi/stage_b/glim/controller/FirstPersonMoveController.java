@@ -3,15 +3,15 @@ package net.jimboi.stage_b.glim.controller;
 import net.jimboi.stage_b.glim.bounding.Bounding;
 import net.jimboi.stage_b.glim.bounding.BoundingManager;
 import net.jimboi.stage_b.glim.bounding.IntersectionData;
-import net.jimboi.stage_b.gnome.transform.Transform;
-import net.jimboi.stage_b.gnome.transform.Transform3;
-import net.jimboi.stage_b.gnome.transform.Transform3Quat;
 
 import org.bstone.camera.Camera;
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputManager;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
+import org.qsilver.transform.Transform;
+import org.zilar.transform.Transform3;
+import org.zilar.transform.Transform3Quat;
 
 /**
  * Created by Andy on 6/4/17.

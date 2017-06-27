@@ -10,18 +10,18 @@ import net.jimboi.stage_b.glim.gameentity.system.EntitySystem2D;
 import net.jimboi.stage_b.glim.gameentity.system.EntitySystemBase;
 import net.jimboi.stage_b.glim.gameentity.system.EntitySystemBillboard;
 import net.jimboi.stage_b.glim.gameentity.system.EntitySystemInstance;
-import net.jimboi.stage_b.gnome.BasicTopDownCameraController;
-import net.jimboi.stage_b.gnome.MousePicker;
-import net.jimboi.stage_b.gnome.material.property.PropertyDiffuse;
-import net.jimboi.stage_b.gnome.material.property.PropertyShadow;
-import net.jimboi.stage_b.gnome.material.property.PropertySpecular;
-import net.jimboi.stage_b.gnome.material.property.PropertyTexture;
-import net.jimboi.stage_b.gnome.model.Model;
-import net.jimboi.stage_b.gnome.transform.Transform3;
-import net.jimboi.stage_b.gnome.transform.Transform3Quat;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
+import org.qsilver.view.MousePicker;
+import org.zilar.BasicTopDownCameraController;
+import org.zilar.material.property.PropertyDiffuse;
+import org.zilar.material.property.PropertyShadow;
+import org.zilar.material.property.PropertySpecular;
+import org.zilar.material.property.PropertyTexture;
+import org.zilar.model.Model;
+import org.zilar.transform.Transform3;
+import org.zilar.transform.Transform3Quat;
 
 /**
  * Created by Andy on 6/18/17.

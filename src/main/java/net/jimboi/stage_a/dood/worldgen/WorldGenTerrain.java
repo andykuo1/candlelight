@@ -1,10 +1,10 @@
 package net.jimboi.stage_a.dood.worldgen;
 
 import net.jimboi.stage_a.blob.torchlite.MazeWorld;
-import net.jimboi.stage_b.gnome.meshbuilder.MeshData;
-import net.jimboi.stage_b.gnome.meshbuilder.ModelUtil;
 
 import org.bstone.mogli.Mesh;
+import org.zilar.meshbuilder.MeshData;
+import org.zilar.meshbuilder.ModelUtil;
 
 import java.util.Random;
 

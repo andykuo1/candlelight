@@ -1,9 +1,8 @@
 package net.jimboi.stage_a.blob.livings;
 
-import net.jimboi.stage_b.gnome.transform.Transform3;
-
 import org.joml.Vector3f;
 import org.qsilver.util.MathUtil;
+import org.zilar.transform.Transform3;
 
 /**
  * Created by Andy on 5/21/17.

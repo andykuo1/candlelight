@@ -1,9 +1,8 @@
 package org.bstone.camera;
 
-import net.jimboi.stage_b.gnome.transform.Transform3;
-
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
+import org.zilar.transform.Transform3;
 
 /**
  * Created by Andy on 5/19/17.

@@ -1,12 +1,11 @@
 package net.jimboi.stage_a.blob.torchlite;
 
-import net.jimboi.stage_b.gnome.meshbuilder.MeshBuilder;
-import net.jimboi.stage_b.gnome.meshbuilder.MeshData;
-
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
+import org.zilar.meshbuilder.MeshBuilder;
+import org.zilar.meshbuilder.MeshData;
 
 import java.util.Random;
 import java.util.function.Predicate;

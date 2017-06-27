@@ -1,13 +1,12 @@
 package net.jimboi.stage_a.dood.worldgen;
 
-import net.jimboi.stage_b.gnome.meshbuilder.MeshBuilder;
-import net.jimboi.stage_b.gnome.meshbuilder.ModelUtil;
-
 import org.bstone.mogli.Mesh;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.qsilver.util.ArrayUtil;
+import org.zilar.meshbuilder.MeshBuilder;
+import org.zilar.meshbuilder.ModelUtil;
 
 import java.util.ArrayList;
 import java.util.List;

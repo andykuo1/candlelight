@@ -1,10 +1,5 @@
 package net.jimboi.stage_b.glim.renderer;
 
-import net.jimboi.stage_b.gnome.asset.Asset;
-import net.jimboi.stage_b.gnome.instance.Instance;
-import net.jimboi.stage_b.gnome.material.property.PropertyDiffuse;
-import net.jimboi.stage_b.gnome.model.Model;
-
 import org.bstone.camera.Camera;
 import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
@@ -13,6 +8,10 @@ import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
+import org.zilar.asset.Asset;
+import org.zilar.instance.Instance;
+import org.zilar.material.property.PropertyDiffuse;
+import org.zilar.model.Model;
 
 import java.util.Iterator;
 

@@ -3,9 +3,9 @@ package net.jimboi.stage_a.blob;
 import net.jimboi.stage_a.mod.ModMaterial;
 import net.jimboi.stage_a.mod.instance.Instance;
 import net.jimboi.stage_a.mod.model.Model;
-import net.jimboi.stage_b.gnome.transform.Transform3;
 
 import org.qsilver.living.Living;
+import org.zilar.transform.Transform3;
 
 /**
  * Created by Andy on 4/19/17.

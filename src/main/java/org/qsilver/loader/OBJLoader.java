@@ -1,11 +1,10 @@
 package org.qsilver.loader;
 
-import net.jimboi.stage_b.gnome.meshbuilder.ModelUtil;
-import net.jimboi.stage_b.gnome.resource.ResourceLocation;
-
 import org.bstone.mogli.Mesh;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.zilar.meshbuilder.ModelUtil;
+import org.zilar.resource.ResourceLocation;
 
 import java.io.BufferedReader;
 import java.io.File;

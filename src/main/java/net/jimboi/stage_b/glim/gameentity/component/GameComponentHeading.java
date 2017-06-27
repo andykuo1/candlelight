@@ -1,8 +1,7 @@
 package net.jimboi.stage_b.glim.gameentity.component;
 
-import net.jimboi.stage_b.gnome.transform.Transform;
-
 import org.joml.Vector3fc;
+import org.qsilver.transform.Transform;
 
 /**
  * Created by Andy on 6/14/17.

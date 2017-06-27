@@ -5,12 +5,12 @@ import net.jimboi.stage_a.dood.component.ComponentInstanceable;
 import net.jimboi.stage_a.dood.component.ComponentTransform;
 import net.jimboi.stage_a.dood.entity.Entity;
 import net.jimboi.stage_a.dood.entity.EntityManager;
-import net.jimboi.stage_b.gnome.transform.Transform3;
 
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
+import org.zilar.transform.Transform3;
 
 /**
  * Created by Andy on 5/23/17.

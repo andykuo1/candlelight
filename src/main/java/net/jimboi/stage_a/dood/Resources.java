@@ -3,8 +3,6 @@ package net.jimboi.stage_a.dood;
 import net.jimboi.stage_a.mod.ModMaterial;
 import net.jimboi.stage_a.mod.model.Model;
 import net.jimboi.stage_a.mod.resource.ModResourceLocation;
-import net.jimboi.stage_b.gnome.meshbuilder.MeshBuilder;
-import net.jimboi.stage_b.gnome.meshbuilder.ModelUtil;
 
 import org.bstone.input.InputManager;
 import org.bstone.mogli.Bitmap;
@@ -18,6 +16,8 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.qsilver.loader.OBJLoader;
+import org.zilar.meshbuilder.MeshBuilder;
+import org.zilar.meshbuilder.ModelUtil;
 
 import java.util.HashMap;
 import java.util.Map;

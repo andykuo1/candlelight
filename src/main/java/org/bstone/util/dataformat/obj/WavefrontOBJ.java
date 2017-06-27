@@ -1,8 +1,7 @@
 package org.bstone.util.dataformat.obj;
 
-import net.jimboi.stage_b.gnome.meshbuilder.ModelUtil;
-
 import org.bstone.mogli.Mesh;
+import org.zilar.meshbuilder.ModelUtil;
 
 import java.util.ArrayList;
 import java.util.List;

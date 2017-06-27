@@ -3,14 +3,14 @@ package net.jimboi.stage_b.glim.gameentity.system;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentBillboard;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentTransform;
 import net.jimboi.stage_b.glim.renderer.BillboardRenderer;
-import net.jimboi.stage_b.gnome.transform.Transform;
-import net.jimboi.stage_b.gnome.transform.Transform3Quat;
 
 import org.bstone.camera.Camera;
 import org.joml.Vector3f;
 import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
 import org.qsilver.scene.Scene;
+import org.qsilver.transform.Transform;
+import org.zilar.transform.Transform3Quat;
 
 import java.util.Collection;
 

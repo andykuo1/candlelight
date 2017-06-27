@@ -1,6 +1,6 @@
 package net.jimboi.stage_b.glim.gameentity.component;
 
-import net.jimboi.stage_b.gnome.sprite.SpriteSheet;
+import org.zilar.sprite.SpriteSheet;
 
 /**
  * Created by Andy on 6/13/17.

@@ -2,15 +2,15 @@ package net.jimboi.stage_b.glim;
 
 import net.jimboi.stage_b.glim.bounding.BoundingManager;
 import net.jimboi.stage_b.glim.bounding.square.AABB;
-import net.jimboi.stage_b.gnome.dungeon.DungeonBuilder;
-import net.jimboi.stage_b.gnome.dungeon.DungeonData;
-import net.jimboi.stage_b.gnome.dungeon.maze.MazeDungeonBuilder;
 
 import org.joml.Vector3f;
 import org.qsilver.astar.AstarNavigator;
 import org.qsilver.astar.NavigatorMap;
 import org.qsilver.astar.map.NavigatorCardinalMap;
 import org.qsilver.util.map2d.IntMap;
+import org.zilar.dungeon.DungeonBuilder;
+import org.zilar.dungeon.DungeonData;
+import org.zilar.dungeon.maze.MazeDungeonBuilder;
 
 /**
  * Created by Andy on 6/1/17.

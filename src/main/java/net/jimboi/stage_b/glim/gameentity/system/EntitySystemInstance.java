@@ -1,10 +1,10 @@
 package net.jimboi.stage_b.glim.gameentity.system;
 
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentInstance;
-import net.jimboi.stage_b.gnome.instance.InstanceManager;
 
 import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
+import org.zilar.instance.InstanceManager;
 
 /**
  * Created by Andy on 6/1/17.

@@ -1,10 +1,10 @@
 package net.jimboi.stage_b.glim.gameentity.component;
 
-import net.jimboi.stage_b.gnome.instance.Instance;
-import net.jimboi.stage_b.gnome.instance.InstanceHandler;
-import net.jimboi.stage_b.gnome.instance.InstanceManager;
-import net.jimboi.stage_b.gnome.model.Model;
-import net.jimboi.stage_b.gnome.transform.Transform;
+import org.qsilver.transform.Transform;
+import org.zilar.instance.Instance;
+import org.zilar.instance.InstanceHandler;
+import org.zilar.instance.InstanceManager;
+import org.zilar.model.Model;
 
 import java.util.List;
 

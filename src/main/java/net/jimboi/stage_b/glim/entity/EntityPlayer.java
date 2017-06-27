@@ -4,9 +4,9 @@ import net.jimboi.stage_b.glim.WorldGlim;
 import net.jimboi.stage_b.glim.bounding.square.AABB;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentBounding;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentTransform;
-import net.jimboi.stage_b.gnome.transform.Transform3;
 
 import org.qsilver.entity.Entity;
+import org.zilar.transform.Transform3;
 
 /**
  * Created by Andy on 6/4/17.

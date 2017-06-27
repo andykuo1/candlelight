@@ -1,11 +1,10 @@
 package org.bstone.camera;
 
-import net.jimboi.stage_b.gnome.transform.Transform3Quat;
-
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.qsilver.poma.Poma;
+import org.zilar.transform.Transform3Quat;
 
 /**
  * Created by Andy on 4/6/17.

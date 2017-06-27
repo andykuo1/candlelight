@@ -1,9 +1,6 @@
 package net.jimboi.stage_a.dood.cameracontroller;
 
 import net.jimboi.base.Main;
-import net.jimboi.stage_b.gnome.transform.Transform;
-import net.jimboi.stage_b.gnome.transform.Transform3;
-import net.jimboi.stage_b.gnome.transform.Transform3Quat;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;
@@ -13,7 +10,10 @@ import org.joml.Vector2fc;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.qsilver.scene.Scene;
+import org.qsilver.transform.Transform;
 import org.qsilver.util.MathUtil;
+import org.zilar.transform.Transform3;
+import org.zilar.transform.Transform3Quat;
 
 /**
  * Created by Andy on 5/24/17.

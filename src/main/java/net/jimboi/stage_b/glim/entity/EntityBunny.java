@@ -12,17 +12,17 @@ import net.jimboi.stage_b.glim.gameentity.component.GameComponentSprite;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentTargeter;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentTransform;
 import net.jimboi.stage_b.glim.renderer.BillboardRenderer;
-import net.jimboi.stage_b.gnome.material.property.PropertyDiffuse;
-import net.jimboi.stage_b.gnome.material.property.PropertyShadow;
-import net.jimboi.stage_b.gnome.material.property.PropertyTexture;
-import net.jimboi.stage_b.gnome.model.Model;
-import net.jimboi.stage_b.gnome.sprite.SpriteSheet;
-import net.jimboi.stage_b.gnome.sprite.TiledTextureAtlas;
-import net.jimboi.stage_b.gnome.transform.Transform3;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
 import org.qsilver.entity.Entity;
+import org.zilar.material.property.PropertyDiffuse;
+import org.zilar.material.property.PropertyShadow;
+import org.zilar.material.property.PropertyTexture;
+import org.zilar.model.Model;
+import org.zilar.sprite.SpriteSheet;
+import org.zilar.sprite.TiledTextureAtlas;
+import org.zilar.transform.Transform3;
 
 /**
  * Created by Andy on 6/4/17.

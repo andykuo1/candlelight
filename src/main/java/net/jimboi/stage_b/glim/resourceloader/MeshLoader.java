@@ -1,13 +1,12 @@
 package net.jimboi.stage_b.glim.resourceloader;
 
-import net.jimboi.stage_b.gnome.asset.ResourceLoader;
-import net.jimboi.stage_b.gnome.asset.ResourceParameter;
-import net.jimboi.stage_b.gnome.meshbuilder.MeshData;
-import net.jimboi.stage_b.gnome.meshbuilder.ModelUtil;
-import net.jimboi.stage_b.gnome.resource.ResourceLocation;
-
 import org.bstone.mogli.Mesh;
 import org.qsilver.loader.OBJLoader;
+import org.zilar.asset.ResourceLoader;
+import org.zilar.asset.ResourceParameter;
+import org.zilar.meshbuilder.MeshData;
+import org.zilar.meshbuilder.ModelUtil;
+import org.zilar.resource.ResourceLocation;
 
 /**
  * Created by Andy on 6/10/17.

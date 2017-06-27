@@ -2,11 +2,11 @@ package net.jimboi.stage_b.glim.gameentity.system;
 
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentInstance;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentSprite;
-import net.jimboi.stage_b.gnome.material.property.PropertyTexture;
 
 import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
 import org.qsilver.scene.Scene;
+import org.zilar.material.property.PropertyTexture;
 
 import java.util.Collection;
 

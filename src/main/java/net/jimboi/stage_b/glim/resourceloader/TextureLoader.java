@@ -1,11 +1,10 @@
 package net.jimboi.stage_b.glim.resourceloader;
 
-import net.jimboi.stage_b.gnome.asset.Asset;
-import net.jimboi.stage_b.gnome.asset.ResourceLoader;
-import net.jimboi.stage_b.gnome.asset.ResourceParameter;
-
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Texture;
+import org.zilar.asset.Asset;
+import org.zilar.asset.ResourceLoader;
+import org.zilar.asset.ResourceParameter;
 
 /**
  * Created by Andy on 6/10/17.

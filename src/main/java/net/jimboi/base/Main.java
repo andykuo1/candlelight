@@ -1,6 +1,6 @@
 package net.jimboi.base;
 
-import net.jimboi.stage_b.physx.ScenePhysx;
+import net.jimboi.stage_b.glim.SceneGlim;
 
 import org.bstone.input.InputEngine;
 import org.bstone.tick.TickEngine;
@@ -26,10 +26,33 @@ public class Main
 
 	public static SceneManager SCENEMANAGER;
 
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args)
 	{
-		Class<? extends Scene> scene = ScenePhysx.class;
 		Poma.makeSystemLogger();
+
+		Class<? extends Scene> scene = SceneGlim.class;
+
+		if (args.length > 0)
+		{
+			String classpath = args[0];
+			try
+			{
+				Class<?> newclass = Class.forName(classpath);
+				if (newclass.isAssignableFrom(Scene.class))
+				{
+					scene = (Class<? extends Scene>) newclass;
+				}
+				else
+				{
+					throw new IllegalArgumentException("Not a scene! - Found invalid class with name: " + classpath);
+				}
+			}
+			catch (ClassNotFoundException e)
+			{
+				throw new IllegalArgumentException("Unable to find class with name: " + classpath);
+			}
+		}
 
 		Poma.div();
 		Poma.info("The Awesome Program: " + scene.getSimpleName());

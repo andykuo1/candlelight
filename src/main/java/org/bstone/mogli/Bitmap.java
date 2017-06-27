@@ -1,11 +1,10 @@
 package org.bstone.mogli;
 
-import net.jimboi.stage_b.gnome.resource.ResourceLocation;
-
 import org.bstone.RefCountSet;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBImage;
 import org.qsilver.loader.BitmapLoader;
+import org.zilar.resource.ResourceLocation;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;

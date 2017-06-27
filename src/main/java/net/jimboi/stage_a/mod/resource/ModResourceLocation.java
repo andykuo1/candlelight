@@ -1,6 +1,6 @@
 package net.jimboi.stage_a.mod.resource;
 
-import net.jimboi.stage_b.gnome.resource.ResourceLocation;
+import org.zilar.resource.ResourceLocation;
 
 public class ModResourceLocation extends ResourceLocation
 {

@@ -4,15 +4,6 @@ import net.jimboi.stage_b.glim.resourceloader.BitmapLoader;
 import net.jimboi.stage_b.glim.resourceloader.ProgramLoader;
 import net.jimboi.stage_b.glim.resourceloader.ShaderLoader;
 import net.jimboi.stage_b.glim.resourceloader.TextureLoader;
-import net.jimboi.stage_b.gnome.asset.Asset;
-import net.jimboi.stage_b.gnome.asset.AssetManager;
-import net.jimboi.stage_b.gnome.asset.assetloader.AssetArguments;
-import net.jimboi.stage_b.gnome.asset.assetloader.AssetConstants;
-import net.jimboi.stage_b.gnome.asset.assetloader.AssetFormatException;
-import net.jimboi.stage_b.gnome.asset.assetloader.AssetLoader;
-import net.jimboi.stage_b.gnome.asset.assetloader.AssetTypes;
-import net.jimboi.stage_b.gnome.asset.assetloader.ResourceParameterProducer;
-import net.jimboi.stage_b.gnome.resource.ResourceLocation;
 
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Program;
@@ -23,6 +14,15 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.zilar.asset.Asset;
+import org.zilar.asset.AssetManager;
+import org.zilar.asset.assetloader.AssetArguments;
+import org.zilar.asset.assetloader.AssetConstants;
+import org.zilar.asset.assetloader.AssetFormatException;
+import org.zilar.asset.assetloader.AssetLoader;
+import org.zilar.asset.assetloader.AssetTypes;
+import org.zilar.asset.assetloader.ResourceParameterProducer;
+import org.zilar.resource.ResourceLocation;
 
 import java.util.ArrayList;
 

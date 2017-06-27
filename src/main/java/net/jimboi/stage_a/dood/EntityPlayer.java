@@ -9,12 +9,12 @@ import net.jimboi.stage_a.dood.entity.EntityManager;
 import net.jimboi.stage_a.mod.sprite.SpriteSheet;
 import net.jimboi.stage_a.mod.sprite.TextureAtlas;
 import net.jimboi.stage_a.mod.sprite.TiledTextureAtlas;
-import net.jimboi.stage_b.gnome.transform.Transform3;
 
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
+import org.zilar.transform.Transform3;
 
 /**
  * Created by Andy on 5/22/17.

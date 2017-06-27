@@ -13,21 +13,21 @@ import net.jimboi.stage_b.glim.gameentity.system.EntitySystemHeading;
 import net.jimboi.stage_b.glim.gameentity.system.EntitySystemInstance;
 import net.jimboi.stage_b.glim.gameentity.system.EntitySystemSprite;
 import net.jimboi.stage_b.glim.resourceloader.MeshLoader;
-import net.jimboi.stage_b.gnome.instance.Instance;
-import net.jimboi.stage_b.gnome.material.property.PropertyDiffuse;
-import net.jimboi.stage_b.gnome.material.property.PropertyShadow;
-import net.jimboi.stage_b.gnome.material.property.PropertySpecular;
-import net.jimboi.stage_b.gnome.material.property.PropertyTexture;
-import net.jimboi.stage_b.gnome.meshbuilder.MeshData;
-import net.jimboi.stage_b.gnome.model.Model;
-import net.jimboi.stage_b.gnome.sprite.TiledTextureAtlas;
-import net.jimboi.stage_b.gnome.transform.Transform;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.qsilver.entity.Entity;
+import org.qsilver.transform.Transform;
+import org.zilar.instance.Instance;
+import org.zilar.material.property.PropertyDiffuse;
+import org.zilar.material.property.PropertyShadow;
+import org.zilar.material.property.PropertySpecular;
+import org.zilar.material.property.PropertyTexture;
+import org.zilar.meshbuilder.MeshData;
+import org.zilar.model.Model;
+import org.zilar.sprite.TiledTextureAtlas;
 
 /**
  * Created by Andy on 6/1/17.

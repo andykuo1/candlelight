@@ -15,15 +15,15 @@ import net.jimboi.stage_a.mod.model.Model;
 import net.jimboi.stage_a.mod.render.Render;
 import net.jimboi.stage_a.mod.render.RenderManager;
 import net.jimboi.stage_a.mod.resource.ModResourceLocation;
-import net.jimboi.stage_b.gnome.meshbuilder.MeshBuilder;
-import net.jimboi.stage_b.gnome.meshbuilder.MeshData;
-import net.jimboi.stage_b.gnome.meshbuilder.ModelUtil;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.mogli.Texture;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.qsilver.renderer.Renderer;
+import org.zilar.meshbuilder.MeshBuilder;
+import org.zilar.meshbuilder.MeshData;
+import org.zilar.meshbuilder.ModelUtil;
 
 import java.util.ArrayList;
 import java.util.List;

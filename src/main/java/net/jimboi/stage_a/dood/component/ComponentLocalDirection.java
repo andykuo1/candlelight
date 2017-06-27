@@ -1,7 +1,8 @@
 package net.jimboi.stage_a.dood.component;
 
 import net.jimboi.stage_a.dood.entity.Component;
-import net.jimboi.stage_b.gnome.transform.DirectionVectors;
+
+import org.qsilver.transform.DirectionVectors;
 
 /**
  * Created by Andy on 5/22/17.

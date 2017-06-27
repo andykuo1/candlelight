@@ -1,6 +1,6 @@
 package net.jimboi.stage_a.blob.livings;
 
-import net.jimboi.stage_b.gnome.transform.Transform2;
+import org.zilar.transform.Transform2;
 
 /**
  * Created by Andy on 5/19/17.

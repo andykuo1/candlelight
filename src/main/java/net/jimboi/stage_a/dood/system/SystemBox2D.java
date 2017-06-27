@@ -6,14 +6,14 @@ import net.jimboi.stage_a.dood.component.ComponentTransform;
 import net.jimboi.stage_a.dood.entity.Component;
 import net.jimboi.stage_a.dood.entity.Entity;
 import net.jimboi.stage_a.dood.entity.EntityManager;
-import net.jimboi.stage_b.gnome.transform.Transform;
-import net.jimboi.stage_b.gnome.transform.Transform3;
 
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.World;
 import org.joml.Vector3fc;
 import org.qsilver.scene.Scene;
+import org.qsilver.transform.Transform;
+import org.zilar.transform.Transform3;
 
 import java.util.Collection;
 import java.util.HashSet;

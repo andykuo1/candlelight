@@ -7,9 +7,6 @@ import net.jimboi.stage_b.glim.gameentity.component.GameComponentHeading;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentNavigator;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentTargeter;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentTransform;
-import net.jimboi.stage_b.gnome.instance.InstanceManager;
-import net.jimboi.stage_b.gnome.transform.Transform;
-import net.jimboi.stage_b.gnome.transform.Transform3Quat;
 
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
@@ -17,7 +14,10 @@ import org.qsilver.astar.map.NavigatorCardinalMap;
 import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
 import org.qsilver.scene.Scene;
+import org.qsilver.transform.Transform;
 import org.qsilver.util.MathUtil;
+import org.zilar.instance.InstanceManager;
+import org.zilar.transform.Transform3Quat;
 
 import java.util.Collection;
 

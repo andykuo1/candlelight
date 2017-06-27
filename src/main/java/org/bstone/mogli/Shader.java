@@ -1,11 +1,10 @@
 package org.bstone.mogli;
 
-import net.jimboi.stage_b.gnome.resource.ResourceLocation;
-
 import org.bstone.RefCountSet;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.qsilver.loader.StringLoader;
+import org.zilar.resource.ResourceLocation;
 
 import java.util.Set;
 

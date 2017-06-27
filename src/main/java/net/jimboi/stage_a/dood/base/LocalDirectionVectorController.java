@@ -1,9 +1,8 @@
 package net.jimboi.stage_a.dood.base;
 
-import net.jimboi.stage_b.gnome.transform.DirectionVectors;
-import net.jimboi.stage_b.gnome.transform.Transform3;
-
 import org.joml.Vector3f;
+import org.qsilver.transform.DirectionVectors;
+import org.zilar.transform.Transform3;
 
 /**
  * Created by Andy on 5/22/17.
