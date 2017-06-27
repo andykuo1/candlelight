@@ -72,6 +72,8 @@ public final class Bitmap implements AutoCloseable
 		if (this.pixels == null)
 			throw new RuntimeException("Failed to load image: " + stbi_failure_reason());
 
+		this.flipVertically();
+
 		BITMAPS.add(this);
 	}
 

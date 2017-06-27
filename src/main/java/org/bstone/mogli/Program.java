@@ -147,6 +147,11 @@ public final class Program implements AutoCloseable
 		GL20.glUniform1f(this.findUniformLocation(uniformName), x);
 	}
 
+	public void setUniform(String uniformName, boolean x)
+	{
+		GL20.glUniform1i(this.findUniformLocation(uniformName), x ? 1 : 0);
+	}
+
 	public void setUniform(String uniformName, Vector2fc vec)
 	{
 		GL20.glUniform2f(this.findUniformLocation(uniformName), vec.x(), vec.y());
