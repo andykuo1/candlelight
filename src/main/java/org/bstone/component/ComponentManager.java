@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Created by Andy on 5/21/17.
  */
-public class ComponentManager<E extends EntityManifest, C extends Component>
+public class ComponentManager<E extends ManifestEntity, C extends Component>
 {
 	private static int NEXT_ENTITY_ID = 0;
 
@@ -165,10 +165,18 @@ public class ComponentManager<E extends EntityManifest, C extends Component>
 
 	protected <T extends E> T removeEntity(T entity)
 	{
-		E e = this.entities.remove(entity.id);
-
-		if (e == null)
+		if (this.entities.containsValue(entity))
+		{
+			this.entities.remove(entity.id);
+		}
+		else if (entity.componentManager == this)
+		{
+			//Already removed, but not processed
+		}
+		else
+		{
 			throw new IllegalArgumentException("Entity does not exist with id '" + entity.getEntityID() + "'!");
+		}
 
 		entity.componentManager = null;
 		entity.id = -1;

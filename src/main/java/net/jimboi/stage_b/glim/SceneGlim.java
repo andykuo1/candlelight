@@ -1,16 +1,18 @@
 package net.jimboi.stage_b.glim;
 
-import net.jimboi.stage_a.dood.system.EntitySystem;
-import net.jimboi.stage_a.mod.sprite.TiledTextureAtlas;
 import net.jimboi.stage_b.glim.bounding.BoundingManager;
+import net.jimboi.stage_b.glim.entity.EntityBunny;
 import net.jimboi.stage_b.glim.entity.EntityCrate;
 import net.jimboi.stage_b.glim.entity.EntityGlim;
 import net.jimboi.stage_b.glim.entity.EntityPlayer;
-import net.jimboi.stage_b.glim.gameentity.GameEntity;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentTransform;
+import net.jimboi.stage_b.glim.gameentity.system.EntitySystemBase;
+import net.jimboi.stage_b.glim.gameentity.system.EntitySystemBillboard;
+import net.jimboi.stage_b.glim.gameentity.system.EntitySystemBounding;
+import net.jimboi.stage_b.glim.gameentity.system.EntitySystemHeading;
+import net.jimboi.stage_b.glim.gameentity.system.EntitySystemInstance;
+import net.jimboi.stage_b.glim.gameentity.system.EntitySystemSprite;
 import net.jimboi.stage_b.glim.resourceloader.MeshLoader;
-import net.jimboi.stage_b.glim.system.EntitySystemBounding;
-import net.jimboi.stage_b.glim.system.EntitySystemInstance;
 import net.jimboi.stage_b.gnome.instance.Instance;
 import net.jimboi.stage_b.gnome.material.property.PropertyDiffuse;
 import net.jimboi.stage_b.gnome.material.property.PropertyShadow;
@@ -18,27 +20,30 @@ import net.jimboi.stage_b.gnome.material.property.PropertySpecular;
 import net.jimboi.stage_b.gnome.material.property.PropertyTexture;
 import net.jimboi.stage_b.gnome.meshbuilder.MeshData;
 import net.jimboi.stage_b.gnome.model.Model;
+import net.jimboi.stage_b.gnome.sprite.TiledTextureAtlas;
 import net.jimboi.stage_b.gnome.transform.Transform;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import org.qsilver.entity.Entity;
 
 /**
  * Created by Andy on 6/1/17.
  */
 public class SceneGlim extends SceneGlimBase
 {
-	public static int MATERIAL_ID = -1;
-
 	private EntitySystemInstance sys_instance;
 	private EntitySystemBounding sys_bounding;
+	private EntitySystemSprite sys_sprite;
+	private EntitySystemHeading sys_heading;
+	private EntitySystemBillboard sys_billboard;
 
 	private BoundingManager boundingManager;
 
 	private WorldGlim world;
-	private GameEntity player;
+	private Entity player;
 	private Instance plane;
 
 	@Override
@@ -47,6 +52,7 @@ public class SceneGlim extends SceneGlimBase
 		super.onSceneCreate();
 
 		this.boundingManager = new BoundingManager();
+		this.renderer.setBoundingManager(this.boundingManager);
 	}
 
 	@Override
@@ -54,6 +60,9 @@ public class SceneGlim extends SceneGlimBase
 	{
 		this.sys_instance = new EntitySystemInstance(this.entityManager, this.renderer.getInstanceManager());
 		this.sys_bounding = new EntitySystemBounding(this.entityManager, this, this.boundingManager);
+		this.sys_sprite = new EntitySystemSprite(this.entityManager, this);
+		this.sys_heading = new EntitySystemHeading(this.entityManager, this, this.boundingManager, RendererGlim.INSTANCE.getInstanceManager());
+		this.sys_billboard = new EntitySystemBillboard(this.entityManager, this, RendererGlim.CAMERA);
 
 		this.world = new WorldGlim(this.boundingManager);
 
@@ -61,9 +70,8 @@ public class SceneGlim extends SceneGlimBase
 		this.player = EntityPlayer.create(this.world);
 		RendererGlim.CAMERA.setCameraController(new CameraControllerGlim(this.player, this.world));
 
-		MeshData mesh = RendererGlim.createMeshFromMap(this.world.getMap(), new TiledTextureAtlas(
-				RendererGlim.INSTANCE.getAssetManager().getAsset(Texture.class, "font").getSource(),
-				16, 16));
+		TiledTextureAtlas textureAtlas = new TiledTextureAtlas(RendererGlim.INSTANCE.getAssetManager().getAsset(Texture.class, "font"), 16, 16);
+		MeshData mesh = RendererGlim.createMeshFromMap(this.world.getMap(), textureAtlas);
 		RendererGlim.INSTANCE.getAssetManager().registerAsset(Mesh.class, "dungeon",
 				new MeshLoader.MeshParameter(mesh));
 
@@ -72,7 +80,7 @@ public class SceneGlim extends SceneGlimBase
 				RendererGlim.INSTANCE.getMaterialManager().createMaterial(
 						new PropertyDiffuse(),
 						new PropertySpecular(),
-						new PropertyShadow(false, true),
+						new PropertyShadow(true, true),
 						new PropertyTexture(RendererGlim.INSTANCE.getAssetManager().getAsset(Texture.class, "font"))),
 				"diffuse")));
 
@@ -89,7 +97,8 @@ public class SceneGlim extends SceneGlimBase
 		EntityCrate.create(this.world, -4, 0, 0);
 		EntityCrate.create(this.world, 20, 5, 30);
 
-		//EntityBunny.create(this.world, 10, 1, 14);
+		EntityBunny.create(this.world, 10, 1, 14);
+		EntityBunny.create(this.world, 10, 1, 16);
 	}
 
 	@Override
@@ -115,10 +124,10 @@ public class SceneGlim extends SceneGlimBase
 	@Override
 	protected void onSceneStop()
 	{
-		EntitySystem.stopAll();
+		EntitySystemBase.stopAll();
 	}
 
-	public GameEntity getPlayer()
+	public Entity getPlayer()
 	{
 		return this.player;
 	}

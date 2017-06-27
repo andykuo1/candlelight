@@ -26,4 +26,10 @@ public class PropertyTexture extends Property
 		this.texture = texture;
 		this.sprite = new Sprite(this.texture, 0, 0, 1, 1);
 	}
+
+	public PropertyTexture setTransparent(boolean transparent)
+	{
+		this.transparent = transparent;
+		return this;
+	}
 }

@@ -5,6 +5,7 @@ import net.jimboi.stage_a.dood.entity.Entity;
 import net.jimboi.stage_a.dood.entity.EntityManager;
 import net.jimboi.stage_a.mod.scene.EntitySceneBase;
 
+import org.qsilver.renderer.RenderEngine;
 import org.qsilver.renderer.Renderer;
 
 /**
@@ -20,13 +21,13 @@ public abstract class SceneDoodBase extends EntitySceneBase implements EntityMan
 	}
 
 	@Override
-	protected final void onSceneLoad()
+	protected final void onSceneLoad(RenderEngine renderManager)
 	{
 		Main.RENDERENGINE.add(this.renderer);
 	}
 
 	@Override
-	protected final void onSceneUnload()
+	protected final void onSceneUnload(RenderEngine renderManager)
 	{
 		Main.RENDERENGINE.remove(this.renderer);
 	}

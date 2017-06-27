@@ -5,6 +5,7 @@ package org.qsilver.living;
  */
 public abstract class Living
 {
+	int id;
 	private boolean dead;
 
 	public Living()
@@ -37,5 +38,10 @@ public abstract class Living
 	public final boolean isDead()
 	{
 		return this.dead;
+	}
+
+	public final int getLivingID()
+	{
+		return this.id;
 	}
 }

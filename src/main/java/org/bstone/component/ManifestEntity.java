@@ -3,13 +3,13 @@ package org.bstone.component;
 /**
  * Created by Andy on 5/21/17.
  */
-public class EntityManifest<C extends Component>
+public class ManifestEntity<C extends Component>
 {
 	ComponentManager componentManager = null;
 	int id = -1;
 
 	@SuppressWarnings("unchecked")
-	protected EntityManifest addComponent(C component)
+	protected ManifestEntity addComponent(C component)
 	{
 		this.componentManager.addComponentToEntity(this, component);
 		return this;
@@ -41,9 +41,9 @@ public class EntityManifest<C extends Component>
 	@Override
 	public boolean equals(Object o)
 	{
-		if (o instanceof EntityManifest)
+		if (o instanceof ManifestEntity)
 		{
-			return this.componentManager == ((EntityManifest) o).componentManager && this.id == ((EntityManifest) o).id;
+			return this.componentManager == ((ManifestEntity) o).componentManager && this.id == ((ManifestEntity) o).id;
 		}
 		return false;
 	}

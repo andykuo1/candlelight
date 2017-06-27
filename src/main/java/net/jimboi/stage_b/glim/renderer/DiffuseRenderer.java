@@ -7,6 +7,7 @@ import net.jimboi.stage_b.glim.renderer.shadow.ShadowBox;
 import net.jimboi.stage_b.glim.renderer.shadow.ShadowRenderer;
 import net.jimboi.stage_b.gnome.asset.Asset;
 import net.jimboi.stage_b.gnome.instance.Instance;
+import net.jimboi.stage_b.gnome.material.property.PropertyDiffuse;
 import net.jimboi.stage_b.gnome.material.property.PropertyShadow;
 import net.jimboi.stage_b.gnome.material.property.PropertySpecular;
 import net.jimboi.stage_b.gnome.material.property.PropertyTexture;
@@ -38,6 +39,7 @@ public class DiffuseRenderer implements AutoCloseable
 
 	private final Matrix4f modelViewProjMatrix = new Matrix4f();
 	private final Matrix4f projViewMatrix = new Matrix4f();
+	private final Matrix4f modelViewMatrix = new Matrix4f();
 	private final Matrix4f modelMatrix = new Matrix4f();
 
 	private ShadowRenderer shadowRenderer;
@@ -68,7 +70,6 @@ public class DiffuseRenderer implements AutoCloseable
 	{
 		Matrix4fc proj = camera.projection();
 		Matrix4fc view = camera.view();
-		Matrix4fc projView = proj.mul(view, this.projViewMatrix);
 
 		final Program program = this.program.getSource();
 		program.bind();
@@ -89,11 +90,18 @@ public class DiffuseRenderer implements AutoCloseable
 				float shininess = 0;
 				boolean shadow = false;
 
+				if (material.hasComponent(PropertyDiffuse.class))
+				{
+					PropertyDiffuse propDiffuse = material.getComponent(PropertyDiffuse.class);
+					program.setUniform("u_diffuse_color", propDiffuse.diffuseColor);
+				}
+
 				if (material.hasComponent(PropertyTexture.class))
 				{
 					PropertyTexture propTexture = material.getComponent(PropertyTexture.class);
 					texture = propTexture.texture.getSource();
 					sprite = propTexture.sprite;
+					program.setUniform("u_transparency", propTexture.transparent);
 				}
 
 				if (material.hasComponent(PropertySpecular.class))
@@ -118,8 +126,10 @@ public class DiffuseRenderer implements AutoCloseable
 				}
 
 				Matrix4fc transformation = inst.getRenderTransformation(this.modelMatrix);
-				Matrix4fc modelViewProj = projView.mul(transformation, this.modelViewProjMatrix);
 				program.setUniform("u_model", transformation);
+
+				Matrix4fc modelView = view.mul(transformation, this.modelViewMatrix);
+				Matrix4fc modelViewProj = proj.mul(modelView, this.modelViewProjMatrix);
 				program.setUniform("u_model_view_projection", modelViewProj);
 
 				mesh.bind();
@@ -127,10 +137,10 @@ public class DiffuseRenderer implements AutoCloseable
 					if (texture != null)
 					{
 						GL13.glActiveTexture(GL13.GL_TEXTURE0);
+						program.setUniform("u_sampler", 0);
 						texture.bind();
 					}
 
-					program.setUniform("u_sampler", 0);
 					program.setUniform("u_camera_pos", camera.getTransform().position());
 
 					if (sprite != null)

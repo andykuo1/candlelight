@@ -2,6 +2,7 @@ package net.jimboi.stage_b.gnome.material.property;
 
 import org.bstone.material.Property;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.qsilver.util.ColorUtil;
 
 /**
@@ -9,11 +10,15 @@ import org.qsilver.util.ColorUtil;
  */
 public class PropertyDiffuse extends Property
 {
-	public final Vector3f diffuseColor = new Vector3f(1, 1, 1);
+	public final Vector4f diffuseColor = new Vector4f(1, 1, 1, 0);
 
 	public PropertyDiffuse setDiffuseColor(int color)
 	{
-		ColorUtil.getNormalizedRGB(color, this.diffuseColor);
+		Vector3f vec = ColorUtil.getNormalizedRGB(color, new Vector3f());
+		this.diffuseColor.x = vec.x;
+		this.diffuseColor.y = vec.y;
+		this.diffuseColor.z = vec.z;
+		this.diffuseColor.w = 1;
 		return this;
 	}
 }

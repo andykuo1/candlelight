@@ -6,7 +6,10 @@ import net.jimboi.stage_b.gnome.dungeon.DungeonBuilder;
 import net.jimboi.stage_b.gnome.dungeon.DungeonData;
 import net.jimboi.stage_b.gnome.dungeon.maze.MazeDungeonBuilder;
 
-import org.joml.Vector3fc;
+import org.joml.Vector3f;
+import org.qsilver.astar.AstarNavigator;
+import org.qsilver.astar.NavigatorMap;
+import org.qsilver.astar.map.NavigatorCardinalMap;
 import org.qsilver.util.map2d.IntMap;
 
 /**
@@ -16,6 +19,8 @@ public class WorldGlim
 {
 	private final BoundingManager boundingManager;
 	private final DungeonData data;
+	private final NavigatorMap<NavigatorCardinalMap.Cell> navigatorMap;
+	private boolean[] solids;
 
 	public WorldGlim(BoundingManager boundingManager)
 	{
@@ -40,20 +45,40 @@ public class WorldGlim
 				}
 			}
 		}
+
+		this.solids = new boolean[this.data.width * this.data.height];
+		for(int i = 0; i < this.data.getTiles().size(); ++i)
+		{
+			this.solids[i] = this.data.getTiles().get(i) == 0;
+		}
+		this.navigatorMap = new NavigatorCardinalMap(this.solids, this.data.width, this.data.height);
 	}
 
-	public boolean intersects(Vector3fc pos)
+	public AstarNavigator<NavigatorCardinalMap.Cell> createNavigator()
 	{
-		if (pos.y() <= 1 && pos.y() >= 0)
+		return new AstarNavigator<>(this.navigatorMap);
+	}
+
+	public Vector3f getRandomTilePos(boolean solid)
+	{
+		int attempts = 0;
+		int index;
+		do
 		{
-			int tile = this.data.getTiles().get((int) pos.x(), (int) pos.z());
-			if (tile == 0)
+			index = (int)(Math.random() * this.solids.length);
+			attempts++;
+			if (attempts > 100)
 			{
-				return true;
+				return null;
 			}
 		}
+		while(this.solids[index] != solid);
+		return new Vector3f(index % this.data.width, 0, index / this.data.width);
+	}
 
-		return false;
+	public boolean[] getSolids()
+	{
+		return this.solids;
 	}
 
 	public IntMap getMap()

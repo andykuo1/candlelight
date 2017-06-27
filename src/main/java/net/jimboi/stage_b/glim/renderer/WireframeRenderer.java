@@ -56,12 +56,15 @@ public class WireframeRenderer implements AutoCloseable
 				final Mesh mesh = model.getMesh().getSource();
 				final Material material = model.getMaterial();
 
-				Vector3f diffuseColor = null;
-
 				if (material.hasComponent(PropertyDiffuse.class))
 				{
 					PropertyDiffuse propDiffuse = material.getComponent(PropertyDiffuse.class);
-					diffuseColor = propDiffuse.diffuseColor;
+					Vector3f diffuseColor;
+					diffuseColor = new Vector3f();
+					diffuseColor.x = propDiffuse.diffuseColor.x;
+					diffuseColor.y = propDiffuse.diffuseColor.y;
+					diffuseColor.z = propDiffuse.diffuseColor.z;
+					program.setUniform("u_color", diffuseColor);
 				}
 
 				Matrix4fc transformation = inst.getRenderTransformation(this.modelMatrix);
@@ -71,8 +74,6 @@ public class WireframeRenderer implements AutoCloseable
 
 				mesh.bind();
 				{
-					program.setUniform("u_color", diffuseColor);
-
 					GL11.glDrawElements(GL11.GL_LINE_LOOP, mesh.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 				}
 				mesh.unbind();

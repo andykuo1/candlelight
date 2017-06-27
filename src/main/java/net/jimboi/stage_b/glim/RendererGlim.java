@@ -1,7 +1,6 @@
 package net.jimboi.stage_b.glim;
 
-import net.jimboi.stage_a.mod.sprite.Sprite;
-import net.jimboi.stage_a.mod.sprite.TiledTextureAtlas;
+import net.jimboi.stage_b.glim.bounding.BoundingManager;
 import net.jimboi.stage_b.glim.bounding.BoundingRenderer;
 import net.jimboi.stage_b.glim.renderer.BillboardRenderer;
 import net.jimboi.stage_b.glim.renderer.DiffuseRenderer;
@@ -18,6 +17,8 @@ import net.jimboi.stage_b.gnome.instance.InstanceManager;
 import net.jimboi.stage_b.gnome.meshbuilder.MeshBuilder;
 import net.jimboi.stage_b.gnome.meshbuilder.MeshData;
 import net.jimboi.stage_b.gnome.resource.ResourceLocation;
+import net.jimboi.stage_b.gnome.sprite.Sprite;
+import net.jimboi.stage_b.gnome.sprite.TiledTextureAtlas;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.input.InputManager;
@@ -49,7 +50,6 @@ public class RendererGlim extends Renderer
 	public static RendererGlim INSTANCE;
 	public static PerspectiveCamera CAMERA;
 	public static List<GlimLight> LIGHTS = new ArrayList<>();
-	public static SceneGlim SCENE;
 
 	protected InstanceManager instanceManager;
 	protected MaterialManager materialManager;
@@ -59,13 +59,19 @@ public class RendererGlim extends Renderer
 	protected WireframeRenderer wireframeRenderer;
 	protected BoundingRenderer boundingRenderer;
 
+	private BoundingManager boundingManager;
+
 	protected AssetsGlim assets;
 
-	public RendererGlim(SceneGlim scene)
+	public RendererGlim()
 	{
 		INSTANCE = this;
-		SCENE = scene;
 		CAMERA = new PerspectiveCamera(640, 480);
+	}
+
+	public void setBoundingManager(BoundingManager boundingManager)
+	{
+		this.boundingManager = boundingManager;
 	}
 
 	@Override
@@ -82,6 +88,7 @@ public class RendererGlim extends Renderer
 
 		InputManager.registerMouse("mouseleft", GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		InputManager.registerMouse("mouseright", GLFW.GLFW_MOUSE_BUTTON_LEFT);
+		InputManager.registerKey("mouselock", GLFW.GLFW_KEY_P);
 
 		InputManager.registerKey("forward", GLFW.GLFW_KEY_W, GLFW.GLFW_KEY_UP);
 		InputManager.registerKey("backward", GLFW.GLFW_KEY_S, GLFW.GLFW_KEY_DOWN);
@@ -149,7 +156,10 @@ public class RendererGlim extends Renderer
 		iter = new FilterIterator<>(this.instanceManager.getInstanceIterator(), (inst) -> inst.getModel().getRenderType().equals("wireframe"));
 		this.wireframeRenderer.render(CAMERA, iter);
 
-		this.boundingRenderer.render(CAMERA, SCENE.getBoundingManager().getBoundingIterator());
+		if (this.boundingManager != null)
+		{
+			this.boundingRenderer.render(CAMERA, this.boundingManager.getBoundingIterator());
+		}
 
 		this.instanceManager.update();
 		this.assets.update();
@@ -188,7 +198,7 @@ public class RendererGlim extends Renderer
 		Vector2f texTopLeft = new Vector2f();
 		Vector2f texBotRight = new Vector2f(1, 1);
 
-		Sprite sprite = textureAtlas.getSprite(5, 8);
+		Sprite sprite = textureAtlas.getSprite(0, 0);
 		Vector2f texSideTopLeft = new Vector2f(sprite.getU(), sprite.getV());
 		Vector2f texSideBotRight = new Vector2f(texSideTopLeft).add(sprite.getWidth(), sprite.getHeight());
 
@@ -204,12 +214,12 @@ public class RendererGlim extends Renderer
 
 				if (!isSolid(map, x, y))
 				{
-					int tile = map.get(x, y) - 1;
+					int tile = 0;
 					if (!isSolid(map, x + 1, y)) tile += 1;
-					if (!isSolid(map, x, y - 1)) tile += 2;
+					if (!isSolid(map, x, y + 1)) tile += 2;
 					if (!isSolid(map, x - 1, y)) tile += 4;
-					if (!isSolid(map, x, y + 1)) tile += 8;
-					sprite = textureAtlas.getSprite(tile, 0);//9
+					if (!isSolid(map, x, y - 1)) tile += 8;
+					sprite = textureAtlas.getSprite(tile, 0);
 					texTopLeft.set(sprite.getU(), sprite.getV());
 					texBotRight.set(texTopLeft).add(sprite.getWidth(), sprite.getHeight());
 
@@ -227,10 +237,10 @@ public class RendererGlim extends Renderer
 				{
 					int tile = 0;
 					if (isSolid(map, x + 1, y)) tile += 1;
-					if (isSolid(map, x, y - 1)) tile += 2;
+					if (isSolid(map, x, y + 1)) tile += 2;
 					if (isSolid(map, x - 1, y)) tile += 4;
-					if (isSolid(map, x, y + 1)) tile += 8;
-					sprite = textureAtlas.getSprite(tile, 0);
+					if (isSolid(map, x, y - 1)) tile += 8;
+					sprite = textureAtlas.getSprite(tile, 9);
 					texTopLeft.set(sprite.getU(), sprite.getV());
 					texBotRight.set(texTopLeft).add(sprite.getWidth(), sprite.getHeight());
 

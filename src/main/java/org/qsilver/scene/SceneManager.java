@@ -1,6 +1,7 @@
 package org.qsilver.scene;
 
 import org.bstone.util.listener.Listenable;
+import org.qsilver.renderer.RenderEngine;
 
 /**
  * Created by Andy on 3/1/17.
@@ -20,12 +21,16 @@ public class SceneManager
 	private boolean setup = false;
 	private SceneSetupHandler setupHandler;
 
+	private boolean active = false;
+
 	public SceneManager()
 	{
 	}
 
 	public void update(double delta)
 	{
+		if (!this.active) return;
+
 		if (this.setup)
 		{
 			if (this.setupHandler == null)
@@ -39,6 +44,15 @@ public class SceneManager
 			{
 				if (this.setupHandler instanceof SceneStopHandler)
 				{
+					if (this.nextScene == null)
+					{
+						this.setupHandler = null;
+						this.currScene = null;
+						this.setup = false;
+						this.active = false;
+						return;
+					}
+
 					this.setupHandler = new SceneStartHandler(this.nextScene, this.currScene == this.nextScene);
 					this.currScene = null;
 				}
@@ -68,13 +82,13 @@ public class SceneManager
 		}
 	}
 
-	public void render()
+	public void renderUpdate(RenderEngine renderManager)
 	{
 		if (this.setup)
 		{
 			if (this.setupHandler != null && !this.setupHandler.isComplete())
 			{
-				this.setupHandler.onRender();
+				this.setupHandler.onRenderUpdate(renderManager);
 			}
 		}
 	}
@@ -83,6 +97,7 @@ public class SceneManager
 	{
 		this.nextScene = scene;
 		this.setup = true;
+		this.active = true;
 	}
 
 	public void restartScene()
@@ -91,21 +106,15 @@ public class SceneManager
 		this.setup = true;
 	}
 
-	public void clearScene()
+	public void stopScene()
 	{
 		this.nextScene = null;
 		this.setup = true;
 	}
 
-	public void clear()
+	public boolean isActive()
 	{
-		this.clearScene();
-
-		while(this.setup || this.currScene != null)
-		{
-			this.update(0);
-			this.render();
-		}
+		return this.active;
 	}
 
 	private abstract class SceneSetupHandler
@@ -121,7 +130,7 @@ public class SceneManager
 		}
 
 		public abstract void onUpdate(double delta);
-		public abstract void onRender();
+		public abstract void onRenderUpdate(RenderEngine renderManager);
 
 		protected synchronized void markComplete()
 		{
@@ -176,7 +185,7 @@ public class SceneManager
 		}
 
 		@Override
-		public void onRender()
+		public void onRenderUpdate(RenderEngine renderManager)
 		{
 			if (this.scene == null) return;
 
@@ -185,7 +194,7 @@ public class SceneManager
 				if (!this.sceneUnloaded)
 				{
 					System.out.println("Unloading Scene. . .");
-					this.scene.onSceneUnload();
+					this.scene.onSceneUnload(renderManager);
 					this.sceneUnloaded = true;
 					this.scene.onSceneUnload.notifyListeners();
 				}
@@ -235,7 +244,7 @@ public class SceneManager
 		}
 
 		@Override
-		public void onRender()
+		public void onRenderUpdate(RenderEngine renderManager)
 		{
 			if (this.scene == null) return;
 
@@ -244,7 +253,7 @@ public class SceneManager
 				if (!this.sceneLoaded)
 				{
 					System.out.println("Loading Scene. . .");
-					this.scene.onSceneLoad();
+					this.scene.onSceneLoad(renderManager);
 					this.sceneLoaded = true;
 					this.scene.onSceneLoad.notifyListeners();
 				}

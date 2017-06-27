@@ -26,7 +26,7 @@ public class RoomDecorator
 			{
 				if (this.rand.nextFloat() < 0.3F)
 				{
-					map.set(x, y, 'a' + rand.nextInt('z'));
+					map.set(x, y, 8);
 				}
 			}
 		}

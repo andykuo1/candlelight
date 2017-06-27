@@ -1,25 +1,26 @@
-package net.jimboi.stage_b.glim.system;
+package net.jimboi.stage_b.glim.gameentity.system;
 
-import net.jimboi.stage_b.glim.gameentity.GameEntity;
-import net.jimboi.stage_b.glim.gameentity.GameEntityManager;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentInstance;
 import net.jimboi.stage_b.gnome.instance.InstanceManager;
+
+import org.qsilver.entity.Entity;
+import org.qsilver.entity.EntityManager;
 
 /**
  * Created by Andy on 6/1/17.
  */
-public class EntitySystemInstance extends EntitySystemBase implements GameEntityManager.OnGameEntityAddListener, GameEntityManager.OnGameEntityRemoveListener
+public class EntitySystemInstance extends EntitySystemBase implements EntityManager.OnEntityAddListener, EntityManager.OnEntityRemoveListener
 {
 	protected final InstanceManager instanceManager;
 
-	public EntitySystemInstance(GameEntityManager entityManager, InstanceManager instanceManager)
+	public EntitySystemInstance(EntityManager entityManager, InstanceManager instanceManager)
 	{
 		super(entityManager);
 
 		this.instanceManager = instanceManager;
 
-		this.registerListenable(entityManager.onGameEntityAdd);
-		this.registerListenable(entityManager.onGameEntityRemove);
+		this.registerListenable(entityManager.onEntityAdd);
+		this.registerListenable(entityManager.onEntityRemove);
 	}
 
 	@Override
@@ -35,7 +36,7 @@ public class EntitySystemInstance extends EntitySystemBase implements GameEntity
 	}
 
 	@Override
-	public void onGameEntityAdd(GameEntity entity)
+	public void onEntityAdd(Entity entity)
 	{
 		if (entity.hasComponent(GameComponentInstance.class))
 		{
@@ -45,7 +46,7 @@ public class EntitySystemInstance extends EntitySystemBase implements GameEntity
 	}
 
 	@Override
-	public void onGameEntityRemove(GameEntity entity)
+	public void onEntityRemove(Entity entity)
 	{
 		if (entity.hasComponent(GameComponentInstance.class))
 		{

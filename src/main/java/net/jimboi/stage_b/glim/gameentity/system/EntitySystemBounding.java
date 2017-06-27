@@ -1,12 +1,12 @@
-package net.jimboi.stage_b.glim.system;
+package net.jimboi.stage_b.glim.gameentity.system;
 
 import net.jimboi.stage_b.glim.bounding.BoundingManager;
-import net.jimboi.stage_b.glim.gameentity.GameEntity;
-import net.jimboi.stage_b.glim.gameentity.GameEntityManager;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentBounding;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentTransform;
 
 import org.joml.Vector3fc;
+import org.qsilver.entity.Entity;
+import org.qsilver.entity.EntityManager;
 import org.qsilver.scene.Scene;
 
 import java.util.Collection;
@@ -18,7 +18,7 @@ public class EntitySystemBounding extends EntitySystemBase implements Scene.OnSc
 {
 	protected final BoundingManager boundingManager;
 
-	public EntitySystemBounding(GameEntityManager entityManager, Scene scene, BoundingManager boundingManager)
+	public EntitySystemBounding(EntityManager entityManager, Scene scene, BoundingManager boundingManager)
 	{
 		super(entityManager);
 
@@ -40,9 +40,9 @@ public class EntitySystemBounding extends EntitySystemBase implements Scene.OnSc
 	@Override
 	public void onSceneUpdate(double delta)
 	{
-		Collection<GameEntity> entities = this.entityManager.getEntitiesWithComponent(GameComponentTransform.class, GameComponentBounding.class);
+		Collection<Entity> entities = this.entityManager.getEntitiesWithComponent(GameComponentTransform.class, GameComponentBounding.class);
 
-		for (GameEntity entity : entities)
+		for (Entity entity : entities)
 		{
 			GameComponentTransform componentTransform = entity.getComponent(GameComponentTransform.class);
 			GameComponentBounding componentBounding = entity.getComponent(GameComponentBounding.class);

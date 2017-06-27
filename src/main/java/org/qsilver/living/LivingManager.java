@@ -2,12 +2,11 @@ package org.qsilver.living;
 
 import org.bstone.util.listener.Listenable;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
+import java.util.Map;
 
 /**
  * Created by Andy on 3/4/17.
@@ -27,63 +26,11 @@ public class LivingManager
 	public final Listenable<OnLivingAddListener> onLivingAdd = new Listenable<>((listener, objects) -> listener.onLivingAdd((Living) objects[0]));
 	public final Listenable<OnLivingRemoveListener> onLivingRemove = new Listenable<>(((listener, objects) -> listener.onLivingRemove((Living) objects[0])));
 
+	private int NEXT_LIVING_ID = 0;
 	private final List<Living> spawnList = new ArrayList<>();
 	private final List<Living> spawnCache = new ArrayList<>();
-	private final List<Living> destroyList = new ArrayList<>();
-	private final List<Living> livings = new ArrayList<>();
+	private final Map<Integer, Living> livings = new HashMap<>();
 	private volatile boolean cached = false;
-
-	private final Set<LivingSet> livingSets = new HashSet<>();
-
-	class LivingSet<T>
-	{
-		private final WeakReference<Set<T>> set;
-		private final Class<T> type;
-
-		LivingSet(Set<T> set, Class<T> type)
-		{
-			this.set = new WeakReference<>(set);
-			this.type = type;
-		}
-
-		boolean hasSet()
-		{
-			return this.set.get() == null;
-		}
-
-		Set<T> getSet()
-		{
-			return this.set.get();
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public <T> Set<T> addLivingSet(Set<T> set, Class<T> type)
-	{
-		LivingSet<T> livingSet = new LivingSet(set, type);
-		this.livingSets.add(livingSet);
-		return set;
-	}
-
-	@SuppressWarnings("unchecked")
-	public <T> Set<T> getLivingSet(Class<T> type)
-	{
-		this.flushLivingSets();
-
-		for(LivingSet livingSet : this.livingSets)
-		{
-			if (livingSet.type == type)
-			{
-				Set set = livingSet.getSet();
-				if (set != null)
-				{
-					return set;
-				}
-			}
-		}
-
-		return this.addLivingSet(new HashSet<>(), type);
-	}
 
 	public Living add(Living living)
 	{
@@ -101,9 +48,9 @@ public class LivingManager
 
 	public void update(double delta)
 	{
-		this.flushCreate();
+		this.flush(false);
 
-		for(Living living : this.livings)
+		for(Living living : this.livings.values())
 		{
 			if (!living.isDead())
 			{
@@ -111,7 +58,7 @@ public class LivingManager
 			}
 		}
 
-		for(Living living : this.livings)
+		for(Living living : this.livings.values())
 		{
 			if (!living.isDead())
 			{
@@ -119,50 +66,72 @@ public class LivingManager
 			}
 		}
 
-		for(Living living : this.livings)
+		Iterator<Living> iter = this.livings.values().iterator();
+		while(iter.hasNext())
 		{
+			Living living = iter.next();
 			if (!living.isDead())
 			{
 				living.onLateUpdate();
 			}
 			else
 			{
-				this.destroyList.add(living);
+				living.onDestroy();
+				iter.remove();
+				this.onRemoveLiving(living);
 			}
 		}
-
-		this.flushDestroy();
 	}
 
-	public void flush()
+	public void flush(boolean doDead)
 	{
-		this.flushCreate();
-
-		for(Living living : this.livings)
+		while(!this.spawnList.isEmpty())
 		{
-			if (living.isDead())
+			this.cached = true;
+			for (Living living : this.spawnList)
 			{
-				this.destroyList.add(living);
+				if (living.onCreate())
+				{
+					int id = this.getNextLivingID();
+					living.id = id;
+					this.livings.put(id, living);
+					this.onAddLiving(living);
+				}
 			}
+			this.spawnList.clear();
+			this.cached = false;
+
+			this.spawnList.addAll(this.spawnCache);
+			this.spawnCache.clear();
 		}
 
-		this.flushDestroy();
-	}
-
-	public void flushLivingSets()
-	{
-		this.livingSets.removeIf((livingSet) -> !livingSet.hasSet());
+		if (doDead)
+		{
+			Iterator<Living> iter = this.livings.values().iterator();
+			while (iter.hasNext())
+			{
+				Living living = iter.next();
+				if (living.isDead())
+				{
+					living.onDestroy();
+					iter.remove();
+					this.onRemoveLiving(living);
+				}
+			}
+		}
 	}
 
 	public void destroyAll()
 	{
-		for(Living living : this.livings)
+		Iterator<Living> iter = this.livings.values().iterator();
+		while(iter.hasNext())
 		{
+			Living living = iter.next();
 			living.setDead();
 			living.onDestroy();
+			iter.remove();
+			this.onRemoveLiving(living);
 		}
-
-		this.flushDestroy();
 
 		this.cached = true;
 		this.spawnList.clear();
@@ -177,88 +146,25 @@ public class LivingManager
 		this.cached = false;
 		this.spawnCache.clear();
 		this.livings.clear();
-
-		for(LivingSet livingSet : this.livingSets)
-		{
-			Set set = livingSet.getSet();
-			if (set != null)
-			{
-				set.clear();
-			}
-		}
-
-		this.destroyList.clear();
 	}
 
-	public ListIterator<Living> getLivingIterator()
+	public Iterator<Living> getLivingIterator()
 	{
-		return this.livings.listIterator();
+		return this.livings.values().iterator();
 	}
 
-	private void flushCreate()
+	private int getNextLivingID()
 	{
-		while(!this.spawnList.isEmpty())
-		{
-			this.cached = true;
-			for (Living living : this.spawnList)
-			{
-				if (living.onCreate())
-				{
-					this.livings.add(living);
-					this.onAddLiving(living);
-				}
-			}
-			this.spawnList.clear();
-			this.cached = false;
-
-			this.spawnList.addAll(this.spawnCache);
-			this.spawnCache.clear();
-		}
+		return NEXT_LIVING_ID++;
 	}
 
-	private void flushDestroy()
-	{
-		for(Living living : this.destroyList)
-		{
-			living.onDestroy();
-			this.livings.remove(living);
-			this.onRemoveLiving(living);
-		}
-		this.destroyList.clear();
-	}
-
-	@SuppressWarnings("unchecked")
 	private void onAddLiving(Living living)
 	{
-		for(LivingSet livingSet : this.livingSets)
-		{
-			if (livingSet.type.isInstance(living))
-			{
-				Set set = livingSet.getSet();
-				if (set != null)
-				{
-					set.add(living);
-				}
-			}
-		}
-
 		this.onLivingAdd.notifyListeners(living);
 	}
 
 	private void onRemoveLiving(Living living)
 	{
-		for(LivingSet livingSet : this.livingSets)
-		{
-			if (livingSet.type.isInstance(living))
-			{
-				Set set = livingSet.getSet();
-				if (set != null)
-				{
-					set.remove(living);
-				}
-			}
-		}
-
 		this.onLivingRemove.notifyListeners(living);
 	}
 }

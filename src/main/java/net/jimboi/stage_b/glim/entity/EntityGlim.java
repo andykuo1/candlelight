@@ -1,15 +1,15 @@
 package net.jimboi.stage_b.glim.entity;
 
-import net.jimboi.stage_b.glim.gameentity.GameEntityManager;
+import org.qsilver.entity.EntityManager;
 
 /**
  * Created by Andy on 6/4/17.
  */
 public class EntityGlim
 {
-	static GameEntityManager MANAGER;
+	static EntityManager MANAGER;
 
-	public static void setEntityManager(GameEntityManager entityManager)
+	public static void setEntityManager(EntityManager entityManager)
 	{
 		MANAGER = entityManager;
 	}

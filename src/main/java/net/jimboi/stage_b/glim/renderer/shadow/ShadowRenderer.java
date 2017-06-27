@@ -11,6 +11,7 @@ import net.jimboi.stage_b.gnome.material.property.PropertyShadow;
 import net.jimboi.stage_b.gnome.material.property.PropertyTexture;
 import net.jimboi.stage_b.gnome.model.Model;
 import net.jimboi.stage_b.gnome.resource.ResourceLocation;
+import net.jimboi.stage_b.gnome.sprite.Sprite;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.material.Material;
@@ -22,6 +23,7 @@ import org.bstone.mogli.Shader;
 import org.bstone.mogli.Texture;
 import org.bstone.window.Window;
 import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
@@ -39,9 +41,12 @@ import java.util.Iterator;
 public class ShadowRenderer
 {
 	public static final int SHADOW_MAP_SIZE = 4096;
+	private Matrix4f modelViewProjMatrix = new Matrix4f();
+	private Matrix4f modelViewMatrix = new Matrix4f();
+	private Matrix4f modelMatrix = new Matrix4f();
 	private Matrix4f lightViewMatrix = new Matrix4f();
-	private Matrix4f projectionMatrix = new Matrix4f();
-	private Matrix4f projViewMatrix = new Matrix4f();
+	private Matrix4f lightProjMatrix = new Matrix4f();
+	private Matrix4f lightViewProjMatrix = new Matrix4f();
 	private Matrix4f offset = new Matrix4f().translate(0.5F, 0.5F, 0.5F).scale(0.5F, 0.5F, 0.5F);
 
 	private ShadowBox shadowBox;
@@ -81,10 +86,10 @@ public class ShadowRenderer
 	{
 		this.shadowBox.update();
 
-		updateOrthoProjection(shadowBox.getWidth(), shadowBox.getHeight(), shadowBox.getLength());
+		Matrix4fc proj = updateOrthoProjection(shadowBox.getWidth(), shadowBox.getHeight(), shadowBox.getLength(), this.lightProjMatrix);
 		Vector3f dir = new Vector3f(light.position.x, light.position.y, light.position.z).mul(-1);
-		updateLightView(dir, shadowBox.getCenter());
-		this.projectionMatrix.mul(this.lightViewMatrix, this.projViewMatrix);
+		Matrix4fc view = updateLightView(dir, shadowBox.getCenter(), this.lightViewMatrix);
+		this.lightViewProjMatrix.set(proj).mul(view);
 
 		this.shadowFBO.bind(this.window, true, false);
 
@@ -105,33 +110,44 @@ public class ShadowRenderer
 				if (!material.getComponent(PropertyShadow.class).castShadow) continue;
 
 				Texture texture = null;
+				Sprite sprite = null;
 
 				if (material.hasComponent(PropertyTexture.class))
 				{
 					PropertyTexture prop = material.getComponent(PropertyTexture.class);
 					texture = prop.texture.getSource();
+					sprite = prop.sprite;
+					program.setUniform("u_transparency", prop.transparent);
 				}
 
-				Matrix4f matrix = new Matrix4f();
-				inst.getRenderTransformation(matrix);
+				Matrix4fc transformation = inst.getRenderTransformation(this.modelMatrix);
+				Matrix4fc modelView = view.mul(transformation, this.modelViewMatrix);
+
+				program.setUniform("u_model_view_projection", proj.mul(modelView, this.modelViewProjMatrix));
+
 				mesh.bind();
-				if (texture != null)
 				{
-					GL13.glActiveTexture(GL13.GL_TEXTURE0);
-					texture.bind();
+					if (texture != null)
+					{
+						GL13.glActiveTexture(GL13.GL_TEXTURE0);
+						texture.bind();
+						program.setUniform("u_sampler", 0);
+					}
+
+					if (sprite != null)
+					{
+						program.setUniform("u_tex_offset", new Vector2f(sprite.getU(), sprite.getV()));
+						program.setUniform("u_tex_scale", new Vector2f(sprite.getWidth(), sprite.getHeight()));
+					}
+
+					GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+
+					if (texture != null)
+					{
+						GL13.glActiveTexture(GL13.GL_TEXTURE0);
+						texture.unbind();
+					}
 				}
-
-				//TODO: disable culling if transparent . . .
-
-				program.setUniform("u_model_view_projection", projViewMatrix.mul(matrix, matrix));
-				GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
-
-				if (texture != null)
-				{
-					GL13.glActiveTexture(GL13.GL_TEXTURE0);
-					texture.unbind();
-				}
-
 				mesh.unbind();
 			}
 		}
@@ -142,7 +158,8 @@ public class ShadowRenderer
 
 	public Matrix4f getToShadowMapSpaceMatrix()
 	{
-		return this.offset.mul(this.projViewMatrix, new Matrix4f());
+		Matrix4f mat = new Matrix4f();
+		return this.offset.mul(this.lightViewProjMatrix, mat);
 	}
 
 	public FBO getShadowFBO()
@@ -155,25 +172,27 @@ public class ShadowRenderer
 		return this.shadowMap;
 	}
 
-	private void updateLightView(Vector3f dir, Vector3f center)
+	private Matrix4f updateLightView(Vector3f dir, Vector3f center, Matrix4f dst)
 	{
 		dir.normalize();
 		center.negate();
-		lightViewMatrix.identity();
+		dst.identity();
 		float pitch = (float) Math.acos(new Vector2f(dir.x, dir.z).length());
-		this.lightViewMatrix.rotate(pitch, new Vector3f(1, 0, 0));
+		dst.rotate(pitch, new Vector3f(1, 0, 0));
 		float yaw = (float) Math.toDegrees(((float) Math.atan(dir.x / dir.z)));
 		yaw = dir.z > 0 ? yaw - 180 : yaw;
-		this.lightViewMatrix.rotate((float) -Math.toRadians(yaw), new Vector3f(0, 1, 0));
-		this.lightViewMatrix.translate(center);
+		dst.rotate((float) -Math.toRadians(yaw), new Vector3f(0, 1, 0));
+		dst.translate(center);
+		return dst;
 	}
 
-	private void updateOrthoProjection(float width, float height, float length)
+	private Matrix4f updateOrthoProjection(float width, float height, float length, Matrix4f dst)
 	{
-		this.projectionMatrix.identity();
-		this.projectionMatrix.m00(2F / width);
-		this.projectionMatrix.m11(2F / height);
-		this.projectionMatrix.m22(-2F / length);
-		this.projectionMatrix.m33(1F);
+		dst.identity();
+		dst.m00(2F / width);
+		dst.m11(2F / height);
+		dst.m22(-2F / length);
+		dst.m33(1F);
+		return dst;
 	}
 }

@@ -1,8 +1,7 @@
 package net.jimboi.stage_b.glim;
 
-import net.jimboi.base.Main;
-import net.jimboi.stage_b.glim.gameentity.GameEntityManager;
-
+import org.qsilver.entity.EntityManager;
+import org.qsilver.renderer.RenderEngine;
 import org.qsilver.scene.Scene;
 
 /**
@@ -12,7 +11,7 @@ public abstract class SceneGlimBase extends Scene
 {
 	protected RendererGlim renderer;
 
-	protected GameEntityManager entityManager;
+	protected EntityManager entityManager;
 
 	public SceneGlimBase()
 	{
@@ -21,14 +20,14 @@ public abstract class SceneGlimBase extends Scene
 	@Override
 	protected void onSceneCreate()
 	{
-		this.entityManager = new GameEntityManager();
+		this.entityManager = new EntityManager();
 	}
 
 	@Override
-	protected final void onSceneLoad()
+	protected final void onSceneLoad(RenderEngine renderManager)
 	{
-		this.renderer = new RendererGlim((SceneGlim) this);
-		Main.RENDERENGINE.add(this.renderer);
+		this.renderer = new RendererGlim();
+		renderManager.add(this.renderer);
 	}
 
 	@Override
@@ -38,9 +37,9 @@ public abstract class SceneGlimBase extends Scene
 	}
 
 	@Override
-	protected final void onSceneUnload()
+	protected final void onSceneUnload(RenderEngine renderManager)
 	{
-		Main.RENDERENGINE.remove(this.renderer);
+		renderManager.remove(this.renderer);
 		this.renderer = null;
 	}
 
@@ -50,7 +49,7 @@ public abstract class SceneGlimBase extends Scene
 		this.entityManager.clear();
 	}
 
-	public final GameEntityManager getEntityManager()
+	public final EntityManager getEntityManager()
 	{
 		return this.entityManager;
 	}

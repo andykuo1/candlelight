@@ -34,7 +34,7 @@ public class BillboardRenderer implements AutoCloseable
 	private final Type type;
 
 	private final Matrix4f modelViewProjMatrix = new Matrix4f();
-	private final Matrix4f projViewMatrix = new Matrix4f();
+	private final Matrix4f modelViewMatrix = new Matrix4f();
 	private final Matrix4f modelMatrix = new Matrix4f();
 
 	public BillboardRenderer(Asset<Program> program, Type type)
@@ -52,7 +52,6 @@ public class BillboardRenderer implements AutoCloseable
 	{
 		Matrix4fc proj = camera.projection();
 		Matrix4fc view = camera.view();
-		Matrix4fc projView = proj.mul(view, this.projViewMatrix);
 
 		final Program program = this.program.getSource();
 		program.bind();
@@ -69,16 +68,25 @@ public class BillboardRenderer implements AutoCloseable
 
 				Texture texture = null;
 				Sprite sprite = null;
+				boolean transparency = false;
 
 				if (material.hasComponent(PropertyTexture.class))
 				{
 					PropertyTexture propTexture = material.getComponent(PropertyTexture.class);
 					texture = propTexture.texture.getSource();
 					sprite = propTexture.sprite;
+					transparency = propTexture.transparent;
 				}
+				program.setUniform("u_transparency", transparency);
 
 				Matrix4fc transformation = inst.getRenderTransformation(this.modelMatrix);
-				Matrix4fc modelViewProj = projView.mul(transformation, this.modelViewProjMatrix);
+				Matrix4fc modelView = view.mul(transformation, this.modelViewMatrix).m00(1).m01(0).m02(0).m20(0).m21(0).m22(1);
+				if (this.type == Type.SPHERICAL)
+				{
+					((Matrix4f) modelView).m10(0).m11(1).m12(0);
+				}
+
+				Matrix4fc modelViewProj = proj.mul(modelView, this.modelViewProjMatrix);
 				program.setUniform("u_model", transformation);
 				program.setUniform("u_model_view_projection", modelViewProj);
 
@@ -97,8 +105,6 @@ public class BillboardRenderer implements AutoCloseable
 						program.setUniform("u_tex_offset", new Vector2f(sprite.getU(), sprite.getV()));
 						program.setUniform("u_tex_scale", new Vector2f(sprite.getWidth(), sprite.getHeight()));
 					}
-
-					program.setUniform("u_billboard_type", this.type.ordinal());
 
 					GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 

@@ -2,6 +2,8 @@ package org.bstone.window;
 
 import org.bstone.input.InputEngine;
 import org.bstone.util.listener.Listenable;
+import org.joml.Vector2f;
+import org.joml.Vector2fc;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
@@ -219,6 +221,13 @@ public class Window
 	{
 		this.viewports.clear();
 		this.setCurrentViewPort(this.defaultViewPort);
+	}
+
+	public Vector2f toNormalizedDeviceCoords(Vector2fc windowPos, Vector2f dst)
+	{
+		float x = (2F * windowPos.x()) / this.width - 1;
+		float y = 1F - (2F * windowPos.y()) / this.height;
+		return dst.set(x, y);
 	}
 
 	public int getWidth()

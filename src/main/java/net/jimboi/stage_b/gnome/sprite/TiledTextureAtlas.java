@@ -33,22 +33,28 @@ public class TiledTextureAtlas extends TextureAtlas
 
 	public Sprite getSprite(int x, int y)
 	{
+		if (x < 0 || x >= this.rowSize) throw new IllegalArgumentException("'" + x + "' exceeds sprite x range of '0 - " + this.rowSize + "'!");
+		if (y < 0 || y >= this.colSize) throw new IllegalArgumentException("'" + y + "' exceeds sprite y range of '0 - " + this.colSize + "'!");
+
 		return getSprite(x + y * this.rowSize);
 	}
 
 	@Override
 	public Sprite getSprite(int index)
 	{
+		if (index < 0 || index >= this.sprites.length) throw new IllegalArgumentException("'" + index + "' exceeds sprite index range of '0 - " + this.sprites.length + "'!");
+
 		Sprite sprite = this.sprites[index];
 		if (sprite == null)
 		{
-			float u = (index % this.rowSize) * this.spriteWidth;
-			float v = (index / this.rowSize) * this.spriteHeight;
-			float w = this.spriteWidth;
-			float h = this.spriteHeight;
+			final int w = this.spriteWidth;
+			final int h = this.spriteHeight;
+			final int u = (index % this.rowSize) * w;
+			//TODO: This is because OpenGL texture origin is bottom-left, NOT top-left
+			final int v = ((this.colSize - 1) * h) - (index / this.rowSize) * h;
 			Texture t = this.texture.getSource();
-			float tw = t.width();
-			float th = t.height();
+			final float tw = t.width();
+			final float th = t.height();
 
 			sprite = this.sprites[index] = new Sprite(this.texture, u / tw, v / th, w / tw, h / th);
 		}

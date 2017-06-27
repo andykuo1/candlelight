@@ -1,8 +1,7 @@
-package net.jimboi.stage_b.glim.system;
-
-import net.jimboi.stage_b.glim.gameentity.GameEntityManager;
+package net.jimboi.stage_b.glim.gameentity.system;
 
 import org.bstone.util.listener.Listenable;
+import org.qsilver.entity.EntityManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +21,12 @@ public abstract class EntitySystemBase
 		}
 	}
 
-	protected final GameEntityManager entityManager;
+	protected final EntityManager entityManager;
 
 	private List<Listenable> listenables = new ArrayList<>();
 	private boolean active = false;
 
-	public EntitySystemBase(GameEntityManager entityManager)
+	public EntitySystemBase(EntityManager entityManager)
 	{
 		this.entityManager = entityManager;
 	}
@@ -57,7 +56,7 @@ public abstract class EntitySystemBase
 
 	public abstract void onStop();
 
-	public GameEntityManager getEntityManager()
+	public EntityManager getEntityManager()
 	{
 		return this.entityManager;
 	}

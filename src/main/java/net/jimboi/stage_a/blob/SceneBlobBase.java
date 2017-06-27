@@ -6,6 +6,7 @@ import net.jimboi.stage_a.mod.scene.LivingSceneBase;
 
 import org.qsilver.living.Living;
 import org.qsilver.living.LivingManager;
+import org.qsilver.renderer.RenderEngine;
 import org.qsilver.renderer.Renderer;
 
 /**
@@ -24,13 +25,13 @@ public abstract class SceneBlobBase extends LivingSceneBase implements LivingMan
 	}
 
 	@Override
-	protected final void onSceneLoad()
+	protected final void onSceneLoad(RenderEngine renderManager)
 	{
 		Main.RENDERENGINE.add(this.renderer);
 	}
 
 	@Override
-	protected final void onSceneUnload()
+	protected final void onSceneUnload(RenderEngine renderManager)
 	{
 		Main.RENDERENGINE.remove(this.renderer);
 	}

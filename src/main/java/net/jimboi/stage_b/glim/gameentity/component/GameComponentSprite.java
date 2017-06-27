@@ -1,6 +1,5 @@
 package net.jimboi.stage_b.glim.gameentity.component;
 
-import net.jimboi.stage_b.gnome.sprite.Sprite;
 import net.jimboi.stage_b.gnome.sprite.SpriteSheet;
 
 /**
@@ -9,10 +8,13 @@ import net.jimboi.stage_b.gnome.sprite.SpriteSheet;
 public class GameComponentSprite extends GameComponent
 {
 	public SpriteSheet spritesheet;
-	public Sprite sprite;
+	public float frametime;
+	public float framedelta;
 
-	public GameComponentSprite(SpriteSheet spritesheet)
+	public GameComponentSprite(SpriteSheet spritesheet, float frametime)
 	{
 		this.spritesheet = spritesheet;
+		this.frametime = frametime;
+		this.framedelta = 0;
 	}
 }

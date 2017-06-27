@@ -1,6 +1,7 @@
 package org.qsilver.scene;
 
 import org.bstone.util.listener.Listenable;
+import org.qsilver.renderer.RenderEngine;
 
 /**
  * Created by Andy on 3/1/17.
@@ -52,7 +53,7 @@ public abstract class Scene
 
 	protected abstract void onSceneCreate();
 
-	protected abstract void onSceneLoad();
+	protected abstract void onSceneLoad(RenderEngine renderManager);
 
 	protected abstract void onSceneStart();
 
@@ -60,7 +61,7 @@ public abstract class Scene
 
 	protected abstract void onSceneStop();
 
-	protected abstract void onSceneUnload();
+	protected abstract void onSceneUnload(RenderEngine renderManager);
 
 	protected abstract void onSceneDestroy();
 }

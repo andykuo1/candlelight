@@ -1,6 +1,6 @@
 package net.jimboi.base;
 
-import net.jimboi.stage_b.glim.SceneGlim;
+import net.jimboi.stage_b.physx.ScenePhysx;
 
 import org.bstone.input.InputEngine;
 import org.bstone.tick.TickEngine;
@@ -28,10 +28,11 @@ public class Main
 
 	public static void main(String[] args)
 	{
+		Class<? extends Scene> scene = ScenePhysx.class;
 		Poma.makeSystemLogger();
 
 		Poma.div();
-		Poma.info("THE AWESOME PROGRAM");
+		Poma.info("The Awesome Program: " + scene.getSimpleName());
 		Poma.info("By: Andrew Kuo");
 		Poma.info("Running program with args: " + Arrays.asList(args));
 		Poma.div();
@@ -44,30 +45,52 @@ public class Main
 		TICKENGINE.onFixedUpdate.addListener(SCENEMANAGER::update);
 		TICKENGINE.onUpdate.addListener(() ->
 		{
-			SCENEMANAGER.render();
+			SCENEMANAGER.renderUpdate(RENDERENGINE);
 			RENDERENGINE.update();
 		});
 
 		WINDOW = new Window("Application", 640, 480);
 		INPUTENGINE = WINDOW.getInputEngine();
 
-		SCENEMANAGER.nextScene(SCENE = new SceneGlim());
+		try
+		{
+			SCENE = scene.newInstance();
+		}
+		catch (InstantiationException | IllegalAccessException e)
+		{
+			throw new IllegalArgumentException("Invalid scene class! Must have defined default constructor!");
+		}
+
+		SCENEMANAGER.nextScene(SCENE);
 
 		RENDERENGINE.start();
 
+		boolean flag = false;
 		while(TICKENGINE.shouldKeepRunning())
 		{
-			if (WINDOW.shouldCloseWindow())
+			if (!flag)
+			{
+				if (WINDOW.shouldCloseWindow())
+				{
+					flag = true;
+					SCENEMANAGER.stopScene();
+					continue;
+				}
+
+				WINDOW.update();
+			}
+			else if (!SCENEMANAGER.isActive())
 			{
 				TICKENGINE.stop();
-				continue;
 			}
 
-			WINDOW.update();
 			TICKENGINE.update();
-			WINDOW.poll();
+
+			if (!flag)
+			{
+				WINDOW.poll();
+			}
 		}
-		SCENEMANAGER.clear();
 
 		RENDERENGINE.stop();
 		WINDOW.destroy();

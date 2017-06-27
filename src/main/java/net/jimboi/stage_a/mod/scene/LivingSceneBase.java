@@ -20,8 +20,18 @@ public abstract class LivingSceneBase extends Scene
 	public LivingSceneBase()
 	{
 		this.livingManager = new LivingManager();
-
-		this.livingManager.addLivingSet(this.entities, LivingBase.class);
+		this.livingManager.onLivingAdd.addListener((living -> {
+			if (living instanceof LivingBase)
+			{
+				this.entities.add((LivingBase) living);
+			}
+		}));
+		this.livingManager.onLivingRemove.addListener((living -> {
+			if (living instanceof LivingBase)
+			{
+				this.entities.remove(living);
+			}
+		}));
 	}
 
 	@Override
