@@ -15,7 +15,7 @@ public abstract class Transform3 implements Transform
 
 	public static Transform3 create()
 	{
-		return USE_EULER ? new Transform3E() : new Transform3Q();
+		return USE_EULER ? new Transform3Euler() : new Transform3Quat();
 	}
 
 	public static final Vector3fc XAXIS = new Vector3f(1, 0, 0);

@@ -8,80 +8,84 @@ import org.joml.Vector3fc;
 /**
  * Created by Andy on 4/30/17.
  */
-public class Transform3Q extends Transform3
+public class Transform3Euler extends Transform3
 {
-	public final Quaternionf rotation = new Quaternionf();
+	public final Vector3f radians = new Vector3f();
 
+	protected final Quaternionf rotation = new Quaternionf();
 	protected final Vector3f eulerAngles = new Vector3f();
-	protected final Vector3f eulerRadians = new Vector3f();
 
-	protected Transform3Q()
+	protected Transform3Euler()
 	{
 	}
 
 	@Override
 	public Vector3fc eulerRadians()
 	{
-		return this.rotation.getEulerAnglesXYZ(this.eulerRadians);
+		return this.radians;
 	}
 
 	@Override
 	public Vector3fc eulerAngles()
 	{
-		return this.rotation.getEulerAnglesXYZ(this.eulerRadians).mul(RAD2DEG);
+		return this.eulerAngles.set(this.radians).mul(RAD2DEG);
 	}
 
 	@Override
 	public Quaternionfc rotation()
 	{
-		return this.rotation;
+		return this.rotation.rotationXYZ(this.radians.x, this.radians.y, this.radians.z);
 	}
 
 	@Override
 	public void rotate(Quaternionfc rot)
 	{
+		this.rotation.rotationXYZ(this.radians.x, this.radians.y, this.radians.z);
 		this.rotation.mul(rot);
+		this.rotation.getEulerAnglesXYZ(this.radians);
 	}
 
 	@Override
 	public void rotate(float radian, Vector3fc axis)
 	{
+		this.rotation.rotationXYZ(this.radians.x, this.radians.y, this.radians.z);
 		this.rotation.rotateAxis(radian, axis);
+		this.rotation.getEulerAnglesXYZ(this.radians);
 	}
 
 	@Override
 	public void rotate(float pitch, float yaw, float roll)
 	{
-		this.rotation.rotateXYZ(pitch, yaw, roll);
+		this.radians.add(pitch, yaw, roll);
 	}
 
 	@Override
 	public void setPitch(float pitch)
 	{
-		this.rotation.rotationX(pitch);
+		this.radians.x = pitch;
 	}
 
 	@Override
 	public void setYaw(float yaw)
 	{
-		this.rotation.rotationY(yaw);
+		this.radians.y = yaw;
 	}
 
 	@Override
 	public void setRoll(float roll)
 	{
-		this.rotation.rotationZ(roll);
+		this.radians.z = roll;
 	}
 
 	@Override
 	public void setEulerRadians(float pitch, float yaw, float roll)
 	{
-		this.rotation.rotationXYZ(pitch, yaw, roll);
+		this.radians.set(pitch, yaw, roll);
 	}
 
 	@Override
 	public void setRotation(Quaternionfc rotation)
 	{
-		this.rotation.set(rotation);
+		rotation.getEulerAnglesXYZ(this.radians);
 	}
 }

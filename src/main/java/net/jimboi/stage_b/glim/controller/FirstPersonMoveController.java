@@ -5,7 +5,7 @@ import net.jimboi.stage_b.glim.bounding.BoundingManager;
 import net.jimboi.stage_b.glim.bounding.IntersectionData;
 import net.jimboi.stage_b.gnome.transform.Transform;
 import net.jimboi.stage_b.gnome.transform.Transform3;
-import net.jimboi.stage_b.gnome.transform.Transform3Q;
+import net.jimboi.stage_b.gnome.transform.Transform3Quat;
 
 import org.bstone.camera.Camera;
 import org.bstone.input.InputEngine;
@@ -30,11 +30,11 @@ public class FirstPersonMoveController
 
 	protected float counter;
 
-	protected final Transform3Q target;
+	protected final Transform3Quat target;
 	protected final Bounding bounding;
 	protected final BoundingManager boundingManager;
 
-	public FirstPersonMoveController(Transform3Q target, Bounding bounding, BoundingManager boundingManager)
+	public FirstPersonMoveController(Transform3Quat target, Bounding bounding, BoundingManager boundingManager)
 	{
 		this.target = target;
 		this.bounding = bounding;

@@ -1,6 +1,6 @@
 package org.bstone.camera;
 
-import net.jimboi.stage_b.gnome.transform.Transform3Q;
+import net.jimboi.stage_b.gnome.transform.Transform3Quat;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -14,7 +14,7 @@ public class PerspectiveCamera extends Camera
 {
 	public static final Vector3fc NZAXIS = new Vector3f(0, 0, -1);
 
-	private final Transform3Q transform = new Transform3Q(){
+	private final Transform3Quat transform = new Transform3Quat(){
 		@Override
 		public Vector3f getForward(Vector3f dst)
 		{
@@ -37,7 +37,7 @@ public class PerspectiveCamera extends Camera
 	}
 
 	@Override
-	public Transform3Q getTransform()
+	public Transform3Quat getTransform()
 	{
 		return this.transform;
 	}

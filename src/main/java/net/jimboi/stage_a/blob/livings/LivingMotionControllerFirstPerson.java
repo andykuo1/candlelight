@@ -4,7 +4,7 @@ import net.jimboi.base.Main;
 import net.jimboi.stage_a.blob.RendererBlob;
 import net.jimboi.stage_b.gnome.transform.Transform;
 import net.jimboi.stage_b.gnome.transform.Transform3;
-import net.jimboi.stage_b.gnome.transform.Transform3Q;
+import net.jimboi.stage_b.gnome.transform.Transform3Quat;
 
 import org.bstone.camera.Camera;
 import org.bstone.input.InputEngine;
@@ -85,7 +85,7 @@ public abstract class LivingMotionControllerFirstPerson extends LivingMotion imp
 			Vector3f right = cameraTransform.getRight(new Vector3f());
 			cameraTransform.rotate(this.pitch, right);
 
-			Transform3Q transform = (Transform3Q) this.transform();
+			Transform3Quat transform = (Transform3Quat) this.transform();
 			transform.setRotation(RendererBlob.camera.getTransform().rotation);
 			transform.rotation.x = 0;
 			transform.rotation.z = 0;

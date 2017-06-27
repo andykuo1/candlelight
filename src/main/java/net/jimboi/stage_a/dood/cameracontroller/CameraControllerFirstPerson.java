@@ -3,7 +3,7 @@ package net.jimboi.stage_a.dood.cameracontroller;
 import net.jimboi.base.Main;
 import net.jimboi.stage_b.gnome.transform.Transform;
 import net.jimboi.stage_b.gnome.transform.Transform3;
-import net.jimboi.stage_b.gnome.transform.Transform3Q;
+import net.jimboi.stage_b.gnome.transform.Transform3Quat;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;
@@ -87,7 +87,7 @@ public class CameraControllerFirstPerson implements CameraController, Scene.OnSc
 			Vector3f right = cameraTransform.getRight(_VEC);
 			cameraTransform.rotate(this.pitch, right);
 
-			Transform3Q transform = (Transform3Q) this.target;
+			Transform3Quat transform = (Transform3Quat) this.target;
 			transform.setRotation(transform.rotation);
 			transform.rotation.x = 0;
 			transform.rotation.z = 0;

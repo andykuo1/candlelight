@@ -5,7 +5,7 @@ import net.jimboi.stage_b.glim.controller.FirstPersonLookController;
 import net.jimboi.stage_b.glim.controller.FirstPersonMoveController;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentBounding;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentTransform;
-import net.jimboi.stage_b.gnome.transform.Transform3Q;
+import net.jimboi.stage_b.gnome.transform.Transform3Quat;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;
@@ -24,8 +24,8 @@ public class CameraControllerGlim implements CameraController, InputEngine.OnInp
 
 	public CameraControllerGlim(Entity target, WorldGlim world)
 	{
-		this.lookController = new FirstPersonLookController((Transform3Q) target.getComponent(GameComponentTransform.class).transform);
-		this.moveController = new FirstPersonMoveController((Transform3Q) target.getComponent(GameComponentTransform.class).transform, target.getComponent(GameComponentBounding.class).bounding, world.getBoundingManager());
+		this.lookController = new FirstPersonLookController((Transform3Quat) target.getComponent(GameComponentTransform.class).transform);
+		this.moveController = new FirstPersonMoveController((Transform3Quat) target.getComponent(GameComponentTransform.class).transform, target.getComponent(GameComponentBounding.class).bounding, world.getBoundingManager());
 		this.world = world;
 	}
 

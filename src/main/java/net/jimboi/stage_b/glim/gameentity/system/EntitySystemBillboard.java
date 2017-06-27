@@ -4,7 +4,7 @@ import net.jimboi.stage_b.glim.gameentity.component.GameComponentBillboard;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentTransform;
 import net.jimboi.stage_b.glim.renderer.BillboardRenderer;
 import net.jimboi.stage_b.gnome.transform.Transform;
-import net.jimboi.stage_b.gnome.transform.Transform3Q;
+import net.jimboi.stage_b.gnome.transform.Transform3Quat;
 
 import org.bstone.camera.Camera;
 import org.joml.Vector3f;
@@ -54,7 +54,7 @@ public class EntitySystemBillboard extends EntitySystemBase implements Scene.OnS
 			GameComponentBillboard componentBillboard = entity.getComponent(GameComponentBillboard.class);
 			GameComponentTransform componentTransform = entity.getComponent(GameComponentTransform.class);
 
-			Transform3Q transform = (Transform3Q) componentTransform.transform;
+			Transform3Quat transform = (Transform3Quat) componentTransform.transform;
 
 			this.camera.getTransform().position.sub(transform.position, VEC);
 

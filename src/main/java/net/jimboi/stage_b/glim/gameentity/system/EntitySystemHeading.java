@@ -9,7 +9,7 @@ import net.jimboi.stage_b.glim.gameentity.component.GameComponentTargeter;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentTransform;
 import net.jimboi.stage_b.gnome.instance.InstanceManager;
 import net.jimboi.stage_b.gnome.transform.Transform;
-import net.jimboi.stage_b.gnome.transform.Transform3Q;
+import net.jimboi.stage_b.gnome.transform.Transform3Quat;
 
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
@@ -61,7 +61,7 @@ public class EntitySystemHeading extends EntitySystemBase implements Scene.OnSce
 			GameComponentTransform componentTransform = entity.getComponent(GameComponentTransform.class);
 			GameComponentHeading componentHeading = entity.getComponent(GameComponentHeading.class);
 			GameComponentBounding componentBounding = entity.getComponent(GameComponentBounding.class);
-			Transform3Q transform = (Transform3Q) componentTransform.transform;
+			Transform3Quat transform = (Transform3Quat) componentTransform.transform;
 
 			//Update navigator
 			if (entity.hasComponent(GameComponentNavigator.class) && entity.hasComponent(GameComponentTargeter.class))

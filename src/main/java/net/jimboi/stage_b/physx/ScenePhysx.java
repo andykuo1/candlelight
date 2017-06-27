@@ -18,7 +18,7 @@ import net.jimboi.stage_b.gnome.material.property.PropertySpecular;
 import net.jimboi.stage_b.gnome.material.property.PropertyTexture;
 import net.jimboi.stage_b.gnome.model.Model;
 import net.jimboi.stage_b.gnome.transform.Transform3;
-import net.jimboi.stage_b.gnome.transform.Transform3Q;
+import net.jimboi.stage_b.gnome.transform.Transform3Quat;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
@@ -32,7 +32,7 @@ public class ScenePhysx extends SceneGlimBase
 	private EntitySystem2D sys_2D;
 	private EntitySystemBillboard sys_billboard;
 
-	private Transform3Q player;
+	private Transform3Quat player;
 	private Transform3 transform;
 	private MousePicker picker;
 
@@ -52,7 +52,7 @@ public class ScenePhysx extends SceneGlimBase
 
 		this.sys_billboard = new EntitySystemBillboard(this.entityManager, this, RendererGlim.CAMERA);
 
-		final Transform3Q transform = (Transform3Q) Transform3.create();
+		final Transform3Quat transform = (Transform3Quat) Transform3.create();
 		this.player = this.spawnEntity(0, 0, 0);
 		RendererGlim.CAMERA.setCameraController(new BasicTopDownCameraController(transform));
 
@@ -65,9 +65,9 @@ public class ScenePhysx extends SceneGlimBase
 		this.spawnEntity(0, -2, 0);
 	}
 
-	public Transform3Q spawnEntity(float x, float y, float z)
+	public Transform3Quat spawnEntity(float x, float y, float z)
 	{
-		final Transform3Q transform = (Transform3Q) Transform3.create();
+		final Transform3Quat transform = (Transform3Quat) Transform3.create();
 		transform.setPosition(x, y, z);
 		this.entityManager.createEntity(
 				new GameComponentTransform(transform),

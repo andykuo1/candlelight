@@ -2,7 +2,7 @@ package net.jimboi.stage_b.gnome;
 
 import net.jimboi.stage_b.gnome.transform.Transform;
 import net.jimboi.stage_b.gnome.transform.Transform3;
-import net.jimboi.stage_b.gnome.transform.Transform3Q;
+import net.jimboi.stage_b.gnome.transform.Transform3Quat;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;
@@ -28,9 +28,9 @@ public class BasicTopDownCameraController implements CameraController, InputEngi
 	protected float right;
 	protected boolean sprint;
 
-	protected final Transform3Q target;
+	protected final Transform3Quat target;
 
-	public BasicTopDownCameraController(Transform3Q target)
+	public BasicTopDownCameraController(Transform3Quat target)
 	{
 		this.target = target;
 

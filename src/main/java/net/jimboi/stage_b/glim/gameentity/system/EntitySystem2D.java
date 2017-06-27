@@ -3,7 +3,7 @@ package net.jimboi.stage_b.glim.gameentity.system;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponent2D;
 import net.jimboi.stage_b.glim.gameentity.component.GameComponentTransform;
 import net.jimboi.stage_b.gnome.transform.Transform;
-import net.jimboi.stage_b.gnome.transform.Transform3Q;
+import net.jimboi.stage_b.gnome.transform.Transform3Quat;
 
 import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
@@ -44,7 +44,7 @@ public class EntitySystem2D extends EntitySystemBase implements Scene.OnSceneUpd
 			GameComponent2D component2D = entity.getComponent(GameComponent2D.class);
 			GameComponentTransform componentTransform = entity.getComponent(GameComponentTransform.class);
 
-			Transform3Q transform = (Transform3Q) componentTransform.transform;
+			Transform3Quat transform = (Transform3Quat) componentTransform.transform;
 			transform.rotation.rotationXYZ(-Transform.HALF_PI, 0, 0);
 		}
 	}

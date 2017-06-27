@@ -2,7 +2,7 @@ package net.jimboi.stage_b.gnome;
 
 import net.jimboi.stage_b.gnome.transform.Transform;
 import net.jimboi.stage_b.gnome.transform.Transform3;
-import net.jimboi.stage_b.gnome.transform.Transform3Q;
+import net.jimboi.stage_b.gnome.transform.Transform3Quat;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;
@@ -38,9 +38,9 @@ public class BasicFirstPersonCameraController implements CameraController, Input
 
 	protected float counter;
 
-	protected final Transform3Q target;
+	protected final Transform3Quat target;
 
-	public BasicFirstPersonCameraController(Transform3Q target)
+	public BasicFirstPersonCameraController(Transform3Quat target)
 	{
 		this.target = target;
 	}
@@ -64,7 +64,7 @@ public class BasicFirstPersonCameraController implements CameraController, Input
 		Vector3f right = cameraTransform.getRight(_RIGHT);
 		cameraTransform.rotate(this.pitch, right);
 
-		Transform3Q transform = this.target;
+		Transform3Quat transform = this.target;
 		transform.setRotation(transform.rotation);
 		transform.rotation.x = 0;
 		transform.rotation.z = 0;
