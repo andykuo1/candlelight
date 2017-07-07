@@ -30,8 +30,8 @@ public class TextureAtlasBuilder
 			this.height = this.texture.getSource().height();
 		}
 
-		float u = spriteX / (float) this.width;
-		float v = spriteY / (float) this.height;
+		float u = (this.width - spriteX - spriteWidth) / (float) this.width;
+		float v = (this.height - spriteY - spriteHeight) / (float) this.height;
 		float w = spriteWidth / (float) this.width;
 		float h = spriteHeight / (float) this.height;
 

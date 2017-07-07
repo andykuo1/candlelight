@@ -77,9 +77,10 @@ public class AnimationManager
 
 	private final Set<Animator> animators = new HashSet<>();
 
-	public void start(Animator animator)
+	public <T> Animator<T> start(Animator<T> animator)
 	{
 		this.animators.add(animator);
+		return animator;
 	}
 
 	public void update(double delta)

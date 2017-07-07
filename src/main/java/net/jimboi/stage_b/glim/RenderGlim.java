@@ -41,9 +41,9 @@ import java.util.List;
 /**
  * Created by Andy on 6/1/17.
  */
-public class RenderManagerGlim extends RenderBase
+public class RenderGlim extends RenderBase
 {
-	public static RenderManagerGlim INSTANCE;
+	public static RenderGlim INSTANCE;
 	public static List<DynamicLight> LIGHTS = new ArrayList<>();
 
 	protected SimpleRenderer simpleRenderer;
@@ -56,7 +56,7 @@ public class RenderManagerGlim extends RenderBase
 
 	protected final Assets assets;
 
-	public RenderManagerGlim(CameraController controller)
+	public RenderGlim(CameraController controller)
 	{
 		super(new PerspectiveCamera(640, 480), controller);
 
@@ -110,16 +110,16 @@ public class RenderManagerGlim extends RenderBase
 
 		//Renderers
 		this.simpleRenderer = new SimpleRenderer(assets.getAsset(Program.class, "simple"));
-		this.diffuseRenderer = new DiffuseRenderer(assets, GameEngine.WINDOW, this.getCamera(), RenderManagerGlim.LIGHTS, assets.getAsset(Program.class, "diffuse"));
+		this.diffuseRenderer = new DiffuseRenderer(assets, GameEngine.WINDOW, this.getCamera(), RenderGlim.LIGHTS, assets.getAsset(Program.class, "diffuse"));
 		this.billboardRenderer = new BillboardRenderer(assets.getAsset(Program.class, "billboard"), BillboardRenderer.Type.CYLINDRICAL);
 		this.wireframeRenderer = new WireframeRenderer(assets.getAsset(Program.class, "wireframe"));
 		this.boundingRenderer = new BoundingRenderer(assets.getAsset(Program.class, "wireframe"));
 		this.boundingRenderer.setup(assets);
 
 		//Lights
-		RenderManagerGlim.LIGHTS.add(DynamicLight.createSpotLight(0, 0, 0, 0xFFFFFF, 0.4F, 0.1F, 0, 15F, 1, 1, 1));
-		RenderManagerGlim.LIGHTS.add(DynamicLight.createPointLight(0, 0, 0, 0xFFFFFF, 0.6F, 0.1F, 0));
-		RenderManagerGlim.LIGHTS.add(DynamicLight.createDirectionLight(10000F, 10000F, 10000F, 0xFFFFFF, 0.2F, 0.1F));
+		RenderGlim.LIGHTS.add(DynamicLight.createSpotLight(0, 0, 0, 0xFFFFFF, 0.4F, 0.1F, 0, 15F, 1, 1, 1));
+		RenderGlim.LIGHTS.add(DynamicLight.createPointLight(0, 0, 0, 0xFFFFFF, 0.6F, 0.1F, 0));
+		RenderGlim.LIGHTS.add(DynamicLight.createDirectionLight(10000F, 10000F, 10000F, 0xFFFFFF, 0.2F, 0.1F));
 
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glCullFace(GL11.GL_BACK);
@@ -128,7 +128,7 @@ public class RenderManagerGlim extends RenderBase
 	@Override
 	public void onRenderUpdate()
 	{
-		SceneBase scene = (SceneBase) GameEngine.SCENEMANAGER.getScene();
+		SceneBase scene = (SceneBase) GameEngine.SCENEMANAGER.getCurrentScene();
 		if (scene == null) return;
 
 		Collection<EntityComponentRenderable> instances = scene.getEntityManager().getComponents(new HashSet<>(), EntityComponentRenderable.class);

@@ -31,9 +31,7 @@ public final class SpriteSheet
 
 	public void next()
 	{
-		this.index++;
-
-		if (this.index >= this.indices.length) this.index = 0;
+		if (++this.index >= this.indices.length) this.index = 0;
 	}
 
 	public Sprite get()

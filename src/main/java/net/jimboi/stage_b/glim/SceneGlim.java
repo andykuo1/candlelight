@@ -18,6 +18,7 @@ import org.joml.Vector4f;
 import org.qsilver.asset.Asset;
 import org.qsilver.entity.Entity;
 import org.qsilver.transform.Transform;
+import org.zilar.animation.AnimatorSpriteSheet;
 import org.zilar.base.GameEngine;
 import org.zilar.base.SceneBase;
 import org.zilar.meshbuilder.MeshData;
@@ -29,6 +30,7 @@ import org.zilar.property.PropertyTexture;
 import org.zilar.renderer.shadow.DynamicLight;
 import org.zilar.resourceloader.MeshLoader;
 import org.zilar.resourceloader.TextureAtlasLoader;
+import org.zilar.sprite.SpriteSheet;
 import org.zilar.sprite.TextureAtlas;
 import org.zilar.sprite.TextureAtlasBuilder;
 import org.zilar.sprite.TextureAtlasData;
@@ -56,7 +58,7 @@ public class SceneGlim extends SceneBase
 
 	public SceneGlim()
 	{
-		super(new RenderManagerGlim(new CameraControllerGlim()));
+		super(new RenderGlim(new CameraControllerGlim()));
 	}
 
 	@Override
@@ -111,6 +113,9 @@ public class SceneGlim extends SceneBase
 								"diffuse"))
 		);
 
+		SpriteSheet spritesheet = new SpriteSheet(textureAtlas, 0, 256);
+		this.getAnimationManager().start(new AnimatorSpriteSheet(spritesheet, 0.1F));
+
 		this.shadowplane = this.getEntityManager().createEntity(
 				new EntityComponentRenderable(
 					Transform3.create(),
@@ -119,7 +124,7 @@ public class SceneGlim extends SceneBase
 									new PropertyDiffuse(),
 									new PropertySpecular(),
 									new PropertyShadow(true, true),
-									new PropertyTexture(GameEngine.ASSETMANAGER.getAsset(Texture.class, "font"))),
+									new PropertyTexture(spritesheet)),//GameEngine.ASSETMANAGER.getAsset(Texture.class, "shadowmap"))),
 							"billboard"))
 		);
 
@@ -135,10 +140,10 @@ public class SceneGlim extends SceneBase
 	{
 		Transform transform = this.player.getComponent(EntityComponentTransform.class).transform;
 
-		DynamicLight light = RenderManagerGlim.LIGHTS.get(0);
+		DynamicLight light = RenderGlim.LIGHTS.get(0);
 		light.position = new Vector4f(transform.position(), 1);
 		light.coneDirection.lerp(this.getRenderer().getCamera().getTransform().getForward(new Vector3f()), 0.2F);
-		DynamicLight pt = RenderManagerGlim.LIGHTS.get(1);
+		DynamicLight pt = RenderGlim.LIGHTS.get(1);
 		pt.position = light.position;
 
 		EntityComponentRenderable renderable = this.shadowplane.getComponent(EntityComponentRenderable.class);
@@ -173,8 +178,8 @@ public class SceneGlim extends SceneBase
 	}
 
 	@Override
-	public RenderManagerGlim getRenderer()
+	public RenderGlim getRenderer()
 	{
-		return (RenderManagerGlim) super.getRenderer();
+		return (RenderGlim) super.getRenderer();
 	}
 }

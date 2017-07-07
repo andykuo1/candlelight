@@ -1,6 +1,6 @@
 package net.jimboi.stage_b.physx;
 
-import net.jimboi.stage_b.glim.RenderManagerGlim;
+import net.jimboi.stage_b.glim.RenderGlim;
 import net.jimboi.stage_b.glim.entity.component.EntityComponent2D;
 import net.jimboi.stage_b.glim.entity.component.EntityComponentRenderable;
 import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
@@ -40,7 +40,7 @@ public class ScenePhysx extends SceneBase
 
 	public ScenePhysx()
 	{
-		super(new RenderManagerGlim(new BasicTopDownCameraController()));
+		super(new RenderGlim(new BasicTopDownCameraController()));
 	}
 
 	@Override
@@ -112,8 +112,8 @@ public class ScenePhysx extends SceneBase
 	}
 
 	@Override
-	public RenderManagerGlim getRenderer()
+	public RenderGlim getRenderer()
 	{
-		return (RenderManagerGlim) super.getRenderer();
+		return (RenderGlim) super.getRenderer();
 	}
 }

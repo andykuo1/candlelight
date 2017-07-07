@@ -11,6 +11,7 @@ import org.qsilver.astar.AstarNavigator;
 import org.qsilver.astar.NavigatorMap;
 import org.qsilver.astar.map.NavigatorCardinalMap;
 import org.qsilver.util.map2d.IntMap;
+import org.zilar.animation.AnimationManager;
 import org.zilar.dungeon.DungeonBuilder;
 import org.zilar.dungeon.DungeonData;
 import org.zilar.dungeon.maze.MazeDungeonBuilder;
@@ -98,6 +99,7 @@ public class WorldGlim
 		return this.boundingManager;
 	}
 
+	private static AnimationManager.Animator<Integer> animator;
 	public static MeshData createMeshFromMap(IntMap map, Asset<TextureAtlas> textureAtlas)
 	{
 		MeshBuilder mb = new MeshBuilder();
@@ -122,9 +124,9 @@ public class WorldGlim
 				if (!isSolid(map, x, y))
 				{
 					int tile = 0;
-					if (!isSolid(map, x + 1, y)) tile += 1;
+					if (!isSolid(map, x - 1, y)) tile += 1;
 					if (!isSolid(map, x, y + 1)) tile += 2;
-					if (!isSolid(map, x - 1, y)) tile += 4;
+					if (!isSolid(map, x + 1, y)) tile += 4;
 					if (!isSolid(map, x, y - 1)) tile += 8;
 					sprite = textureAtlas.getSource().getSprite(tile);
 					texTopLeft.set(sprite.getU(), sprite.getV());
@@ -143,11 +145,11 @@ public class WorldGlim
 				else
 				{
 					int tile = 0;
-					if (isSolid(map, x + 1, y)) tile += 1;
+					if (isSolid(map, x - 1, y)) tile += 1;
 					if (isSolid(map, x, y + 1)) tile += 2;
-					if (isSolid(map, x - 1, y)) tile += 4;
+					if (isSolid(map, x + 1, y)) tile += 4;
 					if (isSolid(map, x, y - 1)) tile += 8;
-					sprite = textureAtlas.getSource().getSprite(tile + (9 * 16));
+					sprite = textureAtlas.getSource().getSprite(tile);
 					texTopLeft.set(sprite.getU(), sprite.getV());
 					texBotRight.set(texTopLeft).add(sprite.getWidth(), sprite.getHeight());
 
