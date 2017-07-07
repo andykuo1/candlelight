@@ -1,12 +1,12 @@
 package org.zilar.sprite;
 
 import org.bstone.mogli.Texture;
-import org.zilar.asset.Asset;
+import org.qsilver.asset.Asset;
 
 /**
  * Created by Andy on 5/10/17.
  */
-public class Sprite
+public final class Sprite
 {
 	private final Asset<Texture> texture;
 	protected float u;

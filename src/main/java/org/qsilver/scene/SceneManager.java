@@ -112,6 +112,11 @@ public class SceneManager
 		this.setup = true;
 	}
 
+	public Scene getScene()
+	{
+		return this.currScene;
+	}
+
 	public boolean isActive()
 	{
 		return this.active;

@@ -1,22 +1,22 @@
 package net.jimboi.stage_a.blob;
 
-import net.jimboi.base.Main;
+import net.jimboi.stage_a.base.Main;
 import net.jimboi.stage_a.mod.instance.InstanceHandler;
 import net.jimboi.stage_a.mod.scene.LivingSceneBase;
 
 import org.qsilver.living.Living;
 import org.qsilver.living.LivingManager;
 import org.qsilver.renderer.RenderEngine;
-import org.qsilver.renderer.Renderer;
+import org.qsilver.renderer.RenderManager;
 
 /**
  * Created by Andy on 4/30/17.
  */
 public abstract class SceneBlobBase extends LivingSceneBase implements LivingManager.OnLivingAddListener, LivingManager.OnLivingRemoveListener
 {
-	protected final Renderer renderer;
+	protected final RenderManager renderer;
 
-	public SceneBlobBase(Renderer renderer)
+	public SceneBlobBase(RenderManager renderer)
 	{
 		this.renderer = renderer;
 

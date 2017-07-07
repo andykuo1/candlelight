@@ -142,12 +142,12 @@ public final class Texture implements AutoCloseable
 		return this.handle;
 	}
 
-	public float width()
+	public int width()
 	{
 		return this.width;
 	}
 
-	public float height()
+	public int height()
 	{
 		return this.height;
 	}

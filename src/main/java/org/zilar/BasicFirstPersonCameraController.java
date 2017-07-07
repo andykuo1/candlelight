@@ -37,11 +37,12 @@ public class BasicFirstPersonCameraController implements CameraController, Input
 
 	protected float counter;
 
-	protected final Transform3Quat target;
+	protected Transform3Quat target;
 
-	public BasicFirstPersonCameraController(Transform3Quat target)
+	public BasicFirstPersonCameraController setTarget(Transform3Quat target)
 	{
 		this.target = target;
+		return this;
 	}
 
 	@Override
@@ -57,6 +58,8 @@ public class BasicFirstPersonCameraController implements CameraController, Input
 	@Override
 	public void onCameraUpdate(Camera camera, double delta)
 	{
+		if (this.target == null) return;
+
 		//Look
 		Transform3 cameraTransform = camera.getTransform();
 		cameraTransform.setYaw(this.yaw);
@@ -118,6 +121,8 @@ public class BasicFirstPersonCameraController implements CameraController, Input
 	@Override
 	public void onInputUpdate(InputEngine inputEngine)
 	{
+		if (this.target == null) return;
+
 		//Look
 		boolean mouseLocked = inputEngine.getMouse().getCursorMode();
 

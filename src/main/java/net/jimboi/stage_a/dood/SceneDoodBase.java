@@ -1,21 +1,21 @@
 package net.jimboi.stage_a.dood;
 
-import net.jimboi.base.Main;
+import net.jimboi.stage_a.base.Main;
 import net.jimboi.stage_a.dood.entity.Entity;
 import net.jimboi.stage_a.dood.entity.EntityManager;
 import net.jimboi.stage_a.mod.scene.EntitySceneBase;
 
 import org.qsilver.renderer.RenderEngine;
-import org.qsilver.renderer.Renderer;
+import org.qsilver.renderer.RenderManager;
 
 /**
  * Created by Andy on 5/21/17.
  */
 public abstract class SceneDoodBase extends EntitySceneBase implements EntityManager.OnEntityAddListener, EntityManager.OnEntityRemoveListener
 {
-	protected final Renderer renderer;
+	protected final RenderManager renderer;
 
-	public SceneDoodBase(Renderer renderer)
+	public SceneDoodBase(RenderManager renderer)
 	{
 		this.renderer = renderer;
 	}

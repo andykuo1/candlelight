@@ -3,7 +3,7 @@ package org.zilar.model;
 import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
 import org.joml.Matrix4f;
-import org.zilar.asset.Asset;
+import org.qsilver.asset.Asset;
 
 /**
  * Created by Andy on 6/13/17.

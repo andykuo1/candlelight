@@ -1,6 +1,6 @@
 package net.jimboi.stage_a.dood;
 
-import net.jimboi.base.Main;
+import net.jimboi.stage_a.base.Main;
 import net.jimboi.stage_a.dood.component.ComponentBox2DBody;
 import net.jimboi.stage_a.dood.component.ComponentTransform;
 import net.jimboi.stage_a.dood.entity.Entity;

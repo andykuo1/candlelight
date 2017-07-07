@@ -13,14 +13,13 @@ import net.jimboi.stage_a.mod.instance.InstanceHandler;
 import net.jimboi.stage_a.mod.instance.InstanceManager;
 import net.jimboi.stage_a.mod.model.Model;
 import net.jimboi.stage_a.mod.render.Render;
-import net.jimboi.stage_a.mod.render.RenderManager;
 import net.jimboi.stage_a.mod.resource.ModResourceLocation;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.mogli.Texture;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.qsilver.renderer.Renderer;
+import org.qsilver.renderer.RenderManager;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.MeshData;
 import org.zilar.meshbuilder.ModelUtil;
@@ -32,12 +31,12 @@ import java.util.Random;
 /**
  * Created by Andy on 4/30/17.
  */
-public class RendererBlob extends Renderer implements InstanceManager.OnInstanceAddListener, InstanceManager.OnInstanceRemoveListener
+public class RendererBlob extends RenderManager implements InstanceManager.OnInstanceAddListener, InstanceManager.OnInstanceRemoveListener
 {
 	public static final List<ModLight> lights = new ArrayList<>();
 	public static PerspectiveCamera camera;
 
-	protected final RenderManager renderManager;
+	protected final net.jimboi.stage_a.mod.render.RenderManager renderManager;
 	protected final InstanceManager instanceManager;
 
 	private MazeWorld world;
@@ -49,7 +48,7 @@ public class RendererBlob extends Renderer implements InstanceManager.OnInstance
 		this.world = new MazeWorld(new Random(), 45);
 		this.world.generateWorld();
 
-		this.renderManager = new RenderManager();
+		this.renderManager = new net.jimboi.stage_a.mod.render.RenderManager();
 		this.instanceManager = new InstanceManager((inst) ->
 		{
 			Render render = this.renderManager.get(inst.getRenderType());
@@ -151,7 +150,7 @@ public class RendererBlob extends Renderer implements InstanceManager.OnInstance
 		return this.instanceManager;
 	}
 
-	public RenderManager getRenderManager()
+	public net.jimboi.stage_a.mod.render.RenderManager getRenderManager()
 	{
 		return this.renderManager;
 	}

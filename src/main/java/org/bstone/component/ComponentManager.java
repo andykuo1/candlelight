@@ -37,6 +37,8 @@ public class ComponentManager<E extends ManifestEntity, C extends Component>
 	@SuppressWarnings("unchecked")
 	public void addComponentToEntity(E entity, C component)
 	{
+		if (component == null) return;
+
 		Class componentType = component.getClass();
 		Map<E, C> map = (Map<E, C>) this.getComponentMap(componentType);
 		map.put(entity, component);
@@ -108,6 +110,13 @@ public class ComponentManager<E extends ManifestEntity, C extends Component>
 	}
 
 	@SuppressWarnings("unchecked")
+	public <D extends C> Collection<D> getComponents(Collection<D> dst, Class<D> componentType)
+	{
+		dst.addAll(((Map<E, D>) this.getComponentMap(componentType)).values());
+		return dst;
+	}
+
+	@SuppressWarnings("unchecked")
 	public Collection<E> addAllWithComponent(Collection<E> dst, Class componentType)
 	{
 		if (!componentType.isAssignableFrom(this.baseComponent))
@@ -157,6 +166,8 @@ public class ComponentManager<E extends ManifestEntity, C extends Component>
 
 		for (C component : components)
 		{
+			if (component == null) continue;
+
 			this.addComponentToEntity(entity, component);
 		}
 

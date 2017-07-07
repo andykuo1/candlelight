@@ -1,66 +1,84 @@
 package net.jimboi.stage_c.hoob;
 
-import org.qsilver.entity.EntityManager;
-import org.qsilver.renderer.RenderEngine;
-import org.qsilver.scene.Scene;
+import net.jimboi.stage_b.glim.entity.component.EntityComponentRenderable;
+import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
+
+import org.bstone.material.Material;
+import org.bstone.mogli.Mesh;
+import org.bstone.mogli.Texture;
+import org.qsilver.asset.Asset;
+import org.qsilver.entity.Entity;
+import org.zilar.animation.AnimatorSpriteSheet;
+import org.zilar.base.GameEngine;
+import org.zilar.base.SceneBase;
+import org.zilar.model.Model;
+import org.zilar.property.PropertyDiffuse;
+import org.zilar.property.PropertyTexture;
+import org.zilar.sprite.SpriteSheet;
+import org.zilar.sprite.TextureAtlas;
+import org.zilar.transform.Transform3;
+import org.zilar.transform.Transform3Quat;
 
 /**
  * Created by Andy on 6/25/17.
  */
-public class SceneHoob extends Scene
+public class SceneHoob extends SceneBase
 {
-	protected EntityManager livingManager;
-	protected RendererHoob renderer;
-
-	@Override
-	protected void onSceneCreate()
+	public static void main(String[] args)
 	{
-		this.livingManager = new EntityManager();
+		GameEngine.run(SceneHoob.class, args);
 	}
 
-	@Override
-	protected void onSceneLoad(RenderEngine renderManager)
+	public SceneHoob()
 	{
-		renderManager.add(this.renderer = new RendererHoob());
+		super(new RenderHoob());
 	}
 
 	@Override
 	protected void onSceneStart()
 	{
+		this.spawnEntity(0, 0, 0, "bunny", "quad", "bunny");
 
-	}
-
-	@Override
-	protected void onSceneUpdate(double delta)
-	{
-		this.livingManager.update();
+		Transform3 transform = Transform3.create();
+		transform.setPosition(0, 0, 10);
+		this.getRenderer().getCameraController().setTarget((Transform3Quat) transform);
 	}
 
 	@Override
 	protected void onSceneStop()
 	{
-		this.livingManager.clear();
+		super.onSceneStop();
 	}
 
 	@Override
-	protected void onSceneUnload(RenderEngine renderManager)
+	public RenderHoob getRenderer()
 	{
-		renderManager.remove(this.renderer);
+		return (RenderHoob) super.getRenderer();
 	}
 
-	@Override
-	protected void onSceneDestroy()
+	public Entity spawnEntity(float x, float y, float z, String textureID, String modelID, String textureAtlasID)
 	{
+		Transform3 transform = Transform3.create();
+		transform.setPosition(x, y, z);
+		Asset<Texture> texture = GameEngine.ASSETMANAGER.getAsset(Texture.class, textureID);
 
-	}
+		SpriteSheet spritesheet = null;
+		if (textureAtlasID != null)
+		{
+			Asset<TextureAtlas> textureAtlas = GameEngine.ASSETMANAGER.getAsset(TextureAtlas.class, textureAtlasID);
+			spritesheet = new SpriteSheet(textureAtlas, 0, 3);
+			this.getAnimationManager().start(new AnimatorSpriteSheet(spritesheet, 0.2F));
+		}
 
-	public final EntityManager getLivingManager()
-	{
-		return this.livingManager;
-	}
-
-	public final RendererHoob getRenderer()
-	{
-		return this.renderer;
+		Asset<Mesh> mesh = GameEngine.ASSETMANAGER.getAsset(Mesh.class, modelID);
+		Material material = this.getMaterialManager().createMaterial(
+				new PropertyDiffuse(),
+				spritesheet != null ? new PropertyTexture(spritesheet) : new PropertyTexture(texture)
+		);
+		Model model = new Model(mesh, material, "simple");
+		return this.getEntityManager().createEntity(
+				new EntityComponentTransform(transform),
+				new EntityComponentRenderable(transform, model)
+		);
 	}
 }

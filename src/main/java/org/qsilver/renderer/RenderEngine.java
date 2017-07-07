@@ -1,5 +1,7 @@
 package org.qsilver.renderer;
 
+import org.bstone.util.listener.Listenable;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,15 +10,22 @@ import java.util.Set;
  */
 public class RenderEngine
 {
-	private final Set<Renderer> createSet = new HashSet<>();
-	private final Set<Renderer> destroySet = new HashSet<>();
-	private final Set<Renderer> renderers = new HashSet<>();
+	public interface OnRenderUpdateListener
+	{
+		void onRenderUpdate();
+	}
 
-	private final Set<Renderer> cachedSet = new HashSet<>();
+	public final Listenable<OnRenderUpdateListener> onRenderUpdate = new Listenable<>((listener, objects) -> listener.onRenderUpdate());
+
+	private final Set<RenderManager> createSet = new HashSet<>();
+	private final Set<RenderManager> destroySet = new HashSet<>();
+	private final Set<RenderManager> renderers = new HashSet<>();
+
+	private final Set<RenderManager> cachedSet = new HashSet<>();
 	private boolean cacheCreate = false;
 	private boolean cacheDestroy = false;
 
-	public void add(Renderer renderer)
+	public void add(RenderManager renderer)
 	{
 		if (this.cacheCreate)
 		{
@@ -28,7 +37,7 @@ public class RenderEngine
 		}
 	}
 
-	public void remove(Renderer renderer)
+	public void remove(RenderManager renderer)
 	{
 		if (this.cacheDestroy)
 		{
@@ -54,11 +63,13 @@ public class RenderEngine
 	{
 		this.flush();
 
-		for (Renderer renderer : this.renderers)
+		for (RenderManager renderer : this.renderers)
 		{
 			renderer.onRenderUpdate();
 			renderer.onRenderUpdate.notifyListeners();
 		}
+
+		this.onRenderUpdate.notifyListeners();
 	}
 
 	public void flush()
@@ -66,7 +77,7 @@ public class RenderEngine
 		while (!this.createSet.isEmpty())
 		{
 			this.cacheCreate = true;
-			for (Renderer renderer : this.createSet)
+			for (RenderManager renderer : this.createSet)
 			{
 				renderer.onRenderLoad();
 			}
@@ -80,7 +91,7 @@ public class RenderEngine
 		while (!this.destroySet.isEmpty())
 		{
 			this.cacheDestroy = true;
-			for (Renderer renderer : this.destroySet)
+			for (RenderManager renderer : this.destroySet)
 			{
 				renderer.onRenderUnload();
 			}

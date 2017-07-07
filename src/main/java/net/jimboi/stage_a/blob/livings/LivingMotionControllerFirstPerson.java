@@ -1,6 +1,6 @@
 package net.jimboi.stage_a.blob.livings;
 
-import net.jimboi.base.Main;
+import net.jimboi.stage_a.base.Main;
 import net.jimboi.stage_a.blob.RendererBlob;
 
 import org.bstone.camera.Camera;

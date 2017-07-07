@@ -1,27 +1,31 @@
 package net.jimboi.stage_b.glim.entity;
 
-import net.jimboi.stage_b.glim.RendererGlim;
 import net.jimboi.stage_b.glim.WorldGlim;
 import net.jimboi.stage_b.glim.bounding.square.AABB;
-import net.jimboi.stage_b.glim.gameentity.component.GameComponentBillboard;
-import net.jimboi.stage_b.glim.gameentity.component.GameComponentBounding;
-import net.jimboi.stage_b.glim.gameentity.component.GameComponentHeading;
-import net.jimboi.stage_b.glim.gameentity.component.GameComponentInstance;
-import net.jimboi.stage_b.glim.gameentity.component.GameComponentNavigator;
-import net.jimboi.stage_b.glim.gameentity.component.GameComponentSprite;
-import net.jimboi.stage_b.glim.gameentity.component.GameComponentTargeter;
-import net.jimboi.stage_b.glim.gameentity.component.GameComponentTransform;
-import net.jimboi.stage_b.glim.renderer.BillboardRenderer;
+import net.jimboi.stage_b.glim.entity.component.EntityComponentBillboard;
+import net.jimboi.stage_b.glim.entity.component.EntityComponentBounding;
+import net.jimboi.stage_b.glim.entity.component.EntityComponentHeading;
+import net.jimboi.stage_b.glim.entity.component.EntityComponentNavigator;
+import net.jimboi.stage_b.glim.entity.component.EntityComponentRenderable;
+import net.jimboi.stage_b.glim.entity.component.EntityComponentTargeter;
+import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
+import org.qsilver.asset.Asset;
 import org.qsilver.entity.Entity;
-import org.zilar.material.property.PropertyDiffuse;
-import org.zilar.material.property.PropertyShadow;
-import org.zilar.material.property.PropertyTexture;
+import org.zilar.animation.AnimatorSpriteSheet;
+import org.zilar.base.GameEngine;
 import org.zilar.model.Model;
+import org.zilar.property.PropertyDiffuse;
+import org.zilar.property.PropertyShadow;
+import org.zilar.property.PropertyTexture;
+import org.zilar.renderer.BillboardRenderer;
+import org.zilar.resourceloader.TextureAtlasLoader;
 import org.zilar.sprite.SpriteSheet;
-import org.zilar.sprite.TiledTextureAtlas;
+import org.zilar.sprite.TextureAtlas;
+import org.zilar.sprite.TextureAtlasBuilder;
+import org.zilar.sprite.TextureAtlasData;
 import org.zilar.transform.Transform3;
 
 /**
@@ -33,22 +37,36 @@ public class EntityBunny extends EntityGlim
 	{
 		Transform3 transform = Transform3.create();
 		transform.position.set(x, y, z);
-		TiledTextureAtlas textureAtlas = new TiledTextureAtlas(RendererGlim.INSTANCE.getAssetManager().getAsset(Texture.class, "bunny"), 48, 48);
-		SpriteSheet spriteSheet = textureAtlas.createSpriteSheet(0, 1, 2);
+
+		Asset<Texture> bunny = GameEngine.ASSETMANAGER.getAsset(Texture.class, "bunny");
+
+		if (!GameEngine.ASSETMANAGER.containsAsset(TextureAtlas.class, "bunny"))
+		{
+			TextureAtlasBuilder tab = new TextureAtlasBuilder();
+			tab.addHorizontalStrip(bunny, 0, 0, 48, 48, 0, 3);
+			TextureAtlasData data = tab.bake();
+			tab.clear();
+
+			GameEngine.ASSETMANAGER.registerAsset(TextureAtlas.class, "bunny", new TextureAtlasLoader.TextureAtlasParameter(data));
+		}
+
+		Asset<TextureAtlas> atlas = GameEngine.ASSETMANAGER.getAsset(TextureAtlas.class, "bunny");
+		SpriteSheet bunnySheet = new SpriteSheet(atlas, new int[] {0, 1, 2});
+		SCENE.getAnimationManager().start(new AnimatorSpriteSheet(bunnySheet, 0.2F));
+
 		return MANAGER.createEntity(
-				new GameComponentTransform(transform),
-				new GameComponentInstance(transform, new Model(
-						RendererGlim.INSTANCE.getAssetManager().getAsset(Mesh.class, "plane"),
-						RendererGlim.INSTANCE.getMaterialManager().createMaterial(
+				new EntityComponentTransform(transform),
+				new EntityComponentRenderable(transform, new Model(
+						GameEngine.ASSETMANAGER.getAsset(Mesh.class, "plane"),
+						SCENE.getMaterialManager().createMaterial(
 								new PropertyDiffuse(),
 								new PropertyShadow(true, true),
-								new PropertyTexture(RendererGlim.INSTANCE.getAssetManager().getAsset(Texture.class, "bunny")).setTransparent(true)),
+								new PropertyTexture(bunnySheet).setTransparent(true)),
 						"diffuse")),
-				new GameComponentBounding(world.getBoundingManager().create(new AABB(transform.position.x, transform.position.z, 0.2F, 0.2F))),
-				new GameComponentSprite(spriteSheet, 0.2F),
-				new GameComponentHeading( 0.2F, 1F),
-				new GameComponentBillboard(BillboardRenderer.Type.CYLINDRICAL),
-				new GameComponentTargeter(0.1F),
-				new GameComponentNavigator(world, world.createNavigator()));
+				new EntityComponentBounding(world.getBoundingManager().create(new AABB(transform.position.x, transform.position.z, 0.2F, 0.2F))),
+				new EntityComponentHeading( 0.2F, 1F),
+				new EntityComponentBillboard(BillboardRenderer.Type.CYLINDRICAL),
+				new EntityComponentTargeter(0.1F),
+				new EntityComponentNavigator(world, world.createNavigator()));
 	}
 }

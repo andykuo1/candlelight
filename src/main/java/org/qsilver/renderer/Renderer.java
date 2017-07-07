@@ -1,22 +1,13 @@
 package org.qsilver.renderer;
 
-import org.bstone.util.listener.Listenable;
+import org.bstone.camera.Camera;
+
+import java.util.Iterator;
 
 /**
- * Created by Andy on 5/30/17.
+ * Created by Andy on 7/6/17.
  */
 public abstract class Renderer
 {
-	public interface OnRenderUpdateListener
-	{
-		void onRenderUpdate();
-	}
-
-	public final Listenable<OnRenderUpdateListener> onRenderUpdate = new Listenable<>((listener, objects) -> listener.onRenderUpdate());
-
-	public abstract void onRenderLoad();
-
-	public abstract void onRenderUpdate();
-
-	public abstract void onRenderUnload();
+	public abstract void render(Camera camera, Iterator<Renderable> renderables);
 }

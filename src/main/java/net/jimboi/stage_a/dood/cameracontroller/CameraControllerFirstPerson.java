@@ -1,6 +1,6 @@
 package net.jimboi.stage_a.dood.cameracontroller;
 
-import net.jimboi.base.Main;
+import net.jimboi.stage_a.base.Main;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;

@@ -1,13 +1,14 @@
 package org.zilar.instance;
 
 import org.joml.Matrix4f;
+import org.qsilver.renderer.Renderable;
 import org.qsilver.transform.Transform;
 import org.zilar.model.Model;
 
 /**
  * Created by Andy on 4/8/17.
  */
-public final class Instance
+public final class Instance implements Renderable
 {
 	private final Model model;
 
@@ -44,16 +45,19 @@ public final class Instance
 		this.dead = true;
 	}
 
+	@Override
 	public final Matrix4f getRenderTransformation(Matrix4f dst)
 	{
 		return dst.set(this.transformation).mul(this.model.transformation());
 	}
 
+	@Override
 	public final Model getModel()
 	{
 		return this.model;
 	}
 
+	@Override
 	public final boolean isVisible()
 	{
 		return this.visible;

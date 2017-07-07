@@ -4,22 +4,21 @@ import net.jimboi.stage_a.mod.instance.Instance;
 import net.jimboi.stage_a.mod.instance.InstanceHandler;
 import net.jimboi.stage_a.mod.instance.InstanceManager;
 import net.jimboi.stage_a.mod.render.Render;
-import net.jimboi.stage_a.mod.render.RenderManager;
 
 import org.bstone.camera.PerspectiveCamera;
-import org.qsilver.renderer.Renderer;
+import org.qsilver.renderer.RenderManager;
 
 /**
  * Created by Andy on 5/30/17.
  */
-public class RendererDood extends Renderer implements InstanceManager.OnInstanceAddListener, InstanceManager.OnInstanceRemoveListener
+public class RendererDood extends RenderManager implements InstanceManager.OnInstanceAddListener, InstanceManager.OnInstanceRemoveListener
 {
-	protected final RenderManager renderManager;
+	protected final net.jimboi.stage_a.mod.render.RenderManager renderManager;
 	protected final InstanceManager instanceManager;
 
 	public RendererDood()
 	{
-		this.renderManager = new RenderManager();
+		this.renderManager = new net.jimboi.stage_a.mod.render.RenderManager();
 
 		this.instanceManager = new InstanceManager((inst) ->
 		{
@@ -68,7 +67,7 @@ public class RendererDood extends Renderer implements InstanceManager.OnInstance
 		return this.instanceManager;
 	}
 
-	public RenderManager getRenderManager()
+	public net.jimboi.stage_a.mod.render.RenderManager getRenderManager()
 	{
 		return this.renderManager;
 	}

@@ -27,13 +27,17 @@ public class BasicTopDownCameraController implements CameraController, InputEngi
 	protected float right;
 	protected boolean sprint;
 
-	protected final Transform3Quat target;
+	protected Transform3Quat target;
 
-	public BasicTopDownCameraController(Transform3Quat target)
+	public BasicTopDownCameraController()
+	{
+		this.setDistanceToTarget(1.5F);
+	}
+
+	public BasicTopDownCameraController setTarget(Transform3Quat target)
 	{
 		this.target = target;
-
-		this.setDistanceToTarget(1.5F);
+		return this;
 	}
 
 	public BasicTopDownCameraController setSpeed(float speed)
@@ -71,6 +75,8 @@ public class BasicTopDownCameraController implements CameraController, InputEngi
 	@Override
 	public void onCameraUpdate(Camera camera, double delta)
 	{
+		if (this.target == null) return;
+
 		Transform3 cameraTransform = camera.getTransform();
 		cameraTransform.setPitch(Transform.HALF_PI);
 
@@ -97,6 +103,8 @@ public class BasicTopDownCameraController implements CameraController, InputEngi
 	@Override
 	public void onInputUpdate(InputEngine inputEngine)
 	{
+		if (this.target == null) return;
+
 		this.forward = 0;
 		if (InputManager.isInputDown("forward")) this.forward -= 1F;
 		if (InputManager.isInputDown("backward")) this.forward += 1F;

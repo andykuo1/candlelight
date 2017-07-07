@@ -71,7 +71,9 @@ public final class Bitmap implements AutoCloseable
 		if (this.pixels == null)
 			throw new RuntimeException("Failed to load image: " + stbi_failure_reason());
 
+		//TODO: This is because OpenGL texture origin is bottom-left, NOT top-left
 		this.flipVertically();
+		this.flipHorizontally();
 
 		BITMAPS.add(this);
 	}
@@ -100,6 +102,32 @@ public final class Bitmap implements AutoCloseable
 				rowBuffer[i] = this.pixels.get(row + i);
 				this.pixels.put(row + i, this.pixels.get(oppositeRow + i));
 				this.pixels.put(oppositeRow + i, rowBuffer[i]);
+			}
+		}
+	}
+
+	public void flipHorizontally()
+	{
+		int colSize = this.height;
+		byte[] colBuffer = new byte[colSize];
+		int halfCols = this.width / 2;
+
+		for(int coly = 0; coly < halfCols; ++coly)
+		{
+			int col = getPixelOffset(coly, 0, this.width, this.height, this.format);
+			int opposite = getPixelOffset(this.width - coly - 1, 0, this.width, this.height, this.format);
+
+			for(int i = 0; i < colSize; ++i)
+			{
+				int k = i * this.width * this.format.channel;
+				for(int j = 0; j < this.format.channel; ++j)
+				{
+					int p = col + k + j;
+					int q = opposite + k + j;
+					colBuffer[i] = this.pixels.get(p);
+					this.pixels.put(p, this.pixels.get(q));
+					this.pixels.put(q, colBuffer[i]);
+				}
 			}
 		}
 	}

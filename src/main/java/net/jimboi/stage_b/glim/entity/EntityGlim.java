@@ -1,5 +1,7 @@
 package net.jimboi.stage_b.glim.entity;
 
+import net.jimboi.stage_b.glim.SceneGlim;
+
 import org.qsilver.entity.EntityManager;
 
 /**
@@ -8,9 +10,11 @@ import org.qsilver.entity.EntityManager;
 public class EntityGlim
 {
 	static EntityManager MANAGER;
+	static SceneGlim SCENE;
 
-	public static void setEntityManager(EntityManager entityManager)
+	public static void setup(SceneGlim scene, EntityManager entityManager)
 	{
+		SCENE = scene;
 		MANAGER = entityManager;
 	}
 }

@@ -2,7 +2,6 @@ package net.jimboi.stage_b.glim.bounding;
 
 import net.jimboi.stage_b.glim.bounding.square.AABB;
 import net.jimboi.stage_b.glim.bounding.square.Circle;
-import net.jimboi.stage_b.glim.resourceloader.MeshLoader;
 
 import org.bstone.camera.Camera;
 import org.bstone.mogli.Mesh;
@@ -12,11 +11,12 @@ import org.joml.Matrix4fc;
 import org.joml.Vector2fc;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
-import org.zilar.asset.Asset;
-import org.zilar.asset.AssetManager;
+import org.qsilver.asset.Asset;
+import org.qsilver.asset.AssetManager;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.MeshData;
 import org.zilar.resource.ResourceLocation;
+import org.zilar.resourceloader.MeshLoader;
 
 import java.util.Iterator;
 
