@@ -7,7 +7,7 @@ public final class TextureAtlas implements AutoCloseable
 {
 	private final Sprite[] sprites;
 
-	protected TextureAtlas(Sprite... sprites)
+	public TextureAtlas(Sprite... sprites)
 	{
 		this.sprites = sprites;
 	}
