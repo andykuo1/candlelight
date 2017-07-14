@@ -7,8 +7,8 @@ import net.jimboi.stage_a.mod.instance.InstanceHandler;
 import net.jimboi.stage_a.mod.instance.InstanceManager;
 import net.jimboi.stage_a.mod.model.Model;
 
+import org.bstone.transform.Transform3;
 import org.qsilver.living.Living;
-import org.qsilver.transform.Transform;
 
 import java.util.List;
 
@@ -17,9 +17,9 @@ import java.util.List;
  */
 public abstract class LivingBase extends Living implements InstanceHandler
 {
-	private final Transform transform;
+	private final Transform3 transform;
 
-	protected LivingBase(Transform transform)
+	protected LivingBase(Transform3 transform)
 	{
 		this.transform = transform;
 	}
@@ -84,7 +84,7 @@ public abstract class LivingBase extends Living implements InstanceHandler
 
 	public abstract String getRenderType();
 
-	public Transform transform()
+	public Transform3 transform()
 	{
 		return this.transform;
 	}

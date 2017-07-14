@@ -7,6 +7,7 @@ import net.jimboi.stage_a.dood.entity.Entity;
 import net.jimboi.stage_a.dood.entity.EntityManager;
 import net.jimboi.stage_a.dood.worldgen.WorldGenHills;
 
+import org.bstone.transform.Transform3;
 import org.jbox2d.collision.shapes.ChainShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyDef;
@@ -14,7 +15,6 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
-import org.zilar.transform.Transform3;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class EntityHills
 {
 	public static Entity create(EntityManager entityManager, WorldGenHills hills)
 	{
-		Transform3 transform = Transform3.create();
+		Transform3 transform = new Transform3();
 		transform.position.x = -100;
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.position.x = transform.position.x;

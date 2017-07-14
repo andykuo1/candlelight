@@ -91,8 +91,8 @@ public class SceneDood extends SceneDoodBase implements InputEngine.OnInputUpdat
 	protected void onSceneUpdate(double delta)
 	{
 		ModLight light = ResourcesDood.INSTANCE.lights.get(0);
-		light.position = new Vector4f(ResourcesDood.INSTANCE.camera.getTransform().position, 1);
-		light.coneDirection = ResourcesDood.INSTANCE.camera.getTransform().getForward(new Vector3f());
+		light.position = new Vector4f(ResourcesDood.INSTANCE.camera.transform().position3(), 1);
+		light.coneDirection = ResourcesDood.INSTANCE.camera.transform().getForward(new Vector3f());
 
 		super.onSceneUpdate(delta);
 	}
@@ -113,7 +113,7 @@ public class SceneDood extends SceneDoodBase implements InputEngine.OnInputUpdat
 		{
 			if (grabbedEntity == null)
 			{
-				Vector3fc from = this.entityPlayer.getComponent(ComponentTransform.class).transform.position();
+				Vector3fc from = this.entityPlayer.getComponent(ComponentTransform.class).transform.position3();
 				float dist = 0;
 				Body nearest = null;
 				Body body = this.systemBox2D.getWorld().getBodyList();

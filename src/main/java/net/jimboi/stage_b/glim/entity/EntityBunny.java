@@ -12,6 +12,7 @@ import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
+import org.bstone.transform.Transform3;
 import org.qsilver.asset.Asset;
 import org.qsilver.entity.Entity;
 import org.zilar.animation.AnimatorSpriteSheet;
@@ -26,7 +27,6 @@ import org.zilar.sprite.SpriteSheet;
 import org.zilar.sprite.TextureAtlas;
 import org.zilar.sprite.TextureAtlasBuilder;
 import org.zilar.sprite.TextureAtlasData;
-import org.zilar.transform.Transform3;
 
 /**
  * Created by Andy on 6/4/17.
@@ -35,7 +35,7 @@ public class EntityBunny extends EntityGlim
 {
 	public static Entity create(WorldGlim world, float x, float y, float z)
 	{
-		Transform3 transform = Transform3.create();
+		Transform3 transform = new Transform3();
 		transform.position.set(x, y, z);
 
 		Asset<Texture> bunny = GameEngine.ASSETMANAGER.getAsset(Texture.class, "bunny");

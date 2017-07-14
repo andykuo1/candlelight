@@ -4,15 +4,15 @@ import net.jimboi.stage_a.mod.ModMaterial;
 import net.jimboi.stage_a.mod.instance.Instance;
 import net.jimboi.stage_a.mod.model.Model;
 
+import org.bstone.transform.Transform3;
 import org.qsilver.living.Living;
-import org.zilar.transform.Transform3;
 
 /**
  * Created by Andy on 4/19/17.
  */
 public class GameItemBlob extends Living
 {
-	private final Transform3 transform = Transform3.create();
+	private final Transform3 transform = new Transform3();
 
 	private Instance instance;
 

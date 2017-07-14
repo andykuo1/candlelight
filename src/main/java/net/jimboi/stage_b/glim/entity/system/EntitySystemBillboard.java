@@ -4,12 +4,12 @@ import net.jimboi.stage_b.glim.entity.component.EntityComponentBillboard;
 import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
 
 import org.bstone.camera.Camera;
+import org.bstone.transform.Transform;
+import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
 import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
-import org.qsilver.transform.Transform;
 import org.zilar.renderer.BillboardRenderer;
-import org.zilar.transform.Transform3Quat;
 
 import java.util.Collection;
 
@@ -39,9 +39,9 @@ public class EntitySystemBillboard extends AbstractUpdateableSystem
 			EntityComponentBillboard componentBillboard = entity.getComponent(EntityComponentBillboard.class);
 			EntityComponentTransform componentTransform = entity.getComponent(EntityComponentTransform.class);
 
-			Transform3Quat transform = (Transform3Quat) componentTransform.transform;
+			Transform3 transform = componentTransform.transform;
 
-			this.camera.getTransform().position().sub(transform.position, VEC);
+			this.camera.transform().position3().sub(transform.position, VEC);
 
 			if (componentBillboard.billboardType == BillboardRenderer.Type.SPHERICAL)
 			{

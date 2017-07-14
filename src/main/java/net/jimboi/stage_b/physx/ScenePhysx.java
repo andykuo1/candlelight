@@ -9,6 +9,7 @@ import net.jimboi.stage_b.glim.entity.system.EntitySystemBillboard;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
+import org.bstone.transform.Transform3;
 import org.qsilver.view.MousePicker;
 import org.zilar.BasicTopDownCameraController;
 import org.zilar.base.GameEngine;
@@ -18,8 +19,6 @@ import org.zilar.property.PropertyDiffuse;
 import org.zilar.property.PropertyShadow;
 import org.zilar.property.PropertySpecular;
 import org.zilar.property.PropertyTexture;
-import org.zilar.transform.Transform3;
-import org.zilar.transform.Transform3Quat;
 
 /**
  * Created by Andy on 6/18/17.
@@ -34,7 +33,7 @@ public class ScenePhysx extends SceneBase
 	private EntitySystem2D sys_2D;
 	private EntitySystemBillboard sys_billboard;
 
-	private Transform3Quat player;
+	private Transform3 player;
 	private Transform3 transform;
 	private MousePicker picker;
 
@@ -58,7 +57,7 @@ public class ScenePhysx extends SceneBase
 
 		this.sys_billboard = new EntitySystemBillboard(this.entityManager, this.getRenderer().getCamera());
 
-		final Transform3Quat transform = (Transform3Quat) Transform3.create();
+		final Transform3 transform = new Transform3();
 		this.player = this.spawnEntity(0, 0, 0);
 		((BasicTopDownCameraController) this.getRenderer().getCamera().getCameraController()).setTarget(transform);
 
@@ -74,10 +73,10 @@ public class ScenePhysx extends SceneBase
 		this.sys_billboard.start(this);
 	}
 
-	public Transform3Quat spawnEntity(float x, float y, float z)
+	public Transform3 spawnEntity(float x, float y, float z)
 	{
-		final Transform3Quat transform = (Transform3Quat) Transform3.create();
-		transform.setPosition(x, y, z);
+		final Transform3 transform = new Transform3();
+		transform.position.set(x, y, z);
 		this.entityManager.createEntity(
 				new EntityComponentTransform(transform),
 				new EntityComponentRenderable(transform, new Model(
@@ -97,7 +96,7 @@ public class ScenePhysx extends SceneBase
 	{
 		this.getRenderer().getCamera().update(delta);
 
-		this.transform.position.set(this.getRenderer().getCamera().getTransform().position);
+		this.transform.position.set(this.getRenderer().getCamera().transform().position3());
 		this.transform.position.add(this.picker.getMouseRay());
 
 		super.onSceneUpdate(delta);

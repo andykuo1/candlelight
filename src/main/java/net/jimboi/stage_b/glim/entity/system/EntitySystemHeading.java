@@ -8,14 +8,14 @@ import net.jimboi.stage_b.glim.entity.component.EntityComponentNavigator;
 import net.jimboi.stage_b.glim.entity.component.EntityComponentTargeter;
 import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
 
+import org.bstone.transform.Transform;
+import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.qsilver.astar.map.NavigatorCardinalMap;
 import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
-import org.qsilver.transform.Transform;
 import org.qsilver.util.MathUtil;
-import org.zilar.transform.Transform3Quat;
 
 import java.util.Collection;
 
@@ -44,7 +44,7 @@ public class EntitySystemHeading extends AbstractUpdateableSystem
 			EntityComponentTransform componentTransform = entity.getComponent(EntityComponentTransform.class);
 			EntityComponentHeading componentHeading = entity.getComponent(EntityComponentHeading.class);
 			EntityComponentBounding componentBounding = entity.getComponent(EntityComponentBounding.class);
-			Transform3Quat transform = (Transform3Quat) componentTransform.transform;
+			Transform3 transform = (Transform3) componentTransform.transform;
 
 			//Update navigator
 			if (entity.hasComponent(EntityComponentNavigator.class) && entity.hasComponent(EntityComponentTargeter.class))
@@ -79,7 +79,7 @@ public class EntitySystemHeading extends AbstractUpdateableSystem
 				VEC.y = 0;
 				if (!componentTargeter.isNearTarget(VEC))
 				{
-					transform.position().sub(componentTargeter.target, VEC);
+					transform.position3().sub(componentTargeter.target, VEC);
 					componentHeading.moveDirection(VEC);
 				}
 				else

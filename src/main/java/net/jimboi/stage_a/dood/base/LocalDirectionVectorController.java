@@ -1,17 +1,17 @@
 package net.jimboi.stage_a.dood.base;
 
+import org.bstone.transform.DirectionVector3;
+import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
-import org.qsilver.transform.DirectionVectors;
-import org.zilar.transform.Transform3;
 
 /**
  * Created by Andy on 5/22/17.
  */
 public class LocalDirectionVectorController extends LocalDirectionVectorBase
 {
-	private final DirectionVectors camera;
+	private final DirectionVector3 camera;
 
-	public LocalDirectionVectorController(Transform3 transform, DirectionVectors camera)
+	public LocalDirectionVectorController(Transform3 transform, DirectionVector3 camera)
 	{
 		super(transform);
 		this.camera = camera;

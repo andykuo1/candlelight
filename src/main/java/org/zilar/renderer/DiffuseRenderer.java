@@ -145,7 +145,7 @@ public class DiffuseRenderer implements AutoCloseable
 						texture.bind();
 					}
 
-					program.setUniform("u_camera_pos", camera.getTransform().position());
+					program.setUniform("u_camera_pos", camera.transform().position3());
 
 					if (sprite != null)
 					{

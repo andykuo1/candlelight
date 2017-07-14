@@ -3,8 +3,8 @@ package net.jimboi.stage_a.mod.instance;
 import net.jimboi.stage_a.mod.ModMaterial;
 import net.jimboi.stage_a.mod.model.Model;
 
+import org.bstone.transform.Transform;
 import org.joml.Matrix4f;
-import org.qsilver.transform.Transform;
 
 /**
  * Created by Andy on 4/8/17.
@@ -31,7 +31,7 @@ public final class Instance
 
 	public final Instance setTransformation(Transform transform)
 	{
-		this.transformation.set(transform.transformation());
+		transform.getTransformation(this.transformation);
 		return this;
 	}
 

@@ -6,14 +6,13 @@ import net.jimboi.stage_a.blob.RendererBlob;
 import org.bstone.camera.Camera;
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputManager;
+import org.bstone.transform.Transform;
+import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
-import org.qsilver.transform.Transform;
 import org.qsilver.util.MathUtil;
-import org.zilar.transform.Transform3;
-import org.zilar.transform.Transform3Quat;
 
 /**
  * Created by Andy on 5/21/17.
@@ -58,8 +57,9 @@ public abstract class LivingMotionControllerFirstPerson extends LivingMotion imp
 
 		super.onUpdate(delta);
 
-		Vector3fc pos = this.transform().position();
-		((Transform3) this.camera.getTransform()).setPosition(pos.x(), pos.y(), pos.z());
+		Vector3fc pos = this.transform().position3();
+		//This is the wrong way... use camera controller instead!
+		((Transform3) this.camera.transform()).position.set(pos.x(), pos.y(), pos.z());
 		this.camera.markDirty();
 	}
 
@@ -68,7 +68,7 @@ public abstract class LivingMotionControllerFirstPerson extends LivingMotion imp
 	{
 		if (this.mouseLock)
 		{
-			Transform3 cameraTransform = (Transform3) this.camera.getTransform();
+			Transform3 cameraTransform = (Transform3) this.camera.transform();
 			this.camera.markDirty();
 
 			//Update camera rotation
@@ -87,8 +87,8 @@ public abstract class LivingMotionControllerFirstPerson extends LivingMotion imp
 			Vector3f right = cameraTransform.getRight(new Vector3f());
 			cameraTransform.rotate(this.pitch, right);
 
-			Transform3Quat transform = (Transform3Quat) this.transform();
-			transform.setRotation(RendererBlob.camera.getTransform().rotation);
+			Transform3 transform = this.transform();
+			transform.rotation.set(RendererBlob.camera.transform().quaternion());
 			transform.rotation.x = 0;
 			transform.rotation.z = 0;
 			transform.rotation.normalize().invert();
@@ -123,7 +123,7 @@ public abstract class LivingMotionControllerFirstPerson extends LivingMotion imp
 	@Override
 	public Vector3f getRight(Vector3f dst)
 	{
-		return this.camera.getTransform().getRight(dst);
+		return this.camera.transform().getRight(dst);
 	}
 
 	public boolean isMouseLocked()

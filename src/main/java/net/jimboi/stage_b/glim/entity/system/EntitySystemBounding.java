@@ -33,7 +33,7 @@ public class EntitySystemBounding extends AbstractUpdateableSystem
 		{
 			EntityComponentTransform componentTransform = entity.getComponent(EntityComponentTransform.class);
 			EntityComponentBounding componentBounding = entity.getComponent(EntityComponentBounding.class);
-			Vector3fc pos = componentTransform.transform.position();
+			Vector3fc pos = componentTransform.transform.position3();
 			componentBounding.bounding.update(pos.x(), pos.y(), pos.z());
 		}
 	}

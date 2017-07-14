@@ -7,6 +7,7 @@ import net.jimboi.stage_c.hoob.world.World;
 import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
+import org.bstone.transform.Transform3;
 import org.qsilver.asset.Asset;
 import org.qsilver.entity.Entity;
 import org.zilar.animation.AnimatorSpriteSheet;
@@ -17,8 +18,6 @@ import org.zilar.property.PropertyDiffuse;
 import org.zilar.property.PropertyTexture;
 import org.zilar.sprite.SpriteSheet;
 import org.zilar.sprite.TextureAtlas;
-import org.zilar.transform.Transform3;
-import org.zilar.transform.Transform3Quat;
 
 /**
  * Created by Andy on 6/25/17.
@@ -42,9 +41,9 @@ public class SceneHoob extends SceneBase
 	{
 		this.spawnEntity(0, 0, -0.1F, "crate", "ground", null);
 
-		Transform3 transform = Transform3.create();
-		transform.setPosition(0, 0, 1);
-		this.getRenderer().getCameraController().setTarget((Transform3Quat) transform);
+		Transform3 transform = new Transform3();
+		transform.position.set(0, 0, 1);
+		this.getRenderer().getCameraController().setTarget((Transform3) transform);
 
 		this.world = new World(this);
 		this.world.create();
@@ -72,8 +71,8 @@ public class SceneHoob extends SceneBase
 
 	public Entity spawnEntity(float x, float y, float z, String textureID, String meshID, String textureAtlasID)
 	{
-		Transform3 transform = Transform3.create();
-		transform.setPosition(x, y, z);
+		Transform3 transform = new Transform3();
+		transform.position.set(x, y, z);
 		Asset<Texture> texture = GameEngine.ASSETMANAGER.getAsset(Texture.class, textureID);
 
 		SpriteSheet spritesheet = null;

@@ -3,10 +3,10 @@ package net.jimboi.stage_b.glim.entity.system;
 import net.jimboi.stage_b.glim.entity.component.EntityComponent2D;
 import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
 
+import org.bstone.transform.Transform;
+import org.bstone.transform.Transform3;
 import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
-import org.qsilver.transform.Transform;
-import org.zilar.transform.Transform3Quat;
 
 import java.util.Collection;
 
@@ -29,7 +29,7 @@ public class EntitySystem2D extends AbstractUpdateableSystem
 			EntityComponent2D component2D = entity.getComponent(EntityComponent2D.class);
 			EntityComponentTransform componentTransform = entity.getComponent(EntityComponentTransform.class);
 
-			Transform3Quat transform = (Transform3Quat) componentTransform.transform;
+			Transform3 transform = (Transform3) componentTransform.transform;
 			transform.rotation.rotationXYZ(-Transform.HALF_PI, 0, 0);
 		}
 	}

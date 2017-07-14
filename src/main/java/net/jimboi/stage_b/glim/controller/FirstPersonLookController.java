@@ -3,13 +3,12 @@ package net.jimboi.stage_b.glim.controller;
 import org.bstone.camera.Camera;
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputManager;
+import org.bstone.transform.Transform;
+import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.joml.Vector3f;
-import org.qsilver.transform.Transform;
 import org.qsilver.util.MathUtil;
-import org.zilar.transform.Transform3;
-import org.zilar.transform.Transform3Quat;
 
 /**
  * Created by Andy on 6/1/17.
@@ -23,9 +22,9 @@ public class FirstPersonLookController
 	protected float pitch;
 	protected float yaw;
 
-	protected final Transform3Quat target;
+	protected final Transform3 target;
 
-	public FirstPersonLookController(Transform3Quat target)
+	public FirstPersonLookController(Transform3 target)
 	{
 		this.target = target;
 	}
@@ -64,8 +63,8 @@ public class FirstPersonLookController
 		Vector3f right = cameraTransform.getRight(_VEC);
 		cameraTransform.rotate(this.pitch, right);
 
-		Transform3Quat transform = this.target;
-		transform.setRotation(transform.rotation);
+		Transform3 transform = this.target;
+		transform.rotation.set(transform.rotation);
 		transform.rotation.x = 0;
 		transform.rotation.z = 0;
 		transform.rotation.normalize().invert();

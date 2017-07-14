@@ -6,11 +6,11 @@ import net.jimboi.stage_a.dood.component.ComponentTransform;
 import net.jimboi.stage_a.dood.entity.Entity;
 import net.jimboi.stage_a.dood.entity.EntityManager;
 
+import org.bstone.transform.Transform3;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
-import org.zilar.transform.Transform3;
 
 /**
  * Created by Andy on 5/23/17.
@@ -19,7 +19,7 @@ public class EntityBox
 {
 	public static Entity create(EntityManager entityManager)
 	{
-		Transform3 transform = Transform3.create();
+		Transform3 transform = new Transform3();
 		transform.position.y = 30;
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.position.x = transform.position.x;

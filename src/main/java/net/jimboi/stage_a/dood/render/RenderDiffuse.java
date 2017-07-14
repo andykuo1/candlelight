@@ -45,7 +45,7 @@ public class RenderDiffuse extends Render
 		program.setUniform("u_projection", projectionMatrix);
 		program.setUniform("u_view", viewMatrix);
 		program.setUniform("u_model", modelMatrix);
-		program.setUniform("u_camera_pos", ResourcesDood.INSTANCE.camera.getTransform().position());
+		program.setUniform("u_camera_pos", ResourcesDood.INSTANCE.camera.transform().position3());
 
 		if (material.sprite != null)
 		{

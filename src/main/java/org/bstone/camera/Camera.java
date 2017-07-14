@@ -1,10 +1,11 @@
 package org.bstone.camera;
 
+import org.bstone.transform.InvertedTransform3;
+import org.bstone.transform.Transform3;
+import org.bstone.transform.Transform3c;
 import org.bstone.util.listener.Listenable;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
-import org.qsilver.transform.Transform;
-import org.zilar.transform.Transform3;
 
 /**
  * Created by Andy on 5/19/17.
@@ -21,6 +22,7 @@ public abstract class Camera
 	private CameraController controller;
 	private boolean dirty;
 
+	protected final Transform3 transform = new InvertedTransform3();
 	protected final Matrix4f viewMatrix = new Matrix4f();
 	protected final Matrix4f rotationMatrix = new Matrix4f();
 	protected final Matrix4f projectionMatrix = new Matrix4f();
@@ -34,7 +36,7 @@ public abstract class Camera
 	{
 		if (this.controller != null)
 		{
-			if (this.controller.onCameraUpdate(this, (Transform3) this.getTransform(), delta))
+			if (this.controller.onCameraUpdate(this, (Transform3) this.transform(), delta))
 			{
 				this.dirty = true;
 			}
@@ -66,7 +68,10 @@ public abstract class Camera
 		return this.controller == controller;
 	}
 
-	public abstract Transform getTransform();
+	public final Transform3c transform()
+	{
+		return this.transform;
+	}
 
 	public final Matrix4fc orientation()
 	{

@@ -1,7 +1,7 @@
 package net.jimboi.stage_b.glim.entity.component;
 
+import org.bstone.transform.Transform3;
 import org.qsilver.entity.EntityComponent;
-import org.zilar.transform.Transform3;
 
 /**
  * Created by Andy on 6/1/17.

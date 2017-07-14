@@ -50,7 +50,7 @@ public class RenderLit extends Render
 		program.setUniform("projectionMatrix", projectionMatrix);
 		program.setUniform("viewMatrix", viewMatrix);
 		program.setUniform("worldMatrix", inst.getRenderTransformation(_MAT_A));
-		program.setUniform("cameraPosition", RendererBlob.camera.getTransform().position());
+		program.setUniform("cameraPosition", RendererBlob.camera.transform().position3());
 
 		program.setUniform("shininess", material.shininess);
 		program.setUniform("specularColor", material.specularColor);

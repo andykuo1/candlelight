@@ -13,11 +13,12 @@ import net.jimboi.stage_b.glim.entity.system.EntitySystemHeading;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
+import org.bstone.transform.Transform;
+import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.qsilver.asset.Asset;
 import org.qsilver.entity.Entity;
-import org.qsilver.transform.Transform;
 import org.zilar.animation.AnimatorSpriteSheet;
 import org.zilar.base.GameEngine;
 import org.zilar.base.SceneBase;
@@ -34,7 +35,6 @@ import org.zilar.sprite.SpriteSheet;
 import org.zilar.sprite.TextureAtlas;
 import org.zilar.sprite.TextureAtlasBuilder;
 import org.zilar.sprite.TextureAtlasData;
-import org.zilar.transform.Transform3;
 
 /**
  * Created by Andy on 6/1/17.
@@ -103,7 +103,7 @@ public class SceneGlim extends SceneBase
 
 		this.getEntityManager().createEntity(
 				new EntityComponentRenderable(
-						Transform3.create(),
+						new Transform3(),
 						new Model(GameEngine.ASSETMANAGER.getAsset(Mesh.class, "dungeon"),
 								this.getMaterialManager().createMaterial(
 										new PropertyDiffuse(),
@@ -118,13 +118,13 @@ public class SceneGlim extends SceneBase
 
 		this.shadowplane = this.getEntityManager().createEntity(
 				new EntityComponentRenderable(
-					Transform3.create(),
-					new Model(GameEngine.ASSETMANAGER.getAsset(Mesh.class, "plane"),
-							this.getMaterialManager().createMaterial(
-									new PropertyDiffuse(),
-									new PropertySpecular(),
-									new PropertyShadow(true, true),
-									new PropertyTexture(spritesheet)),//GameEngine.ASSETMANAGER.getAsset(Texture.class, "shadowmap"))),
+						new Transform3(),
+						new Model(GameEngine.ASSETMANAGER.getAsset(Mesh.class, "plane"),
+								this.getMaterialManager().createMaterial(
+										new PropertyDiffuse(),
+										new PropertySpecular(),
+										new PropertyShadow(true, true),
+										new PropertyTexture(spritesheet)),//GameEngine.ASSETMANAGER.getAsset(Texture.class, "shadowmap"))),
 							"billboard"))
 		);
 
@@ -141,14 +141,14 @@ public class SceneGlim extends SceneBase
 		Transform transform = this.player.getComponent(EntityComponentTransform.class).transform;
 
 		DynamicLight light = RenderGlim.LIGHTS.get(0);
-		light.position = new Vector4f(transform.position(), 1);
-		light.coneDirection.lerp(this.getRenderer().getCamera().getTransform().getForward(new Vector3f()), 0.2F);
+		light.position = new Vector4f(transform.getPosition(new Vector3f()), 1);
+		light.coneDirection.lerp(this.getRenderer().getCamera().transform().getForward(new Vector3f()), 0.2F);
 		DynamicLight pt = RenderGlim.LIGHTS.get(1);
 		pt.position = light.position;
 
 		EntityComponentRenderable renderable = this.shadowplane.getComponent(EntityComponentRenderable.class);
 		Vector3f position = renderable.getTransform().position;
-		Vector3f next = this.getRenderer().getCamera().getTransform().getForward(new Vector3f()).mul(3).add(transform.position());
+		Vector3f next = this.getRenderer().getCamera().transform().getForward(new Vector3f()).mul(3).add(transform.getPosition(new Vector3f()));
 		position.lerp(next, (float) delta * 10);
 
 		super.onSceneUpdate(delta);

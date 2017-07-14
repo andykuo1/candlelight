@@ -52,8 +52,8 @@ public class SceneBlob extends SceneBlobBase
 	protected void onSceneUpdate(double delta)
 	{
 		ModLight light = RendererBlob.lights.get(0);
-		light.position = new Vector4f(RendererBlob.camera.getTransform().position, 1);
-		light.coneDirection = RendererBlob.camera.getTransform().getForward(new Vector3f());
+		light.position = new Vector4f(RendererBlob.camera.transform().position3(), 1);
+		light.coneDirection = RendererBlob.camera.transform().getForward(new Vector3f());
 
 		super.onSceneUpdate(delta);
 	}

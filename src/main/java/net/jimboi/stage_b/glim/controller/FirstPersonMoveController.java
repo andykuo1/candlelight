@@ -7,11 +7,10 @@ import net.jimboi.stage_b.glim.bounding.IntersectionData;
 import org.bstone.camera.Camera;
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputManager;
+import org.bstone.transform.Transform;
+import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
-import org.qsilver.transform.Transform;
-import org.zilar.transform.Transform3;
-import org.zilar.transform.Transform3Quat;
 
 /**
  * Created by Andy on 6/4/17.
@@ -30,11 +29,11 @@ public class FirstPersonMoveController
 
 	protected float counter;
 
-	protected final Transform3Quat target;
+	protected final Transform3 target;
 	protected final Bounding bounding;
 	protected final BoundingManager boundingManager;
 
-	public FirstPersonMoveController(Transform3Quat target, Bounding bounding, BoundingManager boundingManager)
+	public FirstPersonMoveController(Transform3 target, Bounding bounding, BoundingManager boundingManager)
 	{
 		this.target = target;
 		this.bounding = bounding;
@@ -105,8 +104,8 @@ public class FirstPersonMoveController
 
 		float wiggleX = 0.02F;
 		float wiggleY = 0.02F;
-		Vector3fc pos = this.target.position();
-		cameraTransform.setPosition(pos.x(), pos.y(), pos.z());
+		Vector3fc pos = this.target.position3();
+		cameraTransform.position.set(pos.x(), pos.y(), pos.z());
 		cameraTransform.moveUp((float) Math.abs(Math.cos(this.counter)) * wiggleY - wiggleY / 2F);
 		cameraTransform.moveRight((float) Math.cos(this.counter) * wiggleX);
 	}

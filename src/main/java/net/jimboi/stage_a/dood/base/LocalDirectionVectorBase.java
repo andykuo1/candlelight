@@ -1,13 +1,13 @@
 package net.jimboi.stage_a.dood.base;
 
+import org.bstone.transform.DirectionVector3;
+import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
-import org.qsilver.transform.DirectionVectors;
-import org.zilar.transform.Transform3;
 
 /**
  * Created by Andy on 5/22/17.
  */
-public class LocalDirectionVectorBase implements DirectionVectors
+public class LocalDirectionVectorBase implements DirectionVector3
 {
 	private final Transform3 transform;
 

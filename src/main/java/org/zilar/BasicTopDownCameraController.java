@@ -4,10 +4,9 @@ import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputManager;
+import org.bstone.transform.Transform;
+import org.bstone.transform.Transform3;
 import org.joml.Vector3fc;
-import org.qsilver.transform.Transform;
-import org.zilar.transform.Transform3;
-import org.zilar.transform.Transform3Quat;
 
 /**
  * Created by Andy on 6/18/17.
@@ -27,14 +26,14 @@ public class BasicTopDownCameraController implements CameraController, InputEngi
 	protected float right;
 	protected boolean sprint;
 
-	protected Transform3Quat target;
+	protected Transform3 target;
 
 	public BasicTopDownCameraController()
 	{
 		this.setDistanceToTarget(1.5F);
 	}
 
-	public BasicTopDownCameraController setTarget(Transform3Quat target)
+	public BasicTopDownCameraController setTarget(Transform3 target)
 	{
 		this.target = target;
 		return this;
@@ -89,8 +88,8 @@ public class BasicTopDownCameraController implements CameraController, InputEngi
 		this.target.position.y = 0;
 		this.target.position.z += this.forward * speed;
 
-		Vector3fc pos = this.target.position();
-		cameraTransform.setPosition(pos.x(), this.distToTarget + this.dist, pos.z());
+		Vector3fc pos = this.target.position3();
+		cameraTransform.position.set(pos.x(), this.distToTarget + this.dist, pos.z());
 
 		return true;
 	}

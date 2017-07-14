@@ -4,14 +4,13 @@ import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputManager;
+import org.bstone.transform.Transform;
+import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
-import org.qsilver.transform.Transform;
 import org.qsilver.util.MathUtil;
-import org.zilar.transform.Transform3;
-import org.zilar.transform.Transform3Quat;
 
 /**
  * Created by Andy on 6/18/17.
@@ -37,9 +36,9 @@ public class BasicFirstPersonCameraController implements CameraController, Input
 
 	protected float counter;
 
-	protected Transform3Quat target;
+	protected Transform3 target;
 
-	public BasicFirstPersonCameraController setTarget(Transform3Quat target)
+	public BasicFirstPersonCameraController setTarget(Transform3 target)
 	{
 		this.target = target;
 		return this;
@@ -65,8 +64,8 @@ public class BasicFirstPersonCameraController implements CameraController, Input
 		Vector3f right = cameraTransform.getRight(_RIGHT);
 		cameraTransform.rotate(this.pitch, right);
 
-		Transform3Quat transform = this.target;
-		transform.setRotation(transform.rotation);
+		Transform3 transform = this.target;
+		transform.rotation.set(transform.rotation);
 		transform.rotation.x = 0;
 		transform.rotation.z = 0;
 		transform.rotation.normalize().invert();
@@ -105,8 +104,8 @@ public class BasicFirstPersonCameraController implements CameraController, Input
 
 		float wiggleX = 0.02F;
 		float wiggleY = 0.02F;
-		Vector3fc pos = this.target.position();
-		cameraTransform.setPosition(pos.x(), pos.y(), pos.z());
+		Vector3fc pos = this.target.position3();
+		cameraTransform.position.set(pos.x(), pos.y(), pos.z());
 		cameraTransform.moveUp((float) Math.abs(Math.cos(this.counter)) * wiggleY - wiggleY / 2F);
 		cameraTransform.moveRight((float) Math.cos(this.counter) * wiggleX);
 

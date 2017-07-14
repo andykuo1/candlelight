@@ -2,8 +2,8 @@ package org.zilar.meshbuilder;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.VBO;
+import org.bstone.transform.Transform;
 import org.lwjgl.opengl.GL15;
-import org.qsilver.transform.Transform;
 
 import java.nio.FloatBuffer;
 

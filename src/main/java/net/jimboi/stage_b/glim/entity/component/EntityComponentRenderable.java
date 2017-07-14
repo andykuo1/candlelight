@@ -1,10 +1,10 @@
 package net.jimboi.stage_b.glim.entity.component;
 
+import org.bstone.transform.Transform3;
 import org.joml.Matrix4f;
 import org.qsilver.entity.EntityComponent;
 import org.qsilver.renderer.Renderable;
 import org.zilar.model.Model;
-import org.zilar.transform.Transform3;
 
 /**
  * Created by Andy on 6/1/17.
@@ -41,7 +41,7 @@ public class EntityComponentRenderable implements EntityComponent, Renderable
 	@Override
 	public Matrix4f getRenderTransformation(Matrix4f dst)
 	{
-		return dst.set(this.transform.transformation());
+		return this.transform.getTransformation(dst);
 	}
 
 	@Override

@@ -1,8 +1,8 @@
 package org.zilar.instance;
 
+import org.bstone.transform.Transform;
 import org.joml.Matrix4f;
 import org.qsilver.renderer.Renderable;
-import org.qsilver.transform.Transform;
 import org.zilar.model.Model;
 
 /**
@@ -26,7 +26,7 @@ public final class Instance implements Renderable
 
 	public final Instance setTransformation(Transform transform)
 	{
-		this.transformation.set(transform.transformation());
+		transform.getTransformation(this.transformation);
 		return this;
 	}
 

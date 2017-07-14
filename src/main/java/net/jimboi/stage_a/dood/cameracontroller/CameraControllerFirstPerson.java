@@ -3,15 +3,14 @@ package net.jimboi.stage_a.dood.cameracontroller;
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;
 import org.bstone.input.InputManager;
+import org.bstone.transform.Transform;
+import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.qsilver.scene.Scene;
-import org.qsilver.transform.Transform;
 import org.qsilver.util.MathUtil;
-import org.zilar.transform.Transform3;
-import org.zilar.transform.Transform3Quat;
 
 /**
  * Created by Andy on 5/24/17.
@@ -81,8 +80,8 @@ public class CameraControllerFirstPerson implements CameraController
 			Vector3f right = cameraTransform.getRight(_VEC);
 			cameraTransform.rotate(this.pitch, right);
 
-			Transform3Quat transform = (Transform3Quat) this.target;
-			transform.setRotation(transform.rotation);
+			Transform3 transform = (Transform3) this.target;
+			transform.rotation.set(transform.rotation);
 			transform.rotation.x = 0;
 			transform.rotation.z = 0;
 			transform.rotation.normalize().invert();
@@ -111,7 +110,7 @@ public class CameraControllerFirstPerson implements CameraController
 		this.target.position.y += this.up * this.speed;
 		this.target.position.z += this.forward * this.speed;
 
-		Vector3fc pos = this.target.position();
+		Vector3fc pos = this.target.position3();
 		cameraTransform.position.set(pos.x(), pos.y(), pos.z());
 
 		return true;

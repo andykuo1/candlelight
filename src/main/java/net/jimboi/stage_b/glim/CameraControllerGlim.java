@@ -8,10 +8,9 @@ import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;
 import org.bstone.input.InputEngine;
+import org.bstone.transform.Transform3;
 import org.qsilver.entity.Entity;
 import org.zilar.base.GameEngine;
-import org.zilar.transform.Transform3;
-import org.zilar.transform.Transform3Quat;
 
 /**
  * Created by Andy on 6/1/17.
@@ -30,8 +29,8 @@ public class CameraControllerGlim implements CameraController, InputEngine.OnInp
 		}
 		else
 		{
-			this.lookController = new FirstPersonLookController((Transform3Quat) target.getComponent(EntityComponentTransform.class).transform);
-			this.moveController = new FirstPersonMoveController((Transform3Quat) target.getComponent(EntityComponentTransform.class).transform, target.getComponent(EntityComponentBounding.class).bounding, world.getBoundingManager());
+			this.lookController = new FirstPersonLookController((Transform3) target.getComponent(EntityComponentTransform.class).transform);
+			this.moveController = new FirstPersonMoveController((Transform3) target.getComponent(EntityComponentTransform.class).transform, target.getComponent(EntityComponentBounding.class).bounding, world.getBoundingManager());
 		}
 	}
 
