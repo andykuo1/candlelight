@@ -2,8 +2,8 @@ package net.jimboi.stage_a.mod.scene;
 
 import net.jimboi.stage_a.blob.livings.LivingBase;
 
-import org.qsilver.living.Living;
-import org.qsilver.living.LivingManager;
+import org.bstone.living.Living;
+import org.bstone.living.LivingManager;
 import org.qsilver.scene.Scene;
 
 import java.util.HashSet;

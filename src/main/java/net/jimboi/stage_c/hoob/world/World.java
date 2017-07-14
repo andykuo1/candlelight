@@ -8,12 +8,11 @@ import net.jimboi.stage_c.hoob.world.agents.Traveller;
 import net.jimboi.stage_c.hoob.world.agents.WorldAgent;
 
 import org.bstone.input.InputManager;
+import org.bstone.living.LivingManager;
 import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.qsilver.entity.Entity;
-import org.qsilver.living.Living;
-import org.qsilver.living.LivingManager;
 import org.qsilver.view.MousePicker;
 import org.zilar.base.GameEngine;
 
@@ -22,7 +21,7 @@ import java.util.Iterator;
 /**
  * Created by Andy on 7/13/17.
  */
-public class World implements LivingManager.OnLivingAddListener, LivingManager.OnLivingRemoveListener
+public class World implements LivingManager.OnLivingAddListener<WorldAgent>, LivingManager.OnLivingRemoveListener<WorldAgent>
 {
 	public final SceneHoob scene;
 	public MousePicker picker;
@@ -136,18 +135,16 @@ public class World implements LivingManager.OnLivingAddListener, LivingManager.O
 	}
 
 	@Override
-	public void onLivingAdd(Living living)
+	public void onLivingAdd(WorldAgent agent)
 	{
-		WorldAgent agent = (WorldAgent) living;
-		boolean motion = living instanceof MoveAgent;
+		boolean motion = agent instanceof MoveAgent;
 		Entity entity = this.scene.spawnEntity(agent.pos.x, agent.pos.y, 0, "bunny", "quad", motion ? "bunny" : null);
 		entity.addComponent(agent);
 	}
 
 	@Override
-	public void onLivingRemove(Living living)
+	public void onLivingRemove(WorldAgent agent)
 	{
-		WorldAgent agent = (WorldAgent) living;
 		this.scene.getEntityManager().getEntityByComponent(agent).setDead();
 	}
 }

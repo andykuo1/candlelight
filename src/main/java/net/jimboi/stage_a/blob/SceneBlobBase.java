@@ -4,8 +4,8 @@ import net.jimboi.stage_a.base.Main;
 import net.jimboi.stage_a.mod.instance.InstanceHandler;
 import net.jimboi.stage_a.mod.scene.LivingSceneBase;
 
-import org.qsilver.living.Living;
-import org.qsilver.living.LivingManager;
+import org.bstone.living.Living;
+import org.bstone.living.LivingManager;
 import org.qsilver.renderer.RenderEngine;
 import org.qsilver.renderer.RenderManager;
 

@@ -1,4 +1,4 @@
-package org.qsilver.living;
+package org.bstone.living;
 
 /**
  * Created by Andy on 3/4/17.

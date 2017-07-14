@@ -4,8 +4,8 @@ import net.jimboi.stage_a.mod.ModMaterial;
 import net.jimboi.stage_a.mod.instance.Instance;
 import net.jimboi.stage_a.mod.model.Model;
 
+import org.bstone.living.Living;
 import org.bstone.transform.Transform3;
-import org.qsilver.living.Living;
 
 /**
  * Created by Andy on 4/19/17.

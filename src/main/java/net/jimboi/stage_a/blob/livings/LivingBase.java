@@ -7,8 +7,8 @@ import net.jimboi.stage_a.mod.instance.InstanceHandler;
 import net.jimboi.stage_a.mod.instance.InstanceManager;
 import net.jimboi.stage_a.mod.model.Model;
 
+import org.bstone.living.Living;
 import org.bstone.transform.Transform3;
-import org.qsilver.living.Living;
 
 import java.util.List;
 

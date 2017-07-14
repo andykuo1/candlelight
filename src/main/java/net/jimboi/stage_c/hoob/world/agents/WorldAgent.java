@@ -2,9 +2,9 @@ package net.jimboi.stage_c.hoob.world.agents;
 
 import net.jimboi.stage_c.hoob.world.World;
 
+import org.bstone.living.Living;
 import org.joml.Vector2f;
 import org.qsilver.entity.EntityComponent;
-import org.qsilver.living.Living;
 
 /**
  * Created by Andy on 7/13/17.

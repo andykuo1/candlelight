@@ -1,4 +1,4 @@
-package org.qsilver.living;
+package org.bstone.living;
 
 import org.bstone.util.listener.Listenable;
 
@@ -13,18 +13,21 @@ import java.util.Map;
  */
 public class LivingManager<L extends Living>
 {
-	public interface OnLivingAddListener
+	public interface OnLivingAddListener<L extends Living>
 	{
-		void onLivingAdd(Living living);
+		void onLivingAdd(L living);
 	}
 
-	public interface OnLivingRemoveListener
+	public interface OnLivingRemoveListener<L extends Living>
 	{
-		void onLivingRemove(Living living);
+		void onLivingRemove(L living);
 	}
 
-	public final Listenable<OnLivingAddListener> onLivingAdd = new Listenable<>((listener, objects) -> listener.onLivingAdd((Living) objects[0]));
-	public final Listenable<OnLivingRemoveListener> onLivingRemove = new Listenable<>(((listener, objects) -> listener.onLivingRemove((Living) objects[0])));
+	@SuppressWarnings("unchecked")
+	public final Listenable<OnLivingAddListener<L>> onLivingAdd = new Listenable<>((listener, objects) -> listener.onLivingAdd((L) objects[0]));
+
+	@SuppressWarnings("unchecked")
+	public final Listenable<OnLivingRemoveListener<L>> onLivingRemove = new Listenable<>(((listener, objects) -> listener.onLivingRemove((L) objects[0])));
 
 	private int NEXT_LIVING_ID = 0;
 	private final List<L> spawnList = new ArrayList<>();
