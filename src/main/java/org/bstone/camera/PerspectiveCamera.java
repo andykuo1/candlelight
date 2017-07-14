@@ -1,5 +1,6 @@
 package org.bstone.camera;
 
+import org.bstone.transform.InvertedTransform3;
 import org.joml.Matrix4f;
 import org.qsilver.poma.Poma;
 
@@ -15,7 +16,7 @@ public class PerspectiveCamera extends Camera
 
 	public PerspectiveCamera(float width, float height)
 	{
-		super();
+		super(new InvertedTransform3());
 		this.aspectRatio = width / height;
 	}
 
@@ -53,7 +54,7 @@ public class PerspectiveCamera extends Camera
 	@Override
 	protected void updateProjectionMatrix(Matrix4f mat)
 	{
-		mat.perspective(this.fieldOfView, this.aspectRatio, this.clippingNear, this.clippingFar);
+		mat.setPerspective(this.fieldOfView, this.aspectRatio, this.clippingNear, this.clippingFar);
 	}
 
 	@Override
@@ -65,6 +66,6 @@ public class PerspectiveCamera extends Camera
 	@Override
 	protected void updateViewMatrix(Matrix4f mat)
 	{
-		mat.rotate(this.transform.quaternion()).translate(-this.transform.position.x, -this.transform.position.y, -this.transform.position.z);
+		mat.rotation(this.transform.quaternion()).translate(-this.transform.position.x, -this.transform.position.y, -this.transform.position.z);
 	}
 }

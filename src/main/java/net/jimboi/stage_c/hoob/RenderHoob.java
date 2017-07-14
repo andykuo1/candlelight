@@ -2,7 +2,8 @@ package net.jimboi.stage_c.hoob;
 
 import net.jimboi.stage_b.glim.entity.component.EntityComponentRenderable;
 
-import org.bstone.camera.PerspectiveCamera;
+import org.bstone.camera.Camera;
+import org.bstone.camera.OrthographicCamera;
 import org.bstone.input.InputManager;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
@@ -39,7 +40,7 @@ public class RenderHoob extends RenderBase
 
 	public RenderHoob()
 	{
-		super(new PerspectiveCamera(640, 480), new BasicSideScrollCameraController());
+		super(new OrthographicCamera(640, 480), new BasicSideScrollCameraController());
 
 		this.assets = Assets.create("hoob", new SemanticVersion("0.0.0"));
 	}
@@ -115,9 +116,9 @@ public class RenderHoob extends RenderBase
 	}
 
 	@Override
-	public PerspectiveCamera getCamera()
+	public Camera getCamera()
 	{
-		return (PerspectiveCamera) super.getCamera();
+		return (Camera) super.getCamera();
 	}
 
 	public BasicSideScrollCameraController getCameraController()

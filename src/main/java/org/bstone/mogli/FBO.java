@@ -23,7 +23,7 @@ public final class FBO implements AutoCloseable
 
 	public FBO(int width, int height, boolean colorBuffer)
 	{
-		this.viewport = new ViewPort(width, height);
+		this.viewport = new ViewPort(0, 0, width, height);
 
 		this.handle = GL30.glGenFramebuffers();
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, this.handle);

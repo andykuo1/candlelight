@@ -7,10 +7,11 @@ import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
 import net.jimboi.stage_b.glim.entity.system.EntitySystem2D;
 import net.jimboi.stage_b.glim.entity.system.EntitySystemBillboard;
 
+import org.bstone.camera.Camera;
+import org.bstone.input.InputManager;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
 import org.bstone.transform.Transform3;
-import org.qsilver.view.MousePicker;
 import org.zilar.BasicTopDownCameraController;
 import org.zilar.base.GameEngine;
 import org.zilar.base.SceneBase;
@@ -35,7 +36,6 @@ public class ScenePhysx extends SceneBase
 
 	private Transform3 player;
 	private Transform3 transform;
-	private MousePicker picker;
 
 	public ScenePhysx()
 	{
@@ -51,8 +51,6 @@ public class ScenePhysx extends SceneBase
 	@Override
 	protected void onSceneStart()
 	{
-		this.picker = new MousePicker(GameEngine.WINDOW, GameEngine.INPUTENGINE, this.getRenderer().getCamera());
-
 		this.sys_2D = new EntitySystem2D(this.entityManager);
 
 		this.sys_billboard = new EntitySystemBillboard(this.entityManager, this.getRenderer().getCamera());
@@ -94,10 +92,12 @@ public class ScenePhysx extends SceneBase
 	@Override
 	protected void onSceneUpdate(double delta)
 	{
-		this.getRenderer().getCamera().update(delta);
+		Camera camera = this.getRenderer().getCamera();
+		camera.update(delta);
 
-		this.transform.position.set(this.getRenderer().getCamera().transform().position3());
-		this.transform.position.add(this.picker.getMouseRay());
+		float mouseX = InputManager.getInputAmount("mousex");
+		float mouseY = InputManager.getInputAmount("mousey");
+		Camera.getWorldFromScreen(camera, GameEngine.WINDOW.getCurrentViewPort(), mouseX, mouseY, 0.99F, this.transform.position);
 
 		super.onSceneUpdate(delta);
 	}

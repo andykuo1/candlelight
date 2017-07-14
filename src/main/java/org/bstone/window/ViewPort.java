@@ -5,11 +5,15 @@ package org.bstone.window;
  */
 public class ViewPort
 {
+	private int x;
+	private int y;
 	private int width;
 	private int height;
 
-	public ViewPort(int width, int height)
+	public ViewPort(int x, int y, int width, int height)
 	{
+		this.x = x;
+		this.y = y;
 		this.width = width;
 		this.height = height;
 	}
@@ -22,6 +26,16 @@ public class ViewPort
 	public void setHeight(int height)
 	{
 		this.height = height;
+	}
+
+	public int getX()
+	{
+		return this.x;
+	}
+
+	public int getY()
+	{
+		return this.y;
 	}
 
 	public int getWidth()

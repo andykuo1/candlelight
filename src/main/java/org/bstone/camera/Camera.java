@@ -1,11 +1,13 @@
 package org.bstone.camera;
 
-import org.bstone.transform.InvertedTransform3;
 import org.bstone.transform.Transform3;
 import org.bstone.transform.Transform3c;
 import org.bstone.util.listener.Listenable;
+import org.bstone.window.ViewPort;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 /**
  * Created by Andy on 5/19/17.
@@ -22,13 +24,14 @@ public abstract class Camera
 	private CameraController controller;
 	private boolean dirty;
 
-	protected final Transform3 transform = new InvertedTransform3();
+	protected final Transform3 transform;
 	protected final Matrix4f viewMatrix = new Matrix4f();
 	protected final Matrix4f rotationMatrix = new Matrix4f();
 	protected final Matrix4f projectionMatrix = new Matrix4f();
 
-	public Camera()
+	public Camera(Transform3 transform)
 	{
+		this.transform = transform;
 		this.dirty = true;
 	}
 
@@ -115,5 +118,47 @@ public abstract class Camera
 	public final void markDirty()
 	{
 		this.dirty = true;
+	}
+
+	public static Vector3f getWorld2DFromScreen(Camera camera, ViewPort viewport, float screenX, float screenY, Vector3f dst)
+	{
+		Matrix4fc view = camera.view();
+		Matrix4fc projection = camera.projection();
+		Matrix4f invertedViewProjection = projection.mul(view, new Matrix4f()).invert();
+
+		screenY = viewport.getHeight() - screenY;
+
+		Vector3f near = unproject(invertedViewProjection, viewport, screenX, screenY, 0, new Vector3f());
+		Vector3f far = unproject(invertedViewProjection, viewport, screenX, screenY, 1, new Vector3f());
+
+		float f = (0 - near.z) / (far.z - near.z);
+		screenX = (near.x + f * (far.x - near.x));
+		screenY = (near.y + f * (far.y - near.y));
+		return dst.set(screenX, screenY, 0);
+	}
+
+	public static Vector3f getWorldFromScreen(Camera camera, ViewPort viewport, float screenX, float screenY, float screenDepth, Vector3f dst)
+	{
+		Matrix4fc view = camera.view();
+		Matrix4fc projection = camera.projection();
+		Matrix4f invertedViewProjection = projection.mul(view, new Matrix4f()).invert();
+
+		screenY = viewport.getHeight() - screenY;
+
+		return unproject(invertedViewProjection, viewport, screenX, screenY, screenDepth, dst);
+	}
+
+	protected static Vector3f unproject(Matrix4fc invertedViewProjection, ViewPort viewport, float screenX, float screenY, float z, Vector3f dst)
+	{
+		Vector4f normalizedDeviceCoords = new Vector4f();
+		normalizedDeviceCoords.x = (screenX - viewport.getX()) / viewport.getWidth() * 2.0F - 1.0F;
+		normalizedDeviceCoords.y = (screenY - viewport.getY()) / viewport.getHeight() * 2.0F - 1.0F;
+		normalizedDeviceCoords.z = 2.0F * z - 1.0F;
+		normalizedDeviceCoords.w = 1.0F;
+
+		Vector4f objectCoords = invertedViewProjection.transform(normalizedDeviceCoords);
+		if (objectCoords.w != 0.0F) objectCoords.w = 1.0F / objectCoords.w;
+
+		return dst.set(objectCoords.x, objectCoords.y, objectCoords.z).mul(objectCoords.w);
 	}
 }

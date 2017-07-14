@@ -2,8 +2,6 @@ package org.bstone.window;
 
 import org.bstone.input.InputEngine;
 import org.bstone.util.listener.Listenable;
-import org.joml.Vector2f;
-import org.joml.Vector2fc;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
@@ -51,7 +49,7 @@ public class Window
 		this.width = width;
 		this.height = height;
 
-		this.defaultViewPort = new ViewPort(this.width * 2, this.height * 2);
+		this.defaultViewPort = new ViewPort(0, 0, this.width, this.height);
 
 		System.out.println("LWJGL " + Version.getVersion());
 		System.out.println("JOML 1.9.2");
@@ -186,7 +184,7 @@ public class Window
 		ViewPort prev = !this.viewports.empty() ? this.viewports.peek() : null;
 		this.viewports.push(viewport);
 
-		GL11.glViewport(0, 0, viewport.getWidth(), viewport.getHeight());
+		this.updateViewPort(viewport);
 
 		this.onViewPortChanged.notifyListeners(viewport, prev);
 	}
@@ -201,7 +199,7 @@ public class Window
 		ViewPort prev = this.viewports.pop();
 		ViewPort viewport = this.viewports.peek();
 
-		GL11.glViewport(0, 0, viewport.getWidth(), viewport.getHeight());
+		this.updateViewPort(viewport);
 
 		this.onViewPortChanged.notifyListeners(viewport, prev);
 
@@ -226,12 +224,10 @@ public class Window
 		this.setCurrentViewPort(this.defaultViewPort);
 	}
 
-	public Vector2f toNormalizedDeviceCoords(Vector2fc windowPos, Vector2f dst)
+	private void updateViewPort(ViewPort viewport)
 	{
-		//Converts screen positions to between 0 and 1 at top-right
-		float x = (2F * windowPos.x()) / this.width - 1;
-		float y = 1F - (2F * windowPos.y()) / this.height;
-		return dst.set(x, y);
+		//TODO: Figure out why this needs to be doubled?
+		GL11.glViewport(viewport.getX(), viewport.getY(), viewport.getWidth() * 2, viewport.getHeight() * 2);
 	}
 
 	public int getWidth()

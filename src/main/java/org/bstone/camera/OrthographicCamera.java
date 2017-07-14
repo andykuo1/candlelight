@@ -1,5 +1,6 @@
 package org.bstone.camera;
 
+import org.bstone.transform.Transform3;
 import org.joml.Matrix4f;
 import org.qsilver.poma.Poma;
 
@@ -13,13 +14,14 @@ public class OrthographicCamera extends Camera
 	private float bottomBound = -10F;
 	private float topBound = 10F;
 
-	private float nearBound = -10F;
-	private float farBound = 10F;
+	private float nearBound = -100F;
+	private float farBound = 100F;
 
-	private float aspectRatio = 1F;
+	private float aspectRatio;
 
 	public OrthographicCamera(float width, float height)
 	{
+		super(new Transform3());
 		this.aspectRatio = width / height;
 	}
 
@@ -43,7 +45,7 @@ public class OrthographicCamera extends Camera
 	@Override
 	protected void updateProjectionMatrix(Matrix4f mat)
 	{
-		mat.ortho(this.leftBound, this.rightBound, this.bottomBound, this.topBound, this.nearBound, this.farBound);
+		mat.setOrtho(this.leftBound, this.rightBound, this.bottomBound, this.topBound, this.nearBound, this.farBound);
 	}
 
 	@Override

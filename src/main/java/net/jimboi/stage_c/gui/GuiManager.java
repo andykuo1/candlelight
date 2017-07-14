@@ -28,7 +28,7 @@ public class GuiManager
 		float y = InputManager.getInputAmount("mousey");
 
 		Vector2f mouse = new Vector2f(x, y);
-		this.window.toNormalizedDeviceCoords(mouse, mouse);
+		//this.window.toNormalizedDeviceCoords(mouse, mouse);
 		mouse.mul(this.window.getWidth(), this.window.getHeight());
 
 		Gui gui = this.getGuiAt((int) mouse.x(), (int) mouse.y());

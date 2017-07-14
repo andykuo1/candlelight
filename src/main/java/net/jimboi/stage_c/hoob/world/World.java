@@ -7,13 +7,12 @@ import net.jimboi.stage_c.hoob.world.agents.Town;
 import net.jimboi.stage_c.hoob.world.agents.Traveller;
 import net.jimboi.stage_c.hoob.world.agents.WorldAgent;
 
+import org.bstone.camera.Camera;
 import org.bstone.input.InputManager;
 import org.bstone.living.LivingManager;
 import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
-import org.joml.Vector3fc;
 import org.qsilver.entity.Entity;
-import org.qsilver.view.MousePicker;
 import org.zilar.base.GameEngine;
 
 import java.util.Iterator;
@@ -24,7 +23,6 @@ import java.util.Iterator;
 public class World implements LivingManager.OnLivingAddListener<WorldAgent>, LivingManager.OnLivingRemoveListener<WorldAgent>
 {
 	public final SceneHoob scene;
-	public MousePicker picker;
 	public Vector3f pickPos;
 
 	public Traveller player;
@@ -41,7 +39,6 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 
 	public void create()
 	{
-		this.picker = new MousePicker(GameEngine.WINDOW, GameEngine.INPUTENGINE, this.scene.getRenderer().getCamera());
 		Entity pick = this.scene.spawnEntity(0, 0, 0, "crate", "quad", null);
 		this.pickPos = pick.getComponent(EntityComponentTransform.class).transform.position;
 		this.pickPos.z = 0.1F;
@@ -54,28 +51,10 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 
 	public void update(double delta)
 	{
-		Vector3fc camera = this.scene.getRenderer().getCamera().transform().position3();
-		this.pickPos.x = camera.x();
-		this.pickPos.y = camera.y();
-
-		Vector3fc mouseRay = this.picker.getMouseRay();
-		if (mouseRay.z() < 0)
-		{
-			float z = camera.z();
-			while (z > 0)
-			{
-				this.pickPos.x += mouseRay.x();
-				this.pickPos.y += mouseRay.y();
-				z += mouseRay.z();
-			}
-			this.pickPos.x -= mouseRay.x() * (1 - z);
-			this.pickPos.y -= mouseRay.y() * (1 - z);
-		}
-
-		//TODO: This is a hack to make it look like it does...
-		this.pickPos.x += mouseRay.x();
-		this.pickPos.y += mouseRay.y();
-		//this.pickPos.z = 0;
+		Camera camera = this.scene.getRenderer().getCamera();
+		float mouseX = InputManager.getInputAmount("mousex");
+		float mouseY = InputManager.getInputAmount("mousey");
+		Camera.getWorld2DFromScreen(camera, GameEngine.WINDOW.getCurrentViewPort(), mouseX, mouseY, this.pickPos);
 
 		if (InputManager.isInputDown("mouseleft"))
 		{
