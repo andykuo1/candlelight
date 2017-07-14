@@ -6,7 +6,7 @@ import org.qsilver.entity.EntityComponent;
 /**
  * Created by Andy on 6/14/17.
  */
-public class EntityComponentTargeter extends EntityComponent
+public class EntityComponentTargeter implements EntityComponent
 {
 	public Vector3fc target;
 	public float nearestDist;

@@ -7,7 +7,7 @@ import org.qsilver.entity.EntityComponent;
 /**
  * Created by Andy on 6/4/17.
  */
-public class EntityComponentBounding extends EntityComponent
+public class EntityComponentBounding implements EntityComponent
 {
 	public Bounding bounding;
 

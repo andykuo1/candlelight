@@ -9,7 +9,7 @@ import org.zilar.transform.Transform3;
 /**
  * Created by Andy on 6/1/17.
  */
-public class EntityComponentRenderable extends EntityComponent implements Renderable
+public class EntityComponentRenderable implements EntityComponent, Renderable
 {
 	public final Transform3 transform;
 	public final Model model;

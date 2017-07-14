@@ -149,7 +149,7 @@ public class WorldGlim
 					if (isSolid(map, x, y + 1)) tile += 2;
 					if (isSolid(map, x + 1, y)) tile += 4;
 					if (isSolid(map, x, y - 1)) tile += 8;
-					sprite = textureAtlas.getSource().getSprite(tile);
+					sprite = textureAtlas.getSource().getSprite(tile + 9 * 16);
 					texTopLeft.set(sprite.getU(), sprite.getV());
 					texBotRight.set(texTopLeft).add(sprite.getWidth(), sprite.getHeight());
 

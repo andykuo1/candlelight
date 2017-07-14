@@ -2,6 +2,7 @@ package net.jimboi.stage_c.hoob;
 
 import net.jimboi.stage_b.glim.entity.component.EntityComponentRenderable;
 import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
+import net.jimboi.stage_c.hoob.world.World;
 
 import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
@@ -34,14 +35,27 @@ public class SceneHoob extends SceneBase
 		super(new RenderHoob());
 	}
 
+	private World world;
+
 	@Override
 	protected void onSceneStart()
 	{
-		this.spawnEntity(0, 0, 0, "bunny", "quad", "bunny");
+		this.spawnEntity(0, 0, -0.1F, "crate", "ground", null);
 
 		Transform3 transform = Transform3.create();
-		transform.setPosition(0, 0, 10);
+		transform.setPosition(0, 0, 1);
 		this.getRenderer().getCameraController().setTarget((Transform3Quat) transform);
+
+		this.world = new World(this);
+		this.world.create();
+	}
+
+	@Override
+	protected void onSceneUpdate(double delta)
+	{
+		super.onSceneUpdate(delta);
+
+		this.world.update(delta);
 	}
 
 	@Override
@@ -56,7 +70,7 @@ public class SceneHoob extends SceneBase
 		return (RenderHoob) super.getRenderer();
 	}
 
-	public Entity spawnEntity(float x, float y, float z, String textureID, String modelID, String textureAtlasID)
+	public Entity spawnEntity(float x, float y, float z, String textureID, String meshID, String textureAtlasID)
 	{
 		Transform3 transform = Transform3.create();
 		transform.setPosition(x, y, z);
@@ -70,7 +84,7 @@ public class SceneHoob extends SceneBase
 			this.getAnimationManager().start(new AnimatorSpriteSheet(spritesheet, 0.2F));
 		}
 
-		Asset<Mesh> mesh = GameEngine.ASSETMANAGER.getAsset(Mesh.class, modelID);
+		Asset<Mesh> mesh = GameEngine.ASSETMANAGER.getAsset(Mesh.class, meshID);
 		Material material = this.getMaterialManager().createMaterial(
 				new PropertyDiffuse(),
 				spritesheet != null ? new PropertyTexture(spritesheet) : new PropertyTexture(texture)

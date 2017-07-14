@@ -10,6 +10,7 @@ import org.bstone.camera.CameraController;
 import org.bstone.input.InputEngine;
 import org.qsilver.entity.Entity;
 import org.zilar.base.GameEngine;
+import org.zilar.transform.Transform3;
 import org.zilar.transform.Transform3Quat;
 
 /**
@@ -41,17 +42,19 @@ public class CameraControllerGlim implements CameraController, InputEngine.OnInp
 	}
 
 	@Override
-	public void onCameraUpdate(Camera camera, double delta)
+	public boolean onCameraUpdate(Camera camera, Transform3 cameraTransform, double delta)
 	{
 		if (this.lookController != null)
 		{
-			this.lookController.update(camera, delta);
+			this.lookController.update(camera, cameraTransform, delta);
 		}
 
 		if (this.moveController != null)
 		{
-			this.moveController.update(camera, delta);
+			this.moveController.update(camera, cameraTransform, delta);
 		}
+
+		return true;
 	}
 
 	@Override

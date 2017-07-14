@@ -11,7 +11,7 @@ import java.util.Stack;
 /**
  * Created by Andy on 6/14/17.
  */
-public class EntityComponentNavigator extends EntityComponent
+public class EntityComponentNavigator implements EntityComponent
 {
 	public WorldGlim world;
 	public final AstarNavigator<NavigatorCardinalMap.Cell> navigator;

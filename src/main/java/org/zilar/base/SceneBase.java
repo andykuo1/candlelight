@@ -45,7 +45,6 @@ public abstract class SceneBase extends Scene
 	{
 		this.renderer.getCamera().update(delta);
 		this.animationManager.update(delta);
-
 		this.entityManager.update();
 	}
 
@@ -64,7 +63,6 @@ public abstract class SceneBase extends Scene
 	@Override
 	protected void onSceneDestroy()
 	{
-		this.entityManager.clear();
 		this.materialManager.clear();
 	}
 

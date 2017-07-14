@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Created by Andy on 3/4/17.
  */
-public class LivingManager
+public class LivingManager<L extends Living>
 {
 	public interface OnLivingAddListener
 	{
@@ -27,12 +27,12 @@ public class LivingManager
 	public final Listenable<OnLivingRemoveListener> onLivingRemove = new Listenable<>(((listener, objects) -> listener.onLivingRemove((Living) objects[0])));
 
 	private int NEXT_LIVING_ID = 0;
-	private final List<Living> spawnList = new ArrayList<>();
-	private final List<Living> spawnCache = new ArrayList<>();
-	private final Map<Integer, Living> livings = new HashMap<>();
+	private final List<L> spawnList = new ArrayList<>();
+	private final List<L> spawnCache = new ArrayList<>();
+	private final Map<Integer, L> livings = new HashMap<>();
 	private volatile boolean cached = false;
 
-	public Living add(Living living)
+	public L add(L living)
 	{
 		if (!this.cached)
 		{
@@ -66,10 +66,10 @@ public class LivingManager
 			}
 		}
 
-		Iterator<Living> iter = this.livings.values().iterator();
+		Iterator<L> iter = this.livings.values().iterator();
 		while(iter.hasNext())
 		{
-			Living living = iter.next();
+			L living = iter.next();
 			if (!living.isDead())
 			{
 				living.onLateUpdate();
@@ -88,7 +88,7 @@ public class LivingManager
 		while(!this.spawnList.isEmpty())
 		{
 			this.cached = true;
-			for (Living living : this.spawnList)
+			for (L living : this.spawnList)
 			{
 				if (living.onCreate())
 				{
@@ -107,10 +107,10 @@ public class LivingManager
 
 		if (doDead)
 		{
-			Iterator<Living> iter = this.livings.values().iterator();
+			Iterator<L> iter = this.livings.values().iterator();
 			while (iter.hasNext())
 			{
-				Living living = iter.next();
+				L living = iter.next();
 				if (living.isDead())
 				{
 					living.onDestroy();
@@ -121,12 +121,12 @@ public class LivingManager
 		}
 	}
 
-	public void destroyAll()
+	public void destroy()
 	{
-		Iterator<Living> iter = this.livings.values().iterator();
+		Iterator<L> iter = this.livings.values().iterator();
 		while(iter.hasNext())
 		{
-			Living living = iter.next();
+			L living = iter.next();
 			living.setDead();
 			living.onDestroy();
 			iter.remove();
@@ -139,7 +139,7 @@ public class LivingManager
 		this.spawnCache.clear();
 	}
 
-	public void clearAll()
+	public void clear()
 	{
 		this.cached = true;
 		this.spawnList.clear();
@@ -148,7 +148,7 @@ public class LivingManager
 		this.livings.clear();
 	}
 
-	public Iterator<Living> getLivingIterator()
+	public Iterator<L> getLivingIterator()
 	{
 		return this.livings.values().iterator();
 	}
@@ -158,12 +158,12 @@ public class LivingManager
 		return NEXT_LIVING_ID++;
 	}
 
-	private void onAddLiving(Living living)
+	private void onAddLiving(L living)
 	{
 		this.onLivingAdd.notifyListeners(living);
 	}
 
-	private void onRemoveLiving(Living living)
+	private void onRemoveLiving(L living)
 	{
 		this.onLivingRemove.notifyListeners(living);
 	}

@@ -7,7 +7,7 @@ import org.qsilver.transform.Transform;
 /**
  * Created by Andy on 6/14/17.
  */
-public class EntityComponentHeading extends EntityComponent
+public class EntityComponentHeading implements EntityComponent
 {
 	public float rotation;
 	public float heading;

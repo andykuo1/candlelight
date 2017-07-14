@@ -13,7 +13,7 @@ import org.lwjgl.glfw.GLFW;
 import org.qsilver.asset.Asset;
 import org.qsilver.renderer.Renderable;
 import org.qsilver.util.iterator.CastIterator;
-import org.zilar.BasicFirstPersonCameraController;
+import org.zilar.BasicSideScrollCameraController;
 import org.zilar.base.Assets;
 import org.zilar.base.GameEngine;
 import org.zilar.base.RenderBase;
@@ -39,7 +39,7 @@ public class RenderHoob extends RenderBase
 
 	public RenderHoob()
 	{
-		super(new PerspectiveCamera(640, 480), new BasicFirstPersonCameraController());
+		super(new PerspectiveCamera(640, 480), new BasicSideScrollCameraController());
 
 		this.assets = Assets.create("hoob", new SemanticVersion("0.0.0"));
 	}
@@ -73,11 +73,28 @@ public class RenderHoob extends RenderBase
 				new MeshLoader.MeshParameter(mb.bake(false, true)));
 		mb.clear();
 
+		for(int i = 0; i < 20; ++i)
+		{
+			for(int j = 0; j < 20; ++j)
+			{
+				mb.addPlane(new Vector2f(i, j), new Vector2f(i + 1, j + 1), 0, new Vector2f(0, 0), new Vector2f(1, 1));
+			}
+		}
+		GameEngine.ASSETMANAGER.registerAsset(Mesh.class, "ground", new MeshLoader.MeshParameter(mb.bake(true, true)));
+		mb.clear();
+
+		Asset<Texture> crate = GameEngine.ASSETMANAGER.getAsset(Texture.class, "crate");
 		Asset<Texture> bunny = GameEngine.ASSETMANAGER.getAsset(Texture.class, "bunny");
 
-		TextureAtlasBuilder tab = new TextureAtlasBuilder();
+		final TextureAtlasBuilder tab = new TextureAtlasBuilder();
+
 		tab.addHorizontalStrip(bunny, 0, 0, 48, 48, 0, 3);
 		GameEngine.ASSETMANAGER.registerAsset(TextureAtlas.class, "bunny",
+				new TextureAtlasLoader.TextureAtlasParameter(tab.bake()));
+		tab.clear();
+
+		tab.addNineSheet(crate, 0, 0, 64, 64, 64, 64, 64, 64);
+		GameEngine.ASSETMANAGER.registerAsset(TextureAtlas.class, "button",
 				new TextureAtlasLoader.TextureAtlasParameter(tab.bake()));
 		tab.clear();
 	}
@@ -94,6 +111,7 @@ public class RenderHoob extends RenderBase
 	@Override
 	public void onRenderUnload()
 	{
+
 	}
 
 	@Override
@@ -102,9 +120,9 @@ public class RenderHoob extends RenderBase
 		return (PerspectiveCamera) super.getCamera();
 	}
 
-	public BasicFirstPersonCameraController getCameraController()
+	public BasicSideScrollCameraController getCameraController()
 	{
 		//Although bad practice, since it can change anytime, it is useful...
-		return (BasicFirstPersonCameraController) this.getCamera().getCameraController();
+		return (BasicSideScrollCameraController) this.getCamera().getCameraController();
 	}
 }

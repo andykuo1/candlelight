@@ -60,9 +60,8 @@ public class FirstPersonMoveController
 
 	private static final Vector3f _VEC = new Vector3f();
 
-	public void update(Camera camera, double delta)
+	public void update(Camera camera, Transform3 cameraTransform, double delta)
 	{
-		Transform3 cameraTransform = camera.getTransform();
 		Vector3f vec = new Vector3f();
 		Vector3f right = cameraTransform.getRight(new Vector3f());
 		Vector3f forward = Transform3.YAXIS.cross(right, new Vector3f());
@@ -107,7 +106,7 @@ public class FirstPersonMoveController
 		float wiggleX = 0.02F;
 		float wiggleY = 0.02F;
 		Vector3fc pos = this.target.position();
-		camera.getTransform().setPosition(pos.x(), pos.y(), pos.z());
+		cameraTransform.setPosition(pos.x(), pos.y(), pos.z());
 		cameraTransform.moveUp((float) Math.abs(Math.cos(this.counter)) * wiggleY - wiggleY / 2F);
 		cameraTransform.moveRight((float) Math.cos(this.counter) * wiggleX);
 	}

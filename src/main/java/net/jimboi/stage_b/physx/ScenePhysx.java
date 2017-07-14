@@ -52,7 +52,7 @@ public class ScenePhysx extends SceneBase
 	@Override
 	protected void onSceneStart()
 	{
-		this.picker = new MousePicker(GameEngine.WINDOW, this.getRenderer().getCamera());
+		this.picker = new MousePicker(GameEngine.WINDOW, GameEngine.INPUTENGINE, this.getRenderer().getCamera());
 
 		this.sys_2D = new EntitySystem2D(this.entityManager);
 
@@ -97,7 +97,6 @@ public class ScenePhysx extends SceneBase
 	{
 		this.getRenderer().getCamera().update(delta);
 
-		this.picker.update();
 		this.transform.position.set(this.getRenderer().getCamera().getTransform().position);
 		this.transform.position.add(this.picker.getMouseRay());
 

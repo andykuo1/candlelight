@@ -6,7 +6,7 @@ import org.zilar.renderer.BillboardRenderer;
 /**
  * Created by Andy on 6/14/17.
  */
-public class EntityComponentBillboard extends EntityComponent
+public class EntityComponentBillboard implements EntityComponent
 {
 	public BillboardRenderer.Type billboardType;
 

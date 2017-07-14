@@ -56,12 +56,11 @@ public class BasicFirstPersonCameraController implements CameraController, Input
 	private static final Vector3f _FORWARD = new Vector3f();
 
 	@Override
-	public void onCameraUpdate(Camera camera, double delta)
+	public boolean onCameraUpdate(Camera camera, Transform3 cameraTransform, double delta)
 	{
-		if (this.target == null) return;
+		if (this.target == null) return false;
 
 		//Look
-		Transform3 cameraTransform = camera.getTransform();
 		cameraTransform.setYaw(this.yaw);
 		Vector3f right = cameraTransform.getRight(_RIGHT);
 		cameraTransform.rotate(this.pitch, right);
@@ -110,6 +109,8 @@ public class BasicFirstPersonCameraController implements CameraController, Input
 		cameraTransform.setPosition(pos.x(), pos.y(), pos.z());
 		cameraTransform.moveUp((float) Math.abs(Math.cos(this.counter)) * wiggleY - wiggleY / 2F);
 		cameraTransform.moveRight((float) Math.cos(this.counter) * wiggleX);
+
+		return true;
 	}
 
 	@Override

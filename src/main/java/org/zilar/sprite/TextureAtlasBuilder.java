@@ -70,6 +70,28 @@ public class TextureAtlasBuilder
 		return this;
 	}
 
+	public TextureAtlasBuilder addNineSheet(Asset<Texture> texture, int offsetX, int offsetY, int leftWidth, int bodyWidth, int rightWidth, int topHeight, int bodyHeight, int bottomHeight)
+	{
+		int x = offsetX;
+		int y = offsetY;
+		//Top
+		this.add(texture, x, y, leftWidth, topHeight);
+		this.add(texture, x + leftWidth, y, bodyWidth, topHeight);
+		this.add(texture, x + leftWidth + bodyWidth, y, rightWidth, topHeight);
+
+		//Middle
+		this.add(texture, x, y + topHeight, leftWidth, bodyHeight);
+		this.add(texture, x + leftWidth, y + topHeight, bodyWidth, bodyHeight);
+		this.add(texture, x + leftWidth + bodyWidth, y + topHeight, rightWidth, bodyHeight);
+
+		//Bottom
+		this.add(texture, x, y + topHeight + bodyHeight, leftWidth, bottomHeight);
+		this.add(texture, x + leftWidth, y + topHeight + bodyHeight, bodyWidth, bottomHeight);
+		this.add(texture, x + leftWidth + bodyWidth, y + topHeight + bodyHeight, rightWidth, bottomHeight);
+
+		return this;
+	}
+
 	public TextureAtlasData bake()
 	{
 		Sprite[] sprites = new Sprite[this.sprites.size()];

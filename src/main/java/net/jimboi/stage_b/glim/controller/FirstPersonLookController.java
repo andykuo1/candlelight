@@ -58,9 +58,8 @@ public class FirstPersonLookController
 
 	private static final Vector3f _VEC = new Vector3f();
 
-	public void update(Camera camera, double delta)
+	public void update(Camera camera, Transform3 cameraTransform, double delta)
 	{
-		Transform3 cameraTransform = camera.getTransform();
 		cameraTransform.setYaw(this.yaw);
 		Vector3f right = cameraTransform.getRight(_VEC);
 		cameraTransform.rotate(this.pitch, right);

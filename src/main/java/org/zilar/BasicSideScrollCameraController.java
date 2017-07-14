@@ -5,14 +5,13 @@ import org.bstone.camera.CameraController;
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputManager;
 import org.joml.Vector3fc;
-import org.qsilver.transform.Transform;
 import org.zilar.transform.Transform3;
 import org.zilar.transform.Transform3Quat;
 
 /**
  * Created by Andy on 6/18/17.
  */
-public class BasicTopDownCameraController implements CameraController, InputEngine.OnInputUpdateListener
+public class BasicSideScrollCameraController implements CameraController, InputEngine.OnInputUpdateListener
 {
 	protected float speed = 0.1F;
 
@@ -29,38 +28,38 @@ public class BasicTopDownCameraController implements CameraController, InputEngi
 
 	protected Transform3Quat target;
 
-	public BasicTopDownCameraController()
+	public BasicSideScrollCameraController()
 	{
-		this.setDistanceToTarget(1.5F);
+		this.setDistanceToTarget(10F);
 	}
 
-	public BasicTopDownCameraController setTarget(Transform3Quat target)
+	public BasicSideScrollCameraController setTarget(Transform3Quat target)
 	{
 		this.target = target;
 		return this;
 	}
 
-	public BasicTopDownCameraController setSpeed(float speed)
+	public BasicSideScrollCameraController setSpeed(float speed)
 	{
 		this.speed = speed;
 		return this;
 	}
 
-	public BasicTopDownCameraController setDistanceToTarget(float dist)
+	public BasicSideScrollCameraController setDistanceToTarget(float dist)
 	{
 		this.distToTarget = dist;
-		this.minDistToTarget = -(this.distToTarget - (dist / 12F));
+		this.minDistToTarget = -(this.distToTarget - (dist / 2F));
 		this.maxDistToTarget = this.distToTarget * 8F;
 		return this;
 	}
 
-	public BasicTopDownCameraController setMaxDistanceToTarget(float maxDist)
+	public BasicSideScrollCameraController setMaxDistanceToTarget(float maxDist)
 	{
 		this.maxDistToTarget = maxDist;
 		return this;
 	}
 
-	public BasicTopDownCameraController setMinDistanceToTarget(float minDist)
+	public BasicSideScrollCameraController setMinDistanceToTarget(float minDist)
 	{
 		this.minDistToTarget = -(this.distToTarget - minDist);
 		return this;
@@ -77,7 +76,8 @@ public class BasicTopDownCameraController implements CameraController, InputEngi
 	{
 		if (this.target == null) return false;
 
-		cameraTransform.setPitch(Transform.HALF_PI);
+		cameraTransform.setPitch(0);
+		cameraTransform.setYaw(0);
 
 		this.dist += this.up / 3F;
 		if (this.dist > this.maxDistToTarget) this.dist = this.maxDistToTarget;
@@ -86,11 +86,11 @@ public class BasicTopDownCameraController implements CameraController, InputEngi
 
 		float speed = this.sprint ? 2 * this.speed : this.speed;
 		this.target.position.x += this.right * speed;
-		this.target.position.y = 0;
-		this.target.position.z += this.forward * speed;
+		this.target.position.y += -this.forward * speed;
+		this.target.position.z = 0;
 
 		Vector3fc pos = this.target.position();
-		cameraTransform.setPosition(pos.x(), this.distToTarget + this.dist, pos.z());
+		cameraTransform.setPosition(pos.x(), pos.y(), this.distToTarget + this.dist);
 
 		return true;
 	}

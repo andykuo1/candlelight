@@ -2,6 +2,7 @@ package net.jimboi.stage_a.mod.scene;
 
 import net.jimboi.stage_a.blob.livings.LivingBase;
 
+import org.qsilver.living.Living;
 import org.qsilver.living.LivingManager;
 import org.qsilver.scene.Scene;
 
@@ -14,12 +15,12 @@ import java.util.Set;
  */
 public abstract class LivingSceneBase extends Scene
 {
-	protected final LivingManager livingManager;
+	protected final LivingManager<Living> livingManager;
 	protected final Set<LivingBase> entities = new HashSet<>();
 
 	public LivingSceneBase()
 	{
-		this.livingManager = new LivingManager();
+		this.livingManager = new LivingManager<>();
 		this.livingManager.onLivingAdd.addListener((living -> {
 			if (living instanceof LivingBase)
 			{
@@ -43,10 +44,10 @@ public abstract class LivingSceneBase extends Scene
 	@Override
 	protected void onSceneStop()
 	{
-		this.livingManager.destroyAll();
+		this.livingManager.destroy();
 	}
 
-	public LivingManager getLivingManager()
+	public LivingManager<Living> getLivingManager()
 	{
 		return this.livingManager;
 	}

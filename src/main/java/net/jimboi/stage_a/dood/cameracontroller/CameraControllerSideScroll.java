@@ -1,24 +1,20 @@
 package net.jimboi.stage_a.dood.cameracontroller;
 
-import net.jimboi.stage_a.base.Main;
-
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;
 import org.bstone.input.InputManager;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
-import org.qsilver.scene.Scene;
 import org.zilar.transform.Transform3;
 
 /**
  * Created by Andy on 5/24/17.
  */
-public class CameraControllerSideScroll implements CameraController, Scene.OnSceneUpdateListener
+public class CameraControllerSideScroll implements CameraController
 {
 	protected float speed = 50F;
 	protected float distToTarget = 16F;
 
-	protected Scene scene;
 	protected Camera camera;
 
 	protected float maxForward = 15F;
@@ -53,14 +49,12 @@ public class CameraControllerSideScroll implements CameraController, Scene.OnSce
 	public void onCameraStart(Camera camera)
 	{
 		this.camera = camera;
-		this.scene = Main.SCENE;
-		this.scene.onSceneUpdate.addListener(this);
 	}
 
 	private static final Vector3f _VEC = new Vector3f();
 
 	@Override
-	public void onCameraUpdate(Camera camera, double delta)
+	public boolean onCameraUpdate(Camera camera, Transform3 cameraTransform, double delta)
 	{
 		if (InputManager.isInputDown("up")) this.forward -= this.speedForward;
 		if (InputManager.isInputDown("down")) this.forward += this.speedForward;
@@ -72,21 +66,18 @@ public class CameraControllerSideScroll implements CameraController, Scene.OnSce
 		this.right = 0;
 		if (InputManager.isInputDown("right")) this.right += 1F;
 		if (InputManager.isInputDown("left")) this.right -= 1F;
+
+		this.updateForward(delta);
+		this.updateTargetPosition(delta);
+		this.updateCameraPosition(cameraTransform, delta);
+
+		return true;
 	}
 
 	@Override
 	public void onCameraStop(Camera camera)
 	{
 		this.camera = null;
-		this.scene.onSceneUpdate.deleteListener(this);
-	}
-
-	@Override
-	public void onSceneUpdate(double delta)
-	{
-		this.updateForward(delta);
-		this.updateTargetPosition(delta);
-		this.updateCameraPosition(delta);
 	}
 
 	protected void updateForward(double delta)
@@ -109,10 +100,10 @@ public class CameraControllerSideScroll implements CameraController, Scene.OnSce
 		this.target.position.z = this.distToTarget + this.forward;
 	}
 
-	protected void updateCameraPosition(double delta)
+	protected void updateCameraPosition(Transform3 cameraTransform, double delta)
 	{
 		Vector3fc pos = this.target.position();
-		this.camera.getTransform().setPosition(pos.x(), pos.y(), this.distToTarget + this.forward);
+		cameraTransform.setPosition(pos.x(), pos.y(), this.distToTarget + this.forward);
 	}
 
 	public float getSpeed()

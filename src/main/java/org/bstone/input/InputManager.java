@@ -23,14 +23,14 @@ public class InputManager
 
 	public static Input[] getInput(String id)
 	{
-		if (!inputMapping.containsKey(id)) throw new NoSuchElementException();
+		if (!inputMapping.containsKey(id)) throw new NoSuchElementException("Cannot find input with id '" + id + "'");
 
 		return inputMapping.get(id);
 	}
 
 	public static boolean isInputDown(String id)
 	{
-		if (!inputMapping.containsKey(id)) throw new NoSuchElementException();
+		if (!inputMapping.containsKey(id)) throw new NoSuchElementException("Cannot find input with id '" + id + "'");
 
 		Input[] inputs = inputMapping.get(id);
 		for(Input input : inputs)
@@ -46,7 +46,7 @@ public class InputManager
 
 	public static boolean isInputPressed(String id)
 	{
-		if (!inputMapping.containsKey(id)) throw new NoSuchElementException();
+		if (!inputMapping.containsKey(id)) throw new NoSuchElementException("Cannot find input with id '" + id + "'");
 
 		Input[] inputs = inputMapping.get(id);
 		for(Input input : inputs)
@@ -62,7 +62,7 @@ public class InputManager
 
 	public static boolean isInputReleased(String id)
 	{
-		if (!inputMapping.containsKey(id)) throw new NoSuchElementException();
+		if (!inputMapping.containsKey(id)) throw new NoSuchElementException("Cannot find input with id '" + id + "'");
 
 		Input[] inputs = inputMapping.get(id);
 		for(Input input : inputs)
@@ -78,7 +78,7 @@ public class InputManager
 
 	public static float getInputAmount(String id)
 	{
-		if (!inputMapping.containsKey(id)) throw new NoSuchElementException();
+		if (!inputMapping.containsKey(id)) throw new NoSuchElementException("Cannot find input with id '" + id + "'");
 
 		Input[] inputs = inputMapping.get(id);
 		for(Input input : inputs)

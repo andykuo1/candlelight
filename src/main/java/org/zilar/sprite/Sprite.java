@@ -14,6 +14,15 @@ public final class Sprite
 	protected float width;
 	protected float height;
 
+	public Sprite(Asset<Texture> texture)
+	{
+		this.texture = texture;
+		this.u = 0;
+		this.v = 0;
+		this.width = 1;
+		this.height = 1;
+	}
+
 	public Sprite(Asset<Texture> texture, float u, float v, float width, float height)
 	{
 		this.texture = texture;

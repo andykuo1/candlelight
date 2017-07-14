@@ -59,7 +59,8 @@ public abstract class LivingMotionControllerFirstPerson extends LivingMotion imp
 		super.onUpdate(delta);
 
 		Vector3fc pos = this.transform().position();
-		this.camera.getTransform().setPosition(pos.x(), pos.y(), pos.z());
+		((Transform3) this.camera.getTransform()).setPosition(pos.x(), pos.y(), pos.z());
+		this.camera.markDirty();
 	}
 
 	@Override
@@ -67,7 +68,8 @@ public abstract class LivingMotionControllerFirstPerson extends LivingMotion imp
 	{
 		if (this.mouseLock)
 		{
-			Transform3 cameraTransform = this.camera.getTransform();
+			Transform3 cameraTransform = (Transform3) this.camera.getTransform();
+			this.camera.markDirty();
 
 			//Update camera rotation
 			Vector2fc mouse = new Vector2f(

@@ -41,7 +41,7 @@ public class EntitySystemBillboard extends AbstractUpdateableSystem
 
 			Transform3Quat transform = (Transform3Quat) componentTransform.transform;
 
-			this.camera.getTransform().position.sub(transform.position, VEC);
+			this.camera.getTransform().position().sub(transform.position, VEC);
 
 			if (componentBillboard.billboardType == BillboardRenderer.Type.SPHERICAL)
 			{

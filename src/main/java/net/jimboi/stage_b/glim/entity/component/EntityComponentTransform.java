@@ -6,7 +6,7 @@ import org.zilar.transform.Transform3;
 /**
  * Created by Andy on 6/1/17.
  */
-public class EntityComponentTransform extends EntityComponent
+public class EntityComponentTransform implements EntityComponent
 {
 	public final Transform3 transform;
 

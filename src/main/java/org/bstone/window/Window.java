@@ -122,6 +122,9 @@ public class Window
 		// Make the window visible
 		GLFW.glfwShowWindow(handle);
 
+		//Focus the window
+		GLFW.glfwFocusWindow(handle);
+
 		// This line is critical for LWJGL's interoperation with GLFW's
 		// OpenGL context, or any context that is managed externally.
 		// LWJGL detects the context that is current in the current thread,
@@ -225,6 +228,7 @@ public class Window
 
 	public Vector2f toNormalizedDeviceCoords(Vector2fc windowPos, Vector2f dst)
 	{
+		//Converts screen positions to between 0 and 1 at top-right
 		float x = (2F * windowPos.x()) / this.width - 1;
 		float y = 1F - (2F * windowPos.y()) / this.height;
 		return dst.set(x, y);
