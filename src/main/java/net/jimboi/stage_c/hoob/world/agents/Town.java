@@ -1,5 +1,6 @@
 package net.jimboi.stage_c.hoob.world.agents;
 
+import net.jimboi.stage_c.hoob.bounding.StaticCollider;
 import net.jimboi.stage_c.hoob.world.World;
 
 import java.util.ArrayList;
@@ -8,14 +9,14 @@ import java.util.List;
 /**
  * Created by Andy on 7/13/17.
  */
-public class Town extends WorldAgent
+public class Town extends StaticAgent
 {
 	private List<ActionAgent> buttons = new ArrayList<>();
 	private boolean menu;
 
-	public Town(World world)
+	public Town(World world, StaticCollider collider)
 	{
-		super(world);
+		super(world, collider);
 	}
 
 	@Override

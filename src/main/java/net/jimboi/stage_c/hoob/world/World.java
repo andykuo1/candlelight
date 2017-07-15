@@ -2,7 +2,10 @@ package net.jimboi.stage_c.hoob.world;
 
 import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
 import net.jimboi.stage_c.hoob.SceneHoob;
+import net.jimboi.stage_c.hoob.bounding.BoundingManager;
+import net.jimboi.stage_c.hoob.bounding.ShapeAABB;
 import net.jimboi.stage_c.hoob.world.agents.MoveAgent;
+import net.jimboi.stage_c.hoob.world.agents.StaticAgent;
 import net.jimboi.stage_c.hoob.world.agents.Town;
 import net.jimboi.stage_c.hoob.world.agents.Traveller;
 import net.jimboi.stage_c.hoob.world.agents.WorldAgent;
@@ -31,6 +34,8 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 		this.agents.onLivingAdd.addListener(this);
 		this.agents.onLivingRemove.addListener(this);
 	}
+
+	public BoundingManager boundingManager = new BoundingManager();
 
 	public World(SceneHoob scene)
 	{
@@ -99,7 +104,7 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 
 	public Town spawnTown(float x, float y)
 	{
-		Town town = this.spawnAgent(new Town(this));
+		Town town = this.spawnAgent(new Town(this, this.boundingManager.createStatic(new ShapeAABB(x, y, 0.5F))));
 		town.pos.x = x;
 		town.pos.y = y;
 		return town;
@@ -107,7 +112,7 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 
 	public Traveller spawnTraveller(float x, float y)
 	{
-		Traveller traveller = this.spawnAgent(new Traveller(this));
+		Traveller traveller = this.spawnAgent(new Traveller(this, this.boundingManager.createCollider(new ShapeAABB(0, 0, 0.5F))));
 		traveller.pos.x = x;
 		traveller.pos.y = y;
 		return traveller;
@@ -124,6 +129,15 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 	@Override
 	public void onLivingRemove(WorldAgent agent)
 	{
+		if (agent instanceof StaticAgent)
+		{
+			this.boundingManager.destryStatic(((StaticAgent) agent).getCollider());
+		}
+		else if (agent instanceof MoveAgent)
+		{
+			this.boundingManager.destroyCollider(((MoveAgent) agent).getCollider());
+		}
+
 		this.scene.getEntityManager().getEntityByComponent(agent).setDead();
 	}
 }

@@ -163,7 +163,7 @@ public class ShadowBox
 	 * in light space (8 vertices in total, so this returns 8 positions).
 	 *
 	 * @param rotation      - camera's rotation.
-	 * @param forwardVector - the direction that the camera is aiming, and thus the direction of the
+	 * @param forwardVector - the direction that the camera is aiming, and thus the delta of the
 	 *                      frustum.
 	 * @param centerNear    - the center point of the frustum's near plane.
 	 * @param centerFar     - the center point of the frustum's (possibly adjusted) far plane.

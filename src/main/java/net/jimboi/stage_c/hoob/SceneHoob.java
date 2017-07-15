@@ -43,7 +43,7 @@ public class SceneHoob extends SceneBase
 
 		Transform3 transform = new Transform3();
 		transform.position.set(0, 0, 1);
-		this.getRenderer().getCameraController().setTarget((Transform3) transform);
+		this.getRenderer().getCameraController().setTarget(transform);
 
 		this.world = new World(this);
 		this.world.create();

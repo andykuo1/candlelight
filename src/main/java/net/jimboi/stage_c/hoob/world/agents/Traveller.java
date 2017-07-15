@@ -1,5 +1,6 @@
 package net.jimboi.stage_c.hoob.world.agents;
 
+import net.jimboi.stage_c.hoob.bounding.Collider;
 import net.jimboi.stage_c.hoob.world.World;
 
 /**
@@ -54,9 +55,9 @@ public class Traveller extends MoveAgent
 	public int skillFoodGathering;
 	*/
 
-	public Traveller(World world)
+	public Traveller(World world, Collider collider)
 	{
-		super(world);
+		super(world, collider);
 	}
 
 	@Override
