@@ -1,13 +1,15 @@
 package org.zilar.base;
 
+import net.jimboi.stage_a.mod.renderer.OldRenderService;
+
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;
-import org.qsilver.renderer.RenderManager;
+import org.qsilver.renderer.RenderEngine;
 
 /**
  * Created by Andy on 7/5/17.
  */
-public abstract class RenderBase extends RenderManager
+public abstract class RenderBase extends OldRenderService
 {
 	protected SceneBase scene;
 
@@ -20,17 +22,17 @@ public abstract class RenderBase extends RenderManager
 	}
 
 	@Override
-	public void onRenderLoad()
+	public void onRenderLoad(RenderEngine renderEngine)
 	{
 	}
 
 	@Override
-	public void onRenderUpdate()
+	public void onRender(RenderEngine renderEngine)
 	{
 	}
 
 	@Override
-	public void onRenderUnload()
+	public void onRenderUnload(RenderEngine renderEngine)
 	{
 	}
 

@@ -34,7 +34,7 @@ public abstract class SceneBase extends Scene
 	@Override
 	protected void onSceneLoad(RenderEngine renderManager)
 	{
-		renderManager.add(this.renderer);
+		renderManager.getServiceManager().startService(this.renderer);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public abstract class SceneBase extends Scene
 	@Override
 	protected void onSceneUnload(RenderEngine renderManager)
 	{
-		renderManager.remove(this.renderer);
+		renderManager.getServiceManager().stopService(this.renderer);
 	}
 
 	@Override

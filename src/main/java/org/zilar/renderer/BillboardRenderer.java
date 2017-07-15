@@ -11,7 +11,9 @@ import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.qsilver.asset.Asset;
-import org.qsilver.renderer.Renderable;
+import org.qsilver.renderer.Drawable;
+import org.qsilver.renderer.RenderEngine;
+import org.qsilver.renderer.RenderService;
 import org.zilar.model.Model;
 import org.zilar.property.PropertyTexture;
 import org.zilar.sprite.Sprite;
@@ -21,7 +23,7 @@ import java.util.Iterator;
 /**
  * Created by Andy on 6/7/17.
  */
-public class BillboardRenderer implements AutoCloseable
+public class BillboardRenderer extends RenderService
 {
 	public enum Type
 	{
@@ -43,11 +45,16 @@ public class BillboardRenderer implements AutoCloseable
 	}
 
 	@Override
-	public void close()
+	protected void onStart(RenderEngine handler)
 	{
 	}
 
-	public void render(Camera camera, Iterator<Renderable> iterator)
+	@Override
+	protected void onStop(RenderEngine handler)
+	{
+	}
+
+	public void render(Camera camera, Iterator<Drawable> iterator)
 	{
 		Matrix4fc proj = camera.projection();
 		Matrix4fc view = camera.view();
@@ -60,7 +67,7 @@ public class BillboardRenderer implements AutoCloseable
 
 			while (iterator.hasNext())
 			{
-				final Renderable inst = iterator.next();
+				final Drawable inst = iterator.next();
 				if (!inst.isVisible()) continue;
 
 				final Model model = inst.getModel();

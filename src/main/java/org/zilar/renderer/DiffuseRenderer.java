@@ -15,7 +15,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.qsilver.asset.Asset;
 import org.qsilver.asset.AssetManager;
-import org.qsilver.renderer.Renderable;
+import org.qsilver.renderer.Drawable;
+import org.qsilver.renderer.RenderEngine;
+import org.qsilver.renderer.RenderService;
 import org.zilar.model.Model;
 import org.zilar.property.PropertyDiffuse;
 import org.zilar.property.PropertyShadow;
@@ -33,7 +35,7 @@ import java.util.List;
 /**
  * Created by Andy on 6/7/17.
  */
-public class DiffuseRenderer implements AutoCloseable
+public class DiffuseRenderer extends RenderService
 {
 	private final Asset<Program> program;
 
@@ -44,6 +46,7 @@ public class DiffuseRenderer implements AutoCloseable
 
 	private ShadowRenderer shadowRenderer;
 
+	private AssetManager assetManager;
 	private Window window;
 	private List<DynamicLight> lights;
 
@@ -54,21 +57,27 @@ public class DiffuseRenderer implements AutoCloseable
 		this.lights = lights;
 
 		this.shadowRenderer = new ShadowRenderer(camera, this.window);
-		this.shadowRenderer.load(assetManager);
+		this.assetManager = assetManager;
 	}
 
 	@Override
-	public void close()
+	protected void onStart(RenderEngine handler)
+	{
+		this.shadowRenderer.load(this.assetManager);
+	}
+
+	@Override
+	protected void onStop(RenderEngine handler)
 	{
 		this.shadowRenderer.unload();
 	}
 
-	public void preRender(PerspectiveCamera camera, Iterator<Renderable> iterator)
+	public void preRender(PerspectiveCamera camera, Iterator<Drawable> iterator)
 	{
 		this.shadowRenderer.render(iterator, this.lights.get(2));
 	}
 
-	public void render(Camera camera, Iterator<Renderable> iterator)
+	public void render(Camera camera, Iterator<Drawable> iterator)
 	{
 		Matrix4fc proj = camera.projection();
 		Matrix4fc view = camera.view();
@@ -81,7 +90,7 @@ public class DiffuseRenderer implements AutoCloseable
 
 			while (iterator.hasNext())
 			{
-				final Renderable inst = iterator.next();
+				final Drawable inst = iterator.next();
 				if (!inst.isVisible()) continue;
 
 				final Model model = inst.getModel();

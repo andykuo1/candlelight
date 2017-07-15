@@ -5,8 +5,8 @@ import net.jimboi.stage_a.dood.component.ComponentSpriteSheet;
 import net.jimboi.stage_a.dood.entity.Entity;
 import net.jimboi.stage_a.dood.entity.EntityManager;
 import net.jimboi.stage_a.mod.ModMaterial;
+import net.jimboi.stage_a.mod.renderer.OldRenderService;
 
-import org.qsilver.renderer.RenderManager;
 import org.qsilver.scene.Scene;
 
 import java.util.Collection;
@@ -14,12 +14,12 @@ import java.util.Collection;
 /**
  * Created by Andy on 5/23/17.
  */
-public class SystemAnimatedTexture extends EntitySystem implements RenderManager.OnRenderUpdateListener
+public class SystemAnimatedTexture extends EntitySystem implements OldRenderService.OnRenderUpdateListener
 {
 	protected final Scene scene;
-	protected final RenderManager renderer;
+	protected final OldRenderService renderer;
 
-	public SystemAnimatedTexture(EntityManager entityManager, Scene scene, RenderManager renderer)
+	public SystemAnimatedTexture(EntityManager entityManager, Scene scene, OldRenderService renderer)
 	{
 		super(entityManager);
 		this.scene = scene;
@@ -29,7 +29,7 @@ public class SystemAnimatedTexture extends EntitySystem implements RenderManager
 	@Override
 	public void onStart()
 	{
-		this.registerListenable(this.renderer.onRenderUpdate);
+		this.registerListenable(this.renderer.onRender);
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class SystemAnimatedTexture extends EntitySystem implements RenderManager
 	private int counter;
 
 	@Override
-	public void onRenderUpdate()
+	public void onRender()
 	{
 		this.counter++;
 		if (counter > 10)

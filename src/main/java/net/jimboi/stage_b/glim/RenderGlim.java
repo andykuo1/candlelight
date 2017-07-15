@@ -16,7 +16,9 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.qsilver.asset.Asset;
 import org.qsilver.asset.AssetManager;
-import org.qsilver.renderer.Renderable;
+import org.qsilver.renderer.Drawable;
+import org.qsilver.renderer.RenderEngine;
+import org.qsilver.resource.MeshLoader;
 import org.qsilver.util.iterator.CastIterator;
 import org.qsilver.util.iterator.FilterIterator;
 import org.zilar.base.Assets;
@@ -30,7 +32,6 @@ import org.zilar.renderer.SimpleRenderer;
 import org.zilar.renderer.WireframeRenderer;
 import org.zilar.renderer.shadow.DynamicLight;
 import org.zilar.resource.ResourceLocation;
-import org.zilar.resourceloader.MeshLoader;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -70,7 +71,7 @@ public class RenderGlim extends RenderBase
 	}
 
 	@Override
-	public void onRenderLoad()
+	public void onRenderLoad(RenderEngine renderEngine)
 	{
 		this.assets.load();
 
@@ -109,12 +110,11 @@ public class RenderGlim extends RenderBase
 		mb.clear();
 
 		//Renderers
-		this.simpleRenderer = new SimpleRenderer(assets.getAsset(Program.class, "simple"));
-		this.diffuseRenderer = new DiffuseRenderer(assets, GameEngine.WINDOW, this.getCamera(), RenderGlim.LIGHTS, assets.getAsset(Program.class, "diffuse"));
-		this.billboardRenderer = new BillboardRenderer(assets.getAsset(Program.class, "billboard"), BillboardRenderer.Type.CYLINDRICAL);
-		this.wireframeRenderer = new WireframeRenderer(assets.getAsset(Program.class, "wireframe"));
-		this.boundingRenderer = new BoundingRenderer(assets.getAsset(Program.class, "wireframe"));
-		this.boundingRenderer.setup(assets);
+		this.simpleRenderer = renderEngine.getServiceManager().startService(new SimpleRenderer(assets.getAsset(Program.class, "simple")));
+		this.diffuseRenderer = renderEngine.getServiceManager().startService(new DiffuseRenderer(assets, GameEngine.WINDOW, this.getCamera(), RenderGlim.LIGHTS, assets.getAsset(Program.class, "diffuse")));
+		this.billboardRenderer = renderEngine.getServiceManager().startService(new BillboardRenderer(assets.getAsset(Program.class, "billboard"), BillboardRenderer.Type.CYLINDRICAL));
+		this.wireframeRenderer = renderEngine.getServiceManager().startService(new WireframeRenderer(assets.getAsset(Program.class, "wireframe")));
+		this.boundingRenderer = renderEngine.getServiceManager().startService(new BoundingRenderer(assets.getAsset(Program.class, "wireframe")));
 
 		//Lights
 		RenderGlim.LIGHTS.add(DynamicLight.createSpotLight(0, 0, 0, 0xFFFFFF, 0.4F, 0.1F, 0, 15F, 1, 1, 1));
@@ -126,14 +126,14 @@ public class RenderGlim extends RenderBase
 	}
 
 	@Override
-	public void onRenderUpdate()
+	public void onRender(RenderEngine renderEngine)
 	{
 		SceneBase scene = (SceneBase) GameEngine.SCENEMANAGER.getCurrentScene();
 		if (scene == null) return;
 
 		Collection<EntityComponentRenderable> instances = scene.getEntityManager().getComponents(new HashSet<>(), EntityComponentRenderable.class);
 
-		Iterator<Renderable> iter;
+		Iterator<Drawable> iter;
 
 		iter = new CastIterator<>(instances.iterator());
 		this.diffuseRenderer.preRender(this.getCamera(), iter);
@@ -157,14 +157,14 @@ public class RenderGlim extends RenderBase
 	}
 
 	@Override
-	public void onRenderUnload()
+	public void onRenderUnload(RenderEngine renderEngine)
 	{
 		this.assets.unload();
 
-		this.diffuseRenderer.close();
-		this.wireframeRenderer.close();
-		this.billboardRenderer.close();
-		this.simpleRenderer.close();
+		renderEngine.getServiceManager().stopService(this.diffuseRenderer);
+		renderEngine.getServiceManager().stopService(this.wireframeRenderer);
+		renderEngine.getServiceManager().stopService(this.billboardRenderer);
+		renderEngine.getServiceManager().stopService(this.simpleRenderer);
 	}
 
 	@Override

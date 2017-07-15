@@ -1,5 +1,7 @@
 package org.qsilver.asset;
 
+import org.qsilver.renderer.RenderEngine;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -137,7 +139,7 @@ public class AssetManager
 		return this.resources.containsKey(resourceID);
 	}
 
-	public void update()
+	public void update(RenderEngine renderEngine)
 	{
 		if (++this.tickCounter < this.tickRate) return;
 		this.tickCounter = 0;

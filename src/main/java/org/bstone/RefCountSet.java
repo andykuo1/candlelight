@@ -2,6 +2,7 @@ package org.bstone;
 
 import org.bstone.util.small.SmallSet;
 import org.qsilver.poma.Poma;
+import org.qsilver.service.Service;
 
 /**
  * Created by Andy on 6/10/17.
@@ -18,7 +19,8 @@ public class RefCountSet<T> extends SmallSet<T>
 			++TOTAL_REF_COUNT_SET;
 		}
 
-		Poma.debug("Created ref-counted resource: " + t.getClass().getSimpleName() + "(" + this.size() + ") = " + t);
+		String className = t instanceof Service ? "Service" : t.getClass().getSimpleName();
+		Poma.debug("Created ref-counted resource: " + className + "(" + this.size() + ") = " + t);
 
 		return super.add(t);
 	}
@@ -29,16 +31,18 @@ public class RefCountSet<T> extends SmallSet<T>
 		boolean flag = super.remove(value);
 		if (!flag)
 		{
-			System.err.println("Destroyed ref-counted resource: " + value.getClass().getSimpleName() + "(" + this.size() + ") = " + value + " - Could not be removed! It probably was removed too many times!");
+			String className = value instanceof Service ? "Service" : value.getClass().getSimpleName();
+			System.err.println("Destroyed ref-counted resource: " + className + "(" + this.size() + ") = " + value + " - Could not be removed! It probably was removed too many times!");
 			new Exception().printStackTrace();
 		}
 		else
 		{
-			Poma.debug("Destroyed ref-counted resource: " + value.getClass().getSimpleName() + "(" + this.size() + ") = " + value);
+			String className = value instanceof Service ? "Service" : value.getClass().getSimpleName();
+			Poma.debug("Destroyed ref-counted resource: " + className + "(" + this.size() + ") = " + value);
 
 			if (this.isEmpty())
 			{
-				System.out.println("PASS: " + value.getClass().getSimpleName() + "(s) is destroyed!");
+				System.out.println("PASS: " + className + "(s) is destroyed!");
 				--TOTAL_REF_COUNT_SET;
 
 				if (TOTAL_REF_COUNT_SET == 0)

@@ -9,7 +9,9 @@ import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.qsilver.asset.Asset;
-import org.qsilver.renderer.Renderable;
+import org.qsilver.renderer.Drawable;
+import org.qsilver.renderer.RenderEngine;
+import org.qsilver.renderer.RenderService;
 import org.zilar.model.Model;
 import org.zilar.property.PropertyDiffuse;
 
@@ -18,7 +20,7 @@ import java.util.Iterator;
 /**
  * Created by Andy on 6/7/17.
  */
-public class WireframeRenderer implements AutoCloseable
+public class WireframeRenderer extends RenderService
 {
 	private final Asset<Program> program;
 
@@ -32,11 +34,16 @@ public class WireframeRenderer implements AutoCloseable
 	}
 
 	@Override
-	public void close()
+	protected void onStart(RenderEngine handler)
 	{
 	}
 
-	public void render(Camera camera, Iterator<Renderable> iterator)
+	@Override
+	protected void onStop(RenderEngine handler)
+	{
+	}
+
+	public void render(Camera camera, Iterator<Drawable> iterator)
 	{
 		Matrix4fc proj = camera.projection();
 		Matrix4fc view = camera.view();
@@ -50,7 +57,7 @@ public class WireframeRenderer implements AutoCloseable
 
 			while (iterator.hasNext())
 			{
-				final Renderable inst = iterator.next();
+				final Drawable inst = iterator.next();
 				if (!inst.isVisible()) continue;
 
 				final Model model = inst.getModel();

@@ -5,6 +5,7 @@ import net.jimboi.stage_b.glim.entity.component.EntityComponentBounding;
 import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
 
 import org.joml.Vector3fc;
+import org.qsilver.entity.AbstractUpdateableEntitySystem;
 import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
 
@@ -13,7 +14,7 @@ import java.util.Collection;
 /**
  * Created by Andy on 6/4/17.
  */
-public class EntitySystemBounding extends AbstractUpdateableSystem
+public class EntitySystemBounding extends AbstractUpdateableEntitySystem
 {
 	protected final BoundingManager boundingManager;
 

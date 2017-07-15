@@ -1,6 +1,5 @@
 package net.jimboi.stage_c.hoob.world.agents;
 
-import net.jimboi.stage_c.hoob.bounding.StaticCollider;
 import net.jimboi.stage_c.hoob.world.World;
 
 /**
@@ -8,17 +7,8 @@ import net.jimboi.stage_c.hoob.world.World;
  */
 public class StaticAgent extends WorldAgent
 {
-	public StaticCollider collider;
-
-	public StaticAgent(World world, StaticCollider collider)
+	public StaticAgent(World world)
 	{
-		super(world);
-
-		this.collider = collider;
-	}
-
-	public StaticCollider getCollider()
-	{
-		return this.collider;
+		super(world, 0.5F);
 	}
 }

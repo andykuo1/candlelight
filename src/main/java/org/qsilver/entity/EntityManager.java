@@ -20,8 +20,20 @@ public class EntityManager extends ComponentManager<Entity, EntityComponent>
 		void onEntityRemove(Entity entity);
 	}
 
-	public final Listenable<EntityManager.OnEntityAddListener> onEntityAdd = new Listenable<>(((listener, objects) -> listener.onEntityAdd((Entity) objects[0])));
-	public final Listenable<EntityManager.OnEntityRemoveListener> onEntityRemove = new Listenable<>((listener, objects) -> listener.onEntityRemove((Entity) objects[0]));
+	public interface OnEntityComponentAddListener
+	{
+		void onEntityComponentAdd(Entity entity, EntityComponent component);
+	}
+
+	public interface OnEntityComponentRemoveListener
+	{
+		void onEntityComponentRemove(Entity entity, EntityComponent component);
+	}
+
+	public final Listenable<OnEntityAddListener> onEntityAdd = new Listenable<>(((listener, objects) -> listener.onEntityAdd((Entity) objects[0])));
+	public final Listenable<OnEntityRemoveListener> onEntityRemove = new Listenable<>((listener, objects) -> listener.onEntityRemove((Entity) objects[0]));
+	public final Listenable<OnEntityComponentAddListener> onEntityComponentAdd = new Listenable<>((listener, objects) -> listener.onEntityComponentAdd((Entity) objects[0], (EntityComponent) objects[1]));
+	public final Listenable<OnEntityComponentRemoveListener> onEntityComponentRemove = new Listenable<>((listener, objects) -> listener.onEntityComponentRemove((Entity) objects[0], (EntityComponent) objects[1]));
 
 	public EntityManager()
 	{
@@ -40,6 +52,20 @@ public class EntityManager extends ComponentManager<Entity, EntityComponent>
 				this.removeEntity(entity);
 			}
 		}
+	}
+
+	@Override
+	protected void onComponentAdd(Entity entity, EntityComponent component)
+	{
+		super.onComponentAdd(entity, component);
+		this.onEntityComponentAdd.notifyListeners(entity, component);
+	}
+
+	@Override
+	protected void onComponentRemove(Entity entity, EntityComponent component)
+	{
+		super.onComponentRemove(entity, component);
+		this.onEntityComponentRemove.notifyListeners(entity, component);
 	}
 
 	public Entity createEntity(EntityComponent... components)

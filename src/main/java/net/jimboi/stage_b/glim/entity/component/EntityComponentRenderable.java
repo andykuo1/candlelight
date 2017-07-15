@@ -3,13 +3,13 @@ package net.jimboi.stage_b.glim.entity.component;
 import org.bstone.transform.Transform3;
 import org.joml.Matrix4f;
 import org.qsilver.entity.EntityComponent;
-import org.qsilver.renderer.Renderable;
+import org.qsilver.renderer.Drawable;
 import org.zilar.model.Model;
 
 /**
  * Created by Andy on 6/1/17.
  */
-public class EntityComponentRenderable implements EntityComponent, Renderable
+public class EntityComponentRenderable implements EntityComponent, Drawable
 {
 	public final Transform3 transform;
 	public final Model model;

@@ -2,6 +2,8 @@ package org.qsilver.scene;
 
 import org.bstone.util.listener.Listenable;
 import org.qsilver.renderer.RenderEngine;
+import org.qsilver.service.Service;
+import org.qsilver.service.ServiceManager;
 
 /**
  * Created by Andy on 3/1/17.
@@ -23,18 +25,38 @@ public class SceneManager
 
 	private boolean active = false;
 
-	public SceneManager()
+	private final ServiceManager<RenderEngine> renderServices;
+	private final Service<RenderEngine> renderService;
+
+	public SceneManager(ServiceManager<RenderEngine> renderServices)
 	{
+		this.renderServices = renderServices;
+		this.renderService = new Service<RenderEngine>()
+		{
+			@Override
+			public void onStart(RenderEngine handler)
+			{
+				handler.onRenderUpdate.addListener(SceneManager.this::renderUpdate, Listenable.Phase.EARLY);
+			}
+
+			@Override
+			public void onStop(RenderEngine handler)
+			{
+				handler.onRenderUpdate.deleteListener(SceneManager.this::renderUpdate);
+			}
+		};
 	}
 
 	public void update(double delta)
 	{
 		if (!this.active) return;
 
-		if (this.setup)
+		if (this.isSetupMode())
 		{
 			if (this.setupHandler == null)
 			{
+				if (this.currScene != null && this.currScene.sceneManager != this) throw new IllegalStateException("Unable to stop a scene that does not belong to this manager!");
+
 				this.setupHandler = new SceneStopHandler(this.currScene, this.currScene == this.nextScene);
 			}
 
@@ -47,44 +69,47 @@ public class SceneManager
 					if (this.nextScene == null)
 					{
 						this.setupHandler = null;
-						this.currScene = null;
-						this.setup = false;
 						this.active = false;
+
+						this.doSetup(false, null);
+
 						return;
 					}
+					else
+					{
+						if (this.nextScene != null && this.nextScene.sceneManager != null && this.nextScene.sceneManager != this) throw new IllegalStateException("Unable to start a scene that already belongs to another manager!");
 
-					this.setupHandler = new SceneStartHandler(this.nextScene, this.currScene == this.nextScene);
-					this.currScene = null;
+						this.setupHandler = new SceneStartHandler(this.nextScene, this.currScene == this.nextScene);
+
+						this.currScene = null;
+					}
 				}
 				else if (this.setupHandler instanceof SceneStartHandler)
 				{
 					this.setupHandler = null;
+
 					Scene prevScene = this.currScene;
-					this.currScene = this.nextScene;
-					this.nextScene = null;
-					this.setup = false;
+					this.doSetup(false, this.nextScene);
 
 					this.onSceneChanged.notifyListeners(this.currScene, prevScene);
 				}
 				else
 				{
 					this.setupHandler = null;
-					this.currScene = null;
-					this.nextScene = null;
-					this.setup = false;
+
+					this.doSetup(false, null);
 				}
 			}
 		}
 		else if (this.currScene != null)
 		{
-			this.currScene.onSceneUpdate(delta);
-			this.currScene.onSceneUpdate.notifyListeners(delta);
+			this.currScene.update(delta);
 		}
 	}
 
 	public void renderUpdate(RenderEngine renderManager)
 	{
-		if (this.setup)
+		if (this.isSetupMode())
 		{
 			if (this.setupHandler != null && !this.setupHandler.isComplete())
 			{
@@ -95,21 +120,21 @@ public class SceneManager
 
 	public void nextScene(Scene scene)
 	{
-		this.nextScene = scene;
-		this.setup = true;
+		if (scene != null && scene.sceneManager != null && scene.sceneManager != this) throw new IllegalArgumentException("Invalid scene - scene already belongs to another manager!");
+
 		this.active = true;
+
+		this.doSetup(true, scene);
 	}
 
 	public void restartScene()
 	{
-		this.nextScene = this.currScene;
-		this.setup = true;
+		this.doSetup(true, this.currScene);
 	}
 
 	public void stopScene()
 	{
-		this.nextScene = null;
-		this.setup = true;
+		this.doSetup(true, null);
 	}
 
 	//TODO: This may cause confusing about when you can access this...
@@ -121,6 +146,28 @@ public class SceneManager
 	public boolean isActive()
 	{
 		return this.active;
+	}
+
+	public boolean isSetupMode()
+	{
+		return this.setup;
+	}
+
+	private void doSetup(boolean setup, Scene scene)
+	{
+		this.setup = setup;
+
+		if (this.isSetupMode())
+		{
+			this.nextScene = scene;
+			this.renderServices.startService(this.renderService);
+		}
+		else
+		{
+			this.currScene = scene;
+			this.nextScene = null;
+			this.renderServices.stopService(this.renderService);
+		}
 	}
 
 	private abstract class SceneSetupHandler
@@ -136,7 +183,7 @@ public class SceneManager
 		}
 
 		public abstract void onUpdate(double delta);
-		public abstract void onRenderUpdate(RenderEngine renderManager);
+		public abstract void onRenderUpdate(RenderEngine renderEngine);
 
 		protected synchronized void markComplete()
 		{
@@ -169,19 +216,15 @@ public class SceneManager
 
 			if (!this.sceneStopped)
 			{
-				System.out.println("Stopping Scene. . .");
-				this.scene.onSceneStop();
+				this.scene.stop();
 				this.sceneStopped = true;
-				this.scene.onSceneStop.notifyListeners();
 			}
 			else if (this.sceneUnloaded)
 			{
 				if (!this.sceneDestroyed)
 				{
-					System.out.println("Destroying Scene. . .");
-					this.scene.onSceneDestroy();
+					this.scene.destroy();
 					this.sceneDestroyed = true;
-					this.scene.onSceneDestroy.notifyListeners();
 				}
 				else
 				{
@@ -191,7 +234,7 @@ public class SceneManager
 		}
 
 		@Override
-		public void onRenderUpdate(RenderEngine renderManager)
+		public void onRenderUpdate(RenderEngine renderEngine)
 		{
 			if (this.scene == null) return;
 
@@ -199,10 +242,8 @@ public class SceneManager
 			{
 				if (!this.sceneUnloaded)
 				{
-					System.out.println("Unloading Scene. . .");
-					this.scene.onSceneUnload(renderManager);
+					this.scene.unload(renderEngine);
 					this.sceneUnloaded = true;
-					this.scene.onSceneUnload.notifyListeners();
 				}
 			}
 		}
@@ -228,19 +269,15 @@ public class SceneManager
 
 			if (!this.sceneCreated)
 			{
-				System.out.println("Creating Scene. . .");
-				this.scene.onSceneCreate();
+				this.scene.create(SceneManager.this);
 				this.sceneCreated = true;
-				this.scene.onSceneCreate.notifyListeners();
 			}
 			else if (this.sceneLoaded)
 			{
 				if (!this.sceneStarted)
 				{
-					System.out.println("Starting Scene. . .");
-					this.scene.onSceneStart();
+					this.scene.start();
 					this.sceneStarted = true;
-					this.scene.onSceneStart.notifyListeners();
 				}
 				else
 				{
@@ -250,7 +287,7 @@ public class SceneManager
 		}
 
 		@Override
-		public void onRenderUpdate(RenderEngine renderManager)
+		public void onRenderUpdate(RenderEngine renderEngine)
 		{
 			if (this.scene == null) return;
 
@@ -258,10 +295,8 @@ public class SceneManager
 			{
 				if (!this.sceneLoaded)
 				{
-					System.out.println("Loading Scene. . .");
-					this.scene.onSceneLoad(renderManager);
+					this.scene.load(renderEngine);
 					this.sceneLoaded = true;
-					this.scene.onSceneLoad.notifyListeners();
 				}
 			}
 		}

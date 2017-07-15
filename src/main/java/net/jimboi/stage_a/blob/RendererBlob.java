@@ -13,13 +13,14 @@ import net.jimboi.stage_a.mod.instance.InstanceHandler;
 import net.jimboi.stage_a.mod.instance.InstanceManager;
 import net.jimboi.stage_a.mod.model.Model;
 import net.jimboi.stage_a.mod.render.Render;
+import net.jimboi.stage_a.mod.renderer.OldRenderService;
 import net.jimboi.stage_a.mod.resource.ModResourceLocation;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.mogli.Texture;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.qsilver.renderer.RenderManager;
+import org.qsilver.renderer.RenderEngine;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.MeshData;
 import org.zilar.meshbuilder.ModelUtil;
@@ -31,7 +32,7 @@ import java.util.Random;
 /**
  * Created by Andy on 4/30/17.
  */
-public class RendererBlob extends RenderManager implements InstanceManager.OnInstanceAddListener, InstanceManager.OnInstanceRemoveListener
+public class RendererBlob extends OldRenderService implements InstanceManager.OnInstanceAddListener, InstanceManager.OnInstanceRemoveListener
 {
 	public static final List<ModLight> lights = new ArrayList<>();
 	public static PerspectiveCamera camera;
@@ -60,7 +61,7 @@ public class RendererBlob extends RenderManager implements InstanceManager.OnIns
 	}
 
 	@Override
-	public void onRenderLoad()
+	public void onRenderLoad(RenderEngine renderEngine)
 	{
 		RendererBlob.lights.add(ModLight.createPointLight(0, 0, 0, 0xFFFFFF, 1F, 1F, 0));
 		RendererBlob.lights.add(ModLight.createDirectionLight(1, 1F, 1F, 0xFFFFFF, 0.1F, 0.06F));
@@ -124,13 +125,13 @@ public class RendererBlob extends RenderManager implements InstanceManager.OnIns
 	}
 
 	@Override
-	public void onRenderUpdate()
+	public void onRender(RenderEngine renderEngine)
 	{
 		this.instanceManager.update();
 	}
 
 	@Override
-	public void onRenderUnload()
+	public void onRenderUnload(RenderEngine renderEngine)
 	{
 		this.instanceManager.destroyAll();
 	}

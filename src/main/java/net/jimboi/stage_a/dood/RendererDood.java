@@ -1,17 +1,19 @@
 package net.jimboi.stage_a.dood;
 
+import net.jimboi.stage_a.base.Main;
 import net.jimboi.stage_a.mod.instance.Instance;
 import net.jimboi.stage_a.mod.instance.InstanceHandler;
 import net.jimboi.stage_a.mod.instance.InstanceManager;
 import net.jimboi.stage_a.mod.render.Render;
+import net.jimboi.stage_a.mod.renderer.OldRenderService;
 
 import org.bstone.camera.PerspectiveCamera;
-import org.qsilver.renderer.RenderManager;
+import org.qsilver.renderer.RenderEngine;
 
 /**
  * Created by Andy on 5/30/17.
  */
-public class RendererDood extends RenderManager implements InstanceManager.OnInstanceAddListener, InstanceManager.OnInstanceRemoveListener
+public class RendererDood extends OldRenderService implements InstanceManager.OnInstanceAddListener, InstanceManager.OnInstanceRemoveListener
 {
 	protected final net.jimboi.stage_a.mod.render.RenderManager renderManager;
 	protected final InstanceManager instanceManager;
@@ -33,19 +35,23 @@ public class RendererDood extends RenderManager implements InstanceManager.OnIns
 	}
 
 	@Override
-	public void onRenderLoad()
+	public void onRenderLoad(RenderEngine renderEngine)
 	{
 		ResourcesDood.INSTANCE.load(this.renderManager);
 	}
 
 	@Override
-	public void onRenderUpdate()
+	public void onRender(RenderEngine renderEngine)
 	{
-		this.instanceManager.update();
+		//This is a hack to stop crashing, when using OldRenderServices...
+		if (!Main.SCENEMANAGER.isSetupMode())
+		{
+			this.instanceManager.update();
+		}
 	}
 
 	@Override
-	public void onRenderUnload()
+	public void onRenderUnload(RenderEngine renderEngine)
 	{
 		this.instanceManager.destroyAll();
 	}

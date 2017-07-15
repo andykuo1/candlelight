@@ -13,6 +13,7 @@ import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.qsilver.astar.map.NavigatorCardinalMap;
+import org.qsilver.entity.AbstractUpdateableEntitySystem;
 import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
 import org.qsilver.util.MathUtil;
@@ -22,7 +23,7 @@ import java.util.Collection;
 /**
  * Created by Andy on 6/14/17.
  */
-public class EntitySystemHeading extends AbstractUpdateableSystem
+public class EntitySystemHeading extends AbstractUpdateableEntitySystem
 {
 	private BoundingManager boundingManager;
 

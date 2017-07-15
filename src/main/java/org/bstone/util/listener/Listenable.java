@@ -8,45 +8,97 @@ import java.util.function.BiConsumer;
  */
 public class Listenable<T>
 {
-	private Vector<T> lis;
+	public enum Phase
+	{
+		EARLY,
+		DEFAULT,
+		LATE;
+	}
+
+	private Vector<T> early;
+	private Vector<T> main;
+	private Vector<T> late;
 	private BiConsumer<T, Object[]> notifyFunction;
 
 	/** Construct an Listenable with zero Listeners. */
 	public Listenable(BiConsumer<T, Object[]> notifyFunction)
 	{
-		lis = new Vector<>();
+		early = new Vector<>();
+		main = new Vector<>();
+		late = new Vector<>();
 		this.notifyFunction = notifyFunction;
 	}
 
 	/**
-	 * Adds an listener to the set of listeners for this object, provided
+	 * Adds a listener to the set of listeners for this object, provided
 	 * that it is not the same as some listener already in the set.
 	 * The order in which notifications will be delivered to multiple
-	 * listeners is not specified. See the class comment.
+	 * listeners is specified by phase.
 	 *
-	 * @param o an listener to be added.
+	 * @param o a listener to be added.
+	 * @param phase the phase to listen to
+	 *
+	 * @throws NullPointerException if the parameter o is null.
+	 */
+	public synchronized void addListener(T o, Phase phase)
+	{
+		if (o == null) throw new NullPointerException();
+		if (main.contains(o) || early.contains(o) || late.contains(o)) return;
+
+		switch (phase)
+		{
+			case EARLY:
+				early.addElement(o);
+				break;
+			case LATE:
+				late.addElement(o);
+				break;
+			case DEFAULT:
+			default:
+				main.addElement(o);
+				break;
+		}
+	}
+
+	/**
+	 * Adds a listener to the set of listeners for this object, provided
+	 * that it is not the same as some listener already in the set.
+	 * The order in which notifications will be delivered to multiple
+	 * listeners is not specified.
+	 *
+	 * @param o a listener to be added.
 	 *
 	 * @throws NullPointerException if the parameter o is null.
 	 */
 	public synchronized void addListener(T o)
 	{
-		if (o == null)
-			throw new NullPointerException();
-		if (!lis.contains(o))
+		if (o == null) throw new NullPointerException();
+		if (!main.contains(o))
 		{
-			lis.addElement(o);
+			main.addElement(o);
 		}
 	}
 
 	/**
-	 * Deletes an listener from the set of listeners of this object.
+	 * Deletes a listener from the set of listeners of this object.
 	 * Passing <CODE>null</CODE> to this method will have no effect.
 	 *
 	 * @param o the listener to be deleted.
 	 */
 	public synchronized void deleteListener(T o)
 	{
-		lis.removeElement(o);
+		if (main.contains(o))
+		{
+			main.removeElement(o);
+		}
+		else if (early.contains(o))
+		{
+			early.removeElement(o);
+		}
+		else if (late.contains(o))
+		{
+			late.removeElement(o);
+		}
 	}
 
 	/**
@@ -68,7 +120,20 @@ public class Listenable<T>
 
 		synchronized (this)
 		{
-			arrLocal = lis.toArray();
+			arrLocal = new Object[this.countListeners()];
+			int j = 0;
+			for(int i = late.size() - 1; i >= 0; --i)
+			{
+				arrLocal[j++] = late.get(i);
+			}
+			for(int i = main.size() - 1; i >= 0; --i)
+			{
+				arrLocal[j++] = main.get(i);
+			}
+			for(int i = early.size() - 1; i >= 0; --i)
+			{
+				arrLocal[j++] = early.get(i);
+			}
 		}
 
 		for (int i = arrLocal.length - 1; i >= 0; i--)
@@ -82,7 +147,9 @@ public class Listenable<T>
 	 */
 	public synchronized void deleteListeners()
 	{
-		lis.removeAllElements();
+		main.removeAllElements();
+		early.removeAllElements();
+		late.removeAllElements();
 	}
 
 	/**
@@ -92,6 +159,6 @@ public class Listenable<T>
 	 */
 	public synchronized int countListeners()
 	{
-		return lis.size();
+		return main.size() + early.size() + late.size();
 	}
 }

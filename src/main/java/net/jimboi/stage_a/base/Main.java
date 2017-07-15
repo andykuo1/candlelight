@@ -60,17 +60,12 @@ public class Main
 		Poma.info("Running program with args: " + Arrays.asList(args));
 		Poma.div();
 
-		SCENEMANAGER = new SceneManager();
-
-		RENDERENGINE = new RenderEngine();
-
 		TICKENGINE = new TickEngine();
+		RENDERENGINE = new RenderEngine();
+		SCENEMANAGER = new SceneManager(RENDERENGINE.getServiceManager());
+
 		TICKENGINE.onFixedUpdate.addListener(SCENEMANAGER::update);
-		TICKENGINE.onUpdate.addListener(() ->
-		{
-			SCENEMANAGER.renderUpdate(RENDERENGINE);
-			RENDERENGINE.update();
-		});
+		TICKENGINE.onUpdate.addListener(RENDERENGINE::update);
 
 		WINDOW = new Window("Application", 640, 480);
 		INPUTENGINE = WINDOW.getInputEngine();

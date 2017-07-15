@@ -2,10 +2,7 @@ package net.jimboi.stage_c.hoob.world;
 
 import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
 import net.jimboi.stage_c.hoob.SceneHoob;
-import net.jimboi.stage_c.hoob.bounding.BoundingManager;
-import net.jimboi.stage_c.hoob.bounding.ShapeAABB;
 import net.jimboi.stage_c.hoob.world.agents.MoveAgent;
-import net.jimboi.stage_c.hoob.world.agents.StaticAgent;
 import net.jimboi.stage_c.hoob.world.agents.Town;
 import net.jimboi.stage_c.hoob.world.agents.Traveller;
 import net.jimboi.stage_c.hoob.world.agents.WorldAgent;
@@ -17,6 +14,7 @@ import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
 import org.qsilver.entity.Entity;
 import org.zilar.base.GameEngine;
+import org.zilar.bounding.ShapeAABB;
 
 import java.util.Iterator;
 
@@ -35,8 +33,6 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 		this.agents.onLivingRemove.addListener(this);
 	}
 
-	public BoundingManager boundingManager = new BoundingManager();
-
 	public World(SceneHoob scene)
 	{
 		this.scene = scene;
@@ -44,13 +40,13 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 
 	public void create()
 	{
-		Entity pick = this.scene.spawnEntity(0, 0, 0, "crate", "quad", null);
+		Entity pick = this.scene.spawnEntity(0, 0, 0, "crate", "quad");
 		this.pickPos = pick.getComponent(EntityComponentTransform.class).transform.position;
 		this.pickPos.z = 0.1F;
 
-		Town town = this.spawnTown(0, 0);
+		this.spawnTown(2, 2);
 		this.spawnTown(8, -5);
-		this.player = this.spawnTraveller(1, 1);
+		this.player = this.spawnTraveller(0, 0);
 		this.player.moveSpeed = 4F;
 	}
 
@@ -104,7 +100,7 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 
 	public Town spawnTown(float x, float y)
 	{
-		Town town = this.spawnAgent(new Town(this, this.boundingManager.createStatic(new ShapeAABB(x, y, 0.5F))));
+		Town town = this.spawnAgent(new Town(this));
 		town.pos.x = x;
 		town.pos.y = y;
 		return town;
@@ -112,7 +108,7 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 
 	public Traveller spawnTraveller(float x, float y)
 	{
-		Traveller traveller = this.spawnAgent(new Traveller(this, this.boundingManager.createCollider(new ShapeAABB(0, 0, 0.5F))));
+		Traveller traveller = this.spawnAgent(new Traveller(this));
 		traveller.pos.x = x;
 		traveller.pos.y = y;
 		return traveller;
@@ -122,22 +118,13 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 	public void onLivingAdd(WorldAgent agent)
 	{
 		boolean motion = agent instanceof MoveAgent;
-		Entity entity = this.scene.spawnEntity(agent.pos.x, agent.pos.y, 0, "bunny", "quad", motion ? "bunny" : null);
+		Entity entity = this.scene.spawnEntity(agent.pos.x, agent.pos.y, 0, "bunny", "quad", motion, agent.isSolid() ? new ShapeAABB(agent.pos.x(), agent.pos.y(), agent.getSize()) : null, motion);
 		entity.addComponent(agent);
 	}
 
 	@Override
 	public void onLivingRemove(WorldAgent agent)
 	{
-		if (agent instanceof StaticAgent)
-		{
-			this.boundingManager.destryStatic(((StaticAgent) agent).getCollider());
-		}
-		else if (agent instanceof MoveAgent)
-		{
-			this.boundingManager.destroyCollider(((MoveAgent) agent).getCollider());
-		}
-
 		this.scene.getEntityManager().getEntityByComponent(agent).setDead();
 	}
 }

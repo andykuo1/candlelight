@@ -7,6 +7,7 @@ import org.bstone.camera.Camera;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
+import org.qsilver.entity.AbstractUpdateableEntitySystem;
 import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
 import org.zilar.renderer.BillboardRenderer;
@@ -16,7 +17,7 @@ import java.util.Collection;
 /**
  * Created by Andy on 6/14/17.
  */
-public class EntitySystemBillboard extends AbstractUpdateableSystem
+public class EntitySystemBillboard extends AbstractUpdateableEntitySystem
 {
 	private Camera camera;
 

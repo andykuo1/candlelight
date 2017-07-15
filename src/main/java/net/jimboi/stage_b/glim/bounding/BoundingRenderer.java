@@ -13,17 +13,20 @@ import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.qsilver.asset.Asset;
 import org.qsilver.asset.AssetManager;
+import org.qsilver.renderer.RenderEngine;
+import org.qsilver.renderer.RenderService;
+import org.qsilver.resource.MeshLoader;
+import org.zilar.base.GameEngine;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.MeshData;
 import org.zilar.resource.ResourceLocation;
-import org.zilar.resourceloader.MeshLoader;
 
 import java.util.Iterator;
 
 /**
  * Created by Andy on 6/11/17.
  */
-public class BoundingRenderer
+public class BoundingRenderer extends RenderService
 {
 	private final Asset<Program> program;
 
@@ -41,8 +44,11 @@ public class BoundingRenderer
 		this.program = program;
 	}
 
-	public void setup(AssetManager assetManager)
+	@Override
+	protected void onStart(RenderEngine handler)
 	{
+		AssetManager assetManager = GameEngine.ASSETMANAGER;
+
 		MeshBuilder mb = new MeshBuilder();
 		mb.addCircle(0, 0, 1, 6);
 		MeshData data = mb.bake(false, false);
@@ -54,6 +60,12 @@ public class BoundingRenderer
 				new MeshLoader.MeshParameter(data));
 		this.cylinder = assetManager.registerAsset(Mesh.class, "b_cylinder",
 				new MeshLoader.MeshParameter(new ResourceLocation("glim:model/cylinder.obj")));
+	}
+
+	@Override
+	protected void onStop(RenderEngine handler)
+	{
+
 	}
 
 	public void render(Camera camera, Iterator<Bounding> iterator)

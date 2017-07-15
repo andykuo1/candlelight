@@ -12,16 +12,28 @@ import org.qsilver.entity.EntityComponent;
 public abstract class WorldAgent extends Living implements EntityComponent
 {
 	public final World world;
+	private final float size;
 	public final Vector2f pos = new Vector2f();
 
-	public WorldAgent(World world)
+	public WorldAgent(World world, float size)
 	{
 		this.world = world;
+		this.size = size;
 	}
 
 	@Override
 	public boolean onCreate()
 	{
 		return true;
+	}
+
+	public boolean isSolid()
+	{
+		return this.size > 0;
+	}
+
+	public float getSize()
+	{
+		return this.size;
 	}
 }

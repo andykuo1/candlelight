@@ -1,148 +1,79 @@
 package net.jimboi.stage_c.gui;
 
-import org.zilar.sprite.NineSheet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by Andy on 7/12/17.
+ * Created by Andy on 7/15/17.
  */
-public abstract class Gui
+public class Gui implements Comparable<Gui>
 {
-	protected GuiManager guiManager;
-
-	private NineSheet borderTexture;
-
-	private int x;
-	private int y;
-	private int width;
-	private int height;
-	private boolean visible;
-	private int color;
-
+	private final List<Gui> childs = new ArrayList<>();
 	private Gui parent;
-	private boolean dirty;
 
-	public Gui(int x, int y, int width, int height)
+	public int depth = 1;
+
+	public float x;
+	public float y;
+
+	public float width = 1;
+	public float height = 1;
+
+	public int color = 0xFFFFFF;
+	public float alpha = 1;
+
+	public boolean isSelectable(float x, float y)
 	{
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-
-		this.visible = true;
-		this.dirty = true;
+		return contains(this, x, y) && this.alpha > 0;
 	}
 
-	public void onGuiUpdate()
+	public void onGuiStateChanged(int state)
 	{
-		if (!this.visible) return;
-
-		if (this.dirty)
+		switch (state)
 		{
-			this.updateGui();
-
-			this.dirty = false;
+			case 1: //HOVER
+				break;
+			case 2: //ACTIVE
+				break;
+			case 3: //ACTIVATION
+				break;
+			case 0: //DEFAULT
+			default:
+				break;
 		}
 	}
 
-	protected abstract void updateGui();
-
-	protected abstract void onEnter();
-	protected abstract void onLeave();
-
-	protected abstract void onSelect();
-	protected abstract void onAction();
-
-	public final void markDirty()
+	public final void addChild(Gui gui)
 	{
-		this.dirty = true;
+		if (gui == null) return;
+		if (gui == this) throw new IllegalArgumentException("Cannot make cyclical dependencies!");
+		if (gui.parent != null) throw new IllegalArgumentException("Gui already has another parent!");
+
+		gui.parent = this;
+		this.childs.add(gui);
 	}
 
-	public final boolean isDirty()
+	public final void removeChild(Gui gui)
 	{
-		return this.dirty;
+		if (gui.parent != this) throw new IllegalArgumentException("Gui does not belong to this parent!");
+
+		gui.parent = null;
+		this.childs.remove(gui);
 	}
 
-	public boolean contains(int x, int y)
+	public final int getDepth()
 	{
-		return x >= this.x && x < this.x + this.width && y >= this.y && y < this.y + this.height;
+		return this.parent.getDepth() + this.depth;
 	}
 
-	public void setBorderTexture(NineSheet ninesheet)
+	@Override
+	public int compareTo(Gui o)
 	{
-		this.borderTexture = ninesheet;
+		return this.getDepth() - o.getDepth();
 	}
 
-	public void setOffset(int x, int y)
+	public static boolean contains(Gui gui, float x, float y)
 	{
-		this.x = x;
-		this.y = y;
-		this.dirty = true;
-	}
-
-	public void setDimension(int width, int height)
-	{
-		this.width = width;
-		this.height = height;
-		this.dirty = true;
-	}
-
-	public void setColor(int color)
-	{
-		this.color = color;
-	}
-
-	public void setVisible(boolean visible)
-	{
-		this.visible = visible;
-	}
-
-	protected void setParent(Gui gui)
-	{
-		this.parent = gui;
-	}
-
-	public Gui getParent()
-	{
-		return this.parent;
-	}
-
-	public NineSheet getBorderTexture()
-	{
-		return this.borderTexture;
-	}
-
-	public int getColor()
-	{
-		return this.color;
-	}
-
-	public int getX()
-	{
-		return this.x;
-	}
-
-	public int getY()
-	{
-		return this.y;
-	}
-
-	public int getDepth()
-	{
-		return this.parent == null ? 0 : this.parent.getDepth() + 1;
-	}
-
-	public int getWidth()
-	{
-		return this.width;
-	}
-
-	public int getHeight()
-	{
-		return this.height;
-	}
-
-	public boolean isVisible()
-	{
-		return this.visible;
+		return x >= gui.x && y >= gui.y && x < gui.x + gui.width && y < gui.y + gui.height;
 	}
 }

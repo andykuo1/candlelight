@@ -12,16 +12,18 @@ import org.bstone.util.SemanticVersion;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 import org.qsilver.asset.Asset;
-import org.qsilver.renderer.Renderable;
+import org.qsilver.renderer.Drawable;
+import org.qsilver.renderer.RenderEngine;
+import org.qsilver.resource.MeshLoader;
+import org.qsilver.resource.TextureAtlasLoader;
 import org.qsilver.util.iterator.CastIterator;
 import org.zilar.BasicSideScrollCameraController;
 import org.zilar.base.Assets;
 import org.zilar.base.GameEngine;
 import org.zilar.base.RenderBase;
+import org.zilar.bounding.BoundingRenderer;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.renderer.SimpleRenderer;
-import org.zilar.resourceloader.MeshLoader;
-import org.zilar.resourceloader.TextureAtlasLoader;
 import org.zilar.sprite.TextureAtlas;
 import org.zilar.sprite.TextureAtlasBuilder;
 
@@ -35,6 +37,7 @@ import java.util.Iterator;
 public class RenderHoob extends RenderBase
 {
 	private SimpleRenderer simpleRenderer;
+	private BoundingRenderer boundingRenderer;
 
 	private final Assets assets;
 
@@ -46,7 +49,7 @@ public class RenderHoob extends RenderBase
 	}
 
 	@Override
-	public void onRenderLoad()
+	public void onRenderLoad(RenderEngine renderEngine)
 	{
 		this.assets.load();
 
@@ -66,7 +69,8 @@ public class RenderHoob extends RenderBase
 		InputManager.registerKey("action", GLFW.GLFW_KEY_F);
 		InputManager.registerKey("sprint", GLFW.GLFW_KEY_LEFT_SHIFT, GLFW.GLFW_KEY_RIGHT_SHIFT);
 
-		this.simpleRenderer = new SimpleRenderer(GameEngine.ASSETMANAGER.getAsset(Program.class, "simple"));
+		this.simpleRenderer = renderEngine.getServiceManager().startService(new SimpleRenderer(GameEngine.ASSETMANAGER.getAsset(Program.class, "simple")));
+		this.boundingRenderer = renderEngine.getServiceManager().startService(new BoundingRenderer(((SceneHoob) this.scene).getBoundingManager(), GameEngine.ASSETMANAGER.getAsset(Program.class, "wireframe")));
 
 		MeshBuilder mb = new MeshBuilder();
 		mb.addPlane(new Vector2f(0, 0), new Vector2f(1, 1), 0, new Vector2f(0, 0), new Vector2f(1, 1));
@@ -101,18 +105,20 @@ public class RenderHoob extends RenderBase
 	}
 
 	@Override
-	public void onRenderUpdate()
+	public void onRender(RenderEngine renderEngine)
 	{
 		Collection<EntityComponentRenderable> renderables = this.getScene().getEntityManager().getComponents(new HashSet<>(), EntityComponentRenderable.class);
 
-		Iterator<Renderable> iter = new CastIterator<>(renderables.iterator());
+		Iterator<Drawable> iter = new CastIterator<>(renderables.iterator());
 		this.simpleRenderer.render(this.getCamera(), iter);
+
+		this.boundingRenderer.render(this.getCamera());
 	}
 
 	@Override
-	public void onRenderUnload()
+	public void onRenderUnload(RenderEngine renderEngine)
 	{
-
+		renderEngine.getServiceManager().stopService(this.boundingRenderer);
 	}
 
 	@Override

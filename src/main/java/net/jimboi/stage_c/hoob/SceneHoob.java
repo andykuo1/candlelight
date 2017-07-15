@@ -13,6 +13,8 @@ import org.qsilver.entity.Entity;
 import org.zilar.animation.AnimatorSpriteSheet;
 import org.zilar.base.GameEngine;
 import org.zilar.base.SceneBase;
+import org.zilar.bounding.BoundingManager;
+import org.zilar.bounding.Shape;
 import org.zilar.model.Model;
 import org.zilar.property.PropertyDiffuse;
 import org.zilar.property.PropertyTexture;
@@ -29,23 +31,38 @@ public class SceneHoob extends SceneBase
 		GameEngine.run(SceneHoob.class, args);
 	}
 
+	protected EntitySystemBoundingCollider systemBoundingCollider;
+	protected BoundingManager boundingManager;
+
+	protected World world;
+
 	public SceneHoob()
 	{
 		super(new RenderHoob());
 	}
 
-	private World world;
+	@Override
+	protected void onSceneCreate()
+	{
+		super.onSceneCreate();
+
+		this.boundingManager = new BoundingManager();
+		this.systemBoundingCollider = new EntitySystemBoundingCollider(this.entityManager, this.boundingManager);
+
+		this.world = new World(this);
+	}
 
 	@Override
 	protected void onSceneStart()
 	{
-		this.spawnEntity(0, 0, -0.1F, "crate", "ground", null);
+		this.systemBoundingCollider.start(this);
+
+		this.spawnEntity(0, 0, -0.1F, "crate", "ground");
 
 		Transform3 transform = new Transform3();
 		transform.position.set(0, 0, 1);
 		this.getRenderer().getCameraController().setTarget(transform);
 
-		this.world = new World(this);
 		this.world.create();
 	}
 
@@ -61,6 +78,8 @@ public class SceneHoob extends SceneBase
 	protected void onSceneStop()
 	{
 		super.onSceneStop();
+
+		this.systemBoundingCollider.stop(this);
 	}
 
 	@Override
@@ -69,18 +88,27 @@ public class SceneHoob extends SceneBase
 		return (RenderHoob) super.getRenderer();
 	}
 
-	public Entity spawnEntity(float x, float y, float z, String textureID, String meshID, String textureAtlasID)
+	public Entity spawnEntity(float x, float y, float z, String textureID, String meshID)
+	{
+		return this.spawnEntity(x, y, z, textureID, meshID, false, null, false);
+	}
+
+	public Entity spawnEntity(float x, float y, float z, String textureID, String meshID, boolean textureAtlas, Shape shape, boolean collider)
 	{
 		Transform3 transform = new Transform3();
 		transform.position.set(x, y, z);
-		Asset<Texture> texture = GameEngine.ASSETMANAGER.getAsset(Texture.class, textureID);
-
+		Asset<Texture> texture = null;
 		SpriteSheet spritesheet = null;
-		if (textureAtlasID != null)
+
+		if (textureAtlas)
 		{
-			Asset<TextureAtlas> textureAtlas = GameEngine.ASSETMANAGER.getAsset(TextureAtlas.class, textureAtlasID);
-			spritesheet = new SpriteSheet(textureAtlas, 0, 3);
+			Asset<TextureAtlas> atlas = GameEngine.ASSETMANAGER.getAsset(TextureAtlas.class, textureID);
+			spritesheet = new SpriteSheet(atlas, 0, 3);
 			this.getAnimationManager().start(new AnimatorSpriteSheet(spritesheet, 0.2F));
+		}
+		else
+		{
+			texture = GameEngine.ASSETMANAGER.getAsset(Texture.class, textureID);
 		}
 
 		Asset<Mesh> mesh = GameEngine.ASSETMANAGER.getAsset(Mesh.class, meshID);
@@ -91,7 +119,18 @@ public class SceneHoob extends SceneBase
 		Model model = new Model(mesh, material, "simple");
 		return this.getEntityManager().createEntity(
 				new EntityComponentTransform(transform),
-				new EntityComponentRenderable(transform, model)
+				new EntityComponentRenderable(transform, model),
+				shape == null ? null : collider ? new EntityComponentBoundingCollider(shape) : new EntityComponentBoundingStatic(shape)
 		);
+	}
+
+	public BoundingManager getBoundingManager()
+	{
+		return this.boundingManager;
+	}
+
+	public World getWorld()
+	{
+		return this.world;
 	}
 }

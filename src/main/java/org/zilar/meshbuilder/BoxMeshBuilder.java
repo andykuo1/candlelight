@@ -154,17 +154,46 @@ public class BoxMeshBuilder extends MeshBuilderBase
 		}
 	}
 
+	public void addQuad(float x, float y, float width, float height)
+	{
+		int index = this.getVertexCount();
+		float w2 = width / 2F;
+		float h2 = height / 2F;
+		this.addVertex(x - w2, y - h2, 0, 0, 0);
+		this.indices.add(index++);
+		this.addVertex(x + w2, y - h2, 0, 0, 0);
+		this.indices.add(index++);
+		this.addVertex(x + w2, y + h2, 0, 0, 0);
+		this.indices.add(index++);
+		this.addVertex(x - w2, y + h2, 0, 0, 0);
+		this.indices.add(index);
+	}
+
 	public void addCircle(float x, float y, float radius, int lines)
 	{
-		radius /= 2F;
 		int index = this.getVertexCount();
 		int i;
 
 		for (i = 0; i < lines; i++)
 		{
-			this.addVertex(x + (float) (radius * Math.cos(i * Transform.PI2 / lines)),
-					0, y + (float) (radius * Math.sin(i * Transform.PI2 / lines)), 0, 0);
+			this.addVertex(x + (float) (radius * Math.cos(i * Transform.PI2 / lines)), y + (float) (radius * Math.sin(i * Transform.PI2 / lines)), 0, 0, 0);
 			this.indices.add(index + i);
 		}
+	}
+
+	public void addPoint(float x, float y)
+	{
+		int index = this.getVertexCount();
+		this.addVertex(x, y, 0, 0, 0);
+		this.indices.add(index);
+	}
+
+	public void addSegment(float x, float y, float dx, float dy)
+	{
+		int index = this.getVertexCount();
+		this.addVertex(x, y, 0, 0, 0);
+		this.indices.add(index++);
+		this.addVertex(x + dx, y + dy, 0, 0, 0);
+		this.indices.add(index);
 	}
 }

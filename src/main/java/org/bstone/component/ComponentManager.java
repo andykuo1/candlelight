@@ -23,6 +23,12 @@ public class ComponentManager<E extends ManifestEntity, C extends Component>
 		this.baseComponent = componentType;
 	}
 
+	protected void onComponentAdd(E entity, C component)
+	{}
+
+	protected void onComponentRemove(E entity, C component)
+	{}
+
 	public void clear()
 	{
 		for (E entity : this.entities.values())
@@ -35,27 +41,32 @@ public class ComponentManager<E extends ManifestEntity, C extends Component>
 	}
 
 	@SuppressWarnings("unchecked")
-	public void addComponentToEntity(E entity, C component)
+	public boolean addComponentToEntity(E entity, C component)
 	{
-		if (component == null) return;
+		if (component == null) return false;
 
 		Class componentType = component.getClass();
 		Map<E, C> map = (Map<E, C>) this.getComponentMap(componentType);
 		map.put(entity, component);
+		this.onComponentAdd(entity, component);
+		return true;
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T extends C> T removeComponentFromEntity(E entity, Class<T> componentType)
 	{
 		Map<E, C> map = this.getComponentMap(componentType);
-		return (T) map.remove(entity);
+		T t = (T) map.remove(entity);
+		this.onComponentRemove(entity, t);
+		return t;
 	}
 
 	public void removeAllComponentsFromEntity(E entity)
 	{
 		for (Map<E, C> map : this.components.values())
 		{
-			map.remove(entity);
+			C c = map.remove(entity);
+			this.onComponentRemove(entity, c);
 		}
 	}
 

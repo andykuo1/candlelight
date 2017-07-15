@@ -60,20 +60,15 @@ public final class GameEngine
 		Poma.info("Running program with args: " + Arrays.asList(args));
 		Poma.div();
 
-		SCENEMANAGER = new SceneManager();
+		TICKENGINE = new TickEngine();
+		RENDERENGINE = new RenderEngine();
+		SCENEMANAGER = new SceneManager(RENDERENGINE.getServiceManager());
 		ASSETMANAGER = new AssetManager();
 
-		RENDERENGINE = new RenderEngine();
-		RENDERENGINE.onRenderUpdate.addListener(() -> {
-			ASSETMANAGER.update();
-		});
+		RENDERENGINE.onRenderUpdate.addListener(ASSETMANAGER::update);
 
-		TICKENGINE = new TickEngine();
 		TICKENGINE.onFixedUpdate.addListener(SCENEMANAGER::update);
-		TICKENGINE.onUpdate.addListener(() -> {
-			SCENEMANAGER.renderUpdate(RENDERENGINE);
-			RENDERENGINE.update();
-		});
+		TICKENGINE.onUpdate.addListener(RENDERENGINE::update);
 
 		WINDOW = new Window("Application", 640, 480);
 		INPUTENGINE = WINDOW.getInputEngine();

@@ -1,22 +1,21 @@
 package net.jimboi.stage_a.blob;
 
-import net.jimboi.stage_a.base.Main;
 import net.jimboi.stage_a.mod.instance.InstanceHandler;
+import net.jimboi.stage_a.mod.renderer.OldRenderService;
 import net.jimboi.stage_a.mod.scene.LivingSceneBase;
 
 import org.bstone.living.Living;
 import org.bstone.living.LivingManager;
 import org.qsilver.renderer.RenderEngine;
-import org.qsilver.renderer.RenderManager;
 
 /**
  * Created by Andy on 4/30/17.
  */
 public abstract class SceneBlobBase extends LivingSceneBase implements LivingManager.OnLivingAddListener, LivingManager.OnLivingRemoveListener
 {
-	protected final RenderManager renderer;
+	protected final OldRenderService renderer;
 
-	public SceneBlobBase(RenderManager renderer)
+	public SceneBlobBase(OldRenderService renderer)
 	{
 		this.renderer = renderer;
 
@@ -27,13 +26,13 @@ public abstract class SceneBlobBase extends LivingSceneBase implements LivingMan
 	@Override
 	protected final void onSceneLoad(RenderEngine renderManager)
 	{
-		Main.RENDERENGINE.add(this.renderer);
+		renderManager.getServiceManager().startService(this.renderer);
 	}
 
 	@Override
 	protected final void onSceneUnload(RenderEngine renderManager)
 	{
-		Main.RENDERENGINE.remove(this.renderer);
+		renderManager.getServiceManager().stopService(this.renderer);
 	}
 
 	@Override

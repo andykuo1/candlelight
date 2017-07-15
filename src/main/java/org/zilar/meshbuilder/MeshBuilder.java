@@ -10,10 +10,6 @@ import org.joml.Vector3fc;
  */
 public class MeshBuilder extends BoxMeshBuilder
 {
-	public MeshBuilder()
-	{
-	}
-
 	public void addPlane(Vector2fc from, Vector2fc to, float z, Vector2fc texTopLeft, Vector2fc texBotRight)
 	{
 		int i = this.getVertexCount();

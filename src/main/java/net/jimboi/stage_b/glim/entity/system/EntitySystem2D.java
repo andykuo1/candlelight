@@ -5,6 +5,7 @@ import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
 
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
+import org.qsilver.entity.AbstractUpdateableEntitySystem;
 import org.qsilver.entity.Entity;
 import org.qsilver.entity.EntityManager;
 
@@ -13,7 +14,7 @@ import java.util.Collection;
 /**
  * Created by Andy on 6/18/17.
  */
-public class EntitySystem2D extends AbstractUpdateableSystem
+public class EntitySystem2D extends AbstractUpdateableEntitySystem
 {
 	public EntitySystem2D(EntityManager entityManager)
 	{

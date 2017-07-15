@@ -15,7 +15,7 @@ public class ActionAgent extends WorldAgent
 
 	public ActionAgent(World world, Consumer<ActionAgent> actionFunction)
 	{
-		super(world);
+		super(world, -1);
 
 		this.actionFunction = actionFunction;
 	}
