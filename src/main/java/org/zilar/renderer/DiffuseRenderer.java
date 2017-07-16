@@ -49,21 +49,23 @@ public class DiffuseRenderer extends RenderService
 	private AssetManager assetManager;
 	private Window window;
 	private List<DynamicLight> lights;
+	private PerspectiveCamera camera;
 
 	public DiffuseRenderer(AssetManager assetManager, Window window, PerspectiveCamera camera, List<DynamicLight> lights, Asset<Program> program)
 	{
 		this.program = program;
 		this.window = window;
 		this.lights = lights;
+		this.camera = camera;
 
-		this.shadowRenderer = new ShadowRenderer(camera, this.window);
+		this.shadowRenderer = new ShadowRenderer(this.window);
 		this.assetManager = assetManager;
 	}
 
 	@Override
 	protected void onStart(RenderEngine handler)
 	{
-		this.shadowRenderer.load(this.assetManager);
+		this.shadowRenderer.load(this.camera, this.assetManager);
 	}
 
 	@Override

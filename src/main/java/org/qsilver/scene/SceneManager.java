@@ -137,7 +137,7 @@ public class SceneManager
 		this.doSetup(true, null);
 	}
 
-	//TODO: This may cause confusing about when you can access this...
+	//TODO: This may cause confusion about when you can access this...
 	public Scene getCurrentScene()
 	{
 		return this.currScene;

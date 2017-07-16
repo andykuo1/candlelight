@@ -53,16 +53,14 @@ public class ShadowRenderer
 	private Asset<Texture> shadowMap;
 	private Asset<Program> shadowProgram;
 
-	private PerspectiveCamera camera;
 	private Window window;
 
-	public ShadowRenderer(PerspectiveCamera camera, Window window)
+	public ShadowRenderer(Window window)
 	{
 		this.window = window;
-		this.camera = camera;
 	}
 
-	public void load(AssetManager assetManager)
+	public void load(PerspectiveCamera camera, AssetManager assetManager)
 	{
 		this.shadowBox = new ShadowBox(this.lightViewMatrix, camera, window);
 		this.shadowMap = assetManager.registerAsset(Texture.class, "shadowmap",
@@ -85,7 +83,7 @@ public class ShadowRenderer
 		this.shadowBox.update();
 
 		Matrix4fc proj = updateOrthoProjection(shadowBox.getWidth(), shadowBox.getHeight(), shadowBox.getLength(), this.lightProjMatrix);
-		Vector3f dir = new Vector3f(light.position.x, light.position.y, light.position.z).mul(-1);
+		Vector3f dir = new Vector3f(light.position.x, light.position.y, light.position.z).negate();
 		Matrix4fc view = updateLightView(dir, shadowBox.getCenter(), this.lightViewMatrix);
 		this.lightViewProjMatrix.set(proj).mul(view);
 

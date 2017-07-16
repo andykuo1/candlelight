@@ -165,6 +165,7 @@ public class RenderGlim extends RenderBase
 		renderEngine.getServiceManager().stopService(this.wireframeRenderer);
 		renderEngine.getServiceManager().stopService(this.billboardRenderer);
 		renderEngine.getServiceManager().stopService(this.simpleRenderer);
+		renderEngine.getServiceManager().stopService(this.boundingRenderer);
 	}
 
 	@Override

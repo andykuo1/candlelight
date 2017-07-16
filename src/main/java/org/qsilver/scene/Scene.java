@@ -82,11 +82,20 @@ public abstract class Scene
 		this.onSceneStart();
 		this.onSceneStart.notifyListeners();
 		this.serviceManager.endServiceBlock();
-		Poma.div();
+
+		this.firstUpdate = true;
 	}
+
+	private boolean firstUpdate = true;
 
 	void update(double delta)
 	{
+		if (this.firstUpdate)
+		{
+			Poma.div();
+			this.firstUpdate = false;
+		}
+
 		this.serviceManager.beginServiceBlock();
 		this.onSceneUpdate(delta);
 		this.onSceneUpdate.notifyListeners(delta);

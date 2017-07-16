@@ -124,7 +124,7 @@ public class SceneGlim extends SceneBase
 										new PropertyDiffuse(),
 										new PropertySpecular(),
 										new PropertyShadow(true, true),
-										new PropertyTexture(spritesheet)),//GameEngine.ASSETMANAGER.getAsset(Texture.class, "shadowmap"))),
+										new PropertyTexture(GameEngine.ASSETMANAGER.getAsset(Texture.class, "shadowmap"))),//spritesheet)),
 							"billboard"))
 		);
 

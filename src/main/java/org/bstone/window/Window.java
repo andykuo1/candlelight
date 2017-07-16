@@ -37,7 +37,43 @@ public class Window
 	private final InputEngine inputEngine;
 
 	private final Stack<ViewPort> viewports = new Stack<>();
-	private final ViewPort defaultViewPort;
+	private final ViewPort defaultViewPort = new ViewPort(0, 0, this.width, this.height){
+		@Override
+		public void setWidth(int width)
+		{
+			throw new UnsupportedOperationException("Cannot change default viewport size!");
+		}
+
+		@Override
+		public void setHeight(int height)
+		{
+			throw new UnsupportedOperationException("Cannot change default viewport size!");
+		}
+
+		@Override
+		public int getX()
+		{
+			return 0;
+		}
+
+		@Override
+		public int getY()
+		{
+			return 0;
+		}
+
+		@Override
+		public int getWidth()
+		{
+			return Window.this.width;
+		}
+
+		@Override
+		public int getHeight()
+		{
+			return Window.this.height;
+		}
+	};
 
 	private int width;
 	private int height;
@@ -48,8 +84,6 @@ public class Window
 	{
 		this.width = width;
 		this.height = height;
-
-		this.defaultViewPort = new ViewPort(0, 0, this.width, this.height);
 
 		System.out.println("LWJGL " + Version.getVersion());
 		System.out.println("JOML 1.9.2");
@@ -226,8 +260,22 @@ public class Window
 
 	private void updateViewPort(ViewPort viewport)
 	{
-		//TODO: Figure out why this needs to be doubled?
-		GL11.glViewport(viewport.getX(), viewport.getY(), viewport.getWidth() * 2, viewport.getHeight() * 2);
+		if (viewport == this.defaultViewPort)
+		{
+			//This is a fix (hack?) for Mac's weird hack to scale windows for compatibility
+			try (MemoryStack stack = MemoryStack.stackPush())
+			{
+				IntBuffer pWidth = stack.mallocInt(1);
+				IntBuffer pHeight = stack.mallocInt(1);
+
+				GLFW.glfwGetFramebufferSize(this.handle, pWidth, pHeight);
+				GL11.glViewport(0, 0, pWidth.get(0), pHeight.get(0));
+			}
+		}
+		else
+		{
+			GL11.glViewport(viewport.getX(), viewport.getY(), viewport.getWidth(), viewport.getHeight());
+		}
 	}
 
 	public int getWidth()
