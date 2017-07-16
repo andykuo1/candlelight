@@ -11,11 +11,11 @@ import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.qsilver.asset.Asset;
-import org.qsilver.renderer.Drawable;
-import org.qsilver.renderer.RenderEngine;
-import org.qsilver.renderer.RenderService;
+import org.qsilver.render.RenderEngine;
+import org.qsilver.render.RenderService;
+import org.qsilver.render.Renderable;
 import org.zilar.model.Model;
-import org.zilar.property.PropertyTexture;
+import org.zilar.renderer.property.PropertyTexture;
 import org.zilar.sprite.Sprite;
 
 import java.util.Iterator;
@@ -46,7 +46,7 @@ public class SimpleRenderer extends RenderService
 	{
 	}
 
-	public void render(Camera camera, Iterator<Drawable> iterator)
+	public void render(Camera camera, Iterator<Renderable> iterator)
 	{
 		Matrix4fc proj = camera.projection();
 		Matrix4fc view = camera.view();
@@ -59,7 +59,7 @@ public class SimpleRenderer extends RenderService
 
 			while (iterator.hasNext())
 			{
-				final Drawable inst = iterator.next();
+				final Renderable inst = iterator.next();
 				if (!inst.isVisible()) continue;
 
 				final Model model = inst.getModel();

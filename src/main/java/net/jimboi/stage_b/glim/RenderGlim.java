@@ -16,8 +16,8 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.qsilver.asset.Asset;
 import org.qsilver.asset.AssetManager;
-import org.qsilver.renderer.Drawable;
-import org.qsilver.renderer.RenderEngine;
+import org.qsilver.render.RenderEngine;
+import org.qsilver.render.Renderable;
 import org.qsilver.resource.MeshLoader;
 import org.qsilver.util.iterator.CastIterator;
 import org.qsilver.util.iterator.FilterIterator;
@@ -110,11 +110,11 @@ public class RenderGlim extends RenderBase
 		mb.clear();
 
 		//Renderers
-		this.simpleRenderer = renderEngine.getServiceManager().startService(new SimpleRenderer(assets.getAsset(Program.class, "simple")));
-		this.diffuseRenderer = renderEngine.getServiceManager().startService(new DiffuseRenderer(assets, GameEngine.WINDOW, this.getCamera(), RenderGlim.LIGHTS, assets.getAsset(Program.class, "diffuse")));
-		this.billboardRenderer = renderEngine.getServiceManager().startService(new BillboardRenderer(assets.getAsset(Program.class, "billboard"), BillboardRenderer.Type.CYLINDRICAL));
-		this.wireframeRenderer = renderEngine.getServiceManager().startService(new WireframeRenderer(assets.getAsset(Program.class, "wireframe")));
-		this.boundingRenderer = renderEngine.getServiceManager().startService(new BoundingRenderer(assets.getAsset(Program.class, "wireframe")));
+		this.simpleRenderer = renderEngine.startService(new SimpleRenderer(assets.getAsset(Program.class, "simple")));
+		this.diffuseRenderer = renderEngine.startService(new DiffuseRenderer(assets, GameEngine.WINDOW, this.getCamera(), RenderGlim.LIGHTS, assets.getAsset(Program.class, "diffuse")));
+		this.billboardRenderer = renderEngine.startService(new BillboardRenderer(assets.getAsset(Program.class, "billboard"), BillboardRenderer.Type.CYLINDRICAL));
+		this.wireframeRenderer = renderEngine.startService(new WireframeRenderer(assets.getAsset(Program.class, "wireframe")));
+		this.boundingRenderer = renderEngine.startService(new BoundingRenderer(assets.getAsset(Program.class, "wireframe")));
 
 		//Lights
 		RenderGlim.LIGHTS.add(DynamicLight.createSpotLight(0, 0, 0, 0xFFFFFF, 0.4F, 0.1F, 0, 15F, 1, 1, 1));
@@ -133,7 +133,7 @@ public class RenderGlim extends RenderBase
 
 		Collection<EntityComponentRenderable> instances = scene.getEntityManager().getComponents(new HashSet<>(), EntityComponentRenderable.class);
 
-		Iterator<Drawable> iter;
+		Iterator<Renderable> iter;
 
 		iter = new CastIterator<>(instances.iterator());
 		this.diffuseRenderer.preRender(this.getCamera(), iter);
@@ -161,11 +161,11 @@ public class RenderGlim extends RenderBase
 	{
 		this.assets.unload();
 
-		renderEngine.getServiceManager().stopService(this.diffuseRenderer);
-		renderEngine.getServiceManager().stopService(this.wireframeRenderer);
-		renderEngine.getServiceManager().stopService(this.billboardRenderer);
-		renderEngine.getServiceManager().stopService(this.simpleRenderer);
-		renderEngine.getServiceManager().stopService(this.boundingRenderer);
+		renderEngine.stopService(this.diffuseRenderer);
+		renderEngine.stopService(this.wireframeRenderer);
+		renderEngine.stopService(this.billboardRenderer);
+		renderEngine.stopService(this.simpleRenderer);
+		renderEngine.stopService(this.boundingRenderer);
 	}
 
 	@Override

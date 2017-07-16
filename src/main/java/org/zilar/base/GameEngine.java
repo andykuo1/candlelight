@@ -5,7 +5,7 @@ import org.bstone.tick.TickEngine;
 import org.bstone.window.Window;
 import org.qsilver.asset.AssetManager;
 import org.qsilver.poma.Poma;
-import org.qsilver.renderer.RenderEngine;
+import org.qsilver.render.RenderEngine;
 import org.qsilver.scene.Scene;
 import org.qsilver.scene.SceneManager;
 
@@ -62,7 +62,7 @@ public final class GameEngine
 
 		TICKENGINE = new TickEngine();
 		RENDERENGINE = new RenderEngine();
-		SCENEMANAGER = new SceneManager(RENDERENGINE.getServiceManager());
+		SCENEMANAGER = new SceneManager(RENDERENGINE);
 		ASSETMANAGER = new AssetManager();
 
 		RENDERENGINE.onRenderUpdate.addListener(ASSETMANAGER::update);

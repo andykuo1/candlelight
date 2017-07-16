@@ -1,4 +1,4 @@
-package org.qsilver.service;
+package org.bstone.service;
 
 /**
  * Created by Andy on 7/15/17.

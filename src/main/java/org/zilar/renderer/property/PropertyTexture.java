@@ -1,4 +1,4 @@
-package org.zilar.property;
+package org.zilar.renderer.property;
 
 import org.bstone.material.Property;
 import org.bstone.mogli.Texture;

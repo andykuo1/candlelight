@@ -6,7 +6,7 @@ import net.jimboi.stage_a.mod.scene.LivingSceneBase;
 
 import org.bstone.living.Living;
 import org.bstone.living.LivingManager;
-import org.qsilver.renderer.RenderEngine;
+import org.qsilver.render.RenderEngine;
 
 /**
  * Created by Andy on 4/30/17.
@@ -26,13 +26,13 @@ public abstract class SceneBlobBase extends LivingSceneBase implements LivingMan
 	@Override
 	protected final void onSceneLoad(RenderEngine renderManager)
 	{
-		renderManager.getServiceManager().startService(this.renderer);
+		renderManager.startService(this.renderer);
 	}
 
 	@Override
 	protected final void onSceneUnload(RenderEngine renderManager)
 	{
-		renderManager.getServiceManager().stopService(this.renderer);
+		renderManager.stopService(this.renderer);
 	}
 
 	@Override

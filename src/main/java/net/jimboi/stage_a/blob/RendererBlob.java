@@ -20,7 +20,7 @@ import org.bstone.camera.PerspectiveCamera;
 import org.bstone.mogli.Texture;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.qsilver.renderer.RenderEngine;
+import org.qsilver.render.RenderEngine;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.MeshData;
 import org.zilar.meshbuilder.ModelUtil;

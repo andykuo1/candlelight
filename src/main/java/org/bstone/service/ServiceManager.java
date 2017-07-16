@@ -1,4 +1,4 @@
-package org.qsilver.service;
+package org.bstone.service;
 
 import org.bstone.RefCountSet;
 
@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Created by Andy on 7/15/17.
  */
-public class ServiceManager<T>
+public abstract class ServiceManager<T>
 {
 	private Set<Service<T>> services = new RefCountSet<>();
 
@@ -17,14 +17,7 @@ public class ServiceManager<T>
 
 	private boolean cached = false;
 
-	private final T handler;
-
-	public ServiceManager(T handler)
-	{
-		this.handler = handler;
-	}
-
-	public <S extends Service<T>> S startService(S service)
+	public synchronized <S extends Service<T>> S startService(S service)
 	{
 		if (this.cached)
 		{
@@ -44,7 +37,7 @@ public class ServiceManager<T>
 		return service;
 	}
 
-	public <S extends Service<T>> S stopService(S service)
+	public synchronized <S extends Service<T>> S stopService(S service)
 	{
 		if (this.cached)
 		{
@@ -64,33 +57,56 @@ public class ServiceManager<T>
 		return service;
 	}
 
-	public void beginServiceBlock()
+	public synchronized int countServices()
+	{
+		return this.services.size();
+	}
+
+	public synchronized void clearServices()
+	{
+		boolean prevCached = this.cached;
+
+		this.cached = true;
+		for(Service<T> service : this.services)
+		{
+			this.stopService(service);
+		}
+		this.cached = false;
+		this.createCache.clear();
+
+		for(Service<T> service : this.destroyCache)
+		{
+			this.doStopService(service);
+		}
+		this.destroyCache.clear();
+
+		this.cached = prevCached;
+	}
+
+	protected abstract T getServiceHandler();
+
+	protected synchronized void beginServiceBlock()
 	{
 		this.cached = false;
 		this.flush();
 	}
 
-	public void endServiceBlock()
+	protected synchronized void endServiceBlock()
 	{
 		this.flush();
 		this.cached = true;
 	}
 
-	public boolean isEmpty()
-	{
-		return this.services.isEmpty();
-	}
-
 	private void doStartService(Service<T> service)
 	{
 		this.services.add(service);
-		service.onStart(this.handler);
+		service.onStart(this.getServiceHandler());
 	}
 
 	private void doStopService(Service<T> service)
 	{
 		this.services.remove(service);
-		service.onStop(this.handler);
+		service.onStop(this.getServiceHandler());
 	}
 
 	private void flush()
@@ -112,26 +128,5 @@ public class ServiceManager<T>
 			}
 			this.createCache.clear();
 		}
-	}
-
-	public void clear()
-	{
-		boolean prevCached = this.cached;
-
-		this.cached = true;
-		for(Service<T> service : this.services)
-		{
-			this.stopService(service);
-		}
-		this.cached = false;
-		this.createCache.clear();
-
-		for(Service<T> service : this.destroyCache)
-		{
-			this.doStopService(service);
-		}
-		this.destroyCache.clear();
-
-		this.cached = prevCached;
 	}
 }

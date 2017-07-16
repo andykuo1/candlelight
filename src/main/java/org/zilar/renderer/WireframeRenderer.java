@@ -9,11 +9,11 @@ import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.qsilver.asset.Asset;
-import org.qsilver.renderer.Drawable;
-import org.qsilver.renderer.RenderEngine;
-import org.qsilver.renderer.RenderService;
+import org.qsilver.render.RenderEngine;
+import org.qsilver.render.RenderService;
+import org.qsilver.render.Renderable;
 import org.zilar.model.Model;
-import org.zilar.property.PropertyDiffuse;
+import org.zilar.renderer.property.PropertyDiffuse;
 
 import java.util.Iterator;
 
@@ -43,7 +43,7 @@ public class WireframeRenderer extends RenderService
 	{
 	}
 
-	public void render(Camera camera, Iterator<Drawable> iterator)
+	public void render(Camera camera, Iterator<Renderable> iterator)
 	{
 		Matrix4fc proj = camera.projection();
 		Matrix4fc view = camera.view();
@@ -57,7 +57,7 @@ public class WireframeRenderer extends RenderService
 
 			while (iterator.hasNext())
 			{
-				final Drawable inst = iterator.next();
+				final Renderable inst = iterator.next();
 				if (!inst.isVisible()) continue;
 
 				final Model model = inst.getModel();

@@ -1,8 +1,8 @@
 package org.bstone;
 
+import org.bstone.service.Service;
 import org.bstone.util.small.SmallSet;
 import org.qsilver.poma.Poma;
-import org.qsilver.service.Service;
 
 /**
  * Created by Andy on 6/10/17.

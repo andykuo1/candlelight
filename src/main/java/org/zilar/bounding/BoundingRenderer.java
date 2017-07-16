@@ -10,8 +10,8 @@ import org.joml.Vector2fc;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.qsilver.asset.Asset;
-import org.qsilver.renderer.RenderEngine;
-import org.qsilver.renderer.RenderService;
+import org.qsilver.render.RenderEngine;
+import org.qsilver.render.RenderService;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;
 

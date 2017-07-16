@@ -12,10 +12,10 @@ import org.bstone.transform.Transform3;
 import org.qsilver.entity.Entity;
 import org.zilar.base.GameEngine;
 import org.zilar.model.Model;
-import org.zilar.property.PropertyDiffuse;
-import org.zilar.property.PropertyShadow;
-import org.zilar.property.PropertySpecular;
-import org.zilar.property.PropertyTexture;
+import org.zilar.renderer.property.PropertyDiffuse;
+import org.zilar.renderer.property.PropertyShadow;
+import org.zilar.renderer.property.PropertySpecular;
+import org.zilar.renderer.property.PropertyTexture;
 
 /**
  * Created by Andy on 6/4/17.

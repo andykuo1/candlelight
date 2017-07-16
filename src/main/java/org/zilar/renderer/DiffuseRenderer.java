@@ -15,14 +15,14 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.qsilver.asset.Asset;
 import org.qsilver.asset.AssetManager;
-import org.qsilver.renderer.Drawable;
-import org.qsilver.renderer.RenderEngine;
-import org.qsilver.renderer.RenderService;
+import org.qsilver.render.RenderEngine;
+import org.qsilver.render.RenderService;
+import org.qsilver.render.Renderable;
 import org.zilar.model.Model;
-import org.zilar.property.PropertyDiffuse;
-import org.zilar.property.PropertyShadow;
-import org.zilar.property.PropertySpecular;
-import org.zilar.property.PropertyTexture;
+import org.zilar.renderer.property.PropertyDiffuse;
+import org.zilar.renderer.property.PropertyShadow;
+import org.zilar.renderer.property.PropertySpecular;
+import org.zilar.renderer.property.PropertyTexture;
 import org.zilar.renderer.shadow.DynamicLight;
 import org.zilar.renderer.shadow.ShadowBox;
 import org.zilar.renderer.shadow.ShadowRenderer;
@@ -74,12 +74,12 @@ public class DiffuseRenderer extends RenderService
 		this.shadowRenderer.unload();
 	}
 
-	public void preRender(PerspectiveCamera camera, Iterator<Drawable> iterator)
+	public void preRender(PerspectiveCamera camera, Iterator<Renderable> iterator)
 	{
 		this.shadowRenderer.render(iterator, this.lights.get(2));
 	}
 
-	public void render(Camera camera, Iterator<Drawable> iterator)
+	public void render(Camera camera, Iterator<Renderable> iterator)
 	{
 		Matrix4fc proj = camera.projection();
 		Matrix4fc view = camera.view();
@@ -92,7 +92,7 @@ public class DiffuseRenderer extends RenderService
 
 			while (iterator.hasNext())
 			{
-				final Drawable inst = iterator.next();
+				final Renderable inst = iterator.next();
 				if (!inst.isVisible()) continue;
 
 				final Model model = inst.getModel();

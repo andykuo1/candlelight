@@ -1,14 +1,14 @@
 package org.qsilver.scene;
 
+import org.bstone.service.ServiceManager;
 import org.bstone.util.listener.Listenable;
 import org.qsilver.poma.Poma;
-import org.qsilver.renderer.RenderEngine;
-import org.qsilver.service.ServiceManager;
+import org.qsilver.render.RenderEngine;
 
 /**
  * Created by Andy on 3/1/17.
  */
-public abstract class Scene
+public abstract class Scene extends ServiceManager<Scene>
 {
 	public interface OnSceneCreateListener
 	{
@@ -54,14 +54,12 @@ public abstract class Scene
 	public final Listenable<OnSceneDestroyListener> onSceneDestroy = new Listenable<>((listener, objects) -> listener.onSceneDestroy());
 
 	SceneManager sceneManager;
-	ServiceManager<Scene> serviceManager;
 
 	void create(SceneManager sceneManager)
 	{
 		Poma.div();
 		System.out.println("Creating Scene. . .");
 		this.sceneManager = sceneManager;
-		this.serviceManager = new ServiceManager<>(this);
 		this.onSceneCreate();
 		this.onSceneCreate.notifyListeners();
 	}
@@ -78,10 +76,10 @@ public abstract class Scene
 	{
 		Poma.div();
 		System.out.println("Starting Scene. . .");
-		this.serviceManager.beginServiceBlock();
+		this.beginServiceBlock();
 		this.onSceneStart();
 		this.onSceneStart.notifyListeners();
-		this.serviceManager.endServiceBlock();
+		this.endServiceBlock();
 
 		this.firstUpdate = true;
 	}
@@ -96,20 +94,20 @@ public abstract class Scene
 			this.firstUpdate = false;
 		}
 
-		this.serviceManager.beginServiceBlock();
+		this.beginServiceBlock();
 		this.onSceneUpdate(delta);
 		this.onSceneUpdate.notifyListeners(delta);
-		this.serviceManager.endServiceBlock();
+		this.endServiceBlock();
 	}
 
 	void stop()
 	{
 		Poma.div();
 		System.out.println("Stopping Scene. . .");
-		this.serviceManager.beginServiceBlock();
+		this.beginServiceBlock();
 		this.onSceneStop();
 		this.onSceneStop.notifyListeners();
-		this.serviceManager.endServiceBlock();
+		this.endServiceBlock();
 	}
 
 	void unload(RenderEngine renderEngine)
@@ -127,8 +125,7 @@ public abstract class Scene
 		this.onSceneDestroy();
 		this.onSceneDestroy.notifyListeners();
 		this.sceneManager = null;
-		this.serviceManager.clear();
-		this.serviceManager = null;
+		this.clearServices();
 	}
 
 	protected abstract void onSceneCreate();
@@ -150,8 +147,9 @@ public abstract class Scene
 		return this.sceneManager;
 	}
 
-	public final ServiceManager<Scene> getServiceManager()
+	@Override
+	protected final Scene getServiceHandler()
 	{
-		return this.serviceManager;
+		return this;
 	}
 }

@@ -2,13 +2,13 @@ package org.zilar.instance;
 
 import org.bstone.transform.Transform;
 import org.joml.Matrix4f;
-import org.qsilver.renderer.Drawable;
+import org.qsilver.render.Renderable;
 import org.zilar.model.Model;
 
 /**
  * Created by Andy on 4/8/17.
  */
-public final class Instance implements Drawable
+public final class Instance implements Renderable
 {
 	private final Model model;
 

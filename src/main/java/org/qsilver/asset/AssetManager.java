@@ -1,6 +1,6 @@
 package org.qsilver.asset;
 
-import org.qsilver.renderer.RenderEngine;
+import org.qsilver.render.RenderEngine;
 
 import java.util.HashMap;
 import java.util.Map;

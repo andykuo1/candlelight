@@ -20,13 +20,13 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.qsilver.asset.Asset;
 import org.qsilver.asset.AssetManager;
-import org.qsilver.renderer.Drawable;
+import org.qsilver.render.Renderable;
 import org.qsilver.resource.ProgramLoader;
 import org.qsilver.resource.ShaderLoader;
 import org.qsilver.resource.TextureLoader;
 import org.zilar.model.Model;
-import org.zilar.property.PropertyShadow;
-import org.zilar.property.PropertyTexture;
+import org.zilar.renderer.property.PropertyShadow;
+import org.zilar.renderer.property.PropertyTexture;
 import org.zilar.resource.ResourceLocation;
 import org.zilar.sprite.Sprite;
 
@@ -78,7 +78,7 @@ public class ShadowRenderer
 		this.shadowFBO.close();
 	}
 
-	public void render(Iterator<Drawable> instances, DynamicLight light)
+	public void render(Iterator<Renderable> instances, DynamicLight light)
 	{
 		this.shadowBox.update();
 
@@ -97,7 +97,7 @@ public class ShadowRenderer
 		{
 			while (instances.hasNext())
 			{
-				final Drawable inst = instances.next();
+				final Renderable inst = instances.next();
 				if (!inst.isVisible()) continue;
 
 				final Model model = inst.getModel();

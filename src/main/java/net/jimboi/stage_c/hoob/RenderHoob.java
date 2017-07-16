@@ -12,8 +12,8 @@ import org.bstone.util.SemanticVersion;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 import org.qsilver.asset.Asset;
-import org.qsilver.renderer.Drawable;
-import org.qsilver.renderer.RenderEngine;
+import org.qsilver.render.RenderEngine;
+import org.qsilver.render.Renderable;
 import org.qsilver.resource.MeshLoader;
 import org.qsilver.resource.TextureAtlasLoader;
 import org.qsilver.util.iterator.CastIterator;
@@ -69,8 +69,8 @@ public class RenderHoob extends RenderBase
 		InputManager.registerKey("action", GLFW.GLFW_KEY_F);
 		InputManager.registerKey("sprint", GLFW.GLFW_KEY_LEFT_SHIFT, GLFW.GLFW_KEY_RIGHT_SHIFT);
 
-		this.simpleRenderer = renderEngine.getServiceManager().startService(new SimpleRenderer(GameEngine.ASSETMANAGER.getAsset(Program.class, "simple")));
-		this.boundingRenderer = renderEngine.getServiceManager().startService(new BoundingRenderer(((SceneHoob) this.scene).getBoundingManager(), GameEngine.ASSETMANAGER.getAsset(Program.class, "wireframe")));
+		this.simpleRenderer = renderEngine.startService(new SimpleRenderer(GameEngine.ASSETMANAGER.getAsset(Program.class, "simple")));
+		this.boundingRenderer = renderEngine.startService(new BoundingRenderer(((SceneHoob) this.scene).getBoundingManager(), GameEngine.ASSETMANAGER.getAsset(Program.class, "wireframe")));
 
 		MeshBuilder mb = new MeshBuilder();
 		mb.addPlane(new Vector2f(0, 0), new Vector2f(1, 1), 0, new Vector2f(0, 0), new Vector2f(1, 1));
@@ -109,7 +109,7 @@ public class RenderHoob extends RenderBase
 	{
 		Collection<EntityComponentRenderable> renderables = this.getScene().getEntityManager().getComponents(new HashSet<>(), EntityComponentRenderable.class);
 
-		Iterator<Drawable> iter = new CastIterator<>(renderables.iterator());
+		Iterator<Renderable> iter = new CastIterator<>(renderables.iterator());
 		this.simpleRenderer.render(this.getCamera(), iter);
 
 		this.boundingRenderer.render(this.getCamera());
@@ -118,7 +118,7 @@ public class RenderHoob extends RenderBase
 	@Override
 	public void onRenderUnload(RenderEngine renderEngine)
 	{
-		renderEngine.getServiceManager().stopService(this.boundingRenderer);
+		renderEngine.stopService(this.boundingRenderer);
 	}
 
 	@Override

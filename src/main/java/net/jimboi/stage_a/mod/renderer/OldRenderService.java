@@ -1,8 +1,8 @@
 package net.jimboi.stage_a.mod.renderer;
 
 import org.bstone.util.listener.Listenable;
-import org.qsilver.renderer.RenderEngine;
-import org.qsilver.renderer.RenderService;
+import org.qsilver.render.RenderEngine;
+import org.qsilver.render.RenderService;
 
 /**
  * Created by Andy on 5/30/17.

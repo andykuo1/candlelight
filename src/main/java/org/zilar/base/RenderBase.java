@@ -4,7 +4,7 @@ import net.jimboi.stage_a.mod.renderer.OldRenderService;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;
-import org.qsilver.renderer.RenderEngine;
+import org.qsilver.render.RenderEngine;
 
 /**
  * Created by Andy on 7/5/17.

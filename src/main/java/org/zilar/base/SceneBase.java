@@ -2,7 +2,7 @@ package org.zilar.base;
 
 import org.bstone.material.MaterialManager;
 import org.qsilver.entity.EntityManager;
-import org.qsilver.renderer.RenderEngine;
+import org.qsilver.render.RenderEngine;
 import org.qsilver.scene.Scene;
 import org.zilar.animation.AnimationManager;
 
@@ -34,7 +34,7 @@ public abstract class SceneBase extends Scene
 	@Override
 	protected void onSceneLoad(RenderEngine renderManager)
 	{
-		renderManager.getServiceManager().startService(this.renderer);
+		renderManager.startService(this.renderer);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public abstract class SceneBase extends Scene
 	@Override
 	protected void onSceneUnload(RenderEngine renderManager)
 	{
-		renderManager.getServiceManager().stopService(this.renderer);
+		renderManager.stopService(this.renderer);
 	}
 
 	@Override

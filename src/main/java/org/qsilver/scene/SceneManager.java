@@ -1,9 +1,9 @@
 package org.qsilver.scene;
 
+import org.bstone.service.Service;
+import org.bstone.service.ServiceManager;
 import org.bstone.util.listener.Listenable;
-import org.qsilver.renderer.RenderEngine;
-import org.qsilver.service.Service;
-import org.qsilver.service.ServiceManager;
+import org.qsilver.render.RenderEngine;
 
 /**
  * Created by Andy on 3/1/17.

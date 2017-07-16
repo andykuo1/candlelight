@@ -8,7 +8,7 @@ import net.jimboi.stage_a.mod.render.Render;
 import net.jimboi.stage_a.mod.renderer.OldRenderService;
 
 import org.bstone.camera.PerspectiveCamera;
-import org.qsilver.renderer.RenderEngine;
+import org.qsilver.render.RenderEngine;
 
 /**
  * Created by Andy on 5/30/17.

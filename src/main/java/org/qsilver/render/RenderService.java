@@ -1,6 +1,6 @@
-package org.qsilver.renderer;
+package org.qsilver.render;
 
-import org.qsilver.service.Service;
+import org.bstone.service.Service;
 
 /**
  * Created by Andy on 7/15/17.

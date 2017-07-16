@@ -16,8 +16,8 @@ import org.zilar.base.SceneBase;
 import org.zilar.bounding.BoundingManager;
 import org.zilar.bounding.Shape;
 import org.zilar.model.Model;
-import org.zilar.property.PropertyDiffuse;
-import org.zilar.property.PropertyTexture;
+import org.zilar.renderer.property.PropertyDiffuse;
+import org.zilar.renderer.property.PropertyTexture;
 import org.zilar.sprite.SpriteSheet;
 import org.zilar.sprite.TextureAtlas;
 
