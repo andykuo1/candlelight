@@ -16,8 +16,8 @@ import net.jimboi.stage_a.mod.render.Render;
 import net.jimboi.stage_a.mod.renderer.OldRenderService;
 import net.jimboi.stage_a.mod.resource.ModResourceLocation;
 
-import org.bstone.camera.PerspectiveCamera;
 import org.bstone.mogli.Texture;
+import org.bstone.window.camera.PerspectiveCamera;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.qsilver.render.RenderEngine;

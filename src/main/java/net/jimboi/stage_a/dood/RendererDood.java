@@ -7,7 +7,7 @@ import net.jimboi.stage_a.mod.instance.InstanceManager;
 import net.jimboi.stage_a.mod.render.Render;
 import net.jimboi.stage_a.mod.renderer.OldRenderService;
 
-import org.bstone.camera.PerspectiveCamera;
+import org.bstone.window.camera.PerspectiveCamera;
 import org.qsilver.render.RenderEngine;
 
 /**

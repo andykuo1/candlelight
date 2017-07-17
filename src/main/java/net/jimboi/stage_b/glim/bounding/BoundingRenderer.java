@@ -3,9 +3,9 @@ package net.jimboi.stage_b.glim.bounding;
 import net.jimboi.stage_b.glim.bounding.square.AABB;
 import net.jimboi.stage_b.glim.bounding.square.Circle;
 
-import org.bstone.camera.Camera;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
+import org.bstone.window.camera.Camera;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector2fc;

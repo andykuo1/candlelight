@@ -4,11 +4,11 @@ import net.jimboi.stage_b.glim.bounding.Bounding;
 import net.jimboi.stage_b.glim.bounding.BoundingManager;
 import net.jimboi.stage_b.glim.bounding.IntersectionData;
 
-import org.bstone.camera.Camera;
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputManager;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
+import org.bstone.window.camera.Camera;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 

@@ -5,10 +5,10 @@ import net.jimboi.stage_b.glim.controller.FirstPersonMoveController;
 import net.jimboi.stage_b.glim.entity.component.EntityComponentBounding;
 import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
 
-import org.bstone.camera.Camera;
-import org.bstone.camera.CameraController;
 import org.bstone.input.InputEngine;
 import org.bstone.transform.Transform3;
+import org.bstone.window.camera.Camera;
+import org.bstone.window.camera.CameraController;
 import org.qsilver.entity.Entity;
 import org.zilar.base.GameEngine;
 

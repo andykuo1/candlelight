@@ -7,10 +7,11 @@ import net.jimboi.stage_c.hoob.world.agents.Town;
 import net.jimboi.stage_c.hoob.world.agents.Traveller;
 import net.jimboi.stage_c.hoob.world.agents.WorldAgent;
 
-import org.bstone.camera.Camera;
 import org.bstone.input.InputManager;
 import org.bstone.living.LivingManager;
 import org.bstone.transform.Transform3;
+import org.bstone.util.direction.Direction;
+import org.bstone.window.view.ScreenSpace;
 import org.joml.Vector3f;
 import org.qsilver.entity.Entity;
 import org.zilar.base.GameEngine;
@@ -33,6 +34,8 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 		this.agents.onLivingRemove.addListener(this);
 	}
 
+	private ScreenSpace screenSpace;
+
 	public World(SceneHoob scene)
 	{
 		this.scene = scene;
@@ -48,14 +51,15 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 		this.spawnTown(8, -5);
 		this.player = this.spawnTraveller(0, 0);
 		this.player.moveSpeed = 4F;
+
+		this.screenSpace = new ScreenSpace(GameEngine.WINDOW.getCurrentViewPort(), this.scene.getRenderer().getCamera(), Direction.CENTER, true, false);
 	}
 
 	public void update(double delta)
 	{
-		Camera camera = this.scene.getRenderer().getCamera();
 		float mouseX = InputManager.getInputAmount("mousex");
 		float mouseY = InputManager.getInputAmount("mousey");
-		Camera.getWorld2DFromScreen(camera, GameEngine.WINDOW.getCurrentViewPort(), mouseX, mouseY, this.pickPos);
+		this.screenSpace.getPoint2DFromScreen(mouseX, mouseY, this.pickPos);
 
 		if (InputManager.isInputDown("mouseleft"))
 		{

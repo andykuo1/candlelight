@@ -7,12 +7,14 @@ import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
 import net.jimboi.stage_b.glim.entity.system.EntitySystem2D;
 import net.jimboi.stage_b.glim.entity.system.EntitySystemBillboard;
 
-import org.bstone.camera.Camera;
 import org.bstone.input.InputManager;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
 import org.bstone.transform.Transform3;
-import org.zilar.BasicTopDownCameraController;
+import org.bstone.util.direction.Direction;
+import org.bstone.window.camera.Camera;
+import org.bstone.window.view.ScreenSpace;
+import org.zilar.BasicFirstPersonCameraController;
 import org.zilar.base.GameEngine;
 import org.zilar.base.SceneBase;
 import org.zilar.model.Model;
@@ -37,9 +39,11 @@ public class ScenePhysx extends SceneBase
 	private Transform3 player;
 	private Transform3 transform;
 
+	private ScreenSpace screenSpace;
+
 	public ScenePhysx()
 	{
-		super(new RenderGlim(new BasicTopDownCameraController()));
+		super(new RenderGlim(new BasicFirstPersonCameraController()));
 	}
 
 	@Override
@@ -57,7 +61,7 @@ public class ScenePhysx extends SceneBase
 
 		final Transform3 transform = new Transform3();
 		this.player = this.spawnEntity(0, 0, 0);
-		((BasicTopDownCameraController) this.getRenderer().getCamera().getCameraController()).setTarget(transform);
+		((BasicFirstPersonCameraController) this.getRenderer().getCamera().getCameraController()).setTarget(transform);
 
 		this.transform = this.spawnEntity(0, 0, 0);
 		this.spawnEntity(-2, 0, -2);
@@ -69,6 +73,8 @@ public class ScenePhysx extends SceneBase
 
 		this.sys_2D.start(this);
 		this.sys_billboard.start(this);
+
+		this.screenSpace = new ScreenSpace(GameEngine.WINDOW.getCurrentViewPort(), this.getRenderer().getCamera(), Direction.CENTER, true, false);
 	}
 
 	public Transform3 spawnEntity(float x, float y, float z)
@@ -97,7 +103,7 @@ public class ScenePhysx extends SceneBase
 
 		float mouseX = InputManager.getInputAmount("mousex");
 		float mouseY = InputManager.getInputAmount("mousey");
-		Camera.getWorldFromScreen(camera, GameEngine.WINDOW.getCurrentViewPort(), mouseX, mouseY, 0.99F, this.transform.position);
+		this.screenSpace.getPointFromScreen(mouseX, mouseY, 0.99F, this.transform.position);
 
 		super.onSceneUpdate(delta);
 	}

@@ -8,7 +8,7 @@ import net.jimboi.stage_a.mod.ModLight;
 import net.jimboi.stage_a.mod.model.Model;
 import net.jimboi.stage_a.mod.render.RenderManager;
 
-import org.bstone.camera.PerspectiveCamera;
+import org.bstone.window.camera.PerspectiveCamera;
 
 import java.util.ArrayList;
 import java.util.List;

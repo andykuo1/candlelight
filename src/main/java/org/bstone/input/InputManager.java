@@ -102,6 +102,17 @@ public class InputManager
 		return 0;
 	}
 
+	public static void consumeInput(String id)
+	{
+		if (!inputMapping.containsKey(id)) throw new NoSuchElementException("Cannot find input with id '" + id + "'");
+
+		Input[] inputs = inputMapping.get(id);
+		for(Input input : inputs)
+		{
+			input.consume();
+		}
+	}
+
 	public static void registerKey(String id, int... keycode)
 	{
 		registerInput(INPUT_ENGINE.getKeyboard(), id, keycode);

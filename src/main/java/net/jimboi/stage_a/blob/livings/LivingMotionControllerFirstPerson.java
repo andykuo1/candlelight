@@ -3,11 +3,11 @@ package net.jimboi.stage_a.blob.livings;
 import net.jimboi.stage_a.base.Main;
 import net.jimboi.stage_a.blob.RendererBlob;
 
-import org.bstone.camera.Camera;
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputManager;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
+import org.bstone.window.camera.Camera;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.joml.Vector3f;

@@ -1,4 +1,4 @@
-package org.bstone.camera;
+package org.bstone.window.camera;
 
 import org.bstone.transform.Transform3;
 

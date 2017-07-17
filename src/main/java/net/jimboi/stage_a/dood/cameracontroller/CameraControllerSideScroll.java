@@ -1,9 +1,9 @@
 package net.jimboi.stage_a.dood.cameracontroller;
 
-import org.bstone.camera.Camera;
-import org.bstone.camera.CameraController;
 import org.bstone.input.InputManager;
 import org.bstone.transform.Transform3;
+import org.bstone.window.camera.Camera;
+import org.bstone.window.camera.CameraController;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 

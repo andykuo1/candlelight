@@ -1,7 +1,7 @@
 package org.zilar.renderer.shadow;
 
-import org.bstone.camera.PerspectiveCamera;
 import org.bstone.window.Window;
+import org.bstone.window.camera.PerspectiveCamera;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;

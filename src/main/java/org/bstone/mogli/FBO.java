@@ -1,8 +1,8 @@
 package org.bstone.mogli;
 
 import org.bstone.RefCountSet;
-import org.bstone.window.ViewPort;
 import org.bstone.window.Window;
+import org.bstone.window.view.ViewPort;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;

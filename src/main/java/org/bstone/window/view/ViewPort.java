@@ -1,4 +1,4 @@
-package org.bstone.window;
+package org.bstone.window.view;
 
 /**
  * Created by Andy on 6/7/17.

@@ -3,9 +3,9 @@ package net.jimboi.stage_b.glim.entity.system;
 import net.jimboi.stage_b.glim.entity.component.EntityComponentBillboard;
 import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
 
-import org.bstone.camera.Camera;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
+import org.bstone.window.camera.Camera;
 import org.joml.Vector3f;
 import org.qsilver.entity.AbstractUpdateableEntitySystem;
 import org.qsilver.entity.Entity;

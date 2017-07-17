@@ -1,14 +1,17 @@
 package net.jimboi.stage_c.hoob;
 
 import net.jimboi.stage_b.glim.entity.component.EntityComponentRenderable;
+import net.jimboi.stage_c.gui.GuiRenderer;
+import net.jimboi.stage_c.gui.base.GuiManager;
 
-import org.bstone.camera.Camera;
-import org.bstone.camera.OrthographicCamera;
 import org.bstone.input.InputManager;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Texture;
 import org.bstone.util.SemanticVersion;
+import org.bstone.window.camera.Camera;
+import org.bstone.window.camera.OrthographicCamera;
+import org.bstone.window.camera.PerspectiveCamera;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 import org.qsilver.asset.Asset;
@@ -38,12 +41,15 @@ public class RenderHoob extends RenderBase
 {
 	private SimpleRenderer simpleRenderer;
 	private BoundingRenderer boundingRenderer;
+	private GuiRenderer guiRenderer;
+
+	private GuiManager guiManager;
 
 	private final Assets assets;
 
 	public RenderHoob()
 	{
-		super(new OrthographicCamera(640, 480), new BasicSideScrollCameraController());
+		super(new PerspectiveCamera(640, 480), new BasicSideScrollCameraController());
 
 		this.assets = Assets.create("hoob", new SemanticVersion("0.0.0"));
 	}
@@ -69,8 +75,11 @@ public class RenderHoob extends RenderBase
 		InputManager.registerKey("action", GLFW.GLFW_KEY_F);
 		InputManager.registerKey("sprint", GLFW.GLFW_KEY_LEFT_SHIFT, GLFW.GLFW_KEY_RIGHT_SHIFT);
 
+		this.guiManager = new GuiManager(new OrthographicCamera(640, 480), GameEngine.WINDOW.getCurrentViewPort());
+
 		this.simpleRenderer = renderEngine.startService(new SimpleRenderer(GameEngine.ASSETMANAGER.getAsset(Program.class, "simple")));
 		this.boundingRenderer = renderEngine.startService(new BoundingRenderer(((SceneHoob) this.scene).getBoundingManager(), GameEngine.ASSETMANAGER.getAsset(Program.class, "wireframe")));
+		this.guiRenderer = renderEngine.startService(new GuiRenderer(this.guiManager, GameEngine.ASSETMANAGER.getAsset(Program.class, "color")));
 
 		MeshBuilder mb = new MeshBuilder();
 		mb.addPlane(new Vector2f(0, 0), new Vector2f(1, 1), 0, new Vector2f(0, 0), new Vector2f(1, 1));
@@ -107,12 +116,16 @@ public class RenderHoob extends RenderBase
 	@Override
 	public void onRender(RenderEngine renderEngine)
 	{
+		this.guiManager.update();
+
 		Collection<EntityComponentRenderable> renderables = this.getScene().getEntityManager().getComponents(new HashSet<>(), EntityComponentRenderable.class);
 
 		Iterator<Renderable> iter = new CastIterator<>(renderables.iterator());
 		this.simpleRenderer.render(this.getCamera(), iter);
 
 		this.boundingRenderer.render(this.getCamera());
+
+		this.guiRenderer.render();
 	}
 
 	@Override

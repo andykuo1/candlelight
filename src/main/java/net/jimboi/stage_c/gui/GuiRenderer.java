@@ -1,14 +1,22 @@
 package net.jimboi.stage_c.gui;
 
-import org.bstone.camera.Camera;
+import net.jimboi.stage_c.gui.base.Gui;
+import net.jimboi.stage_c.gui.base.GuiManager;
+
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
+import org.bstone.window.camera.Camera;
+import org.bstone.window.view.ScreenSpace;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
+import org.joml.Quaternionf;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 import org.qsilver.asset.Asset;
+import org.qsilver.render.RenderEngine;
+import org.qsilver.render.RenderService;
 import org.qsilver.util.ColorUtil;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;
@@ -18,15 +26,19 @@ import java.util.Iterator;
 /**
  * Created by Andy on 7/15/17.
  */
-public class GuiRenderer implements AutoCloseable
+public class GuiRenderer extends RenderService
 {
 	private final GuiManager guiManager;
 	private final Asset<Program> program;
-	private final Matrix4f projViewMatrix = new Matrix4f();
-	private final Matrix4f modelMatrix = new Matrix4f();
-	private final Matrix4f modelViewProjMatrix = new Matrix4f();
 
-	private final Mesh QUAD;
+	private final Matrix4f modelMatrix = new Matrix4f();
+	private final Matrix4f viewProjMatrix = new Matrix4f();
+	private final Matrix4f modelViewProjMatrix = new Matrix4f();
+	private final Quaternionf invertedRotation = new Quaternionf();
+
+	private ScreenSpace screenSpace;
+
+	private Mesh QUAD;
 
 	public GuiRenderer(GuiManager guiManager, Asset<Program> program)
 	{
@@ -34,40 +46,51 @@ public class GuiRenderer implements AutoCloseable
 		this.guiManager = guiManager;
 		this.program = program;
 
+		this.screenSpace = ScreenSpace.deriveOpenGLFormat(this.guiManager.screenSpace);
+	}
+
+	@Override
+	protected void onStart(RenderEngine handler)
+	{
 		MeshBuilder mb = new MeshBuilder();
 		mb.addPlane(new Vector2f(0, 0), new Vector2f(1, 1), 0, new Vector2f(0, 0), new Vector2f(1, 1));
 		QUAD = ModelUtil.createMesh(mb.bake(false, false));
 	}
 
 	@Override
-	public void close() throws Exception
+	protected void onStop(RenderEngine handler)
 	{
 		QUAD.close();
 	}
 
-	public void render(Camera camera)
+	public void render()
 	{
-		Iterator<Gui> iterator = this.guiManager.guis.iterator();
-		Matrix4fc proj = camera.projection();
-		Matrix4fc view = camera.view();
-		Matrix4fc projView = proj.mul(view, this.projViewMatrix);
+		//TODO: Perspective is not yet working...
+		Iterator<Gui> iterator = this.guiManager.elements.iterator();
+		final Camera camera = this.guiManager.getCamera();
+
+		Vector3f vec = this.screenSpace.getPoint2DFromScreen(0, 0, new Vector3f());
+		final float offsetX = vec.x();
+		final float offsetY = vec.y();
+
+		camera.transform().getRotation(this.invertedRotation).invert();
+		final Matrix4fc proj = camera.projection();
+		final Matrix4fc view = camera.view();
+		proj.mul(view, this.viewProjMatrix);
 
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 
 		final Program program = this.program.getSource();
 		program.bind();
 		{
-			program.setUniform("u_projection", proj);
-			program.setUniform("u_view", view);
-
 			while (iterator.hasNext())
 			{
 				final Gui gui = iterator.next();
 				final Mesh mesh = QUAD;
-				program.setUniform("u_color", ColorUtil.getNormalizedRGB(gui.color, new Vector3f()));
+				program.setUniform("u_diffuse_color", new Vector4f(ColorUtil.getNormalizedRGB(gui.getColor(), new Vector3f()), 1));
 
-				Matrix4fc transformation = this.modelMatrix.translation(gui.x, gui.y, 0).scale(gui.width, gui.height, 1);
-				Matrix4fc modelViewProj = projView.mul(transformation, this.modelViewProjMatrix);
+				Matrix4fc transformation = this.modelMatrix.translation(offsetX + gui.getX(), offsetY - gui.height - gui.getY(), 0).rotate(this.invertedRotation).scale(gui.width, gui.height, 1);
+				Matrix4fc modelViewProj = this.viewProjMatrix.mul(transformation, this.modelViewProjMatrix);
 				program.setUniform("u_model", transformation);
 				program.setUniform("u_model_view_projection", modelViewProj);
 

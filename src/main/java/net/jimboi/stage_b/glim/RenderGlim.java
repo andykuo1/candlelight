@@ -4,12 +4,12 @@ import net.jimboi.stage_b.glim.bounding.BoundingManager;
 import net.jimboi.stage_b.glim.bounding.BoundingRenderer;
 import net.jimboi.stage_b.glim.entity.component.EntityComponentRenderable;
 
-import org.bstone.camera.CameraController;
-import org.bstone.camera.PerspectiveCamera;
 import org.bstone.input.InputManager;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.util.SemanticVersion;
+import org.bstone.window.camera.CameraController;
+import org.bstone.window.camera.PerspectiveCamera;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;

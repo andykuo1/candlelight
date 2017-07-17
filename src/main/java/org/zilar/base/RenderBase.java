@@ -2,8 +2,8 @@ package org.zilar.base;
 
 import net.jimboi.stage_a.mod.renderer.OldRenderService;
 
-import org.bstone.camera.Camera;
-import org.bstone.camera.CameraController;
+import org.bstone.window.camera.Camera;
+import org.bstone.window.camera.CameraController;
 import org.qsilver.render.RenderEngine;
 
 /**

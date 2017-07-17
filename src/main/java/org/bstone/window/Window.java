@@ -2,6 +2,7 @@ package org.bstone.window;
 
 import org.bstone.input.InputEngine;
 import org.bstone.util.listener.Listenable;
+import org.bstone.window.view.ViewPort;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;

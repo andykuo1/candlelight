@@ -1,12 +1,12 @@
 package org.zilar.renderer;
 
-import org.bstone.camera.Camera;
-import org.bstone.camera.PerspectiveCamera;
 import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Texture;
 import org.bstone.window.Window;
+import org.bstone.window.camera.Camera;
+import org.bstone.window.camera.PerspectiveCamera;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector2f;

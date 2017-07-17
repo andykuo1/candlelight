@@ -27,6 +27,11 @@ public final class Input
 		this.amount = this.nextAmount;
 	}
 
+	public void consume()
+	{
+		this.amount = 0;
+	}
+
 	public boolean isDown()
 	{
 		return this.amount > 0;
