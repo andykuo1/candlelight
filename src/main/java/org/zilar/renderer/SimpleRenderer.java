@@ -8,6 +8,9 @@ import org.bstone.window.camera.Camera;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector2f;
+import org.joml.Vector2fc;
+import org.joml.Vector4f;
+import org.joml.Vector4fc;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.qsilver.asset.Asset;
@@ -48,14 +51,24 @@ public class SimpleRenderer extends RenderService
 
 	public void render(Camera camera, Iterator<Renderable> iterator)
 	{
-		Matrix4fc proj = camera.projection();
-		Matrix4fc view = camera.view();
+		Matrix4fc u_model_view_projection;
+		Matrix4fc u_model;
+		final Matrix4fc u_view = camera.view();
+		final Matrix4fc u_projection = camera.projection();
+
+		Vector2fc u_tex_offset = new Vector2f();
+		Vector2fc u_tex_scale = new Vector2f(1, 1);
+
+		int u_sampler = 0;
+		boolean u_transparency = false;
+		Vector4fc u_diffuse_color = new Vector4f(1, 1, 1, 0);
 
 		final Program program = this.program.getSource();
 		program.bind();
 		{
-			program.setUniform("u_projection", proj);
-			program.setUniform("u_view", view);
+			program.setUniform("u_projection", u_projection);
+			program.setUniform("u_view", u_view);
+			program.setUniform("u_diffuse_color", u_diffuse_color);
 
 			while (iterator.hasNext())
 			{
@@ -68,38 +81,42 @@ public class SimpleRenderer extends RenderService
 
 				Texture texture = null;
 				Sprite sprite = null;
-				boolean transparency = false;
 
 				if (material.hasComponent(PropertyTexture.class))
 				{
 					PropertyTexture propTexture = material.getComponent(PropertyTexture.class);
 					texture = propTexture.getTexture().getSource();
 					sprite = propTexture.getSprite();
-					transparency = propTexture.transparent;
+					u_transparency = propTexture.transparent;
 				}
-				program.setUniform("u_transparency", transparency);
 
-				Matrix4fc transformation = inst.getRenderTransformation(this.modelMatrix);
-				Matrix4fc modelView = view.mul(transformation, this.modelViewMatrix);
-				Matrix4fc modelViewProj = proj.mul(modelView, this.modelViewProjMatrix);
-				program.setUniform("u_model", transformation);
-				program.setUniform("u_model_view_projection", modelViewProj);
+				program.setUniform("u_transparency", u_transparency);
+
+				u_model = inst.getRenderTransformation(this.modelMatrix);
+				u_model_view_projection = u_projection.mul(u_view, this.modelViewProjMatrix).mul(u_model, this.modelViewProjMatrix);
+
+				program.setUniform("u_model", u_model);
+				program.setUniform("u_model_view_projection", u_model_view_projection);
 
 				mesh.bind();
 				{
 					if (texture != null)
 					{
+						u_sampler = 0;
 						GL13.glActiveTexture(GL13.GL_TEXTURE0);
 						texture.bind();
 					}
 
-					program.setUniform("u_sampler", 0);
+					program.setUniform("u_sampler", u_sampler);
 
 					if (sprite != null)
 					{
-						program.setUniform("u_tex_offset", new Vector2f(sprite.getU(), sprite.getV()));
-						program.setUniform("u_tex_scale", new Vector2f(sprite.getWidth(), sprite.getHeight()));
+						u_tex_offset = new Vector2f(sprite.getU(), sprite.getV());
+						u_tex_scale = new Vector2f(sprite.getWidth(), sprite.getHeight());
 					}
+
+					program.setUniform("u_tex_offset", u_tex_offset);
+					program.setUniform("u_tex_scale", u_tex_scale);
 
 					GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 

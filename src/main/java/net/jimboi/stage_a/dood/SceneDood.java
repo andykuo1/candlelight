@@ -12,6 +12,7 @@ import net.jimboi.stage_a.dood.system.SystemMotion;
 import net.jimboi.stage_a.mod.ModLight;
 
 import org.bstone.input.InputEngine;
+import org.bstone.input.InputLayer;
 import org.bstone.input.InputManager;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
@@ -25,7 +26,7 @@ import org.qsilver.util.MathUtil;
 /**
  * Created by Andy on 5/21/17.
  */
-public class SceneDood extends SceneDoodBase implements InputEngine.OnInputUpdateListener
+public class SceneDood extends SceneDoodBase implements InputLayer
 {
 	private SystemInstance systemInstance;
 	private SystemMotion systemMotion;
@@ -37,8 +38,6 @@ public class SceneDood extends SceneDoodBase implements InputEngine.OnInputUpdat
 	public SceneDood()
 	{
 		super(new RendererDood());
-
-		Main.INPUTENGINE.onInputUpdate.addListener(this);
 	}
 
 	private ModLight directionLight;
@@ -46,6 +45,8 @@ public class SceneDood extends SceneDoodBase implements InputEngine.OnInputUpdat
 	@Override
 	protected void onSceneCreate()
 	{
+		Main.INPUTENGINE.addInputLayer(this);
+
 		//Add Entities Here
 		ResourcesDood.INSTANCE.lights.add(ModLight.createPointLight(0, 0, 0, 0xFFFFFF, 1F, 0.1F, 0));
 		ResourcesDood.INSTANCE.lights.add(this.directionLight = ModLight.createDirectionLight(1, 1F, 1F, 0xFFFFFF, 0.1F, 0.06F));
@@ -170,6 +171,7 @@ public class SceneDood extends SceneDoodBase implements InputEngine.OnInputUpdat
 	@Override
 	protected void onSceneDestroy()
 	{
+		Main.INPUTENGINE.removeInputLayer(this);
 		this.systemInstance.stop();
 		this.systemMotion.stop();
 		this.systemBox2D.stop();

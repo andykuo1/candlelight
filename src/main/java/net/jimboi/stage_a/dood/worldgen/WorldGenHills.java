@@ -77,7 +77,7 @@ public class WorldGenHills
 
 			prev = vec;
 		}
-		return ModelUtil.createMesh(mb.bake(false, false));
+		return ModelUtil.createStaticMesh(mb.bake(false, false));
 	}
 
 	public List<Vector3f> getVertices()

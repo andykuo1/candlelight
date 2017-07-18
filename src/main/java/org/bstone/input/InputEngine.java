@@ -1,19 +1,16 @@
 package org.bstone.input;
 
-import org.bstone.util.listener.Listenable;
 import org.bstone.window.Window;
+
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by Andy on 4/26/17.
  */
 public class InputEngine
 {
-	public interface OnInputUpdateListener
-	{
-		void onInputUpdate(InputEngine inputEngine);
-	}
-
-	public final Listenable<OnInputUpdateListener> onInputUpdate = new Listenable<>((listener, objects) -> listener.onInputUpdate((InputEngine) objects[0]));
+	private final Set<InputLayer> layers = new TreeSet<>();
 
 	private final Window window;
 
@@ -38,7 +35,20 @@ public class InputEngine
 		this.mouse.poll();
 		this.joypad.poll();
 
-		this.onInputUpdate.notifyListeners(this);
+		for(InputLayer layer : this.layers)
+		{
+			layer.onInputUpdate(this);
+		}
+	}
+
+	public void addInputLayer(InputLayer layer)
+	{
+		this.layers.add(layer);
+	}
+
+	public void removeInputLayer(InputLayer layer)
+	{
+		this.layers.remove(layer);
 	}
 
 	public KeyboardHandler getKeyboard()

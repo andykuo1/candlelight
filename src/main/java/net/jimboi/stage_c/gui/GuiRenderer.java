@@ -1,10 +1,13 @@
 package net.jimboi.stage_c.gui;
 
+import net.jimboi.stage_c.TextMesh;
 import net.jimboi.stage_c.gui.base.Gui;
 import net.jimboi.stage_c.gui.base.GuiManager;
 
+import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
+import org.bstone.mogli.Texture;
 import org.bstone.window.camera.Camera;
 import org.bstone.window.view.ScreenSpace;
 import org.joml.Matrix4f;
@@ -14,12 +17,15 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 import org.qsilver.asset.Asset;
 import org.qsilver.render.RenderEngine;
 import org.qsilver.render.RenderService;
 import org.qsilver.util.ColorUtil;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;
+import org.zilar.renderer.property.PropertyTexture;
+import org.zilar.sprite.Sprite;
 
 import java.util.Iterator;
 
@@ -54,7 +60,7 @@ public class GuiRenderer extends RenderService
 	{
 		MeshBuilder mb = new MeshBuilder();
 		mb.addPlane(new Vector2f(0, 0), new Vector2f(1, 1), 0, new Vector2f(0, 0), new Vector2f(1, 1));
-		QUAD = ModelUtil.createMesh(mb.bake(false, false));
+		QUAD = ModelUtil.createStaticMesh(mb.bake(false, false));
 	}
 
 	@Override
@@ -65,6 +71,8 @@ public class GuiRenderer extends RenderService
 
 	public void render()
 	{
+
+
 		//TODO: Perspective is not yet working...
 		Iterator<Gui> iterator = this.guiManager.elements.iterator();
 		final Camera camera = this.guiManager.getCamera();
@@ -86,8 +94,46 @@ public class GuiRenderer extends RenderService
 			while (iterator.hasNext())
 			{
 				final Gui gui = iterator.next();
-				final Mesh mesh = QUAD;
-				program.setUniform("u_diffuse_color", new Vector4f(ColorUtil.getNormalizedRGB(gui.getColor(), new Vector3f()), 1));
+				Mesh mesh = QUAD;
+
+				Texture texture = null;
+				Sprite sprite = null;
+				if (gui instanceof GuiMaterial)
+				{
+					Material material = ((GuiMaterial) gui).material;
+
+					if (material.hasComponent(PropertyTexture.class))
+					{
+						PropertyTexture propertyTexture = material.getComponent(PropertyTexture.class);
+						texture = propertyTexture.getTexture().getSource();
+						sprite = propertyTexture.getSprite();
+					}
+				}
+				else if (gui instanceof GuiText)
+				{
+					TextMesh textMesh = TextMesh.getText(((GuiText) gui).getText());
+					mesh = textMesh.getMesh();
+					texture = textMesh.getTexture().getSource();
+				}
+
+				if (texture != null)
+				{
+					program.setUniform("u_sampler", 0);
+					program.setUniform("u_diffuse_color", new Vector4f(1, 1, 1, 0));
+					program.setUniform("u_transparency", true);
+					GL13.glActiveTexture(GL13.GL_TEXTURE0);
+					texture.bind();
+				}
+				else
+				{
+					program.setUniform("u_diffuse_color", new Vector4f(ColorUtil.getNormalizedRGB(gui.getColor(), new Vector3f()), 1));
+				}
+
+				if (sprite != null)
+				{
+					program.setUniform("u_tex_offset", new Vector2f(sprite.getU(), sprite.getV()));
+					program.setUniform("u_tex_scale", new Vector2f(sprite.getWidth(), sprite.getHeight()));
+				}
 
 				Matrix4fc transformation = this.modelMatrix.translation(offsetX + gui.getX(), offsetY - gui.height - gui.getY(), 0).rotate(this.invertedRotation).scale(gui.width, gui.height, 1);
 				Matrix4fc modelViewProj = this.viewProjMatrix.mul(transformation, this.modelViewProjMatrix);
@@ -99,6 +145,11 @@ public class GuiRenderer extends RenderService
 					GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 				}
 				mesh.unbind();
+
+				if (texture != null)
+				{
+					texture.unbind();
+				}
 			}
 		}
 		program.unbind();

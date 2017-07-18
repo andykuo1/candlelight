@@ -3,6 +3,7 @@ package net.jimboi.stage_a.blob.models;
 import net.jimboi.stage_a.mod.model.Model;
 
 import org.bstone.mogli.Mesh;
+import org.lwjgl.opengl.GL15;
 import org.zilar.meshbuilder.ModelUtil;
 
 /**
@@ -39,9 +40,9 @@ public class TexturedPlane
 	public static Model create()
 	{
 		Mesh mesh = new Mesh();
-		ModelUtil.putVertexBuffer(mesh, POSITIONS, 0, 3, 0);
-		ModelUtil.putVertexBuffer(mesh, TEXCOORDS, 1, 2, 0);
-		ModelUtil.putIndexBuffer(mesh, INDICES);
+		ModelUtil.putVertexBuffer(mesh, POSITIONS, GL15.GL_STATIC_DRAW, 0, 3, 0);
+		ModelUtil.putVertexBuffer(mesh, TEXCOORDS, GL15.GL_STATIC_DRAW, 1, 2, 0);
+		ModelUtil.putIndexBuffer(mesh, INDICES, GL15.GL_STATIC_DRAW);
 		Model model = new Model(mesh);
 		return model;
 	}

@@ -24,6 +24,6 @@ public class WorldGenTerrain
 	public Mesh createMeshFromVertices()
 	{
 		MeshData md = MazeWorld.toMeshBoxData(world, 16, 16);
-		return ModelUtil.createMesh(md);
+		return ModelUtil.createStaticMesh(md);
 	}
 }

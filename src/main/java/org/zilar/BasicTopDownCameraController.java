@@ -1,6 +1,7 @@
 package org.zilar;
 
 import org.bstone.input.InputEngine;
+import org.bstone.input.InputLayer;
 import org.bstone.input.InputManager;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
@@ -11,7 +12,7 @@ import org.joml.Vector3fc;
 /**
  * Created by Andy on 6/18/17.
  */
-public class BasicTopDownCameraController implements CameraController, InputEngine.OnInputUpdateListener
+public class BasicTopDownCameraController implements CameraController, InputLayer
 {
 	protected float speed = 0.1F;
 
@@ -68,7 +69,7 @@ public class BasicTopDownCameraController implements CameraController, InputEngi
 	@Override
 	public void onCameraStart(Camera camera)
 	{
-		InputManager.getInputEngine().onInputUpdate.addListener(this);
+		InputManager.getInputEngine().addInputLayer(this);
 	}
 
 	@Override
@@ -97,7 +98,7 @@ public class BasicTopDownCameraController implements CameraController, InputEngi
 	@Override
 	public void onCameraStop(Camera camera)
 	{
-		InputManager.getInputEngine().onInputUpdate.deleteListener(this);
+		InputManager.getInputEngine().removeInputLayer(this);
 	}
 
 	@Override

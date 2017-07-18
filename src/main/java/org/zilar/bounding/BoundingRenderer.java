@@ -43,22 +43,21 @@ public class BoundingRenderer extends RenderService
 	protected void onStart(RenderEngine handler)
 	{
 		MeshBuilder mb = new MeshBuilder();
-		mb.ignoreNormals();
 
 		mb.addCircle(0, 0, 0.5F, 8);
-		CIRCLE = ModelUtil.createMesh(mb.bake(false, false));
+		CIRCLE = ModelUtil.createStaticMesh(mb.bake(false, false));
 		mb.clear();
 
 		mb.addQuad(0, 0, 1F, 1F);
-		QUAD = ModelUtil.createMesh(mb.bake(false, false));
+		QUAD = ModelUtil.createStaticMesh(mb.bake(false, false));
 		mb.clear();
 
 		mb.addPoint(0, 0);
-		POINT = ModelUtil.createMesh(mb.bake(false, false));
+		POINT = ModelUtil.createStaticMesh(mb.bake(false, false));
 		mb.clear();
 
 		mb.addSegment(0, 0, 1, 0);
-		SEGMENT = ModelUtil.createMesh(mb.bake(false, false));
+		SEGMENT = ModelUtil.createStaticMesh(mb.bake(false, false));
 		mb.clear();
 	}
 

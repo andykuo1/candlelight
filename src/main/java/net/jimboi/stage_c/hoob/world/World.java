@@ -7,6 +7,8 @@ import net.jimboi.stage_c.hoob.world.agents.Town;
 import net.jimboi.stage_c.hoob.world.agents.Traveller;
 import net.jimboi.stage_c.hoob.world.agents.WorldAgent;
 
+import org.bstone.input.InputEngine;
+import org.bstone.input.InputLayer;
 import org.bstone.input.InputManager;
 import org.bstone.living.LivingManager;
 import org.bstone.transform.Transform3;
@@ -22,7 +24,7 @@ import java.util.Iterator;
 /**
  * Created by Andy on 7/13/17.
  */
-public class World implements LivingManager.OnLivingAddListener<WorldAgent>, LivingManager.OnLivingRemoveListener<WorldAgent>
+public class World implements LivingManager.OnLivingAddListener<WorldAgent>, LivingManager.OnLivingRemoveListener<WorldAgent>, InputLayer
 {
 	public final SceneHoob scene;
 	public Vector3f pickPos;
@@ -39,6 +41,7 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 	public World(SceneHoob scene)
 	{
 		this.scene = scene;
+		GameEngine.INPUTENGINE.addInputLayer(this);
 	}
 
 	public void create()
@@ -55,13 +58,15 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 		this.screenSpace = new ScreenSpace(GameEngine.WINDOW.getCurrentViewPort(), this.scene.getRenderer().getCamera(), Direction.CENTER, true, false);
 	}
 
+	private boolean actionMove = false;
+
 	public void update(double delta)
 	{
 		float mouseX = InputManager.getInputAmount("mousex");
 		float mouseY = InputManager.getInputAmount("mousey");
 		this.screenSpace.getPoint2DFromScreen(mouseX, mouseY, this.pickPos);
 
-		if (InputManager.isInputDown("mouseleft"))
+		if (this.actionMove)
 		{
 			this.player.target.x = this.pickPos.x;
 			this.player.target.y = this.pickPos.y;
@@ -70,6 +75,15 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 		this.agents.update(delta);
 
 		this.updateEntities();
+	}
+
+	@Override
+	public void onInputUpdate(InputEngine inputEngine)
+	{
+		if (this.actionMove = InputManager.isInputDown("mouseleft"))
+		{
+			InputManager.consumeInput("mouseleft");
+		}
 	}
 
 	private void updateEntities()

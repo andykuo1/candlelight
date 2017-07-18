@@ -4,6 +4,7 @@ import net.jimboi.stage_a.base.Main;
 import net.jimboi.stage_a.blob.RendererBlob;
 
 import org.bstone.input.InputEngine;
+import org.bstone.input.InputLayer;
 import org.bstone.input.InputManager;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
@@ -17,7 +18,7 @@ import org.qsilver.util.MathUtil;
 /**
  * Created by Andy on 5/21/17.
  */
-public abstract class LivingMotionControllerFirstPerson extends LivingMotion implements InputEngine.OnInputUpdateListener
+public abstract class LivingMotionControllerFirstPerson extends LivingMotion implements InputLayer
 {
 	public static final float MAX_PITCH = Transform.DEG2RAD * 80F;
 
@@ -43,7 +44,7 @@ public abstract class LivingMotionControllerFirstPerson extends LivingMotion imp
 	@Override
 	public boolean onCreate()
 	{
-		Main.INPUTENGINE.onInputUpdate.addListener(this);
+		Main.INPUTENGINE.addInputLayer(this);
 
 		return super.onCreate();
 	}
@@ -117,7 +118,7 @@ public abstract class LivingMotionControllerFirstPerson extends LivingMotion imp
 	{
 		super.onDestroy();
 
-		Main.INPUTENGINE.onInputUpdate.deleteListener(this);
+		Main.INPUTENGINE.removeInputLayer(this);
 	}
 
 	@Override

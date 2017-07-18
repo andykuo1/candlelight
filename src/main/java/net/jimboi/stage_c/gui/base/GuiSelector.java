@@ -44,10 +44,10 @@ public class GuiSelector
 
 		if (next == null || !next.isEnabled())
 		{
+			//Early out of selection
 			this.select(null, false);
 		}
-
-		if (select)
+		else if (select)
 		{
 			//On press
 			this.select(next, true);

@@ -107,12 +107,12 @@ public class RendererBlob extends OldRenderService implements InstanceManager.On
 		//Custom Models
 		MeshBuilder mb = new MeshBuilder();
 		mb.addBox(new Vector3f(0, 0, 0), new Vector3f(1, 1, 1), new Vector2f(0, 0), new Vector2f(1, 1), true, true, true, true, true, true);
-		Model mod_cube = new Model(ModelUtil.createMesh(mb.bake(false, true)));
+		Model mod_cube = new Model(ModelUtil.createStaticMesh(mb.bake(false, true)));
 		RenderUtil.registerModel("cube", mod_cube);
 
 		mb.clear();
 		mb.addPlane(new Vector2f(0, 0), new Vector2f(1, 1), 0, new Vector2f(0, 0), new Vector2f(1, 1));
-		Model mod_plane = new Model(ModelUtil.createMesh(mb.bake(false, true)));
+		Model mod_plane = new Model(ModelUtil.createStaticMesh(mb.bake(false, true)));
 		RenderUtil.registerModel("plane", mod_plane);
 
 		//ADD RENDERABLES
@@ -160,7 +160,7 @@ public class RendererBlob extends OldRenderService implements InstanceManager.On
 	{
 		int[] map = world.getMap();
 		MeshData md = MazeWorld.toMeshBoxData(world, 16, 16);
-		Model model = new Model(ModelUtil.createMesh(md));
+		Model model = new Model(ModelUtil.createStaticMesh(md));
 		RenderUtil.registerModel("terrain", model);
 
 		Instance inst = new Instance(model, mat, "lit");

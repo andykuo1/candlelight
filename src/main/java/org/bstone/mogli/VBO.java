@@ -69,6 +69,44 @@ public final class VBO implements AutoCloseable
 		return this;
 	}
 
+	public VBO updateData(IntBuffer buffer, long offset)
+	{
+		if (this.type != GL11.GL_UNSIGNED_INT)
+		{
+			throw new IllegalArgumentException("Cannot store mismatching type in buffer!");
+		}
+
+		if (offset + buffer.limit() > this.length)
+		{
+			int usage = GL15.glGetBufferParameteri(this.target, GL15.GL_BUFFER_USAGE);
+			this.putData(buffer, this.normalized, usage);
+		}
+
+		GL15.glBindBuffer(this.target, this.handle);
+		GL15.glBufferSubData(this.target, offset, buffer);
+
+		return this;
+	}
+
+	public VBO updateData(FloatBuffer buffer, long offset)
+	{
+		if (this.type != GL11.GL_FLOAT)
+		{
+			throw new IllegalArgumentException("Cannot store mismatching type in buffer!");
+		}
+
+		if (offset + buffer.limit() > this.length)
+		{
+			int usage = GL15.glGetBufferParameteri(this.target, GL15.GL_BUFFER_USAGE);
+			this.putData(buffer, this.normalized, usage);
+		}
+
+		GL15.glBindBuffer(this.target, this.handle);
+		GL15.glBufferSubData(this.target, offset, buffer);
+
+		return this;
+	}
+
 	public int handle()
 	{
 		return this.handle;

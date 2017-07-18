@@ -3,6 +3,7 @@ package org.qsilver.loader;
 import org.bstone.mogli.Mesh;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.lwjgl.opengl.GL15;
 import org.zilar.meshbuilder.ModelUtil;
 import org.zilar.resource.ResourceLocation;
 
@@ -26,7 +27,7 @@ public class OBJLoader
 		{
 			reader = new FileReader(location.getFilePath());
 			OBJFormatParser parser = new OBJFormatParser(2048);
-			result = parser.parse(reader).createMesh();
+			result = parser.parse(reader).createStaticMesh();
 			reader.close();
 		}
 		catch (IOException e)
@@ -148,10 +149,10 @@ public class OBJLoader
 		}
 
 		Mesh mesh = new Mesh();
-		ModelUtil.putVertexBuffer(mesh, verticesArray, 0, 3, 0);
-		ModelUtil.putVertexBuffer(mesh, texturesArray, 1, 2, 0);
-		ModelUtil.putVertexBuffer(mesh, normalsArray, 2, 3, 0);
-		ModelUtil.putIndexBuffer(mesh, indicesArray);
+		ModelUtil.putVertexBuffer(mesh, verticesArray, GL15.GL_STATIC_DRAW, 0, 3, 0);
+		ModelUtil.putVertexBuffer(mesh, texturesArray, GL15.GL_STATIC_DRAW, 1, 2, 0);
+		ModelUtil.putVertexBuffer(mesh, normalsArray, GL15.GL_STATIC_DRAW, 2, 3, 0);
+		ModelUtil.putIndexBuffer(mesh, indicesArray, GL15.GL_STATIC_DRAW);
 		return mesh;
 	}
 

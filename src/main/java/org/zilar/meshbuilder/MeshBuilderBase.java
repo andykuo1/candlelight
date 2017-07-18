@@ -135,11 +135,6 @@ public class MeshBuilderBase
 		this.indices.add(k);
 	}
 
-	public void ignoreNormals()
-	{
-		this.dirtyNormals = true;
-	}
-
 	public int getVertexCount()
 	{
 		return this.vertices.size();

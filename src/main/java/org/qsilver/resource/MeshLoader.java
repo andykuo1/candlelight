@@ -18,7 +18,7 @@ public class MeshLoader implements ResourceLoader<Mesh, MeshLoader.MeshParameter
 	{
 		if (args.data != null)
 		{
-			return ModelUtil.createMesh(args.data);
+			return ModelUtil.createStaticMesh(args.data);
 		}
 
 		if (args.location != null)

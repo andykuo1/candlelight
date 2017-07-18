@@ -1,6 +1,7 @@
 package org.bstone.util.dataformat.obj;
 
 import org.bstone.mogli.Mesh;
+import org.lwjgl.opengl.GL15;
 import org.zilar.meshbuilder.ModelUtil;
 
 import java.util.ArrayList;
@@ -84,10 +85,10 @@ public class WavefrontOBJ
 		}
 
 		Mesh mesh = new Mesh();
-		ModelUtil.putVertexBuffer(mesh, verticesArray, 0, 3, 0);
-		ModelUtil.putVertexBuffer(mesh, texturesArray, 1, 2, 0);
-		ModelUtil.putVertexBuffer(mesh, normalsArray, 2, 3, 0);
-		ModelUtil.putIndexBuffer(mesh, indicesArray);
+		ModelUtil.putVertexBuffer(mesh, verticesArray, GL15.GL_STATIC_DRAW, 0, 3, 0);
+		ModelUtil.putVertexBuffer(mesh, texturesArray, GL15.GL_STATIC_DRAW, 1, 2, 0);
+		ModelUtil.putVertexBuffer(mesh, normalsArray, GL15.GL_STATIC_DRAW, 2, 3, 0);
+		ModelUtil.putIndexBuffer(mesh, indicesArray, GL15.GL_STATIC_DRAW);
 		return mesh;
 	}
 }

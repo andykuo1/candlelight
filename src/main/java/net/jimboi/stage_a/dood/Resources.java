@@ -156,11 +156,11 @@ public class Resources
 
 		MeshBuilder mb = new MeshBuilder();
 		mb.addPlane(new Vector2f(0, 0), new Vector2f(1, 1), 0, new Vector2f(0, 0), new Vector2f(1, 1));
-		register("plane", ModelUtil.createMesh(mb.bake(false, true)));
+		register("plane", ModelUtil.createStaticMesh(mb.bake(false, true)));
 		mb.clear();
 
 		mb.addBox(new Vector3f(0, 0, 0), new Vector3f(1, 1, 1), new Vector2f(0, 0), new Vector2f(1, 1), true, true, true, true, true, true);
-		register("box", ModelUtil.createMesh(mb.bake(false, true)));
+		register("box", ModelUtil.createStaticMesh(mb.bake(false, true)));
 
 		//Models
 		register("ball", new Model(getMesh("ball")));

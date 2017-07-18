@@ -1,7 +1,14 @@
 package net.jimboi.stage_c.hoob;
 
 import net.jimboi.stage_b.glim.entity.component.EntityComponentRenderable;
+import net.jimboi.stage_c.TextMesh;
+import net.jimboi.stage_c.gui.GuiButton;
+import net.jimboi.stage_c.gui.GuiFrame;
+import net.jimboi.stage_c.gui.GuiMaterial;
+import net.jimboi.stage_c.gui.GuiPanel;
 import net.jimboi.stage_c.gui.GuiRenderer;
+import net.jimboi.stage_c.gui.GuiText;
+import net.jimboi.stage_c.gui.base.Gui;
 import net.jimboi.stage_c.gui.base.GuiManager;
 
 import org.bstone.input.InputManager;
@@ -27,8 +34,11 @@ import org.zilar.base.RenderBase;
 import org.zilar.bounding.BoundingRenderer;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.renderer.SimpleRenderer;
+import org.zilar.renderer.property.PropertyTexture;
+import org.zilar.sprite.FontSheet;
 import org.zilar.sprite.TextureAtlas;
 import org.zilar.sprite.TextureAtlasBuilder;
+import org.zilar.sprite.TextureAtlasData;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -75,11 +85,66 @@ public class RenderHoob extends RenderBase
 		InputManager.registerKey("action", GLFW.GLFW_KEY_F);
 		InputManager.registerKey("sprint", GLFW.GLFW_KEY_LEFT_SHIFT, GLFW.GLFW_KEY_RIGHT_SHIFT);
 
+		Asset<Texture> font = GameEngine.ASSETMANAGER.getAsset(Texture.class, "font");
+
+		TextureAtlasBuilder t = new TextureAtlasBuilder();
+		t.addTileSheet(font, 0, 0, 16, 16, 0, 0, 16, 16);
+		TextureAtlasData atlas = t.bake();
+		t.clear();
+		Asset<TextureAtlas> textureAtlas = GameEngine.ASSETMANAGER.registerAsset(TextureAtlas.class, "font",
+				new TextureAtlasLoader.TextureAtlasParameter(atlas));
+
+		TextMesh.defaultFontSheet = new FontSheet(textureAtlas, 0, (char) 0, (char) 255);
+
 		this.guiManager = new GuiManager(new OrthographicCamera(640, 480), GameEngine.WINDOW.getCurrentViewPort());
+
+		Gui frame = new GuiFrame();
+		frame.setSize(9, 10);
+
+		Gui panel = new GuiPanel();
+		panel.setPosition(0.5F, 0.5F);
+		panel.setSize(8, 9);
+		frame.addChild(panel);
+
+		Gui button = new GuiButton((gui) -> System.out.println("BOO!"));
+		button.setPosition(1, 2);
+		button.setSize(6, 1);
+		panel.addChild(button);
+
+		Gui text = new GuiText("Hello");
+		text.setSize(6, 1);
+		button.addChild(text);
+
+		button = new GuiButton((gui) -> System.out.println("BOO 2!"));
+		button.setPosition(1, 4);
+		button.setSize(2, 1);
+		panel.addChild(button);
+
+		button = new GuiButton((gui) -> System.out.println("BOO 3!"));
+		button.setPosition(5, 4);
+		button.setSize(2, 1);
+		button.setEnabled(false);
+		panel.addChild(button);
+
+		GuiMaterial mat = new GuiMaterial(this.scene.getMaterialManager().createMaterial(new PropertyTexture(GameEngine.ASSETMANAGER.getAsset(Texture.class, "bunny"))));
+		mat.setPosition(0.5F, 0.5F);
+		mat.setSize(1, 1);
+		panel.addChild(mat);
+
+		this.guiManager.addGui(frame);
+
+
+
+
+
+
+
+
+
 
 		this.simpleRenderer = renderEngine.startService(new SimpleRenderer(GameEngine.ASSETMANAGER.getAsset(Program.class, "simple")));
 		this.boundingRenderer = renderEngine.startService(new BoundingRenderer(((SceneHoob) this.scene).getBoundingManager(), GameEngine.ASSETMANAGER.getAsset(Program.class, "wireframe")));
-		this.guiRenderer = renderEngine.startService(new GuiRenderer(this.guiManager, GameEngine.ASSETMANAGER.getAsset(Program.class, "color")));
+		this.guiRenderer = renderEngine.startService(new GuiRenderer(this.guiManager, GameEngine.ASSETMANAGER.getAsset(Program.class, "simple")));
 
 		MeshBuilder mb = new MeshBuilder();
 		mb.addPlane(new Vector2f(0, 0), new Vector2f(1, 1), 0, new Vector2f(0, 0), new Vector2f(1, 1));

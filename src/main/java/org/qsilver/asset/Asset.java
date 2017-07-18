@@ -51,6 +51,18 @@ public final class Asset<T>
 	}
 
 	@Override
+	public boolean equals(Object o)
+	{
+		if (o instanceof Asset)
+		{
+			Asset asset = (Asset) o;
+			return this.type.equals(asset.type) && this.id.equals(asset.id);
+		}
+
+		return false;
+	}
+
+	@Override
 	public String toString()
 	{
 		return this.type.getSimpleName().toLowerCase() + ":" + this.id;

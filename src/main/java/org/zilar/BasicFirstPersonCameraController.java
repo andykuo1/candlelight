@@ -1,6 +1,7 @@
 package org.zilar;
 
 import org.bstone.input.InputEngine;
+import org.bstone.input.InputLayer;
 import org.bstone.input.InputManager;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
@@ -15,7 +16,7 @@ import org.qsilver.util.MathUtil;
 /**
  * Created by Andy on 6/18/17.
  */
-public class BasicFirstPersonCameraController implements CameraController, InputEngine.OnInputUpdateListener
+public class BasicFirstPersonCameraController implements CameraController, InputLayer
 {
 	public static final float MAX_PITCH = Transform.DEG2RAD * 80F;
 
@@ -47,7 +48,7 @@ public class BasicFirstPersonCameraController implements CameraController, Input
 	@Override
 	public void onCameraStart(Camera camera)
 	{
-		InputManager.getInputEngine().onInputUpdate.addListener(this);
+		InputManager.getInputEngine().addInputLayer(this);
 	}
 
 	private static final Vector3f _VEC = new Vector3f();
@@ -115,7 +116,7 @@ public class BasicFirstPersonCameraController implements CameraController, Input
 	@Override
 	public void onCameraStop(Camera camera)
 	{
-		InputManager.getInputEngine().onInputUpdate.deleteListener(this);
+		InputManager.getInputEngine().removeInputLayer(this);
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import net.jimboi.stage_b.glim.entity.component.EntityComponentBounding;
 import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
 
 import org.bstone.input.InputEngine;
+import org.bstone.input.InputLayer;
 import org.bstone.transform.Transform3;
 import org.bstone.window.camera.Camera;
 import org.bstone.window.camera.CameraController;
@@ -15,7 +16,7 @@ import org.zilar.base.GameEngine;
 /**
  * Created by Andy on 6/1/17.
  */
-public class CameraControllerGlim implements CameraController, InputEngine.OnInputUpdateListener
+public class CameraControllerGlim implements CameraController, InputLayer
 {
 	private FirstPersonLookController lookController;
 	private FirstPersonMoveController moveController;
@@ -37,7 +38,7 @@ public class CameraControllerGlim implements CameraController, InputEngine.OnInp
 	@Override
 	public void onCameraStart(Camera camera)
 	{
-		GameEngine.INPUTENGINE.onInputUpdate.addListener(this);
+		GameEngine.INPUTENGINE.addInputLayer(this);
 	}
 
 	@Override
@@ -59,7 +60,7 @@ public class CameraControllerGlim implements CameraController, InputEngine.OnInp
 	@Override
 	public void onCameraStop(Camera camera)
 	{
-		GameEngine.INPUTENGINE.onInputUpdate.deleteListener(this);
+		GameEngine.INPUTENGINE.removeInputLayer(this);
 	}
 
 	@Override
