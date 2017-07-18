@@ -5,11 +5,34 @@ import org.bstone.transform.Transform3;
 /**
  * Created by Andy on 5/24/17.
  */
-public interface CameraController
+public abstract class CameraController
 {
-	void onCameraStart(Camera camera);
+	private Camera camera;
 
-	boolean onCameraUpdate(Camera camera, Transform3 cameraTransform, double delta);
+	public final void start(Camera camera)
+	{
+		this.camera = camera;
+		this.onCameraStart(this.camera);
+	}
 
-	void onCameraStop(Camera camera);
+	public final void update(double delta)
+	{
+		boolean dirty = this.onCameraUpdate(this.camera, this.camera.transform, delta);
+		if (dirty)
+		{
+			this.camera.markDirty();
+		}
+	}
+
+	public final void stop()
+	{
+		this.onCameraStop(this.camera);
+		this.camera = null;
+	}
+
+	protected abstract void onCameraStart(Camera camera);
+
+	protected abstract boolean onCameraUpdate(Camera camera, Transform3 cameraTransform, double delta);
+
+	protected abstract void onCameraStop(Camera camera);
 }

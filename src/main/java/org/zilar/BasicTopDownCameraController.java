@@ -12,7 +12,7 @@ import org.joml.Vector3fc;
 /**
  * Created by Andy on 6/18/17.
  */
-public class BasicTopDownCameraController implements CameraController, InputLayer
+public class BasicTopDownCameraController extends CameraController implements InputLayer
 {
 	protected float speed = 0.1F;
 

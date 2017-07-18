@@ -16,7 +16,7 @@ import org.qsilver.util.MathUtil;
 /**
  * Created by Andy on 6/18/17.
  */
-public class BasicFirstPersonCameraController implements CameraController, InputLayer
+public class BasicFirstPersonCameraController extends CameraController implements InputLayer
 {
 	public static final float MAX_PITCH = Transform.DEG2RAD * 80F;
 

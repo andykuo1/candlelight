@@ -18,7 +18,6 @@ public abstract class Camera
 
 	public final Listenable<OnCameraChangedListener> onCameraChanged = new Listenable<>((listener, objects) -> listener.onCameraChanged((Camera) objects[0]));
 
-	private CameraController controller;
 	private boolean dirty;
 
 	protected final Transform3 transform;
@@ -30,42 +29,6 @@ public abstract class Camera
 	{
 		this.transform = transform;
 		this.dirty = true;
-	}
-
-	public void update(double delta)
-	{
-		if (this.controller != null)
-		{
-			if (this.controller.onCameraUpdate(this, (Transform3) this.transform(), delta))
-			{
-				this.dirty = true;
-			}
-		}
-
-		if (this.dirty) this.updateCamera();
-	}
-
-	public final CameraController setCameraController(CameraController controller)
-	{
-		if (this.controller == controller) return controller;
-		CameraController ret = this.controller;
-		if (ret != null)
-		{
-			ret.onCameraStop(this);
-		}
-		this.controller = controller;
-		this.controller.onCameraStart(this);
-		return ret;
-	}
-
-	public final CameraController getCameraController()
-	{
-		return this.controller;
-	}
-
-	public final boolean isCurrentCameraController(CameraController controller)
-	{
-		return this.controller == controller;
 	}
 
 	public final Transform3c transform()

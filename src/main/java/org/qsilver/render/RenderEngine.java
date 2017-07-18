@@ -2,6 +2,7 @@ package org.qsilver.render;
 
 import org.bstone.service.ServiceManager;
 import org.bstone.util.listener.Listenable;
+import org.bstone.window.Window;
 
 /**
  * Created by Andy on 5/30/17.
@@ -15,8 +16,11 @@ public class RenderEngine extends ServiceManager<RenderEngine>
 
 	public final Listenable<OnRenderUpdateListener> onRenderUpdate = new Listenable<>((listener, objects) -> listener.onRenderUpdate((RenderEngine) objects[0]));
 
-	public RenderEngine()
+	private final Window window;
+
+	public RenderEngine(Window window)
 	{
+		this.window = window;
 	}
 
 	public void start()
@@ -35,6 +39,11 @@ public class RenderEngine extends ServiceManager<RenderEngine>
 		this.onRenderUpdate.notifyListeners(this);
 
 		this.endServiceBlock();
+	}
+
+	public final Window getWindow()
+	{
+		return this.window;
 	}
 
 	@Override

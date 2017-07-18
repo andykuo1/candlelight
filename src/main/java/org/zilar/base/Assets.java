@@ -36,11 +36,11 @@ public abstract class Assets
 {
 	private Assets() {}
 
-	public static Assets create(String domain, SemanticVersion version)
+	public static Assets create(AssetManager assetManager, String domain, SemanticVersion version)
 	{
 		if (version.isCompatibleWith(Asset00.VERSION))
 		{
-			return new Asset00(domain);
+			return new Asset00(assetManager, domain);
 		}
 
 		throw new IllegalArgumentException("Unable to find asset loader for version '" + version + "'");
@@ -54,10 +54,10 @@ public abstract class Assets
 		private AssetManager assetManager;
 		private AssetLoader assetLoader;
 
-		public Asset00(String domain)
+		public Asset00(AssetManager assetManager, String domain)
 		{
 			this.domain = domain;
-			this.assetManager = GameEngine.ASSETMANAGER;
+			this.assetManager = assetManager;
 			this.assetLoader = new AssetLoader(this.assetManager, VERSION, new ResourceLocation(this.domain + ":"));
 		}
 

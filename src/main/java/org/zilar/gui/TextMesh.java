@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Created by Andy on 7/17/17.
  */
-public class TextMesh
+public class TextMesh implements AutoCloseable
 {
 	public static FontSheet defaultFontSheet;
 	public static final Map<String, TextMesh> texts = new HashMap<>();
@@ -24,6 +24,23 @@ public class TextMesh
 	public static TextMesh getText(String text)
 	{
 		return texts.computeIfAbsent(text, t -> new TextMesh(defaultFontSheet, t));
+	}
+
+	public static void clear()
+	{
+		for(TextMesh textMesh : texts.values())
+		{
+			try
+			{
+				textMesh.close();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		texts.clear();
 	}
 
 	protected String text;
@@ -38,6 +55,12 @@ public class TextMesh
 		this.fontsheet = fontsheet;
 		this.texture = this.fontsheet.get((char) 0).getTexture();
 		this.dirty = true;
+	}
+
+	@Override
+	public void close() throws Exception
+	{
+		this.mesh.close();
 	}
 
 	public float getTextWidth(String text)

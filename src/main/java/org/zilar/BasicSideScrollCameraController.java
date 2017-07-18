@@ -11,7 +11,7 @@ import org.joml.Vector3fc;
 /**
  * Created by Andy on 6/18/17.
  */
-public class BasicSideScrollCameraController implements CameraController, InputLayer
+public class BasicSideScrollCameraController extends CameraController implements InputLayer
 {
 	protected float speed = 0.1F;
 

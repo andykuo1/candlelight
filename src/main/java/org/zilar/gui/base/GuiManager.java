@@ -10,7 +10,6 @@ import org.bstone.window.view.ScreenSpace;
 import org.bstone.window.view.ViewPort;
 import org.joml.Vector3f;
 import org.qsilver.poma.Poma;
-import org.zilar.base.GameEngine;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -33,8 +32,6 @@ public class GuiManager implements InputLayer
 		this.camera = camera;
 
 		this.screenSpace = new ScreenSpace(viewport, this.camera, Direction.NORTHWEST, true, true);
-
-		GameEngine.INPUTENGINE.addInputLayer(this);
 	}
 
 	public Gui addGui(Gui gui)
@@ -99,6 +96,11 @@ public class GuiManager implements InputLayer
 		}
 	}
 
+	public void destroy()
+	{
+		this.elements.clear();
+	}
+
 	@Override
 	public void onInputUpdate(InputEngine inputEngine)
 	{
@@ -111,6 +113,12 @@ public class GuiManager implements InputLayer
 		{
 			InputManager.consumeInput("mouseleft");
 		}
+	}
+
+	@Override
+	public int compareTo(InputLayer o)
+	{
+		return -1;
 	}
 
 	public GuiSelector getSelector()

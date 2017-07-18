@@ -130,7 +130,7 @@ public abstract class Scene extends ServiceManager<Scene>
 
 	protected abstract void onSceneCreate();
 
-	protected abstract void onSceneLoad(RenderEngine renderManager);
+	protected abstract void onSceneLoad(RenderEngine renderEngine);
 
 	protected abstract void onSceneStart();
 
@@ -138,7 +138,7 @@ public abstract class Scene extends ServiceManager<Scene>
 
 	protected abstract void onSceneStop();
 
-	protected abstract void onSceneUnload(RenderEngine renderManager);
+	protected abstract void onSceneUnload(RenderEngine renderEngine);
 
 	protected abstract void onSceneDestroy();
 
