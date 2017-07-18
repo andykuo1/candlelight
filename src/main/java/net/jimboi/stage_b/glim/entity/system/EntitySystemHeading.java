@@ -13,10 +13,10 @@ import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.qsilver.astar.map.NavigatorCardinalMap;
-import org.qsilver.entity.AbstractUpdateableEntitySystem;
-import org.qsilver.entity.Entity;
-import org.qsilver.entity.EntityManager;
 import org.qsilver.util.MathUtil;
+import org.zilar.entity.AbstractUpdateableEntitySystem;
+import org.zilar.entity.Entity;
+import org.zilar.entity.EntityManager;
 
 import java.util.Collection;
 

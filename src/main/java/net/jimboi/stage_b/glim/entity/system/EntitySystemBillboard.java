@@ -7,9 +7,9 @@ import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
 import org.bstone.window.camera.Camera;
 import org.joml.Vector3f;
-import org.qsilver.entity.AbstractUpdateableEntitySystem;
-import org.qsilver.entity.Entity;
-import org.qsilver.entity.EntityManager;
+import org.zilar.entity.AbstractUpdateableEntitySystem;
+import org.zilar.entity.Entity;
+import org.zilar.entity.EntityManager;
 import org.zilar.renderer.BillboardRenderer;
 
 import java.util.Collection;

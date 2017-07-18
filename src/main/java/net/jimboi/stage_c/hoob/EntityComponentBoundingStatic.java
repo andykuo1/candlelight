@@ -1,8 +1,8 @@
 package net.jimboi.stage_c.hoob;
 
-import org.qsilver.entity.EntityComponent;
 import org.zilar.bounding.BoundingStatic;
 import org.zilar.bounding.Shape;
+import org.zilar.entity.EntityComponent;
 
 /**
  * Created by Andy on 7/15/17.

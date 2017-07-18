@@ -6,7 +6,7 @@ import net.jimboi.stage_b.glim.entity.component.EntityComponentBounding;
 import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
 
 import org.bstone.transform.Transform3;
-import org.qsilver.entity.Entity;
+import org.zilar.entity.Entity;
 
 /**
  * Created by Andy on 6/4/17.

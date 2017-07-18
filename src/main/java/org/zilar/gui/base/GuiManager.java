@@ -1,4 +1,4 @@
-package net.jimboi.stage_c.gui.base;
+package org.zilar.gui.base;
 
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputLayer;

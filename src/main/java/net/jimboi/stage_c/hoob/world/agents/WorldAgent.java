@@ -4,7 +4,7 @@ import net.jimboi.stage_c.hoob.world.World;
 
 import org.bstone.living.Living;
 import org.joml.Vector2f;
-import org.qsilver.entity.EntityComponent;
+import org.zilar.entity.EntityComponent;
 
 /**
  * Created by Andy on 7/13/17.

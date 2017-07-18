@@ -1,4 +1,4 @@
-package org.qsilver.entity;
+package org.zilar.entity;
 
 import org.qsilver.scene.Scene;
 

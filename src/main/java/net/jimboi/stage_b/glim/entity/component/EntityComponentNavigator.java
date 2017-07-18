@@ -4,7 +4,7 @@ import net.jimboi.stage_b.glim.WorldGlim;
 
 import org.qsilver.astar.AstarNavigator;
 import org.qsilver.astar.map.NavigatorCardinalMap;
-import org.qsilver.entity.EntityComponent;
+import org.zilar.entity.EntityComponent;
 
 import java.util.Stack;
 

@@ -2,7 +2,7 @@ package net.jimboi.stage_b.glim.entity;
 
 import net.jimboi.stage_b.glim.SceneGlim;
 
-import org.qsilver.entity.EntityManager;
+import org.zilar.entity.EntityManager;
 
 /**
  * Created by Andy on 6/4/17.

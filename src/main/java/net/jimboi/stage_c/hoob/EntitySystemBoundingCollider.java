@@ -1,11 +1,11 @@
 package net.jimboi.stage_c.hoob;
 
-import org.qsilver.entity.AbstractEntitySystem;
-import org.qsilver.entity.Entity;
-import org.qsilver.entity.EntityComponent;
-import org.qsilver.entity.EntityManager;
 import org.qsilver.scene.Scene;
 import org.zilar.bounding.BoundingManager;
+import org.zilar.entity.AbstractEntitySystem;
+import org.zilar.entity.Entity;
+import org.zilar.entity.EntityComponent;
+import org.zilar.entity.EntityManager;
 
 /**
  * Created by Andy on 7/15/17.

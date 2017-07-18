@@ -1,4 +1,4 @@
-package net.jimboi.stage_c.gui.base;
+package org.zilar.gui.base;
 
 import java.util.Iterator;
 

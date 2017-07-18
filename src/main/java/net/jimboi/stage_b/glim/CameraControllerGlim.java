@@ -10,8 +10,8 @@ import org.bstone.input.InputLayer;
 import org.bstone.transform.Transform3;
 import org.bstone.window.camera.Camera;
 import org.bstone.window.camera.CameraController;
-import org.qsilver.entity.Entity;
 import org.zilar.base.GameEngine;
+import org.zilar.entity.Entity;
 
 /**
  * Created by Andy on 6/1/17.

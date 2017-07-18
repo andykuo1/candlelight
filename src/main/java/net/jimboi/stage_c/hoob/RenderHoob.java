@@ -1,15 +1,6 @@
 package net.jimboi.stage_c.hoob;
 
 import net.jimboi.stage_b.glim.entity.component.EntityComponentRenderable;
-import net.jimboi.stage_c.TextMesh;
-import net.jimboi.stage_c.gui.GuiButton;
-import net.jimboi.stage_c.gui.GuiFrame;
-import net.jimboi.stage_c.gui.GuiMaterial;
-import net.jimboi.stage_c.gui.GuiPanel;
-import net.jimboi.stage_c.gui.GuiRenderer;
-import net.jimboi.stage_c.gui.GuiText;
-import net.jimboi.stage_c.gui.base.Gui;
-import net.jimboi.stage_c.gui.base.GuiManager;
 
 import org.bstone.input.InputManager;
 import org.bstone.mogli.Mesh;
@@ -32,6 +23,15 @@ import org.zilar.base.Assets;
 import org.zilar.base.GameEngine;
 import org.zilar.base.RenderBase;
 import org.zilar.bounding.BoundingRenderer;
+import org.zilar.gui.GuiButton;
+import org.zilar.gui.GuiFrame;
+import org.zilar.gui.GuiMaterial;
+import org.zilar.gui.GuiPanel;
+import org.zilar.gui.GuiRenderer;
+import org.zilar.gui.GuiText;
+import org.zilar.gui.TextMesh;
+import org.zilar.gui.base.Gui;
+import org.zilar.gui.base.GuiManager;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.renderer.SimpleRenderer;
 import org.zilar.renderer.property.PropertyTexture;

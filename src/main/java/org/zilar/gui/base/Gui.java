@@ -1,4 +1,4 @@
-package net.jimboi.stage_c.gui.base;
+package org.zilar.gui.base;
 
 import org.joml.Vector2f;
 import org.qsilver.util.MathUtil;

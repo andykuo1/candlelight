@@ -1,8 +1,7 @@
-package net.jimboi.stage_c.gui;
-
-import net.jimboi.stage_c.gui.base.Gui;
+package org.zilar.gui;
 
 import org.bstone.material.Material;
+import org.zilar.gui.base.Gui;
 
 /**
  * Created by Andy on 7/17/17.

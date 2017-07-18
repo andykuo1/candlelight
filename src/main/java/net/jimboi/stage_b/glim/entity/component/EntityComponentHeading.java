@@ -2,7 +2,7 @@ package net.jimboi.stage_b.glim.entity.component;
 
 import org.bstone.transform.Transform;
 import org.joml.Vector3fc;
-import org.qsilver.entity.EntityComponent;
+import org.zilar.entity.EntityComponent;
 
 /**
  * Created by Andy on 6/14/17.

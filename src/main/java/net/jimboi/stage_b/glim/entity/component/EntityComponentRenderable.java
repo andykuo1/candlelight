@@ -2,8 +2,8 @@ package net.jimboi.stage_b.glim.entity.component;
 
 import org.bstone.transform.Transform3;
 import org.joml.Matrix4f;
-import org.qsilver.entity.EntityComponent;
 import org.qsilver.render.Renderable;
+import org.zilar.entity.EntityComponent;
 import org.zilar.model.Model;
 
 /**

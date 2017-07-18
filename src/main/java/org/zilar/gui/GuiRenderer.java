@@ -1,8 +1,4 @@
-package net.jimboi.stage_c.gui;
-
-import net.jimboi.stage_c.TextMesh;
-import net.jimboi.stage_c.gui.base.Gui;
-import net.jimboi.stage_c.gui.base.GuiManager;
+package org.zilar.gui;
 
 import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
@@ -22,6 +18,8 @@ import org.qsilver.asset.Asset;
 import org.qsilver.render.RenderEngine;
 import org.qsilver.render.RenderService;
 import org.qsilver.util.ColorUtil;
+import org.zilar.gui.base.Gui;
+import org.zilar.gui.base.GuiManager;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;
 import org.zilar.renderer.property.PropertyTexture;

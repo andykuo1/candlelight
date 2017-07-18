@@ -5,9 +5,9 @@ import net.jimboi.stage_b.glim.entity.component.EntityComponentBounding;
 import net.jimboi.stage_b.glim.entity.component.EntityComponentTransform;
 
 import org.joml.Vector3fc;
-import org.qsilver.entity.AbstractUpdateableEntitySystem;
-import org.qsilver.entity.Entity;
-import org.qsilver.entity.EntityManager;
+import org.zilar.entity.AbstractUpdateableEntitySystem;
+import org.zilar.entity.Entity;
+import org.zilar.entity.EntityManager;
 
 import java.util.Collection;
 

@@ -1,6 +1,6 @@
-package net.jimboi.stage_c.gui;
+package org.zilar.gui;
 
-import net.jimboi.stage_c.gui.base.Gui;
+import org.zilar.gui.base.Gui;
 
 import java.util.function.Consumer;
 

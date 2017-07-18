@@ -1,10 +1,10 @@
 package org.zilar.base;
 
 import org.bstone.material.MaterialManager;
-import org.qsilver.entity.EntityManager;
 import org.qsilver.render.RenderEngine;
 import org.qsilver.scene.Scene;
 import org.zilar.animation.AnimationManager;
+import org.zilar.entity.EntityManager;
 
 /**
  * Created by Andy on 7/5/17.

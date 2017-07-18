@@ -1,6 +1,6 @@
-package net.jimboi.stage_c.gui;
+package org.zilar.gui;
 
-import net.jimboi.stage_c.gui.base.Gui;
+import org.zilar.gui.base.Gui;
 
 /**
  * Created by Andy on 7/16/17.

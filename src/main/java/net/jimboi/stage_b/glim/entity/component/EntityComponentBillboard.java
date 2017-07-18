@@ -1,6 +1,6 @@
 package net.jimboi.stage_b.glim.entity.component;
 
-import org.qsilver.entity.EntityComponent;
+import org.zilar.entity.EntityComponent;
 import org.zilar.renderer.BillboardRenderer;
 
 /**

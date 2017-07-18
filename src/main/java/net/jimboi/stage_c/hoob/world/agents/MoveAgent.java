@@ -5,9 +5,9 @@ import net.jimboi.stage_c.hoob.world.World;
 
 import org.bstone.transform.Transform;
 import org.joml.Vector2f;
-import org.qsilver.entity.Entity;
 import org.zilar.bounding.BoundingCollider;
 import org.zilar.bounding.IntersectionData;
+import org.zilar.entity.Entity;
 
 /**
  * Created by Andy on 7/13/17.
