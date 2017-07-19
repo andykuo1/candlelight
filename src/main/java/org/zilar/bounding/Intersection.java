@@ -31,17 +31,25 @@ public class Intersection
 				return intersects(aabb, (ShapePoint) other);
 			}
 		}
+		else if (shape instanceof ShapeCircle)
+		{
+			ShapeCircle circle = (ShapeCircle) shape;
+			if (other instanceof ShapePoint)
+			{
+				return intersects(circle, (ShapePoint) other);
+			}
+		}
 
 		throw new UnsupportedOperationException("Intersection between shapes '" + shape.getClass() + "' and '" + other.getClass() + "' are not supported!");
 	}
 
-	protected static IntersectionData intersects(ShapeAABB shape, ShapePoint other)
+	protected static IntersectionData intersects(ShapeAABB shape, Vector2fc other)
 	{
-		float dx = other.center().x() - shape.center().x();
+		float dx = other.x() - shape.center().x();
 		float px = shape.radius().x() - Math.abs(dx);
 		if (px <= 0) return null;
 
-		float dy = other.center().y() - shape.center().y();
+		float dy = other.y() - shape.center().y();
 		float py = shape.radius().y() - Math.abs(dy);
 		if (py <= 0) return null;
 
@@ -53,18 +61,23 @@ public class Intersection
 			hit.delta.x = px * sx;
 			hit.normal.x = sx;
 			hit.point.x = shape.center().x() + (shape.radius().x() * sx);
-			hit.point.y = other.center().y();
+			hit.point.y = other.y();
 		}
 		else
 		{
 			float sy = MathUtil.sign(dy);
 			hit.delta.y = py * sy;
 			hit.normal.y = sy;
-			hit.point.x = other.center().x();
+			hit.point.x = other.x();
 			hit.point.y = shape.center().y() + (shape.radius().y() * sy);
 		}
 
 		return hit;
+	}
+
+	protected static IntersectionData intersects(ShapeAABB shape, ShapePoint other)
+	{
+		return intersects(shape, other.center());
 	}
 
 	protected static IntersectionData intersects(ShapeAABB shape, Vector2fc point, Vector2fc delta, float paddingX, float paddingY)
@@ -147,8 +160,26 @@ public class Intersection
 
 	protected static IntersectionData intersects(ShapeAABB shape, ShapeCircle other)
 	{
-		Vector2f delta = new Vector2f(shape.center());
-		delta.sub(other.center()).normalize().mul(other.radius());
-		return intersects(shape, other.center(), delta, 0, 0);
+		Vector2f vec = shape.center().sub(other.center(), new Vector2f()).normalize().mul(other.radius()).add(other.center());
+		return intersects(shape, vec);
+	}
+
+	protected static IntersectionData intersects(ShapeCircle shape, Vector2fc other)
+	{
+		if (shape.center().distanceSquared(other) > shape.radius() * shape.radius()) return null;
+
+		IntersectionData hit = new IntersectionData();
+
+		other.sub(shape.center(), hit.normal).normalize();
+		float dist = shape.center().distance(other);
+		hit.normal.mul(dist, hit.point).add(shape.center());
+		hit.delta.set(hit.normal).mul(shape.radius() - dist);
+
+		return hit;
+	}
+
+	protected static IntersectionData intersects(ShapeCircle shape, ShapePoint other)
+	{
+		return intersects(shape, other.center());
 	}
 }

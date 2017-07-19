@@ -35,4 +35,9 @@ public abstract class Transform2c extends Transform3c implements DirectionVector
 
 	public abstract Vector2fc position2();
 	public abstract Vector2fc scale2();
+
+	public final DerivedTransform2 derive2()
+	{
+		return new DerivedTransform2(this);
+	}
 }

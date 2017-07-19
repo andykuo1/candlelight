@@ -5,7 +5,7 @@ import net.jimboi.boron.stage_a.shroom.component.LivingEntity;
 
 import org.bstone.living.LivingManager;
 import org.bstone.transform.Transform3c;
-import org.zilar.BasicFirstPersonCameraController;
+import org.bstone.window.camera.CameraController;
 import org.zilar.bounding.BoundingManager;
 import org.zilar.entity.Entity;
 
@@ -14,7 +14,7 @@ import org.zilar.entity.Entity;
  */
 public abstract class SceneShroomBase<R extends RenderShroomBase> extends SceneBase<R> implements LivingManager.OnLivingAddListener<LivingEntity>, LivingManager.OnLivingRemoveListener<LivingEntity>
 {
-	protected BasicFirstPersonCameraController cameraController;
+	protected CameraController cameraController;
 
 	protected LivingManager<LivingEntity> livingManager;
 	protected BoundingManager boundingManager;
@@ -23,12 +23,14 @@ public abstract class SceneShroomBase<R extends RenderShroomBase> extends SceneB
 
 	protected abstract ShroomWorld createWorld();
 
+	protected abstract CameraController createMainCameraController();
+
 	@Override
 	protected void onSceneCreate()
 	{
 		super.onSceneCreate();
 
-		this.cameraController = new BasicFirstPersonCameraController();
+		this.cameraController = this.createMainCameraController();
 
 		this.livingManager = new LivingManager<>();
 		this.livingManager.onLivingAdd.addListener(this);
@@ -95,7 +97,7 @@ public abstract class SceneShroomBase<R extends RenderShroomBase> extends SceneB
 		living.onEntityDestroy(entity);
 	}
 
-	public BasicFirstPersonCameraController getMainCameraController()
+	public CameraController getMainCameraController()
 	{
 		return this.cameraController;
 	}

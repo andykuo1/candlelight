@@ -17,6 +17,7 @@ import org.bstone.util.direction.Direction;
 import org.bstone.window.view.ScreenSpace;
 import org.joml.Vector3f;
 import org.zilar.bounding.ShapeAABB;
+import org.zilar.bounding.ShapeCircle;
 import org.zilar.entity.Entity;
 
 import java.util.Iterator;
@@ -136,7 +137,7 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 	public void onLivingAdd(WorldAgent agent)
 	{
 		boolean motion = agent instanceof MoveAgent;
-		Entity entity = this.scene.spawnEntity(agent.pos.x, agent.pos.y, 0, "bunny", "quad", motion, agent.isSolid() ? new ShapeAABB(agent.pos.x(), agent.pos.y(), agent.getSize()) : null, motion);
+		Entity entity = this.scene.spawnEntity(agent.pos.x, agent.pos.y, 0, "bunny", "quad", motion, agent.isSolid() ? agent instanceof Town ? new ShapeCircle(agent.pos.x(), agent.pos.y(), agent.getSize()) : new ShapeAABB(agent.pos.x(), agent.pos.y(), agent.getSize()) : null, motion);
 		entity.addComponent(agent);
 	}
 

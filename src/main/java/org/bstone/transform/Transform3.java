@@ -14,6 +14,24 @@ public class Transform3 extends Transform3c
 	public final Quaternionf rotation = new Quaternionf();
 	public final Vector3f scale = new Vector3f(1, 1, 1);
 
+	public Transform3 setPosition(float x, float y, float z)
+	{
+		this.position.set(x, y, z);
+		return this;
+	}
+
+	public Transform3 setRotation(Quaternionf rotation)
+	{
+		this.rotation.set(rotation);
+		return this;
+	}
+
+	public Transform3 setScale(float x, float y, float z)
+	{
+		this.scale.set(x, y, z);
+		return this;
+	}
+
 	@Override
 	public Vector3f getPosition(Vector3f dst)
 	{

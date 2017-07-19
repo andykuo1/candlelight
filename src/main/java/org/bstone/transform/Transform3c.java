@@ -55,4 +55,9 @@ public abstract class Transform3c implements Transform
 
 	public abstract Vector3fc position3();
 	public abstract Vector3fc scale3();
+
+	public final DerivedTransform3 derive3()
+	{
+		return new DerivedTransform3(this);
+	}
 }

@@ -20,14 +20,17 @@ public class EntityComponentRenderableBillboard extends EntityComponentRenderabl
 		this.camera = camera;
 	}
 
-	private static final Vector3f VEC = new Vector3f();
+	private static final Vector3f _VEC_A = new Vector3f();
+	private static final Vector3f _VEC_B = new Vector3f();
 
 	@Override
 	public Matrix4f getRenderTransformation(Matrix4f dst)
 	{
-		super.getRenderTransformation(dst);
-		this.camera.position3().sub(this.transform.getPosition(VEC), VEC);
-		dst.rotateXYZ(0, (float) -Math.atan2(VEC.z(), VEC.x()) + Transform.HALF_PI, 0);
+		this.transform.getScale(_VEC_A);
+		this.transform.getTransformation(dst).scale(1 / _VEC_A.x(), 1 / _VEC_A.y(), 1 / _VEC_A.z());
+		this.camera.position3().sub(this.transform.getPosition(_VEC_B), _VEC_B);
+		dst.rotateXYZ(0, (float) -Math.atan2(_VEC_B.z(), _VEC_B.x()) + Transform.HALF_PI, 0);
+		dst.scale(_VEC_A);
 		return dst;
 	}
 }

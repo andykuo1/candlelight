@@ -45,6 +45,7 @@ public class DungeonHandler
 	private LivingEntity dungeon;
 	private DungeonData data;
 
+	private boolean[] solids;
 	private List<BoundingStatic> boundings;
 	private Asset<Mesh> mesh;
 	private Asset<TextureAtlas> textureAtlas;
@@ -73,11 +74,18 @@ public class DungeonHandler
 		this.boundings = this.generateBoundings(this.data, this.scene.getBoundingManager());
 		this.model = this.generateModel(this.data, Shroom.ENGINE.getAssetManager(), this.scene.getMaterialManager());
 
+		this.solids = new boolean[this.data.width * this.data.height];
+		for(int i = 0; i < this.data.getTiles().size(); ++i)
+		{
+			this.solids[i] = this.data.getTiles().get(i) == 0;
+		}
+
 		//CREATE LIVING
 
 		Transform3 transform = new Transform3();
 		return this.dungeon = this.scene.getLivingManager().add(new LivingEntity(
 				transform,
+				null,
 				new EntityComponentRenderable(transform, this.model)
 		));
 	}
@@ -152,6 +160,23 @@ public class DungeonHandler
 				),
 				"simple"
 		);
+	}
+
+	public Vector3f getRandomTilePos(boolean solid)
+	{
+		int attempts = 0;
+		int index;
+		do
+		{
+			index = (int)(Math.random() * this.solids.length);
+			attempts++;
+			if (attempts > 100)
+			{
+				return new Vector3f(0, 0, 0);
+			}
+		}
+		while(this.solids[index] != solid);
+		return new Vector3f(index % this.data.width, 0, index / this.data.width);
 	}
 
 	private static MeshData createMeshFromMap(IntMap map, Asset<TextureAtlas> textureAtlas)

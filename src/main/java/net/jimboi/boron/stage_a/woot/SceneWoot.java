@@ -1,5 +1,6 @@
 package net.jimboi.boron.stage_a.woot;
 
+import net.jimboi.boron.stage_a.shroom.CameraControllerShroom;
 import net.jimboi.boron.stage_a.shroom.SceneShroomBase;
 
 /**
@@ -14,9 +15,21 @@ public class SceneWoot extends SceneShroomBase<RenderWoot>
 	}
 
 	@Override
+	protected CameraControllerShroom createMainCameraController()
+	{
+		return new CameraControllerShroom();
+	}
+
+	@Override
 	public WorldWoot getWorld()
 	{
 		return (WorldWoot) super.getWorld();
+	}
+
+	@Override
+	public CameraControllerShroom getMainCameraController()
+	{
+		return (CameraControllerShroom) super.getMainCameraController();
 	}
 
 	@Override

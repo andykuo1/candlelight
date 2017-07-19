@@ -16,6 +16,24 @@ public class Transform2 extends Transform2c
 	public float radians = 0F;
 	public final Vector2f scale = new Vector2f(1, 1);
 
+	public Transform2 setPosition(float x, float y)
+	{
+		this.position.set(x, y);
+		return this;
+	}
+
+	public Transform2 setRotation(float radians)
+	{
+		this.radians = radians;
+		return this;
+	}
+
+	public Transform2 setScale(float x, float y)
+	{
+		this.scale.set(x, y);
+		return this;
+	}
+
 	@Override
 	public Vector3f getPosition(Vector3f dst)
 	{

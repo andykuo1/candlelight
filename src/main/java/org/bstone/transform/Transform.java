@@ -25,9 +25,4 @@ public interface Transform extends DirectionVector3
 	Vector3f getPosition(Vector3f dst);
 	Quaternionf getRotation(Quaternionf dst);
 	Vector3f getScale(Vector3f dst);
-
-	default DerivedTransform derive()
-	{
-		return new DerivedTransform(this);
-	}
 }
