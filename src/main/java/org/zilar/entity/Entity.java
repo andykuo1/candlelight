@@ -22,9 +22,9 @@ public class Entity extends ManifestEntity<EntityComponent>
 	}
 
 	@Override
-	public ManifestEntity addComponent(EntityComponent component)
+	public Entity addComponent(EntityComponent component)
 	{
-		return super.addComponent(component);
+		return (Entity) super.addComponent(component);
 	}
 
 	@Override

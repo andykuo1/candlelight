@@ -2,9 +2,11 @@ package org.bstone.component;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Andy on 5/21/17.
@@ -121,14 +123,30 @@ public class ComponentManager<E extends ManifestEntity, C extends Component>
 	}
 
 	@SuppressWarnings("unchecked")
-	public <D extends C> Collection<D> getComponents(Collection<D> dst, Class<D> componentType)
+	public <D extends C> Collection<D> getComponents(Class<D> componentType, Collection<D> dst)
 	{
 		dst.addAll(((Map<E, D>) this.getComponentMap(componentType)).values());
 		return dst;
 	}
 
 	@SuppressWarnings("unchecked")
-	public Collection<E> addAllWithComponent(Collection<E> dst, Class componentType)
+	public <D extends C> Collection<D> getSimilarComponents(Class<D> componentType, Collection<D> dst)
+	{
+		this.getSimilarComponentEntries(componentType, _ENTRIES);
+		for(Map.Entry<Class<? extends C>, Map<E, C>> entry : _ENTRIES)
+		{
+			Collection<C> col = entry.getValue().values();
+			for(C c : col)
+			{
+				dst.add((D) c);
+			}
+		}
+		_ENTRIES.clear();
+		return dst;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<E> addAllWithComponent(Class componentType, Collection<E> dst)
 	{
 		if (!componentType.isAssignableFrom(this.baseComponent))
 			throw new IllegalArgumentException("Invalid component type '" + componentType + "'. This is not a component!");
@@ -140,7 +158,7 @@ public class ComponentManager<E extends ManifestEntity, C extends Component>
 	}
 
 	@SuppressWarnings("unchecked")
-	public Collection<E> retainAllWithComponents(Collection<E> dst, Class... componentTypes)
+	public Collection<E> retainAllWithComponents(Class[] componentTypes, Collection<E> dst)
 	{
 		if (dst.isEmpty())
 			throw new UnsupportedOperationException("Unable to retain any entities from an empty collection!");
@@ -155,6 +173,19 @@ public class ComponentManager<E extends ManifestEntity, C extends Component>
 		}
 
 		return dst;
+	}
+
+	private final Set<Map.Entry<Class<? extends C>, Map<E, C>>> _ENTRIES = new HashSet<>();
+
+	protected void getSimilarComponentEntries(Class<? extends C> componentType, Set<Map.Entry<Class<? extends C>, Map<E, C>>> dst)
+	{
+		for(Map.Entry<Class<? extends C>, Map<E, C>> entry : this.components.entrySet())
+		{
+			if(componentType.isAssignableFrom(entry.getKey()))
+			{
+				dst.add(entry);
+			}
+		}
 	}
 
 	protected Map<E, C> getComponentMap(Class<? extends C> componentType)

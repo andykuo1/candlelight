@@ -130,7 +130,7 @@ public class RenderGlim extends RenderBase
 		SceneBase scene = (SceneBase) GameEngine.SCENEMANAGER.getCurrentScene();
 		if (scene == null) return;
 
-		Collection<EntityComponentRenderable> instances = scene.getEntityManager().getComponents(new HashSet<>(), EntityComponentRenderable.class);
+		Collection<EntityComponentRenderable> instances = scene.getEntityManager().getComponents(EntityComponentRenderable.class, new HashSet<>());
 
 		Iterator<Renderable> iter;
 

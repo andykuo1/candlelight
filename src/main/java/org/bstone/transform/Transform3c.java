@@ -1,6 +1,5 @@
 package org.bstone.transform;
 
-import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Quaternionfc;
 import org.joml.Vector3f;
@@ -20,12 +19,6 @@ public abstract class Transform3c implements Transform
 
 	protected final Vector3f vec3 = new Vector3f();
 	protected final Quaternionf quat = new Quaternionf();
-
-	@Override
-	public final Matrix4f getTransformation(Matrix4f dst)
-	{
-		return dst.identity().translate(this.getPosition(this.vec3)).rotate(this.getRotation(this.quat)).scale(this.getScale(this.vec3));
-	}
 
 	@Override
 	public Vector3f getForward(Vector3f dst)

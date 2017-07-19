@@ -18,7 +18,7 @@ public class MeshLoader implements ResourceLoader<Mesh, MeshLoader.MeshParameter
 	{
 		if (args.data != null)
 		{
-			return ModelUtil.createStaticMesh(args.data);
+			return args.staticMesh ? ModelUtil.createStaticMesh(args.data) : ModelUtil.createDynamicMesh(args.data);
 		}
 
 		if (args.location != null)
@@ -32,16 +32,24 @@ public class MeshLoader implements ResourceLoader<Mesh, MeshLoader.MeshParameter
 	public static class MeshParameter implements ResourceParameter<Mesh>
 	{
 		public ResourceLocation location;
+
 		public MeshData data;
+		public boolean staticMesh = true;
 
 		public MeshParameter(ResourceLocation location)
 		{
 			this.location = location;
 		}
 
-		public MeshParameter(MeshData data)
+		public MeshParameter(MeshData data, boolean staticMesh)
 		{
 			this.data = data;
+			this.staticMesh = staticMesh;
+		}
+
+		public MeshParameter(MeshData data)
+		{
+			this(data, true);
 		}
 	}
 }

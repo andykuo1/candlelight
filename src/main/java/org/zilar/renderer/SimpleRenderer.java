@@ -18,6 +18,7 @@ import org.qsilver.render.RenderEngine;
 import org.qsilver.render.RenderService;
 import org.qsilver.render.Renderable;
 import org.zilar.model.Model;
+import org.zilar.renderer.property.PropertyDiffuse;
 import org.zilar.renderer.property.PropertyTexture;
 import org.zilar.sprite.Sprite;
 
@@ -56,19 +57,18 @@ public class SimpleRenderer extends RenderService
 		final Matrix4fc u_view = camera.view();
 		final Matrix4fc u_projection = camera.projection();
 
-		Vector2fc u_tex_offset = new Vector2f();
-		Vector2fc u_tex_scale = new Vector2f(1, 1);
+		Vector2fc def_tex_offset = new Vector2f();
+		Vector2fc def_tex_scale = new Vector2f(1, 1);
 
-		int u_sampler = 0;
-		boolean u_transparency = false;
-		Vector4fc u_diffuse_color = new Vector4f(1, 1, 1, 0);
+		int def_sampler = 0;
+		boolean def_transparency = false;
+		Vector4fc def_diffuse_color = new Vector4f(1, 1, 1, 0);
 
 		final Program program = this.program.getSource();
 		program.bind();
 		{
 			program.setUniform("u_projection", u_projection);
 			program.setUniform("u_view", u_view);
-			program.setUniform("u_diffuse_color", u_diffuse_color);
 
 			while (iterator.hasNext())
 			{
@@ -82,15 +82,25 @@ public class SimpleRenderer extends RenderService
 				Texture texture = null;
 				Sprite sprite = null;
 
+				int u_sampler = def_sampler;
+				boolean u_transparency = def_transparency;
+				Vector4fc u_diffuse_color = def_diffuse_color;
+
 				if (material.hasComponent(PropertyTexture.class))
 				{
-					PropertyTexture propTexture = material.getComponent(PropertyTexture.class);
-					texture = propTexture.getTexture().getSource();
-					sprite = propTexture.getSprite();
-					u_transparency = propTexture.transparent;
+					PropertyTexture propertyTexture = material.getComponent(PropertyTexture.class);
+					texture = propertyTexture.getTexture().getSource();
+					sprite = propertyTexture.getSprite();
+					u_transparency = propertyTexture.transparent;
 				}
-
 				program.setUniform("u_transparency", u_transparency);
+
+				if (material.hasComponent(PropertyDiffuse.class))
+				{
+					PropertyDiffuse propertyDiffuse = material.getComponent(PropertyDiffuse.class);
+					u_diffuse_color = propertyDiffuse.diffuseColor;
+				}
+				program.setUniform("u_diffuse_color", u_diffuse_color);
 
 				u_model = inst.getRenderTransformation(this.modelMatrix);
 				u_model_view_projection = u_projection.mul(u_view, this.modelViewProjMatrix).mul(u_model, this.modelViewProjMatrix);
@@ -108,6 +118,9 @@ public class SimpleRenderer extends RenderService
 					}
 
 					program.setUniform("u_sampler", u_sampler);
+
+					Vector2fc u_tex_offset = def_tex_offset;
+					Vector2fc u_tex_scale = def_tex_scale;
 
 					if (sprite != null)
 					{

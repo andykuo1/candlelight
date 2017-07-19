@@ -15,9 +15,19 @@ public interface Transform extends DirectionVector3
 	float RAD2DEG = 180F / PI;
 	float DEG2RAD = PI / 180F;
 
-	Matrix4f getTransformation(Matrix4f dst);
+	default Matrix4f getTransformation(Matrix4f dst)
+	{
+		final Vector3f vec = new Vector3f();
+		final Quaternionf quat = new Quaternionf();
+		return dst.identity().translate(this.getPosition(vec)).rotate(this.getRotation(quat)).scale(this.getScale(vec));
+	}
 
 	Vector3f getPosition(Vector3f dst);
 	Quaternionf getRotation(Quaternionf dst);
 	Vector3f getScale(Vector3f dst);
+
+	default DerivedTransform derive()
+	{
+		return new DerivedTransform(this);
+	}
 }

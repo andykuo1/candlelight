@@ -11,6 +11,7 @@ import org.bstone.mogli.Texture;
 import org.bstone.util.SemanticVersion;
 import org.bstone.window.camera.OrthographicCamera;
 import org.bstone.window.camera.PerspectiveCamera;
+import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 import org.qsilver.asset.Asset;
@@ -182,12 +183,12 @@ public class RenderHoob extends RenderBase
 	{
 		this.guiManager.update();
 
-		Collection<EntityComponentRenderable> renderables = this.getScene().getEntityManager().getComponents(new HashSet<>(), EntityComponentRenderable.class);
+		Collection<EntityComponentRenderable> renderables = this.getScene().getEntityManager().getComponents(EntityComponentRenderable.class, new HashSet<>());
 
 		Iterator<Renderable> iter = new CastIterator<>(renderables.iterator());
 		this.simpleRenderer.render(this.getCamera(), iter);
 
-		this.boundingRenderer.render(this.getCamera());
+		this.boundingRenderer.render(this.getCamera(), new Matrix4f());
 
 		this.guiRenderer.render();
 	}

@@ -112,12 +112,12 @@ public class BoundingRenderer extends RenderService
 		GL11.glDrawArrays(mode, 0, mesh.getVertexCount());
 	}
 
-	public void render(Camera camera)
+	public void render(Camera camera, Matrix4fc offsetView)
 	{
 		Iterator<Shape> iterator = this.boundingManager.getShapeIterator();
 		Matrix4fc proj = camera.projection();
 		Matrix4fc view = camera.view();
-		Matrix4fc projView = proj.mul(view, this.projViewMatrix);
+		Matrix4fc projView = proj.mul(view, this.projViewMatrix).mul(offsetView, this.projViewMatrix);
 
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		final Program program = this.program.getSource();
