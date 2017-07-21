@@ -4,6 +4,8 @@ import net.jimboi.apricot.base.GameEngine;
 import net.jimboi.apricot.base.SceneBase;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderable;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform;
+import net.jimboi.apricot.stage_c.hoob.collision.CollisionManager;
+import net.jimboi.apricot.stage_c.hoob.collision.Shape;
 import net.jimboi.apricot.stage_c.hoob.world.World;
 
 import org.bstone.material.Material;
@@ -13,8 +15,6 @@ import org.bstone.transform.Transform3;
 import org.qsilver.asset.Asset;
 import org.zilar.BasicSideScrollCameraController;
 import org.zilar.animation.AnimatorSpriteSheet;
-import org.zilar.bounding.BoundingManager;
-import org.zilar.bounding.Shape;
 import org.zilar.entity.Entity;
 import org.zilar.model.Model;
 import org.zilar.renderer.property.PropertyDiffuse;
@@ -34,7 +34,7 @@ public class SceneHoob extends SceneBase
 	}
 
 	protected EntitySystemBoundingCollider systemBoundingCollider;
-	protected BoundingManager boundingManager;
+	protected CollisionManager collisionManager;
 
 	protected World world;
 
@@ -48,8 +48,8 @@ public class SceneHoob extends SceneBase
 	{
 		super.onSceneCreate();
 
-		this.boundingManager = new BoundingManager();
-		this.systemBoundingCollider = new EntitySystemBoundingCollider(this.entityManager, this.boundingManager);
+		this.collisionManager = new CollisionManager();
+		this.systemBoundingCollider = new EntitySystemBoundingCollider(this.entityManager, this.collisionManager);
 
 		this.world = new World(this);
 	}
@@ -126,9 +126,9 @@ public class SceneHoob extends SceneBase
 		);
 	}
 
-	public BoundingManager getBoundingManager()
+	public CollisionManager getCollisionManager()
 	{
-		return this.boundingManager;
+		return this.collisionManager;
 	}
 
 	public World getWorld()

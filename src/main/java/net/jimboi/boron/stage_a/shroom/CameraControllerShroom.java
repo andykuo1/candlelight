@@ -1,5 +1,7 @@
 package net.jimboi.boron.stage_a.shroom;
 
+import net.jimboi.apricot.stage_c.hoob.collision.Collider;
+
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputLayer;
 import org.bstone.input.InputManager;
@@ -12,8 +14,6 @@ import org.joml.Vector2fc;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.qsilver.util.MathUtil;
-import org.zilar.bounding.BoundingCollider;
-import org.zilar.bounding.IntersectionData;
 
 /**
  * Created by Andy on 7/19/17.
@@ -40,9 +40,9 @@ public class CameraControllerShroom extends CameraController implements InputLay
 	protected float counter;
 
 	protected Transform3 target;
-	protected BoundingCollider collider;
+	protected Collider collider;
 
-	public void setTarget(Transform3 transform, BoundingCollider collider)
+	public void setTarget(Transform3 transform, Collider collider)
 	{
 		this.target = transform;
 		this.collider = collider;
@@ -97,17 +97,15 @@ public class CameraControllerShroom extends CameraController implements InputLay
 
 			if (solid)
 			{
-				Vector2f dv = BoundingCollider.checkDeltaWithSlideCollision(this.collider, new Vector2f(_VEC.x(), _VEC.z()));
-				IntersectionData intersection = this.collider.checkIntersection();
-				if (intersection != null)
-				{
-					dv.sub(intersection.delta);
-				}
-				this.target.translate(dv.x(), 0, dv.y());
+				this.collider.move(_VEC.x(), _VEC.z());
+				Vector2f pos = new Vector2f(this.target.position.x(), this.target.position.z());
+				this.collider.update(pos);
+				this.target.position.set(pos.x(), this.target.position.y(), pos.y());
 			}
 			else
 			{
 				this.target.translate(_VEC.x(), 0, _VEC.z());
+				this.collider.setPosition(this.target.position.x(), this.target.position.z());
 			}
 		}
 
@@ -128,8 +126,6 @@ public class CameraControllerShroom extends CameraController implements InputLay
 		cameraTransform.position.set(pos.x(), pos.y(), pos.z());
 		cameraTransform.moveUp((float) Math.abs(Math.cos(this.counter)) * wiggleY - wiggleY / 2F);
 		cameraTransform.moveRight((float) Math.cos(this.counter) * wiggleX);
-
-		this.collider.update(this.target.position.x(), this.target.position.z());
 
 		return true;
 	}
@@ -164,7 +160,7 @@ public class CameraControllerShroom extends CameraController implements InputLay
 			this.pitch = MathUtil.clamp(this.pitch, -MAX_PITCH, MAX_PITCH);
 		}
 
-		if (InputManager.isInputPressed("mouseleft"))
+		if (InputManager.isInputPressed("mouselock"))
 		{
 			inputEngine.getMouse().setCursorMode(!mouseLocked);
 		}

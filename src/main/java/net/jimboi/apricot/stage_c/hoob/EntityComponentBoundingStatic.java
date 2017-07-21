@@ -1,7 +1,8 @@
 package net.jimboi.apricot.stage_c.hoob;
 
-import org.zilar.bounding.BoundingStatic;
-import org.zilar.bounding.Shape;
+import net.jimboi.apricot.stage_c.hoob.collision.Shape;
+import net.jimboi.apricot.stage_c.hoob.collision.StaticCollider;
+
 import org.zilar.entity.EntityComponent;
 
 /**
@@ -9,7 +10,8 @@ import org.zilar.entity.EntityComponent;
  */
 public class EntityComponentBoundingStatic implements EntityComponent
 {
-	protected BoundingStatic bounding;
+	StaticCollider collider;
+
 	public Shape shape;
 
 	public EntityComponentBoundingStatic(Shape shape)
@@ -17,8 +19,8 @@ public class EntityComponentBoundingStatic implements EntityComponent
 		this.shape = shape;
 	}
 
-	public BoundingStatic getBounding()
+	public StaticCollider getCollider()
 	{
-		return this.bounding;
+		return this.collider;
 	}
 }

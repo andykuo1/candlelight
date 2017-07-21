@@ -8,7 +8,7 @@ import org.joml.Vector3fc;
 /**
  * Created by Andy on 7/13/17.
  */
-public class Transform3 extends Transform3c
+public class Transform3 implements Transform3c
 {
 	public final Vector3f position = new Vector3f();
 	public final Quaternionf rotation = new Quaternionf();
@@ -87,17 +87,17 @@ public class Transform3 extends Transform3c
 
 	public void moveForward(float magnitude)
 	{
-		this.translate(this.getForward(this.vec3), magnitude);
+		this.translate(this.getForward(_VEC3), magnitude);
 	}
 
 	public void moveUp(float magnitude)
 	{
-		this.translate(this.getUp(this.vec3), magnitude);
+		this.translate(this.getUp(_VEC3), magnitude);
 	}
 
 	public void moveRight(float magnitude)
 	{
-		this.translate(this.getRight(this.vec3), magnitude);
+		this.translate(this.getRight(_VEC3), magnitude);
 	}
 
 	public void translate(Vector3fc dir, float magnitude)

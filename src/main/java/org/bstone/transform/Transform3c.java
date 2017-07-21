@@ -1,6 +1,5 @@
 package org.bstone.transform;
 
-import org.joml.Quaternionf;
 import org.joml.Quaternionfc;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
@@ -8,55 +7,49 @@ import org.joml.Vector3fc;
 /**
  * Created by Andy on 7/13/17.
  */
-public abstract class Transform3c implements Transform
+public interface Transform3c extends Transform
 {
-	public static final Vector3fc XAXIS = new Vector3f(1, 0, 0);
-	public static final Vector3fc YAXIS = new Vector3f(0, 1, 0);
-	public static final Vector3fc ZAXIS = new Vector3f(0, 0, 1);
+	Vector3fc XAXIS = new Vector3f(1, 0, 0);
+	Vector3fc YAXIS = new Vector3f(0, 1, 0);
+	Vector3fc ZAXIS = new Vector3f(0, 0, 1);
 
-	public static final Vector3fc IDENTITY = new Vector3f(1, 1, 1);
-	public static final Vector3fc ZERO = new Vector3f(0, 0, 0);
-
-	protected final Vector3f vec3 = new Vector3f();
-	protected final Quaternionf quat = new Quaternionf();
+	Vector3fc IDENTITY = new Vector3f(1, 1, 1);
+	Vector3fc ZERO = new Vector3f(0, 0, 0);
 
 	@Override
-	public Vector3f getForward(Vector3f dst)
+	default Vector3f getForward(Vector3f dst)
 	{
-		return this.getRotation(this.quat).normalizedPositiveZ(dst);
+		return this.getRotation(_QUAT).normalizedPositiveZ(dst);
 	}
 
 	@Override
-	public final Vector3f getRight(Vector3f dst)
+	default Vector3f getRight(Vector3f dst)
 	{
-		return this.getRotation(this.quat).normalizedPositiveX(dst);
+		return this.getRotation(_QUAT).normalizedPositiveX(dst);
 	}
 
 	@Override
-	public final Vector3f getUp(Vector3f dst)
+	default Vector3f getUp(Vector3f dst)
 	{
-		return this.getRotation(this.quat).normalizedPositiveY(dst);
+		return this.getRotation(_QUAT).normalizedPositiveY(dst);
 	}
 
-	protected final Vector3f eulerAngles = new Vector3f();
-	protected final Vector3f eulerRadians = new Vector3f();
-
-	public final Vector3fc eulerRadians()
+	default Vector3fc eulerRadians()
 	{
-		return this.getRotation(this.quat).getEulerAnglesXYZ(this.eulerRadians);
+		return this.getRotation(_QUAT).getEulerAnglesXYZ(new Vector3f());
 	}
 
-	public final Vector3fc eulerAngles()
+	default Vector3fc eulerAngles()
 	{
-		return this.getRotation(this.quat).getEulerAnglesXYZ(this.eulerAngles).mul(RAD2DEG);
+		return this.getRotation(_QUAT).getEulerAnglesXYZ(new Vector3f()).mul(RAD2DEG);
 	}
 
-	public abstract Quaternionfc quaternion();
+	Quaternionfc quaternion();
 
-	public abstract Vector3fc position3();
-	public abstract Vector3fc scale3();
+	Vector3fc position3();
+	Vector3fc scale3();
 
-	public final DerivedTransform3 derive3()
+	default DerivedTransform3 derive3()
 	{
 		return new DerivedTransform3(this);
 	}

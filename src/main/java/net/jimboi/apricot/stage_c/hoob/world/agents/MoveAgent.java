@@ -1,12 +1,11 @@
 package net.jimboi.apricot.stage_c.hoob.world.agents;
 
 import net.jimboi.apricot.stage_c.hoob.EntityComponentBoundingCollider;
+import net.jimboi.apricot.stage_c.hoob.collision.Collider;
 import net.jimboi.apricot.stage_c.hoob.world.World;
 
 import org.bstone.transform.Transform;
 import org.joml.Vector2f;
-import org.zilar.bounding.BoundingCollider;
-import org.zilar.bounding.IntersectionData;
 import org.zilar.entity.Entity;
 
 /**
@@ -24,13 +23,11 @@ public abstract class MoveAgent extends WorldAgent
 		super(world, 0.4F);
 	}
 
-	private static final Vector2f _VEC = new Vector2f();
-
 	@Override
 	public void onUpdate(double delta)
 	{
 		Entity entity = this.world.scene.getEntityManager().getEntityByComponent(this);
-		BoundingCollider collider = entity.getComponent(EntityComponentBoundingCollider.class).getBounding();
+		Collider collider = entity.getComponent(EntityComponentBoundingCollider.class).getCollider();
 
 		if (this.pos.distanceSquared(this.target) > 0.1F)
 		{
@@ -49,17 +46,9 @@ public abstract class MoveAgent extends WorldAgent
 			float dy = (float) Math.sin(this.heading) * speed;
 
 			//Smooth sliding
-			Vector2f dv = BoundingCollider.checkDeltaWithSlideCollision(collider, new Vector2f(dx, dy));
-			IntersectionData intersection = collider.checkIntersection();
-			if (intersection != null)
-			{
-				dv.sub(intersection.delta);
-			}
-			this.pos.x += dv.x();
-			this.pos.y += dv.y();
+			collider.move(dx, dy);
+			collider.update(this.pos);
 		}
-
-		collider.update(this.pos.x, this.pos.y);
 	}
 
 	public abstract float getMoveSpeed();

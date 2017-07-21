@@ -1,5 +1,6 @@
 package net.jimboi.boron.stage_a.shroom;
 
+import net.jimboi.apricot.stage_c.hoob.collision.CollisionRenderer;
 import net.jimboi.boron.base.RenderBase;
 import net.jimboi.boron.stage_a.shroom.component.EntityComponentRenderable;
 
@@ -16,7 +17,6 @@ import org.qsilver.asset.Asset;
 import org.qsilver.render.RenderEngine;
 import org.qsilver.util.iterator.CastIterator;
 import org.zilar.base.Assets;
-import org.zilar.bounding.BoundingRenderer;
 import org.zilar.gui.GuiRenderer;
 import org.zilar.gui.base.GuiManager;
 import org.zilar.renderer.SimpleRenderer;
@@ -31,7 +31,7 @@ public abstract class RenderShroomBase<S extends SceneShroomBase> extends Render
 	protected final PerspectiveCamera mainCamera;
 
 	protected SimpleRenderer simpleRenderer;
-	protected BoundingRenderer boundingRenderer;
+	protected CollisionRenderer collisionRenderer;
 	private Matrix4f boundingOffsetViewMatrix = new Matrix4f().rotateX(Transform.HALF_PI);
 	protected GuiRenderer guiRenderer;
 
@@ -82,11 +82,11 @@ public abstract class RenderShroomBase<S extends SceneShroomBase> extends Render
 		//RENDERERS
 
 		this.simpleRenderer = new SimpleRenderer(simpleProgram);
-		this.boundingRenderer = new BoundingRenderer(this.getScene().getBoundingManager(), wireframeProgram);
+		this.collisionRenderer = new CollisionRenderer(this.getScene().getCollisionManager(), wireframeProgram);
 		this.guiRenderer = new GuiRenderer(this.guiManager, simpleProgram);
 
 		renderEngine.startService(this.simpleRenderer);
-		renderEngine.startService(this.boundingRenderer);
+		renderEngine.startService(this.collisionRenderer);
 		renderEngine.startService(this.guiRenderer);
 
 		GL11.glEnable(GL11.GL_CULL_FACE);
@@ -101,7 +101,7 @@ public abstract class RenderShroomBase<S extends SceneShroomBase> extends Render
 		Iterable<EntityComponentRenderable> renderables = this.getScene().getEntityManager().getSimilarComponents(EntityComponentRenderable.class, new HashSet<>());
 
 		this.simpleRenderer.render(this.getMainCamera(), new CastIterator<>(renderables.iterator()));
-		this.boundingRenderer.render(this.getMainCamera(), this.boundingOffsetViewMatrix);
+		this.collisionRenderer.render(this.getMainCamera(), this.boundingOffsetViewMatrix);
 		this.guiRenderer.render();
 	}
 
@@ -109,7 +109,7 @@ public abstract class RenderShroomBase<S extends SceneShroomBase> extends Render
 	protected void onUnload(RenderEngine renderEngine)
 	{
 		renderEngine.stopService(this.simpleRenderer);
-		renderEngine.stopService(this.boundingRenderer);
+		renderEngine.stopService(this.collisionRenderer);
 		renderEngine.stopService(this.guiRenderer);
 
 		this.assets.unload();

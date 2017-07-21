@@ -1,7 +1,8 @@
 package net.jimboi.apricot.stage_c.hoob;
 
+import net.jimboi.apricot.stage_c.hoob.collision.CollisionManager;
+
 import org.qsilver.scene.Scene;
-import org.zilar.bounding.BoundingManager;
 import org.zilar.entity.AbstractEntitySystem;
 import org.zilar.entity.Entity;
 import org.zilar.entity.EntityComponent;
@@ -12,13 +13,13 @@ import org.zilar.entity.EntityManager;
  */
 public class EntitySystemBoundingCollider extends AbstractEntitySystem implements EntityManager.OnEntityComponentAddListener, EntityManager.OnEntityComponentRemoveListener
 {
-	private final BoundingManager boundingManager;
+	private final CollisionManager collisionManager;
 
-	public EntitySystemBoundingCollider(EntityManager entityManager, BoundingManager boundingManager)
+	public EntitySystemBoundingCollider(EntityManager entityManager, CollisionManager boundingManager)
 	{
 		super(entityManager);
 
-		this.boundingManager = boundingManager;
+		this.collisionManager = boundingManager;
 	}
 
 	@Override
@@ -41,12 +42,12 @@ public class EntitySystemBoundingCollider extends AbstractEntitySystem implement
 		if (component instanceof EntityComponentBoundingCollider)
 		{
 			EntityComponentBoundingCollider componentBoundingCollider = (EntityComponentBoundingCollider) component;
-			componentBoundingCollider.bounding = this.boundingManager.createCollider(componentBoundingCollider.shape);
+			componentBoundingCollider.collider = this.collisionManager.createCollider(componentBoundingCollider.shape);
 		}
 		else if (component instanceof EntityComponentBoundingStatic)
 		{
 			EntityComponentBoundingStatic componentBoundingStatic = (EntityComponentBoundingStatic) component;
-			componentBoundingStatic.bounding = this.boundingManager.createStatic(componentBoundingStatic.shape);
+			componentBoundingStatic.collider = this.collisionManager.createStatic(componentBoundingStatic.shape);
 		}
 	}
 
@@ -56,17 +57,17 @@ public class EntitySystemBoundingCollider extends AbstractEntitySystem implement
 		if (component instanceof EntityComponentBoundingCollider)
 		{
 			EntityComponentBoundingCollider componentBoundingCollider = (EntityComponentBoundingCollider) component;
-			this.boundingManager.destroyCollider(componentBoundingCollider.bounding);
+			this.collisionManager.destroyCollider(componentBoundingCollider.collider);
 		}
 		else if (component instanceof EntityComponentBoundingStatic)
 		{
 			EntityComponentBoundingStatic componentBoundingStatic = (EntityComponentBoundingStatic) component;
-			this.boundingManager.destroyStatic(componentBoundingStatic.bounding);
+			this.collisionManager.destroyStatic(componentBoundingStatic.collider);
 		}
 	}
 
-	public BoundingManager getBoundingManager()
+	public CollisionManager getCollisionManager()
 	{
-		return this.boundingManager;
+		return this.collisionManager;
 	}
 }

@@ -3,6 +3,7 @@ package net.jimboi.apricot.stage_c.hoob.world;
 import net.jimboi.apricot.base.GameEngine;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform;
 import net.jimboi.apricot.stage_c.hoob.SceneHoob;
+import net.jimboi.apricot.stage_c.hoob.collision.Shape;
 import net.jimboi.apricot.stage_c.hoob.world.agents.MoveAgent;
 import net.jimboi.apricot.stage_c.hoob.world.agents.Town;
 import net.jimboi.apricot.stage_c.hoob.world.agents.Traveller;
@@ -16,11 +17,10 @@ import org.bstone.transform.Transform3;
 import org.bstone.util.direction.Direction;
 import org.bstone.window.view.ScreenSpace;
 import org.joml.Vector3f;
-import org.zilar.bounding.ShapeAABB;
-import org.zilar.bounding.ShapeCircle;
 import org.zilar.entity.Entity;
 
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  * Created by Andy on 7/13/17.
@@ -137,7 +137,38 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 	public void onLivingAdd(WorldAgent agent)
 	{
 		boolean motion = agent instanceof MoveAgent;
-		Entity entity = this.scene.spawnEntity(agent.pos.x, agent.pos.y, 0, "bunny", "quad", motion, agent.isSolid() ? agent instanceof Town ? new ShapeCircle(agent.pos.x(), agent.pos.y(), agent.getSize()) : new ShapeAABB(agent.pos.x(), agent.pos.y(), agent.getSize()) : null, motion);
+		Shape shape = null;
+		if (agent.isSolid())
+		{
+			if (!motion)
+			{
+				float x = agent.pos.x();
+				float y = agent.pos.y();
+				float r = agent.getSize();
+				switch (new Random().nextInt(4))
+				{
+					case 1:
+						shape = new Shape.Circle(x, y, r);
+						break;
+					case 2:
+						shape = new Shape.Point(x, y);
+						break;
+					case 3:
+						shape = new Shape.Segment(x, y, r, 0);
+						break;
+					case 0:
+					default:
+						shape = new Shape.AABB(x, y, r);
+						break;
+				}
+			}
+			else
+			{
+				shape = new Shape.AABB(agent.pos.x(), agent.pos.y(), agent.getSize());
+			}
+		}
+
+		Entity entity = this.scene.spawnEntity(agent.pos.x, agent.pos.y, 0, "bunny", "quad", motion, shape, motion);
 		entity.addComponent(agent);
 	}
 

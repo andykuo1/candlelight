@@ -1,9 +1,10 @@
 package net.jimboi.boron.stage_a.shroom.component;
 
+import net.jimboi.apricot.stage_c.hoob.collision.Collider;
+
 import org.bstone.living.Living;
 import org.bstone.transform.Transform3;
 import org.bstone.transform.Transform3c;
-import org.zilar.bounding.BoundingCollider;
 import org.zilar.entity.Entity;
 import org.zilar.entity.EntityComponent;
 
@@ -15,9 +16,9 @@ public class LivingEntity extends Living implements EntityComponent
 	private final Transform3 transform;
 	private final EntityComponentRenderable renderable;
 
-	private final BoundingCollider collider;
+	private final Collider collider;
 
-	public LivingEntity(Transform3 transform, BoundingCollider collider, EntityComponentRenderable renderable)
+	public LivingEntity(Transform3 transform, Collider collider, EntityComponentRenderable renderable)
 	{
 		this.transform = transform;
 		this.collider = collider;
@@ -25,7 +26,7 @@ public class LivingEntity extends Living implements EntityComponent
 
 		if (this.collider != null)
 		{
-			this.collider.update(this.transform.position.x(), this.transform.position.z());
+			this.collider.setPosition(this.transform.position.x(), this.transform.position.z());
 		}
 	}
 
@@ -57,7 +58,7 @@ public class LivingEntity extends Living implements EntityComponent
 		return this.transform;
 	}
 
-	public BoundingCollider getCollider()
+	public Collider getCollider()
 	{
 		return this.collider;
 	}

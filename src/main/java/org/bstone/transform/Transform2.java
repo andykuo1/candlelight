@@ -10,7 +10,7 @@ import org.joml.Vector3fc;
 /**
  * Created by Andy on 7/13/17.
  */
-public class Transform2 extends Transform2c
+public class Transform2 implements Transform2c
 {
 	public final Vector2f position = new Vector2f();
 	public float radians = 0F;
@@ -108,12 +108,12 @@ public class Transform2 extends Transform2c
 
 	public void moveUp(float magnitude)
 	{
-		this.translate(this.getUp(this.vec2), magnitude);
+		this.translate(this.getUp(_VEC2), magnitude);
 	}
 
 	public void moveRight(float magnitude)
 	{
-		this.translate(this.getRight(this.vec2), magnitude);
+		this.translate(this.getRight(_VEC2), magnitude);
 	}
 
 	public void translate(Vector2fc dir, float magnitude)
@@ -139,7 +139,7 @@ public class Transform2 extends Transform2c
 
 	public void rotate(Quaternionfc rot)
 	{
-		this.radians += rot.getEulerAnglesXYZ(this.vec3).z();
+		this.radians += rot.getEulerAnglesXYZ(_VEC3).z();
 	}
 
 	public void rotate(float radians)

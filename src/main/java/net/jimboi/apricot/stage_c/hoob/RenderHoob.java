@@ -3,6 +3,7 @@ package net.jimboi.apricot.stage_c.hoob;
 import net.jimboi.apricot.base.GameEngine;
 import net.jimboi.apricot.base.RenderBase;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderable;
+import net.jimboi.apricot.stage_c.hoob.collision.CollisionRenderer;
 
 import org.bstone.input.InputManager;
 import org.bstone.mogli.Mesh;
@@ -21,7 +22,6 @@ import org.qsilver.resource.MeshLoader;
 import org.qsilver.resource.TextureAtlasLoader;
 import org.qsilver.util.iterator.CastIterator;
 import org.zilar.base.Assets;
-import org.zilar.bounding.BoundingRenderer;
 import org.zilar.gui.GuiButton;
 import org.zilar.gui.GuiFrame;
 import org.zilar.gui.GuiMaterial;
@@ -49,7 +49,7 @@ import java.util.Iterator;
 public class RenderHoob extends RenderBase
 {
 	private SimpleRenderer simpleRenderer;
-	private BoundingRenderer boundingRenderer;
+	private CollisionRenderer collisionRenderer;
 	private GuiRenderer guiRenderer;
 
 	private GuiManager guiManager;
@@ -143,7 +143,7 @@ public class RenderHoob extends RenderBase
 
 
 		this.simpleRenderer = renderEngine.startService(new SimpleRenderer(GameEngine.ASSETMANAGER.getAsset(Program.class, "simple")));
-		this.boundingRenderer = renderEngine.startService(new BoundingRenderer(((SceneHoob) this.scene).getBoundingManager(), GameEngine.ASSETMANAGER.getAsset(Program.class, "wireframe")));
+		this.collisionRenderer = renderEngine.startService(new CollisionRenderer(((SceneHoob) this.scene).getCollisionManager(), GameEngine.ASSETMANAGER.getAsset(Program.class, "wireframe")));
 		this.guiRenderer = renderEngine.startService(new GuiRenderer(this.guiManager, GameEngine.ASSETMANAGER.getAsset(Program.class, "simple")));
 
 		MeshBuilder mb = new MeshBuilder();
@@ -188,7 +188,7 @@ public class RenderHoob extends RenderBase
 		Iterator<Renderable> iter = new CastIterator<>(renderables.iterator());
 		this.simpleRenderer.render(this.getCamera(), iter);
 
-		this.boundingRenderer.render(this.getCamera(), new Matrix4f());
+		this.collisionRenderer.render(this.getCamera(), new Matrix4f());
 
 		this.guiRenderer.render();
 	}
@@ -198,7 +198,7 @@ public class RenderHoob extends RenderBase
 	{
 		this.guiManager.destroy();
 		GameEngine.INPUTENGINE.removeInputLayer(this.guiManager);
-		renderEngine.stopService(this.boundingRenderer);
+		renderEngine.stopService(this.collisionRenderer);
 		TextMesh.clear();
 	}
 }

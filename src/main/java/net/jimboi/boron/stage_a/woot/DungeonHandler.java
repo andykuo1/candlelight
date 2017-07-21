@@ -1,5 +1,8 @@
 package net.jimboi.boron.stage_a.woot;
 
+import net.jimboi.apricot.stage_c.hoob.collision.CollisionManager;
+import net.jimboi.apricot.stage_c.hoob.collision.Shape;
+import net.jimboi.apricot.stage_c.hoob.collision.StaticCollider;
 import net.jimboi.boron.stage_a.shroom.Shroom;
 import net.jimboi.boron.stage_a.shroom.component.EntityComponentRenderable;
 import net.jimboi.boron.stage_a.shroom.component.LivingEntity;
@@ -16,9 +19,6 @@ import org.qsilver.asset.AssetManager;
 import org.qsilver.resource.MeshLoader;
 import org.qsilver.resource.TextureAtlasLoader;
 import org.qsilver.util.map2d.IntMap;
-import org.zilar.bounding.BoundingManager;
-import org.zilar.bounding.BoundingStatic;
-import org.zilar.bounding.ShapeAABB;
 import org.zilar.dungeon.DungeonBuilder;
 import org.zilar.dungeon.DungeonData;
 import org.zilar.dungeon.maze.MazeDungeonBuilder;
@@ -46,7 +46,7 @@ public class DungeonHandler
 	private DungeonData data;
 
 	private boolean[] solids;
-	private List<BoundingStatic> boundings;
+	private List<StaticCollider> boundings;
 	private Asset<Mesh> mesh;
 	private Asset<TextureAtlas> textureAtlas;
 	private Model model;
@@ -63,15 +63,15 @@ public class DungeonHandler
 
 		if (this.boundings != null)
 		{
-			for(BoundingStatic bounding : this.boundings)
+			for(StaticCollider bounding : this.boundings)
 			{
-				this.scene.getBoundingManager().destroyStatic(bounding);
+				this.scene.getCollisionManager().destroyStatic(bounding);
 			}
 
 			this.boundings = null;
 		}
 
-		this.boundings = this.generateBoundings(this.data, this.scene.getBoundingManager());
+		this.boundings = this.generateBoundings(this.data, this.scene.getCollisionManager());
 		this.model = this.generateModel(this.data, Shroom.ENGINE.getAssetManager(), this.scene.getMaterialManager());
 
 		this.solids = new boolean[this.data.width * this.data.height];
@@ -90,9 +90,9 @@ public class DungeonHandler
 		));
 	}
 
-	protected List<BoundingStatic> generateBoundings(DungeonData data, BoundingManager boundingManager)
+	protected List<StaticCollider> generateBoundings(DungeonData data, CollisionManager collisionManager)
 	{
-		List<BoundingStatic> list = new ArrayList<>();
+		List<StaticCollider> list = new ArrayList<>();
 
 		int tiles = 0;
 		for (int y = 0; y < data.height; ++y)
@@ -119,9 +119,9 @@ public class DungeonHandler
 				{
 					if (tiles > 0)
 					{
-						BoundingStatic bounding = boundingManager.createStatic(new ShapeAABB(x - tiles / 2F, y + 0.5F, tiles, 1));
+						StaticCollider collider = collisionManager.createStatic(new Shape.AABB(x - tiles / 2F, y + 0.5F, tiles, 1));
 						tiles = 0;
-						list.add(bounding);
+						list.add(collider);
 					}
 				}
 			}
@@ -156,7 +156,7 @@ public class DungeonHandler
 
 		return new Model(this.mesh,
 				materialManager.createMaterial(
-						new PropertyTexture(font)
+						new PropertyTexture(font).setTransparent(false)
 				),
 				"simple"
 		);

@@ -58,6 +58,17 @@ public class ScreenSpace
 		return unproject(invertedViewProjection, this.viewport, screen.x(), screen.y(), depth, dst);
 	}
 
+	public Vector3f getVectorFromScreen(float screenX, float screenY, Vector3f dst)
+	{
+		Matrix4fc invertedViewProjection = this.getInvertedViewProjectionMatrix(MAT4);
+		Vector2fc screen = this.getScreenOffset(screenX, screenY, VEC2);
+
+		unproject(invertedViewProjection, this.viewport, screen.x(), screen.y(), 0, VEC3A);
+		unproject(invertedViewProjection, this.viewport, screen.x(), screen.y(), 1, VEC3B);
+
+		return dst.set(VEC3B).sub(VEC3A).normalize();
+	}
+
 	protected Matrix4f getInvertedViewProjectionMatrix(Matrix4f dst)
 	{
 		Matrix4fc view = this.camera.view();

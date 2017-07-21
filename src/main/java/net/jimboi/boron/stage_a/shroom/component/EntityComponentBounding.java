@@ -1,6 +1,7 @@
 package net.jimboi.boron.stage_a.shroom.component;
 
-import org.zilar.bounding.BoundingCollider;
+import net.jimboi.apricot.stage_c.hoob.collision.Collider;
+
 import org.zilar.entity.EntityComponent;
 
 /**
@@ -8,9 +9,9 @@ import org.zilar.entity.EntityComponent;
  */
 public class EntityComponentBounding implements EntityComponent
 {
-	public final BoundingCollider collider;
+	public final Collider collider;
 
-	public EntityComponentBounding(BoundingCollider collider)
+	public EntityComponentBounding(Collider collider)
 	{
 		this.collider = collider;
 	}

@@ -1,12 +1,14 @@
 package net.jimboi.boron.stage_a.shroom;
 
+import net.jimboi.apricot.stage_c.hoob.collision.CollisionManager;
 import net.jimboi.boron.base.SceneBase;
 import net.jimboi.boron.stage_a.shroom.component.LivingEntity;
 
 import org.bstone.living.LivingManager;
 import org.bstone.transform.Transform3c;
+import org.bstone.util.direction.Direction;
 import org.bstone.window.camera.CameraController;
-import org.zilar.bounding.BoundingManager;
+import org.bstone.window.view.ScreenSpace;
 import org.zilar.entity.Entity;
 
 /**
@@ -17,9 +19,10 @@ public abstract class SceneShroomBase<R extends RenderShroomBase> extends SceneB
 	protected CameraController cameraController;
 
 	protected LivingManager<LivingEntity> livingManager;
-	protected BoundingManager boundingManager;
+	protected CollisionManager collisionManager;
 
 	protected ShroomWorld world;
+	private ScreenSpace worldSpace;
 
 	protected abstract ShroomWorld createWorld();
 
@@ -36,7 +39,7 @@ public abstract class SceneShroomBase<R extends RenderShroomBase> extends SceneB
 		this.livingManager.onLivingAdd.addListener(this);
 		this.livingManager.onLivingRemove.addListener(this);
 
-		this.boundingManager = new BoundingManager();
+		this.collisionManager = new CollisionManager();
 
 		this.world = this.createWorld();
 	}
@@ -46,6 +49,7 @@ public abstract class SceneShroomBase<R extends RenderShroomBase> extends SceneB
 	{
 		this.cameraController.start(this.getRender().getMainCamera());
 
+		this.worldSpace = new ScreenSpace(Shroom.ENGINE.getWindow().getCurrentViewPort(), this.getRender().getMainCamera(), Direction.CENTER, true, false);
 		this.world.create();
 	}
 
@@ -112,13 +116,18 @@ public abstract class SceneShroomBase<R extends RenderShroomBase> extends SceneB
 		return this.livingManager;
 	}
 
-	public BoundingManager getBoundingManager()
+	public CollisionManager getCollisionManager()
 	{
-		return this.boundingManager;
+		return this.collisionManager;
 	}
 
 	public ShroomWorld getWorld()
 	{
 		return this.world;
+	}
+
+	public ScreenSpace getWorldSpace()
+	{
+		return this.worldSpace;
 	}
 }
