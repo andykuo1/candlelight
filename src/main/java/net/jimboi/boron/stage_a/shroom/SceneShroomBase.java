@@ -1,8 +1,7 @@
 package net.jimboi.boron.stage_a.shroom;
 
-import net.jimboi.apricot.stage_c.hoob.collision.CollisionManager;
 import net.jimboi.boron.base.SceneBase;
-import net.jimboi.boron.stage_a.shroom.component.LivingEntity;
+import net.jimboi.boron.stage_a.shroom.component.OldLivingEntity;
 
 import org.bstone.living.LivingManager;
 import org.bstone.transform.Transform3c;
@@ -14,12 +13,11 @@ import org.zilar.entity.Entity;
 /**
  * Created by Andy on 7/17/17.
  */
-public abstract class SceneShroomBase<R extends RenderShroomBase> extends SceneBase<R> implements LivingManager.OnLivingAddListener<LivingEntity>, LivingManager.OnLivingRemoveListener<LivingEntity>
+public abstract class SceneShroomBase extends SceneBase implements LivingManager.OnLivingAddListener<OldLivingEntity>, LivingManager.OnLivingRemoveListener<OldLivingEntity>
 {
 	protected CameraController cameraController;
 
-	protected LivingManager<LivingEntity> livingManager;
-	protected CollisionManager collisionManager;
+	protected LivingManager<OldLivingEntity> livingManager;
 
 	protected ShroomWorld world;
 	private ScreenSpace worldSpace;
@@ -38,8 +36,6 @@ public abstract class SceneShroomBase<R extends RenderShroomBase> extends SceneB
 		this.livingManager = new LivingManager<>();
 		this.livingManager.onLivingAdd.addListener(this);
 		this.livingManager.onLivingRemove.addListener(this);
-
-		this.collisionManager = new CollisionManager();
 
 		this.world = this.createWorld();
 	}
@@ -81,24 +77,33 @@ public abstract class SceneShroomBase<R extends RenderShroomBase> extends SceneB
 		this.cameraController = null;
 	}
 
-	public void spawn(LivingEntity living)
+	public void spawn(OldLivingEntity living)
 	{
 		this.getLivingManager().add(living);
 	}
 
 	@Override
-	public void onLivingAdd(LivingEntity living)
+	public void onLivingAdd(OldLivingEntity living)
 	{
 		Entity entity = this.getEntityManager().createEntity(living);
 		living.onEntityCreate(entity);
 	}
 
 	@Override
-	public void onLivingRemove(LivingEntity living)
+	public void onLivingRemove(OldLivingEntity living)
 	{
 		Entity entity = this.getEntityManager().getEntityByComponent(living);
 		entity.setDead();
 		living.onEntityDestroy(entity);
+	}
+
+	@Override
+	protected abstract Class<? extends RenderShroomBase> getRenderClass();
+
+	@Override
+	protected RenderShroomBase getRender()
+	{
+		return (RenderShroomBase) super.getRender();
 	}
 
 	public CameraController getMainCameraController()
@@ -111,14 +116,9 @@ public abstract class SceneShroomBase<R extends RenderShroomBase> extends SceneB
 		return this.getRender().getMainCamera().transform();
 	}
 
-	public LivingManager<LivingEntity> getLivingManager()
+	public LivingManager<OldLivingEntity> getLivingManager()
 	{
 		return this.livingManager;
-	}
-
-	public CollisionManager getCollisionManager()
-	{
-		return this.collisionManager;
 	}
 
 	public ShroomWorld getWorld()

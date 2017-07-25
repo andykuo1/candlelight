@@ -1,7 +1,7 @@
 package net.jimboi.apricot.stage_c.hoob;
 
-import net.jimboi.apricot.stage_c.hoob.collision.Shape;
-import net.jimboi.apricot.stage_c.hoob.collision.StaticCollider;
+import net.jimboi.boron.stage_a.shroom.woot.collision.Shape;
+import net.jimboi.boron.stage_a.shroom.woot.collision.StaticCollider;
 
 import org.zilar.entity.EntityComponent;
 

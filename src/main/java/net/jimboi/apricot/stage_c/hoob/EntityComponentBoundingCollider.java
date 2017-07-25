@@ -1,7 +1,7 @@
 package net.jimboi.apricot.stage_c.hoob;
 
-import net.jimboi.apricot.stage_c.hoob.collision.Collider;
-import net.jimboi.apricot.stage_c.hoob.collision.Shape;
+import net.jimboi.boron.stage_a.shroom.woot.collision.DynamicCollider;
+import net.jimboi.boron.stage_a.shroom.woot.collision.Shape;
 
 import org.zilar.entity.EntityComponent;
 
@@ -10,7 +10,7 @@ import org.zilar.entity.EntityComponent;
  */
 public class EntityComponentBoundingCollider implements EntityComponent
 {
-	Collider collider;
+	DynamicCollider collider;
 
 	public Shape shape;
 
@@ -19,7 +19,7 @@ public class EntityComponentBoundingCollider implements EntityComponent
 		this.shape = shape;
 	}
 
-	public Collider getCollider()
+	public DynamicCollider getCollider()
 	{
 		return this.collider;
 	}

@@ -27,17 +27,15 @@ public class BasicTopDownCameraController extends CameraController implements In
 	protected float right;
 	protected boolean sprint;
 
-	protected Transform3 target;
-
 	public BasicTopDownCameraController()
 	{
 		this.setDistanceToTarget(1.5F);
 	}
 
+	@Override
 	public BasicTopDownCameraController setTarget(Transform3 target)
 	{
-		this.target = target;
-		return this;
+		return (BasicTopDownCameraController) super.setTarget(target);
 	}
 
 	public BasicTopDownCameraController setSpeed(float speed)

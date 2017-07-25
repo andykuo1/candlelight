@@ -1,6 +1,6 @@
 package net.jimboi.boron.stage_a.shroom;
 
-import net.jimboi.apricot.stage_c.hoob.collision.Collider;
+import net.jimboi.boron.stage_a.shroom.woot.collision.DynamicCollider;
 
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputLayer;
@@ -40,9 +40,9 @@ public class CameraControllerShroom extends CameraController implements InputLay
 	protected float counter;
 
 	protected Transform3 target;
-	protected Collider collider;
+	protected DynamicCollider collider;
 
-	public void setTarget(Transform3 transform, Collider collider)
+	public void setTarget(Transform3 transform, DynamicCollider collider)
 	{
 		this.target = transform;
 		this.collider = collider;
@@ -98,8 +98,8 @@ public class CameraControllerShroom extends CameraController implements InputLay
 			if (solid)
 			{
 				this.collider.move(_VEC.x(), _VEC.z());
-				Vector2f pos = new Vector2f(this.target.position.x(), this.target.position.z());
-				this.collider.update(pos);
+				Vector2f pos = new Vector2f();
+				this.collider.update(this.target.position.x(), this.target.position.z(), pos);
 				this.target.position.set(pos.x(), this.target.position.y(), pos.y());
 			}
 			else

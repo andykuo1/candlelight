@@ -37,7 +37,7 @@ public class CorridorBuilder
 			for (Direction dir : Direction.Cardinals.values())
 			{
 				dir.polari(dv);
-				if (src.isValid(cell.x() + dv.x() * 3, cell.y() + dv.y() * 3))
+				if (src.contains(cell.x() + dv.x() * 3, cell.y() + dv.y() * 3))
 				{
 					int i = cell.x() + dv.x() * 2;
 					int j = cell.y() + dv.y() * 2;

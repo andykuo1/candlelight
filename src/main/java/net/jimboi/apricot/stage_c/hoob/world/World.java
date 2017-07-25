@@ -3,11 +3,11 @@ package net.jimboi.apricot.stage_c.hoob.world;
 import net.jimboi.apricot.base.GameEngine;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform;
 import net.jimboi.apricot.stage_c.hoob.SceneHoob;
-import net.jimboi.apricot.stage_c.hoob.collision.Shape;
 import net.jimboi.apricot.stage_c.hoob.world.agents.MoveAgent;
 import net.jimboi.apricot.stage_c.hoob.world.agents.Town;
 import net.jimboi.apricot.stage_c.hoob.world.agents.Traveller;
 import net.jimboi.apricot.stage_c.hoob.world.agents.WorldAgent;
+import net.jimboi.boron.stage_a.shroom.woot.collision.Shape;
 
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputLayer;

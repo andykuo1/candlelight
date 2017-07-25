@@ -35,7 +35,7 @@ public class IntMultiMap extends IntMap
 	@Override
 	public void set(int x, int y, int value)
 	{
-		Poma.ASSERT(this.isValid(x, y));
+		Poma.ASSERT(this.contains(x, y));
 
 		getMap(x, y).set(x % this.chunkSize, y % this.chunkSize, value);
 	}
@@ -43,14 +43,14 @@ public class IntMultiMap extends IntMap
 	@Override
 	public int get(int x, int y)
 	{
-		Poma.ASSERT(this.isValid(x, y), new Vector2i(x, y));
+		Poma.ASSERT(this.contains(x, y), new Vector2i(x, y));
 
 		return getMap(x, y).get(x % this.chunkSize, y % this.chunkSize);
 	}
 
 	protected IntMap getMap(int x, int y)
 	{
-		Poma.ASSERT(this.isValid(x, y));
+		Poma.ASSERT(this.contains(x, y));
 
 		return this.maps.get(this.mapsIndex.set(x / this.chunkSize, y / this.chunkSize));
 	}

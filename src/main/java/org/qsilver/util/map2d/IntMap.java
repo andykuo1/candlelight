@@ -11,7 +11,7 @@ public class IntMap
 	{
 		Poma.ASSERT(w >= 0);
 		Poma.ASSERT(h >= 0);
-		Poma.ASSERT(map.isValid(x, y) && map.isValid(x + w - 1, y + h - 1));
+		Poma.ASSERT(map.contains(x, y) && map.contains(x + w - 1, y + h - 1));
 
 		for (int i = 0; i < w; ++i)
 		{
@@ -31,8 +31,8 @@ public class IntMap
 	{
 		Poma.ASSERT(w >= 0);
 		Poma.ASSERT(h >= 0);
-		Poma.ASSERT(map.isValid(x, y), new Vector2i(x, y));
-		Poma.ASSERT(map.isValid(x + w - 1, y + h - 1));
+		Poma.ASSERT(map.contains(x, y), new Vector2i(x, y));
+		Poma.ASSERT(map.contains(x + w - 1, y + h - 1));
 
 		for (int i = 0; i < w; ++i)
 		{
@@ -45,8 +45,8 @@ public class IntMap
 
 	public static void set(IntMap map, int x, int y, IntMap values)
 	{
-		Poma.ASSERT(map.isValid(x, y), new Vector2i(x, y));
-		Poma.ASSERT(map.isValid(x + values.width - 1, y + values.height - 1));
+		Poma.ASSERT(map.contains(x, y), new Vector2i(x, y));
+		Poma.ASSERT(map.contains(x + values.width - 1, y + values.height - 1));
 
 		for (int i = 0; i < values.width; ++i)
 		{
@@ -59,8 +59,8 @@ public class IntMap
 
 	public static void overlay(IntMap map, int x, int y, IntMap values)
 	{
-		Poma.ASSERT(map.isValid(x, y), new Vector2i(x, y));
-		Poma.ASSERT(map.isValid(x + values.width - 1, y + values.height - 1));
+		Poma.ASSERT(map.contains(x, y), new Vector2i(x, y));
+		Poma.ASSERT(map.contains(x + values.width - 1, y + values.height - 1));
 
 		for (int i = 0; i < values.width; ++i)
 		{
@@ -79,7 +79,7 @@ public class IntMap
 	{
 		Poma.ASSERT(w >= 0);
 		Poma.ASSERT(h >= 0);
-		Poma.ASSERT(map.isValid(x, y) && map.isValid(x + w - 1, y + h - 1));
+		Poma.ASSERT(map.contains(x, y) && map.contains(x + w - 1, y + h - 1));
 
 		for (int i = 0; i < w; ++i)
 		{
@@ -98,7 +98,7 @@ public class IntMap
 	{
 		Poma.ASSERT(w >= 0);
 		Poma.ASSERT(h >= 0);
-		Poma.ASSERT(map.isValid(x, y) && map.isValid(x + w - 1, y + h - 1));
+		Poma.ASSERT(map.contains(x, y) && map.contains(x + w - 1, y + h - 1));
 
 		IntMap ret = new IntMap(w, h);
 		for (int i = 0; i < ret.width; ++i)
@@ -125,7 +125,7 @@ public class IntMap
 		this.height = height;
 	}
 
-	public boolean isValid(int x, int y)
+	public boolean contains(int x, int y)
 	{
 		return x >= 0 && x < this.width && y >= 0 && y < this.height;
 	}
@@ -142,21 +142,21 @@ public class IntMap
 
 	public void set(int x, int y, int value)
 	{
-		Poma.ASSERT(this.isValid(x, y), new Vector2i(x, y));
+		Poma.ASSERT(this.contains(x, y), new Vector2i(x, y));
 
 		this.map[x + y * this.width] = value;
 	}
 
 	public int get(int x, int y)
 	{
-		Poma.ASSERT(this.isValid(x, y), new Vector2i(x, y));
+		Poma.ASSERT(this.contains(x, y), new Vector2i(x, y));
 
 		return this.map[x + y * this.width];
 	}
 
 	public int indexOf(int x, int y)
 	{
-		Poma.ASSERT(this.isValid(x, y), new Vector2i(x, y));
+		Poma.ASSERT(this.contains(x, y), new Vector2i(x, y));
 
 		return x + y * this.width;
 	}

@@ -26,17 +26,15 @@ public class BasicSideScrollCameraController extends CameraController implements
 	protected float right;
 	protected boolean sprint;
 
-	protected Transform3 target;
-
 	public BasicSideScrollCameraController()
 	{
 		this.setDistanceToTarget(10F);
 	}
 
+	@Override
 	public BasicSideScrollCameraController setTarget(Transform3 target)
 	{
-		this.target = target;
-		return this;
+		return (BasicSideScrollCameraController) super.setTarget(target);
 	}
 
 	public BasicSideScrollCameraController setSpeed(float speed)

@@ -3,7 +3,7 @@ package net.jimboi.apricot.stage_c.hoob;
 import net.jimboi.apricot.base.GameEngine;
 import net.jimboi.apricot.base.RenderBase;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderable;
-import net.jimboi.apricot.stage_c.hoob.collision.CollisionRenderer;
+import net.jimboi.boron.stage_a.shroom.woot.collision.CollisionRenderer;
 
 import org.bstone.input.InputManager;
 import org.bstone.mogli.Mesh;

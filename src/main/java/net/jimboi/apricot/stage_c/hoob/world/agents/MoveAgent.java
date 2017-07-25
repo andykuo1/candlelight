@@ -1,8 +1,8 @@
 package net.jimboi.apricot.stage_c.hoob.world.agents;
 
 import net.jimboi.apricot.stage_c.hoob.EntityComponentBoundingCollider;
-import net.jimboi.apricot.stage_c.hoob.collision.Collider;
 import net.jimboi.apricot.stage_c.hoob.world.World;
+import net.jimboi.boron.stage_a.shroom.woot.collision.DynamicCollider;
 
 import org.bstone.transform.Transform;
 import org.joml.Vector2f;
@@ -27,7 +27,7 @@ public abstract class MoveAgent extends WorldAgent
 	public void onUpdate(double delta)
 	{
 		Entity entity = this.world.scene.getEntityManager().getEntityByComponent(this);
-		Collider collider = entity.getComponent(EntityComponentBoundingCollider.class).getCollider();
+		DynamicCollider collider = entity.getComponent(EntityComponentBoundingCollider.class).getCollider();
 
 		if (this.pos.distanceSquared(this.target) > 0.1F)
 		{
@@ -47,7 +47,7 @@ public abstract class MoveAgent extends WorldAgent
 
 			//Smooth sliding
 			collider.move(dx, dy);
-			collider.update(this.pos);
+			collider.update(this.pos.x(), this.pos.y(), this.pos);
 		}
 	}
 

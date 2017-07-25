@@ -5,9 +5,9 @@ package net.jimboi.boron.stage_a.shroom;
  */
 public abstract class ShroomWorld
 {
-	protected final SceneShroomBase<? extends RenderShroomBase> scene;
+	protected final SceneShroomBase scene;
 
-	public ShroomWorld(SceneShroomBase<? extends RenderShroomBase> scene)
+	public ShroomWorld(SceneShroomBase scene)
 	{
 		this.scene = scene;
 	}
@@ -18,7 +18,7 @@ public abstract class ShroomWorld
 
 	public abstract void destroy();
 
-	public SceneShroomBase<? extends RenderShroomBase> getScene()
+	public SceneShroomBase getScene()
 	{
 		return this.scene;
 	}

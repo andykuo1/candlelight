@@ -140,14 +140,6 @@ public class LivingManager<L extends Living>
 		this.spawnList.clear();
 		this.cached = false;
 		this.spawnCache.clear();
-	}
-
-	public void clear()
-	{
-		this.cached = true;
-		this.spawnList.clear();
-		this.cached = false;
-		this.spawnCache.clear();
 		this.livings.clear();
 	}
 

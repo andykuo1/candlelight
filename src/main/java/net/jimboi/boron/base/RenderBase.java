@@ -3,13 +3,21 @@ package net.jimboi.boron.base;
 import org.bstone.window.camera.Camera;
 import org.qsilver.render.RenderEngine;
 import org.qsilver.render.RenderService;
+import org.qsilver.scene.Scene;
 
 /**
  * Created by Andy on 7/17/17.
  */
-public abstract class RenderBase<S extends SceneBase> extends RenderService implements RenderEngine.OnRenderUpdateListener
+public abstract class RenderBase extends RenderService implements RenderEngine.OnRenderUpdateListener
 {
-	S scene;
+	Scene scene;
+
+	private Camera mainCamera;
+
+	public RenderBase(Camera camera)
+	{
+		this.mainCamera = camera;
+	}
 
 	@Override
 	protected void onStart(RenderEngine handler)
@@ -37,12 +45,13 @@ public abstract class RenderBase<S extends SceneBase> extends RenderService impl
 
 	protected abstract void onUnload(RenderEngine renderEngine);
 
-	protected abstract Class<S> getSceneClass();
+	public Camera getMainCamera()
+	{
+		return this.mainCamera;
+	}
 
-	protected final S getScene()
+	protected Scene getScene()
 	{
 		return this.scene;
 	}
-
-	public abstract Camera getMainCamera();
 }

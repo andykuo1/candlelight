@@ -9,6 +9,14 @@ public abstract class CameraController
 {
 	private Camera camera;
 
+	protected Transform3 target;
+
+	public CameraController setTarget(Transform3 target)
+	{
+		this.target = target;
+		return this;
+	}
+
 	public final void start(Camera camera)
 	{
 		this.camera = camera;

@@ -4,9 +4,9 @@ import net.jimboi.apricot.base.GameEngine;
 import net.jimboi.apricot.base.SceneBase;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderable;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform;
-import net.jimboi.apricot.stage_c.hoob.collision.CollisionManager;
-import net.jimboi.apricot.stage_c.hoob.collision.Shape;
 import net.jimboi.apricot.stage_c.hoob.world.World;
+import net.jimboi.boron.stage_a.shroom.woot.collision.CollisionManager;
+import net.jimboi.boron.stage_a.shroom.woot.collision.Shape;
 
 import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;

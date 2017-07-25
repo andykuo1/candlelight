@@ -1,16 +1,13 @@
 package net.jimboi.boron.stage_a.shroom;
 
-import net.jimboi.apricot.stage_c.hoob.collision.CollisionRenderer;
 import net.jimboi.boron.base.RenderBase;
-import net.jimboi.boron.stage_a.shroom.component.EntityComponentRenderable;
+import net.jimboi.boron.base.livingentity.EntityComponentRenderable;
 
 import org.bstone.input.InputManager;
 import org.bstone.mogli.Program;
-import org.bstone.transform.Transform;
 import org.bstone.util.SemanticVersion;
 import org.bstone.window.camera.OrthographicCamera;
 import org.bstone.window.camera.PerspectiveCamera;
-import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.qsilver.asset.Asset;
@@ -26,13 +23,9 @@ import java.util.HashSet;
 /**
  * Created by Andy on 7/17/17.
  */
-public abstract class RenderShroomBase<S extends SceneShroomBase> extends RenderBase<S>
+public abstract class RenderShroomBase extends RenderBase
 {
-	protected final PerspectiveCamera mainCamera;
-
 	protected SimpleRenderer simpleRenderer;
-	protected CollisionRenderer collisionRenderer;
-	private Matrix4f boundingOffsetViewMatrix = new Matrix4f().rotateX(Transform.HALF_PI);
 	protected GuiRenderer guiRenderer;
 
 	protected GuiManager guiManager;
@@ -41,7 +34,7 @@ public abstract class RenderShroomBase<S extends SceneShroomBase> extends Render
 
 	public RenderShroomBase()
 	{
-		this.mainCamera = new PerspectiveCamera(640, 480);
+		super(new PerspectiveCamera(640, 480));
 		this.assets = Assets.create(Shroom.ENGINE.getAssetManager(), "shroom", new SemanticVersion("0.0.0"));
 	}
 
@@ -77,16 +70,13 @@ public abstract class RenderShroomBase<S extends SceneShroomBase> extends Render
 		//ASSETS
 
 		final Asset<Program> simpleProgram = Shroom.ENGINE.getAssetManager().getAsset(Program.class, "simple");
-		final Asset<Program> wireframeProgram = Shroom.ENGINE.getAssetManager().getAsset(Program.class, "wireframe");
 
 		//RENDERERS
 
 		this.simpleRenderer = new SimpleRenderer(simpleProgram);
-		this.collisionRenderer = new CollisionRenderer(this.getScene().getCollisionManager(), wireframeProgram);
 		this.guiRenderer = new GuiRenderer(this.guiManager, simpleProgram);
 
 		renderEngine.startService(this.simpleRenderer);
-		renderEngine.startService(this.collisionRenderer);
 		renderEngine.startService(this.guiRenderer);
 
 		GL11.glEnable(GL11.GL_CULL_FACE);
@@ -101,7 +91,6 @@ public abstract class RenderShroomBase<S extends SceneShroomBase> extends Render
 		Iterable<EntityComponentRenderable> renderables = this.getScene().getEntityManager().getSimilarComponents(EntityComponentRenderable.class, new HashSet<>());
 
 		this.simpleRenderer.render(this.getMainCamera(), new CastIterator<>(renderables.iterator()));
-		this.collisionRenderer.render(this.getMainCamera(), this.boundingOffsetViewMatrix);
 		this.guiRenderer.render();
 	}
 
@@ -109,7 +98,6 @@ public abstract class RenderShroomBase<S extends SceneShroomBase> extends Render
 	protected void onUnload(RenderEngine renderEngine)
 	{
 		renderEngine.stopService(this.simpleRenderer);
-		renderEngine.stopService(this.collisionRenderer);
 		renderEngine.stopService(this.guiRenderer);
 
 		this.assets.unload();
@@ -122,6 +110,12 @@ public abstract class RenderShroomBase<S extends SceneShroomBase> extends Render
 	@Override
 	public PerspectiveCamera getMainCamera()
 	{
-		return this.mainCamera;
+		return (PerspectiveCamera) super.getMainCamera();
+	}
+
+	@Override
+	protected SceneShroomBase getScene()
+	{
+		return (SceneShroomBase) super.getScene();
 	}
 }

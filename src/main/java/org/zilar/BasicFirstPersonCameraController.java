@@ -37,12 +37,10 @@ public class BasicFirstPersonCameraController extends CameraController implement
 
 	protected float counter;
 
-	protected Transform3 target;
-
+	@Override
 	public BasicFirstPersonCameraController setTarget(Transform3 target)
 	{
-		this.target = target;
-		return this;
+		return (BasicFirstPersonCameraController) super.setTarget(target);
 	}
 
 	@Override

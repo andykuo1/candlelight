@@ -10,9 +10,9 @@ import org.zilar.entity.EntityManager;
 /**
  * Created by Andy on 7/17/17.
  */
-public abstract class SceneBase<R extends RenderService> extends Scene
+public abstract class SceneBase extends Scene
 {
-	private R renderer;
+	private RenderService renderer;
 
 	protected EntityManager entityManager;
 	protected MaterialManager materialManager;
@@ -32,14 +32,10 @@ public abstract class SceneBase<R extends RenderService> extends Scene
 		try
 		{
 			this.renderer = this.getRenderClass().newInstance();
+
 			if (this.renderer instanceof RenderBase)
 			{
-				RenderBase render = (RenderBase) this.renderer;
-				if (!render.getSceneClass().equals(this.getClass()))
-				{
-					throw new InstantiationException();
-				}
-				render.scene = this;
+				((RenderBase) this.renderer).scene = this;
 			}
 		}
 		catch (InstantiationException | IllegalAccessException e)
@@ -78,9 +74,9 @@ public abstract class SceneBase<R extends RenderService> extends Scene
 		this.materialManager.clear();
 	}
 
-	protected abstract Class<R> getRenderClass();
+	protected abstract Class<? extends RenderService> getRenderClass();
 
-	protected final R getRender()
+	protected RenderService getRender()
 	{
 		return this.renderer;
 	}
