@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: lwjgl-opengl.jar lwjgl-glfw.jar lwjgl-stb.jar joml-1.9.2.jar lwjgl.jar jbox2d-library-2.2.1.1.jar
+Main-Class: net.jimboi.apricot.stage_b.glim.SceneGlim
+

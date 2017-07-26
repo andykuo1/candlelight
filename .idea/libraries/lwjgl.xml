@@ -2,16 +2,24 @@
   <library name="lwjgl">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/lwjgl/lwjgl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/lwjgl/lwjgl-glfw.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/lwjgl/lwjgl-opengl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/lwjgl/lwjgl-stb.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/lib/lwjgl/lwjgl-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/lwjgl/lwjgl-glfw-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/lwjgl/lwjgl-opengl-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/lwjgl/lwjgl-stb-javadoc.jar!/" />
     </JAVADOC>
     <NATIVE>
-      <root url="jar://$PROJECT_DIR$/lib/lwjgl/lwjgl-natives-macos.jar!/" />
       <root url="file://$PROJECT_DIR$/lib/lwjgl" />
     </NATIVE>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/lib/lwjgl/lwjgl-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/lwjgl/lwjgl-glfw-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/lwjgl/lwjgl-opengl-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/lwjgl/lwjgl-stb-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

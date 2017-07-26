@@ -11,8 +11,8 @@ import org.zilar.entity.EntityComponent;
  */
 public class LivingEntity extends Living implements EntityComponent
 {
-	private final Transform3 transform;
-	private final EntityComponentRenderable renderable;
+	protected final Transform3 transform;
+	protected final EntityComponentRenderable renderable;
 
 	public LivingEntity(Transform3 transform, EntityComponentRenderable renderable)
 	{

@@ -11,8 +11,8 @@ import org.zilar.model.Model;
  */
 public class EntityComponentRenderable implements EntityComponent, Renderable
 {
-	public final Transform transform;
-	public final Model model;
+	public Transform transform;
+	public Model model;
 	private boolean visible;
 
 	public EntityComponentRenderable(Transform transform, Model model)
@@ -20,6 +20,11 @@ public class EntityComponentRenderable implements EntityComponent, Renderable
 		this.transform = transform;
 		this.model = model;
 		this.visible = true;
+	}
+
+	public void setTransform(Transform transform)
+	{
+		this.transform = transform;
 	}
 
 	public void setVisible(boolean visible)

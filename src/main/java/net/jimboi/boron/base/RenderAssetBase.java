@@ -51,7 +51,7 @@ public abstract class RenderAssetBase extends RenderBase
 		InputManager.registerMousePosY("mousey");
 
 		InputManager.registerMouse("mouseleft", GLFW.GLFW_MOUSE_BUTTON_LEFT);
-		InputManager.registerMouse("mouseright", GLFW.GLFW_MOUSE_BUTTON_LEFT);
+		InputManager.registerMouse("mouseright", GLFW.GLFW_MOUSE_BUTTON_RIGHT);
 		InputManager.registerKey("mouselock", GLFW.GLFW_KEY_P);
 
 		InputManager.registerKey("forward", GLFW.GLFW_KEY_W, GLFW.GLFW_KEY_UP);
