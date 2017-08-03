@@ -43,24 +43,33 @@ public final class GameEngine
 		this.window = new Window("Demo", 640, 480);
 		this.inputEngine = this.window.getInputEngine();
 
-		this.tickEngine = new TickEngine(30, true, new TickHandler()
+		this.tickEngine = new TickEngine(60, true, new TickHandler()
 		{
 			@Override
 			public void onFirstUpdate(TickEngine tickEngine)
 			{
-
+				renderEngine.start();
 			}
 
 			@Override
 			public void onPreUpdate()
 			{
+				if (!flag)
+				{
+					window.poll();
 
+					if (window.shouldCloseWindow())
+					{
+						flag = true;
+						sceneManager.stopScene();
+					}
+				}
 			}
 
 			@Override
 			public void onFixedUpdate()
 			{
-				sceneManager.update(1);
+				sceneManager.update(0.02D);
 			}
 
 			private boolean flag = false;
@@ -70,14 +79,7 @@ public final class GameEngine
 			{
 				if (!flag)
 				{
-					if (window.shouldCloseWindow())
-					{
-						flag = true;
-						sceneManager.stopScene();
-						return;
-					}
-
-					window.update();
+					window.clearScreenBuffer();
 				}
 				else if (!sceneManager.isActive())
 				{
@@ -88,7 +90,7 @@ public final class GameEngine
 
 				if (!flag)
 				{
-					window.poll();
+					window.updateScreenBuffer();
 				}
 			}
 
@@ -128,8 +130,6 @@ public final class GameEngine
 		}
 
 		this.sceneManager.nextScene(scene);
-
-		this.renderEngine.start();
 
 		this.tickEngine.run();
 	}

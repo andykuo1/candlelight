@@ -64,24 +64,33 @@ public class Main
 		WINDOW = new Window("Application", 640, 480);
 		INPUTENGINE = WINDOW.getInputEngine();
 
-		TICKENGINE = new TickEngine(30, true, new TickHandler()
+		TICKENGINE = new TickEngine(60, true, new TickHandler()
 		{
 			@Override
 			public void onFirstUpdate(TickEngine tickEngine)
 			{
-
+				RENDERENGINE.start();
 			}
 
 			@Override
 			public void onPreUpdate()
 			{
+				if (!flag)
+				{
+					WINDOW.poll();
 
+					if (WINDOW.shouldCloseWindow())
+					{
+						flag = true;
+						SCENEMANAGER.stopScene();
+					}
+				}
 			}
 
 			@Override
 			public void onFixedUpdate()
 			{
-				SCENEMANAGER.update(1);
+				SCENEMANAGER.update(0.02D);
 			}
 
 			private boolean flag = false;
@@ -91,14 +100,7 @@ public class Main
 			{
 				if (!flag)
 				{
-					if (WINDOW.shouldCloseWindow())
-					{
-						flag = true;
-						SCENEMANAGER.stopScene();
-						return;
-					}
-
-					WINDOW.update();
+					WINDOW.clearScreenBuffer();
 				}
 				else if (!SCENEMANAGER.isActive())
 				{
@@ -109,7 +111,7 @@ public class Main
 
 				if (!flag)
 				{
-					WINDOW.poll();
+					WINDOW.updateScreenBuffer();
 				}
 			}
 
@@ -134,8 +136,6 @@ public class Main
 		}
 
 		SCENEMANAGER.nextScene(SCENE);
-
-		RENDERENGINE.start();
 
 		TICKENGINE.run();
 	}

@@ -64,18 +64,27 @@ public final class GameEngine
 		WINDOW = new Window("Application", 640, 480);
 		INPUTENGINE = WINDOW.getInputEngine();
 
-		TICKENGINE = new TickEngine(30, true, new TickHandler()
+		TICKENGINE = new TickEngine(60, true, new TickHandler()
 		{
 			@Override
 			public void onFirstUpdate(TickEngine tickEngine)
 			{
-
+				RENDERENGINE.start();
 			}
 
 			@Override
 			public void onPreUpdate()
 			{
+				if (!flag)
+				{
+					WINDOW.poll();
 
+					if (WINDOW.shouldCloseWindow())
+					{
+						flag = true;
+						SCENEMANAGER.stopScene();
+					}
+				}
 			}
 
 			@Override
@@ -91,14 +100,7 @@ public final class GameEngine
 			{
 				if (!flag)
 				{
-					if (WINDOW.shouldCloseWindow())
-					{
-						flag = true;
-						SCENEMANAGER.stopScene();
-						return;
-					}
-
-					WINDOW.update();
+					WINDOW.clearScreenBuffer();
 				}
 				else if (!SCENEMANAGER.isActive())
 				{
@@ -109,7 +111,7 @@ public final class GameEngine
 
 				if (!flag)
 				{
-					WINDOW.poll();
+					WINDOW.updateScreenBuffer();
 				}
 			}
 
@@ -139,8 +141,6 @@ public final class GameEngine
 		}
 
 		SCENEMANAGER.nextScene(scene);
-
-		RENDERENGINE.start();
 
 		TICKENGINE.run();
 	}

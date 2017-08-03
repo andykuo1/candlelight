@@ -149,8 +149,8 @@ public class Window
 
 		// Make the OpenGL context current
 		GLFW.glfwMakeContextCurrent(handle);
-		// Disable v-sync
-		GLFW.glfwSwapInterval(0);
+		// Enable v-sync
+		GLFW.glfwSwapInterval(1);
 
 		// Make the window visible
 		GLFW.glfwShowWindow(handle);
@@ -175,16 +175,19 @@ public class Window
 		this.setCurrentViewPort(this.defaultViewPort);
 	}
 
-	public void update()
+	public void clearScreenBuffer()
 	{
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 	}
 
-	public void poll()
+	public void updateScreenBuffer()
 	{
 		GLFW.glfwSwapBuffers(this.handle);
-		GLFW.glfwPollEvents();
+	}
 
+	public void poll()
+	{
+		GLFW.glfwPollEvents();
 		this.inputEngine.update();
 	}
 
