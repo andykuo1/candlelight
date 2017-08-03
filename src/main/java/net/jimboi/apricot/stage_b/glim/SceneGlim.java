@@ -1,6 +1,6 @@
 package net.jimboi.apricot.stage_b.glim;
 
-import net.jimboi.apricot.base.GameEngine;
+import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.SceneBase;
 import net.jimboi.apricot.stage_b.glim.bounding.BoundingManager;
 import net.jimboi.apricot.stage_b.glim.entity.EntityBunny;
@@ -43,8 +43,8 @@ public class SceneGlim extends SceneBase
 {
 	public static void main(String[] args)
 	{
-		GameEngine.init(SceneGlim.class, args);
-		GameEngine.run();
+		OldGameEngine.init(SceneGlim.class, args);
+		OldGameEngine.run();
 	}
 
 	private EntitySystemBounding sys_bounding;
@@ -89,28 +89,28 @@ public class SceneGlim extends SceneBase
 
 		this.getCameraController().setTarget(this.player, this.world);
 
-		Asset<Texture> font = GameEngine.ASSETMANAGER.getAsset(Texture.class, "font");
+		Asset<Texture> font = OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "font");
 
 		TextureAtlasBuilder tab = new TextureAtlasBuilder();
 		tab.addTileSheet(font, 0, 0, 16, 16, 0, 0, 16, 16);
 		TextureAtlasData atlas = tab.bake();
 		tab.clear();
-		Asset<TextureAtlas> textureAtlas = GameEngine.ASSETMANAGER.registerAsset(TextureAtlas.class, "font",
+		Asset<TextureAtlas> textureAtlas = OldGameEngine.ASSETMANAGER.registerAsset(TextureAtlas.class, "font",
 				new TextureAtlasLoader.TextureAtlasParameter(atlas));
 
 		MeshData mesh = WorldGlim.createMeshFromMap(this.world.getMap(), textureAtlas);
-		GameEngine.ASSETMANAGER.registerAsset(Mesh.class, "dungeon",
+		OldGameEngine.ASSETMANAGER.registerAsset(Mesh.class, "dungeon",
 				new MeshLoader.MeshParameter(mesh));
 
 		this.getEntityManager().createEntity(
 				new EntityComponentRenderable(
 						new Transform3(),
-						new Model(GameEngine.ASSETMANAGER.getAsset(Mesh.class, "dungeon"),
+						new Model(OldGameEngine.ASSETMANAGER.getAsset(Mesh.class, "dungeon"),
 								this.getMaterialManager().createMaterial(
 										new PropertyDiffuse(),
 										new PropertySpecular(),
 										new PropertyShadow(true, true),
-										new PropertyTexture(GameEngine.ASSETMANAGER.getAsset(Texture.class, "font"))),
+										new PropertyTexture(OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "font"))),
 								"diffuse"))
 		);
 
@@ -120,12 +120,12 @@ public class SceneGlim extends SceneBase
 		this.shadowplane = this.getEntityManager().createEntity(
 				new EntityComponentRenderable(
 						new Transform3(),
-						new Model(GameEngine.ASSETMANAGER.getAsset(Mesh.class, "plane"),
+						new Model(OldGameEngine.ASSETMANAGER.getAsset(Mesh.class, "plane"),
 								this.getMaterialManager().createMaterial(
 										new PropertyDiffuse(),
 										new PropertySpecular(),
 										new PropertyShadow(true, true),
-										new PropertyTexture(GameEngine.ASSETMANAGER.getAsset(Texture.class, "shadowmap"))),//spritesheet)),
+										new PropertyTexture(OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "shadowmap"))),//spritesheet)),
 							"billboard"))
 		);
 

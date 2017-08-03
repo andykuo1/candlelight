@@ -15,7 +15,7 @@ import java.util.Arrays;
 /**
  * Created by Andy on 7/5/17.
  */
-public final class GameEngine
+public final class OldGameEngine
 {
 	public static TickEngine TICKENGINE;
 	public static Window WINDOW;
@@ -25,7 +25,7 @@ public final class GameEngine
 	public static AssetManager ASSETMANAGER;
 	public static SceneManager SCENEMANAGER;
 
-	private GameEngine() {}
+	private OldGameEngine() {}
 
 	@SuppressWarnings("unchecked")
 	public static Scene init(String classpath, String[] args)

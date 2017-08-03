@@ -1,6 +1,6 @@
 package net.jimboi.apricot.stage_c.hoob;
 
-import net.jimboi.apricot.base.GameEngine;
+import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.RenderBase;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderable;
 
@@ -60,7 +60,7 @@ public class RenderHoob extends RenderBase
 	{
 		super(new PerspectiveCamera(640, 480));
 
-		this.assets = Assets.create(GameEngine.ASSETMANAGER, "hoob", new SemanticVersion("0.0.0"));
+		this.assets = Assets.create(OldGameEngine.ASSETMANAGER, "hoob", new SemanticVersion("0.0.0"));
 	}
 
 	@Override
@@ -84,19 +84,19 @@ public class RenderHoob extends RenderBase
 		InputManager.registerKey("action", GLFW.GLFW_KEY_F);
 		InputManager.registerKey("sprint", GLFW.GLFW_KEY_LEFT_SHIFT, GLFW.GLFW_KEY_RIGHT_SHIFT);
 
-		Asset<Texture> font = GameEngine.ASSETMANAGER.getAsset(Texture.class, "font");
+		Asset<Texture> font = OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "font");
 
 		TextureAtlasBuilder t = new TextureAtlasBuilder();
 		t.addTileSheet(font, 0, 0, 16, 16, 0, 0, 16, 16);
 		TextureAtlasData atlas = t.bake();
 		t.clear();
-		Asset<TextureAtlas> textureAtlas = GameEngine.ASSETMANAGER.registerAsset(TextureAtlas.class, "font",
+		Asset<TextureAtlas> textureAtlas = OldGameEngine.ASSETMANAGER.registerAsset(TextureAtlas.class, "font",
 				new TextureAtlasLoader.TextureAtlasParameter(atlas));
 
 		TextMesh.defaultFontSheet = new FontSheet(textureAtlas, 0, (char) 0, (char) 255);
 
-		this.guiManager = new GuiManager(new OrthographicCamera(640, 480), GameEngine.WINDOW.getCurrentViewPort());
-		GameEngine.INPUTENGINE.addInputLayer(this.guiManager);
+		this.guiManager = new GuiManager(new OrthographicCamera(640, 480), OldGameEngine.WINDOW.getCurrentViewPort());
+		OldGameEngine.INPUTENGINE.addInputLayer(this.guiManager);
 
 		Gui frame = new GuiFrame();
 		frame.setSize(9, 10);
@@ -126,7 +126,7 @@ public class RenderHoob extends RenderBase
 		button.setEnabled(false);
 		panel.addChild(button);
 
-		GuiMaterial mat = new GuiMaterial(this.scene.getMaterialManager().createMaterial(new PropertyTexture(GameEngine.ASSETMANAGER.getAsset(Texture.class, "bunny"))));
+		GuiMaterial mat = new GuiMaterial(this.scene.getMaterialManager().createMaterial(new PropertyTexture(OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "bunny"))));
 		mat.setPosition(0.5F, 0.5F);
 		mat.setSize(1, 1);
 		panel.addChild(mat);
@@ -142,13 +142,13 @@ public class RenderHoob extends RenderBase
 
 
 
-		this.simpleRenderer = renderEngine.startService(new SimpleRenderer(GameEngine.ASSETMANAGER.getAsset(Program.class, "simple")));
-		this.collisionRenderer = renderEngine.startService(new CollisionRenderer(((SceneHoob) this.scene).getCollisionManager(), GameEngine.ASSETMANAGER.getAsset(Program.class, "wireframe")));
-		this.guiRenderer = renderEngine.startService(new GuiRenderer(this.guiManager, GameEngine.ASSETMANAGER.getAsset(Program.class, "simple")));
+		this.simpleRenderer = renderEngine.startService(new SimpleRenderer(OldGameEngine.ASSETMANAGER.getAsset(Program.class, "simple")));
+		this.collisionRenderer = renderEngine.startService(new CollisionRenderer(((SceneHoob) this.scene).getCollisionManager(), OldGameEngine.ASSETMANAGER.getAsset(Program.class, "wireframe")));
+		this.guiRenderer = renderEngine.startService(new GuiRenderer(this.guiManager, OldGameEngine.ASSETMANAGER.getAsset(Program.class, "simple")));
 
 		MeshBuilder mb = new MeshBuilder();
 		mb.addPlane(new Vector2f(0, 0), new Vector2f(1, 1), 0, new Vector2f(0, 0), new Vector2f(1, 1));
-		GameEngine.ASSETMANAGER.registerAsset(Mesh.class, "quad",
+		OldGameEngine.ASSETMANAGER.registerAsset(Mesh.class, "quad",
 				new MeshLoader.MeshParameter(mb.bake(false, true)));
 		mb.clear();
 
@@ -159,21 +159,21 @@ public class RenderHoob extends RenderBase
 				mb.addPlane(new Vector2f(i, j), new Vector2f(i + 1, j + 1), 0, new Vector2f(0, 0), new Vector2f(1, 1));
 			}
 		}
-		GameEngine.ASSETMANAGER.registerAsset(Mesh.class, "ground", new MeshLoader.MeshParameter(mb.bake(true, true)));
+		OldGameEngine.ASSETMANAGER.registerAsset(Mesh.class, "ground", new MeshLoader.MeshParameter(mb.bake(true, true)));
 		mb.clear();
 
-		Asset<Texture> crate = GameEngine.ASSETMANAGER.getAsset(Texture.class, "crate");
-		Asset<Texture> bunny = GameEngine.ASSETMANAGER.getAsset(Texture.class, "bunny");
+		Asset<Texture> crate = OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "crate");
+		Asset<Texture> bunny = OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "bunny");
 
 		final TextureAtlasBuilder tab = new TextureAtlasBuilder();
 
 		tab.addHorizontalStrip(bunny, 0, 0, 48, 48, 0, 3);
-		GameEngine.ASSETMANAGER.registerAsset(TextureAtlas.class, "bunny",
+		OldGameEngine.ASSETMANAGER.registerAsset(TextureAtlas.class, "bunny",
 				new TextureAtlasLoader.TextureAtlasParameter(tab.bake()));
 		tab.clear();
 
 		tab.addNineSheet(crate, 0, 0, 64, 64, 64, 64, 64, 64);
-		GameEngine.ASSETMANAGER.registerAsset(TextureAtlas.class, "button",
+		OldGameEngine.ASSETMANAGER.registerAsset(TextureAtlas.class, "button",
 				new TextureAtlasLoader.TextureAtlasParameter(tab.bake()));
 		tab.clear();
 	}
@@ -197,7 +197,7 @@ public class RenderHoob extends RenderBase
 	public void onRenderUnload(RenderEngine renderEngine)
 	{
 		this.guiManager.destroy();
-		GameEngine.INPUTENGINE.removeInputLayer(this.guiManager);
+		OldGameEngine.INPUTENGINE.removeInputLayer(this.guiManager);
 		renderEngine.stopService(this.collisionRenderer);
 		TextMesh.clear();
 	}

@@ -1,6 +1,6 @@
 package net.jimboi.apricot.stage_c.hoob.world;
 
-import net.jimboi.apricot.base.GameEngine;
+import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform;
 import net.jimboi.apricot.stage_c.hoob.SceneHoob;
 import net.jimboi.apricot.stage_c.hoob.world.agents.MoveAgent;
@@ -42,7 +42,7 @@ public class World implements LivingManager.OnLivingCreateListener<WorldAgent>, 
 	public World(SceneHoob scene)
 	{
 		this.scene = scene;
-		GameEngine.INPUTENGINE.addInputLayer(this);
+		OldGameEngine.INPUTENGINE.addInputLayer(this);
 	}
 
 	public void create()
@@ -56,7 +56,7 @@ public class World implements LivingManager.OnLivingCreateListener<WorldAgent>, 
 		this.player = this.spawnTraveller(0, 0);
 		this.player.moveSpeed = 4F;
 
-		this.screenSpace = new ScreenSpace(GameEngine.WINDOW.getCurrentViewPort(), this.scene.getRenderer().getCamera(), Direction.CENTER, true, false);
+		this.screenSpace = new ScreenSpace(OldGameEngine.WINDOW.getCurrentViewPort(), this.scene.getRenderer().getCamera(), Direction.CENTER, true, false);
 	}
 
 	private boolean actionMove = false;

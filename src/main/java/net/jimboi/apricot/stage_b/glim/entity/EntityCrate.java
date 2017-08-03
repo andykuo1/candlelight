@@ -1,6 +1,6 @@
 package net.jimboi.apricot.stage_b.glim.entity;
 
-import net.jimboi.apricot.base.GameEngine;
+import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.stage_b.glim.WorldGlim;
 import net.jimboi.apricot.stage_b.glim.bounding.square.AABB;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentBounding;
@@ -29,12 +29,12 @@ public class EntityCrate extends EntityGlim
 		return MANAGER.createEntity(
 				new EntityComponentTransform(transform),
 				new EntityComponentRenderable(transform, new Model(
-						GameEngine.ASSETMANAGER.getAsset(Mesh.class, "box"),
+						OldGameEngine.ASSETMANAGER.getAsset(Mesh.class, "box"),
 						SCENE.getMaterialManager().createMaterial(
 								new PropertyDiffuse(),
 								new PropertySpecular(),
 								new PropertyShadow(true, true),
-								new PropertyTexture(GameEngine.ASSETMANAGER.getAsset(Texture.class, "crate"))),
+								new PropertyTexture(OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "crate"))),
 						"diffuse")),
 				new EntityComponentBounding(world.getBoundingManager().create(new AABB(transform.position.x, transform.position.z, 0.5F, 0.5F))));
 	}

@@ -1,6 +1,6 @@
 package net.jimboi.apricot.stage_b.glim.entity;
 
-import net.jimboi.apricot.base.GameEngine;
+import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.stage_b.glim.WorldGlim;
 import net.jimboi.apricot.stage_b.glim.bounding.square.AABB;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentBillboard;
@@ -38,26 +38,26 @@ public class EntityBunny extends EntityGlim
 		Transform3 transform = new Transform3();
 		transform.position.set(x, y, z);
 
-		Asset<Texture> bunny = GameEngine.ASSETMANAGER.getAsset(Texture.class, "bunny");
+		Asset<Texture> bunny = OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "bunny");
 
-		if (!GameEngine.ASSETMANAGER.containsAsset(TextureAtlas.class, "bunny"))
+		if (!OldGameEngine.ASSETMANAGER.containsAsset(TextureAtlas.class, "bunny"))
 		{
 			TextureAtlasBuilder tab = new TextureAtlasBuilder();
 			tab.addHorizontalStrip(bunny, 0, 0, 48, 48, 0, 3);
 			TextureAtlasData data = tab.bake();
 			tab.clear();
 
-			GameEngine.ASSETMANAGER.registerAsset(TextureAtlas.class, "bunny", new TextureAtlasLoader.TextureAtlasParameter(data));
+			OldGameEngine.ASSETMANAGER.registerAsset(TextureAtlas.class, "bunny", new TextureAtlasLoader.TextureAtlasParameter(data));
 		}
 
-		Asset<TextureAtlas> atlas = GameEngine.ASSETMANAGER.getAsset(TextureAtlas.class, "bunny");
+		Asset<TextureAtlas> atlas = OldGameEngine.ASSETMANAGER.getAsset(TextureAtlas.class, "bunny");
 		SpriteSheet bunnySheet = new SpriteSheet(atlas, new int[] {0, 1, 2});
 		SCENE.getAnimationManager().start(new AnimatorSpriteSheet(bunnySheet, 0.2F));
 
 		return MANAGER.createEntity(
 				new EntityComponentTransform(transform),
 				new EntityComponentRenderable(transform, new Model(
-						GameEngine.ASSETMANAGER.getAsset(Mesh.class, "plane"),
+						OldGameEngine.ASSETMANAGER.getAsset(Mesh.class, "plane"),
 						SCENE.getMaterialManager().createMaterial(
 								new PropertyDiffuse(),
 								new PropertyShadow(true, true),

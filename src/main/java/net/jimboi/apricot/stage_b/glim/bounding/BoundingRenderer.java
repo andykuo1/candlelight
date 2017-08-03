@@ -1,6 +1,6 @@
 package net.jimboi.apricot.stage_b.glim.bounding;
 
-import net.jimboi.apricot.base.GameEngine;
+import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.stage_b.glim.bounding.square.AABB;
 import net.jimboi.apricot.stage_b.glim.bounding.square.Circle;
 
@@ -47,7 +47,7 @@ public class BoundingRenderer extends RenderService
 	@Override
 	protected void onStart(RenderEngine handler)
 	{
-		AssetManager assetManager = GameEngine.ASSETMANAGER;
+		AssetManager assetManager = OldGameEngine.ASSETMANAGER;
 
 		MeshBuilder mb = new MeshBuilder();
 		mb.addCircle(0, 0, 1, 6);

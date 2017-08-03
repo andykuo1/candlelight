@@ -1,6 +1,6 @@
 package net.jimboi.apricot.stage_c.hoob;
 
-import net.jimboi.apricot.base.GameEngine;
+import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.SceneBase;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderable;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform;
@@ -30,8 +30,8 @@ public class SceneHoob extends SceneBase
 	//TODO: There is a leak with meshes...
 	public static void main(String[] args)
 	{
-		GameEngine.init(SceneHoob.class, args);
-		GameEngine.run();
+		OldGameEngine.init(SceneHoob.class, args);
+		OldGameEngine.run();
 	}
 
 	protected EntitySystemBoundingCollider systemBoundingCollider;
@@ -105,16 +105,16 @@ public class SceneHoob extends SceneBase
 
 		if (textureAtlas)
 		{
-			Asset<TextureAtlas> atlas = GameEngine.ASSETMANAGER.getAsset(TextureAtlas.class, textureID);
+			Asset<TextureAtlas> atlas = OldGameEngine.ASSETMANAGER.getAsset(TextureAtlas.class, textureID);
 			spritesheet = new SpriteSheet(atlas, 0, 3);
 			this.getAnimationManager().start(new AnimatorSpriteSheet(spritesheet, 0.2F));
 		}
 		else
 		{
-			texture = GameEngine.ASSETMANAGER.getAsset(Texture.class, textureID);
+			texture = OldGameEngine.ASSETMANAGER.getAsset(Texture.class, textureID);
 		}
 
-		Asset<Mesh> mesh = GameEngine.ASSETMANAGER.getAsset(Mesh.class, meshID);
+		Asset<Mesh> mesh = OldGameEngine.ASSETMANAGER.getAsset(Mesh.class, meshID);
 		Material material = this.getMaterialManager().createMaterial(
 				new PropertyDiffuse(),
 				spritesheet != null ? new PropertyTexture(spritesheet) : new PropertyTexture(texture)

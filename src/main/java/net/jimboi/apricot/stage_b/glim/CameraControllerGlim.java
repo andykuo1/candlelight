@@ -1,6 +1,6 @@
 package net.jimboi.apricot.stage_b.glim;
 
-import net.jimboi.apricot.base.GameEngine;
+import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.stage_b.glim.controller.FirstPersonLookController;
 import net.jimboi.apricot.stage_b.glim.controller.FirstPersonMoveController;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentBounding;
@@ -38,7 +38,7 @@ public class CameraControllerGlim extends CameraController implements InputLayer
 	@Override
 	public void onCameraStart(Camera camera)
 	{
-		GameEngine.INPUTENGINE.addInputLayer(this);
+		OldGameEngine.INPUTENGINE.addInputLayer(this);
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class CameraControllerGlim extends CameraController implements InputLayer
 	@Override
 	public void onCameraStop(Camera camera)
 	{
-		GameEngine.INPUTENGINE.removeInputLayer(this);
+		OldGameEngine.INPUTENGINE.removeInputLayer(this);
 	}
 
 	@Override

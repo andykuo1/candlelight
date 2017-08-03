@@ -13,7 +13,7 @@ import java.util.Stack;
 /**
  * Created by Andy on 5/28/17.
  */
-public class Test
+public class OldMainTest
 {
 	public static void main(String[] args)
 	{

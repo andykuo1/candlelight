@@ -1,6 +1,6 @@
 package net.jimboi.apricot.stage_b.glim;
 
-import net.jimboi.apricot.base.GameEngine;
+import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.RenderBase;
 import net.jimboi.apricot.base.SceneBase;
 import net.jimboi.apricot.stage_b.glim.bounding.BoundingManager;
@@ -60,7 +60,7 @@ public class RenderGlim extends RenderBase
 	{
 		super(new PerspectiveCamera(640, 480));
 
-		this.assets = Assets.create(GameEngine.ASSETMANAGER, "glim", new SemanticVersion("0.0.0"));
+		this.assets = Assets.create(OldGameEngine.ASSETMANAGER, "glim", new SemanticVersion("0.0.0"));
 		INSTANCE = this;
 	}
 
@@ -91,7 +91,7 @@ public class RenderGlim extends RenderBase
 		InputManager.registerKey("action", GLFW.GLFW_KEY_F);
 		InputManager.registerKey("sprint", GLFW.GLFW_KEY_LEFT_SHIFT, GLFW.GLFW_KEY_RIGHT_SHIFT);
 
-		final AssetManager assets = GameEngine.ASSETMANAGER;
+		final AssetManager assets = OldGameEngine.ASSETMANAGER;
 
 		//Mesh
 		Asset<Mesh> msh_ball = assets.registerAsset(Mesh.class, "ball",
@@ -110,7 +110,7 @@ public class RenderGlim extends RenderBase
 
 		//Renderers
 		this.simpleRenderer = renderEngine.startService(new SimpleRenderer(assets.getAsset(Program.class, "simple")));
-		this.diffuseRenderer = renderEngine.startService(new DiffuseRenderer(assets, GameEngine.WINDOW, this.getCamera(), RenderGlim.LIGHTS, assets.getAsset(Program.class, "diffuse")));
+		this.diffuseRenderer = renderEngine.startService(new DiffuseRenderer(assets, OldGameEngine.WINDOW, this.getCamera(), RenderGlim.LIGHTS, assets.getAsset(Program.class, "diffuse")));
 		this.billboardRenderer = renderEngine.startService(new BillboardRenderer(assets.getAsset(Program.class, "billboard"), BillboardRenderer.Type.CYLINDRICAL));
 		this.wireframeRenderer = renderEngine.startService(new WireframeRenderer(assets.getAsset(Program.class, "wireframe")));
 		this.boundingRenderer = renderEngine.startService(new BoundingRenderer(assets.getAsset(Program.class, "wireframe")));
@@ -127,7 +127,7 @@ public class RenderGlim extends RenderBase
 	@Override
 	public void onRender(RenderEngine renderEngine)
 	{
-		SceneBase scene = (SceneBase) GameEngine.SCENEMANAGER.getCurrentScene();
+		SceneBase scene = (SceneBase) OldGameEngine.SCENEMANAGER.getCurrentScene();
 		if (scene == null) return;
 
 		Collection<EntityComponentRenderable> instances = scene.getEntityManager().getComponents(EntityComponentRenderable.class, new HashSet<>());

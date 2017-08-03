@@ -16,8 +16,8 @@ public class TickEngine implements Runnable
 	private double timeLatency;
 
 	private double timeCounter;
-	private int tickCounter;
-	private int frameCounter;
+	private TickCounter updateCounter;
+	private TickCounter frameCounter;
 
 	private final TickHandler handler;
 
@@ -26,14 +26,29 @@ public class TickEngine implements Runnable
 		this.timeStep = 1000000000D / ticksPerSecond;
 		this.limitFrameRate = limitFrameRate;
 		this.handler = handler;
+
+		this.updateCounter = new TickCounter();
+		this.frameCounter = new TickCounter();
+	}
+
+	public TickEngine setUpdateCounter(TickCounter tickCounter)
+	{
+		this.updateCounter = tickCounter;
+		return this;
+	}
+
+	public TickEngine setFrameCounter(TickCounter tickCounter)
+	{
+		this.frameCounter = tickCounter;
+		return this;
 	}
 
 	@Override
 	public void run()
 	{
 		this.timeCounter = System.currentTimeMillis();
-		this.tickCounter = 0;
-		this.frameCounter = 0;
+		this.updateCounter.reset();
+		this.frameCounter.reset();
 
 		this.timePrevious = System.nanoTime();
 		this.timeLatency = 0;
@@ -62,23 +77,22 @@ public class TickEngine implements Runnable
 		{
 			this.handler.onFixedUpdate();
 			this.timeLatency -= this.timeStep;
-			this.tickCounter++;
+			this.updateCounter.tick();
 			this.dirty = true;
 		}
 
 		if (this.dirty || !this.limitFrameRate)
 		{
 			this.handler.onUpdate(this.timeLatency / this.timeStep);
-			this.frameCounter++;
+			this.frameCounter.tick();
 			this.dirty = false;
 		}
 
 		if (System.currentTimeMillis() - this.timeCounter > 1000)
 		{
 			this.timeCounter += 1000;
-			System.out.println("[UPS: " + this.tickCounter + " || FPS: " + this.frameCounter + "]");
-			this.tickCounter = 0;
-			this.frameCounter = 0;
+
+			System.out.println("[UPS: " + this.updateCounter.get() + " || FPS: " + this.frameCounter.get() + "]");
 		}
 	}
 

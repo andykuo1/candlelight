@@ -1,6 +1,6 @@
 package net.jimboi.apricot.stage_b.physx;
 
-import net.jimboi.apricot.base.GameEngine;
+import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.SceneBase;
 import net.jimboi.apricot.stage_b.glim.RenderGlim;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponent2D;
@@ -29,8 +29,8 @@ public class ScenePhysx extends SceneBase
 {
 	public static void main(String[] args)
 	{
-		GameEngine.init(ScenePhysx.class, args);
-		GameEngine.run();
+		OldGameEngine.init(ScenePhysx.class, args);
+		OldGameEngine.run();
 	}
 
 	private EntitySystem2D sys_2D;
@@ -74,7 +74,7 @@ public class ScenePhysx extends SceneBase
 		this.sys_2D.start(this);
 		this.sys_billboard.start(this);
 
-		this.screenSpace = new ScreenSpace(GameEngine.WINDOW.getCurrentViewPort(), this.getRenderer().getCamera(), Direction.CENTER, true, false);
+		this.screenSpace = new ScreenSpace(OldGameEngine.WINDOW.getCurrentViewPort(), this.getRenderer().getCamera(), Direction.CENTER, true, false);
 	}
 
 	public Transform3 spawnEntity(float x, float y, float z)
@@ -84,12 +84,12 @@ public class ScenePhysx extends SceneBase
 		this.entityManager.createEntity(
 				new EntityComponentTransform(transform),
 				new EntityComponentRenderable(transform, new Model(
-						GameEngine.ASSETMANAGER.getAsset(Mesh.class, "plane"),
+						OldGameEngine.ASSETMANAGER.getAsset(Mesh.class, "plane"),
 						this.getMaterialManager().createMaterial(
 								new PropertyDiffuse(),
 								new PropertySpecular(),
 								new PropertyShadow(true, true),
-								new PropertyTexture(GameEngine.ASSETMANAGER.getAsset(Texture.class, "bunny")).setTransparent(true)),
+								new PropertyTexture(OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "bunny")).setTransparent(true)),
 						"simple")),
 				new EntityComponent2D());
 		return transform;

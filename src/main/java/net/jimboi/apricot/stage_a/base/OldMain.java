@@ -1,6 +1,6 @@
 package net.jimboi.apricot.stage_a.base;
 
-import net.jimboi.apricot.base.GameEngine;
+import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.stage_a.dood.SceneDood;
 
 import org.bstone.input.InputEngine;
@@ -29,18 +29,18 @@ public class OldMain
 		if (args.length > 0)
 		{
 			String classpath = args[0];
-			SCENE = GameEngine.init(classpath, new String[]{});
+			SCENE = OldGameEngine.init(classpath, new String[]{});
 		}
 		else
 		{
-			SCENE = GameEngine.init(SceneDood.class, new String[]{});
+			SCENE = OldGameEngine.init(SceneDood.class, new String[]{});
 		}
 
-		WINDOW = GameEngine.WINDOW;
-		INPUTENGINE = GameEngine.INPUTENGINE;
-		TICKENGINE = GameEngine.TICKENGINE;
-		RENDERENGINE = GameEngine.RENDERENGINE;
-		SCENEMANAGER = GameEngine.SCENEMANAGER;
-		GameEngine.run();
+		WINDOW = OldGameEngine.WINDOW;
+		INPUTENGINE = OldGameEngine.INPUTENGINE;
+		TICKENGINE = OldGameEngine.TICKENGINE;
+		RENDERENGINE = OldGameEngine.RENDERENGINE;
+		SCENEMANAGER = OldGameEngine.SCENEMANAGER;
+		OldGameEngine.run();
 	}
 }
