@@ -28,7 +28,7 @@ public final class GameEngine
 	private GameEngine() {}
 
 	@SuppressWarnings("unchecked")
-	public static void run(String classpath, String[] args)
+	public static Scene init(String classpath, String[] args)
 	{
 		Class<? extends Scene> sceneClass;
 		try
@@ -48,10 +48,10 @@ public final class GameEngine
 			throw new IllegalArgumentException("Unable to find class with name: " + classpath);
 		}
 
-		run(sceneClass, args);
+		return init(sceneClass, args);
 	}
 
-	public static void run(Class<? extends Scene> sceneClass, String[] args)
+	public static Scene init(Class<? extends Scene> sceneClass, String[] args)
 	{
 		Poma.makeSystemLogger();
 
@@ -141,6 +141,15 @@ public final class GameEngine
 		}
 
 		SCENEMANAGER.nextScene(scene);
+		return scene;
+	}
+
+	public static void run()
+	{
+		if (TICKENGINE == null)
+		{
+			throw new IllegalStateException("Must call init first!");
+		}
 
 		TICKENGINE.run();
 	}

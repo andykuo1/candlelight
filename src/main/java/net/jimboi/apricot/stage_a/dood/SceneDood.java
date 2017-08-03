@@ -1,6 +1,6 @@
 package net.jimboi.apricot.stage_a.dood;
 
-import net.jimboi.apricot.stage_a.base.Main;
+import net.jimboi.apricot.stage_a.base.OldMain;
 import net.jimboi.apricot.stage_a.dood.component.ComponentBox2DBody;
 import net.jimboi.apricot.stage_a.dood.component.ComponentTransform;
 import net.jimboi.apricot.stage_a.dood.entity.Entity;
@@ -48,7 +48,7 @@ public class SceneDood extends SceneDoodBase implements InputLayer
 	@Override
 	protected void onSceneCreate()
 	{
-		Main.INPUTENGINE.addInputLayer(this);
+		OldMain.INPUTENGINE.addInputLayer(this);
 
 		//Add Entities Here
 		ResourcesDood.INSTANCE.lights.add(ModLight.createPointLight(0, 0, 0, 0xFFFFFF, 1F, 0.1F, 0));
@@ -182,7 +182,7 @@ public class SceneDood extends SceneDoodBase implements InputLayer
 	@Override
 	protected void onSceneDestroy()
 	{
-		Main.INPUTENGINE.removeInputLayer(this);
+		OldMain.INPUTENGINE.removeInputLayer(this);
 		this.systemInstance.stop();
 		this.systemMotion.stop();
 		this.systemBox2D.stop();

@@ -1,6 +1,6 @@
 package net.jimboi.apricot.stage_a.dood;
 
-import net.jimboi.apricot.stage_a.base.Main;
+import net.jimboi.apricot.stage_a.base.OldMain;
 import net.jimboi.apricot.stage_a.mod.instance.Instance;
 import net.jimboi.apricot.stage_a.mod.instance.InstanceHandler;
 import net.jimboi.apricot.stage_a.mod.instance.InstanceManager;
@@ -44,7 +44,7 @@ public class RendererDood extends OldRenderService implements InstanceManager.On
 	public void onRender(RenderEngine renderEngine)
 	{
 		//This is a hack to stop crashing, when using OldRenderServices...
-		if (!Main.SCENEMANAGER.isSetupMode())
+		if (!OldMain.SCENEMANAGER.isSetupMode())
 		{
 			this.instanceManager.update();
 		}

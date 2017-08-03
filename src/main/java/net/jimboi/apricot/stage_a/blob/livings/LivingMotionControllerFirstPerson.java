@@ -1,6 +1,6 @@
 package net.jimboi.apricot.stage_a.blob.livings;
 
-import net.jimboi.apricot.stage_a.base.Main;
+import net.jimboi.apricot.stage_a.base.OldMain;
 import net.jimboi.apricot.stage_a.blob.RendererBlob;
 
 import org.bstone.input.InputEngine;
@@ -44,7 +44,7 @@ public abstract class LivingMotionControllerFirstPerson extends LivingMotion imp
 	@Override
 	public boolean onCreate()
 	{
-		Main.INPUTENGINE.addInputLayer(this);
+		OldMain.INPUTENGINE.addInputLayer(this);
 
 		return super.onCreate();
 	}
@@ -118,7 +118,7 @@ public abstract class LivingMotionControllerFirstPerson extends LivingMotion imp
 	{
 		super.onDestroy();
 
-		Main.INPUTENGINE.removeInputLayer(this);
+		OldMain.INPUTENGINE.removeInputLayer(this);
 	}
 
 	@Override

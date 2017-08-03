@@ -43,7 +43,8 @@ public class SceneGlim extends SceneBase
 {
 	public static void main(String[] args)
 	{
-		GameEngine.run(SceneGlim.class, args);
+		GameEngine.init(SceneGlim.class, args);
+		GameEngine.run();
 	}
 
 	private EntitySystemBounding sys_bounding;

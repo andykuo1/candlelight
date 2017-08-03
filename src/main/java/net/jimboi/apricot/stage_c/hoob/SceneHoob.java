@@ -30,7 +30,8 @@ public class SceneHoob extends SceneBase
 	//TODO: There is a leak with meshes...
 	public static void main(String[] args)
 	{
-		GameEngine.run(SceneHoob.class, args);
+		GameEngine.init(SceneHoob.class, args);
+		GameEngine.run();
 	}
 
 	protected EntitySystemBoundingCollider systemBoundingCollider;

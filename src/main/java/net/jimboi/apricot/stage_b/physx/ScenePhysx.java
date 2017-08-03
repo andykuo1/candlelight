@@ -29,7 +29,8 @@ public class ScenePhysx extends SceneBase
 {
 	public static void main(String[] args)
 	{
-		GameEngine.run(ScenePhysx.class, args);
+		GameEngine.init(ScenePhysx.class, args);
+		GameEngine.run();
 	}
 
 	private EntitySystem2D sys_2D;
