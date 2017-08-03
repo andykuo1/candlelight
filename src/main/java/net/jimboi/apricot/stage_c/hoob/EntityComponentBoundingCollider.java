@@ -1,8 +1,7 @@
 package net.jimboi.apricot.stage_c.hoob;
 
-import net.jimboi.boron.stage_a.shroom.woot.collision.DynamicCollider;
-import net.jimboi.boron.stage_a.shroom.woot.collision.Shape;
-
+import org.zilar.collision.DynamicCollider;
+import org.zilar.collision.Shape;
 import org.zilar.entity.EntityComponent;
 
 /**

@@ -3,7 +3,6 @@ package net.jimboi.apricot.stage_c.hoob;
 import net.jimboi.apricot.base.GameEngine;
 import net.jimboi.apricot.base.RenderBase;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderable;
-import net.jimboi.boron.stage_a.shroom.woot.collision.CollisionRenderer;
 
 import org.bstone.input.InputManager;
 import org.bstone.mogli.Mesh;
@@ -22,6 +21,7 @@ import org.qsilver.resource.MeshLoader;
 import org.qsilver.resource.TextureAtlasLoader;
 import org.qsilver.util.iterator.CastIterator;
 import org.zilar.base.Assets;
+import org.zilar.collision.CollisionRenderer;
 import org.zilar.gui.GuiButton;
 import org.zilar.gui.GuiFrame;
 import org.zilar.gui.GuiMaterial;

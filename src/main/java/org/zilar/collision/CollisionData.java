@@ -1,4 +1,4 @@
-package net.jimboi.boron.stage_a.shroom.woot.collision;
+package org.zilar.collision;
 
 /**
  * Created by Andy on 7/20/17.

@@ -126,19 +126,22 @@ public class Transform3 implements Transform3c
 		this.rotation.rotationXYZ(pitch, yaw, roll);
 	}
 
-	public void setPitch(float pitch)
+	public Transform3 setPitch(float pitch)
 	{
 		this.rotation.rotationX(pitch);
+		return this;
 	}
 
-	public void setYaw(float yaw)
+	public Transform3 setYaw(float yaw)
 	{
 		this.rotation.rotationY(yaw);
+		return this;
 	}
 
-	public void setRoll(float roll)
+	public Transform3 setRoll(float roll)
 	{
 		this.rotation.rotationZ(roll);
+		return this;
 	}
 
 	public void rotate(Quaternionfc rot)

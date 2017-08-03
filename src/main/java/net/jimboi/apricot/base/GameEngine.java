@@ -2,6 +2,7 @@ package net.jimboi.apricot.base;
 
 import org.bstone.input.InputEngine;
 import org.bstone.tick.TickEngine;
+import org.bstone.tick.TickHandler;
 import org.bstone.window.Window;
 import org.qsilver.asset.AssetManager;
 import org.qsilver.poma.Poma;
@@ -63,15 +64,69 @@ public final class GameEngine
 		WINDOW = new Window("Application", 640, 480);
 		INPUTENGINE = WINDOW.getInputEngine();
 
-		TICKENGINE = new TickEngine();
+		TICKENGINE = new TickEngine(30, true, new TickHandler()
+		{
+			@Override
+			public void onFirstUpdate(TickEngine tickEngine)
+			{
+
+			}
+
+			@Override
+			public void onPreUpdate()
+			{
+
+			}
+
+			@Override
+			public void onFixedUpdate()
+			{
+				SCENEMANAGER.update(0.02D);
+			}
+
+			private boolean flag = false;
+
+			@Override
+			public void onUpdate(double delta)
+			{
+				if (!flag)
+				{
+					if (WINDOW.shouldCloseWindow())
+					{
+						flag = true;
+						SCENEMANAGER.stopScene();
+						return;
+					}
+
+					WINDOW.update();
+				}
+				else if (!SCENEMANAGER.isActive())
+				{
+					TICKENGINE.stop();
+				}
+
+				RENDERENGINE.update();
+
+				if (!flag)
+				{
+					WINDOW.poll();
+				}
+			}
+
+			@Override
+			public void onLastUpdate(TickEngine tickEngine)
+			{
+				ASSETMANAGER.destroy();
+				RENDERENGINE.stop();
+				WINDOW.destroy();
+			}
+		});
+
 		RENDERENGINE = new RenderEngine(WINDOW);
 		SCENEMANAGER = new SceneManager(RENDERENGINE);
 		ASSETMANAGER = new AssetManager();
 
 		RENDERENGINE.onRenderUpdate.addListener(ASSETMANAGER::update);
-
-		TICKENGINE.onFixedUpdate.addListener(SCENEMANAGER::update);
-		TICKENGINE.onUpdate.addListener(RENDERENGINE::update);
 
 		Scene scene;
 		try
@@ -87,35 +142,6 @@ public final class GameEngine
 
 		RENDERENGINE.start();
 
-		boolean flag = false;
-		while(TICKENGINE.shouldKeepRunning())
-		{
-			if (!flag)
-			{
-				if (WINDOW.shouldCloseWindow())
-				{
-					flag = true;
-					SCENEMANAGER.stopScene();
-					continue;
-				}
-
-				WINDOW.update();
-			}
-			else if (!SCENEMANAGER.isActive())
-			{
-				TICKENGINE.stop();
-			}
-
-			TICKENGINE.update();
-
-			if (!flag)
-			{
-				WINDOW.poll();
-			}
-		}
-
-		ASSETMANAGER.destroy();
-		RENDERENGINE.stop();
-		WINDOW.destroy();
+		TICKENGINE.run();
 	}
 }

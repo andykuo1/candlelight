@@ -4,6 +4,7 @@ import net.jimboi.apricot.stage_a.dood.SceneDood;
 
 import org.bstone.input.InputEngine;
 import org.bstone.tick.TickEngine;
+import org.bstone.tick.TickHandler;
 import org.bstone.window.Window;
 import org.qsilver.poma.Poma;
 import org.qsilver.render.RenderEngine;
@@ -63,12 +64,65 @@ public class Main
 		WINDOW = new Window("Application", 640, 480);
 		INPUTENGINE = WINDOW.getInputEngine();
 
-		TICKENGINE = new TickEngine();
+		TICKENGINE = new TickEngine(30, true, new TickHandler()
+		{
+			@Override
+			public void onFirstUpdate(TickEngine tickEngine)
+			{
+
+			}
+
+			@Override
+			public void onPreUpdate()
+			{
+
+			}
+
+			@Override
+			public void onFixedUpdate()
+			{
+				SCENEMANAGER.update(1);
+			}
+
+			private boolean flag = false;
+
+			@Override
+			public void onUpdate(double delta)
+			{
+				if (!flag)
+				{
+					if (WINDOW.shouldCloseWindow())
+					{
+						flag = true;
+						SCENEMANAGER.stopScene();
+						return;
+					}
+
+					WINDOW.update();
+				}
+				else if (!SCENEMANAGER.isActive())
+				{
+					TICKENGINE.stop();
+				}
+
+				RENDERENGINE.update();
+
+				if (!flag)
+				{
+					WINDOW.poll();
+				}
+			}
+
+			@Override
+			public void onLastUpdate(TickEngine tickEngine)
+			{
+				RENDERENGINE.stop();
+				WINDOW.destroy();
+			}
+		});
+
 		RENDERENGINE = new RenderEngine(WINDOW);
 		SCENEMANAGER = new SceneManager(RENDERENGINE);
-
-		TICKENGINE.onFixedUpdate.addListener(SCENEMANAGER::update);
-		TICKENGINE.onUpdate.addListener(RENDERENGINE::update);
 
 		try
 		{
@@ -83,34 +137,6 @@ public class Main
 
 		RENDERENGINE.start();
 
-		boolean flag = false;
-		while(TICKENGINE.shouldKeepRunning())
-		{
-			if (!flag)
-			{
-				if (WINDOW.shouldCloseWindow())
-				{
-					flag = true;
-					SCENEMANAGER.stopScene();
-					continue;
-				}
-
-				WINDOW.update();
-			}
-			else if (!SCENEMANAGER.isActive())
-			{
-				TICKENGINE.stop();
-			}
-
-			TICKENGINE.update();
-
-			if (!flag)
-			{
-				WINDOW.poll();
-			}
-		}
-
-		RENDERENGINE.stop();
-		WINDOW.destroy();
+		TICKENGINE.run();
 	}
 }

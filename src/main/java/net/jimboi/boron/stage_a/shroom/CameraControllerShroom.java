@@ -1,7 +1,5 @@
 package net.jimboi.boron.stage_a.shroom;
 
-import net.jimboi.boron.stage_a.shroom.woot.collision.DynamicCollider;
-
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputLayer;
 import org.bstone.input.InputManager;
@@ -14,6 +12,7 @@ import org.joml.Vector2fc;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.qsilver.util.MathUtil;
+import org.zilar.collision.DynamicCollider;
 
 /**
  * Created by Andy on 7/19/17.

@@ -11,7 +11,7 @@ import org.qsilver.render.RenderEngine;
 /**
  * Created by Andy on 4/30/17.
  */
-public abstract class SceneBlobBase extends LivingSceneBase implements LivingManager.OnLivingAddListener, LivingManager.OnLivingRemoveListener
+public abstract class SceneBlobBase extends LivingSceneBase implements LivingManager.OnLivingCreateListener, LivingManager.OnLivingDestroyListener
 {
 	protected final OldRenderService renderer;
 
@@ -19,8 +19,8 @@ public abstract class SceneBlobBase extends LivingSceneBase implements LivingMan
 	{
 		this.renderer = renderer;
 
-		this.livingManager.onLivingAdd.addListener(this);
-		this.livingManager.onLivingRemove.addListener(this);
+		this.livingManager.onLivingCreate.addListener(this);
+		this.livingManager.onLivingDestroy.addListener(this);
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public abstract class SceneBlobBase extends LivingSceneBase implements LivingMan
 	}
 
 	@Override
-	public void onLivingAdd(Living living)
+	public void onLivingCreate(Living living)
 	{
 		if (living instanceof InstanceHandler)
 		{
@@ -45,7 +45,7 @@ public abstract class SceneBlobBase extends LivingSceneBase implements LivingMan
 	}
 
 	@Override
-	public void onLivingRemove(Living living)
+	public void onLivingDestroy(Living living)
 	{
 	}
 }

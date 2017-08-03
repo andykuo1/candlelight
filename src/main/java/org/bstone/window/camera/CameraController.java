@@ -17,6 +17,11 @@ public abstract class CameraController
 		return this;
 	}
 
+	public boolean hasTarget()
+	{
+		return this.target != null;
+	}
+
 	public final void start(Camera camera)
 	{
 		this.camera = camera;

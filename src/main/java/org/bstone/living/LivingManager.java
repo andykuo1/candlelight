@@ -13,25 +13,25 @@ import java.util.Map;
  */
 public class LivingManager<L extends Living>
 {
-	public interface OnLivingAddListener<L extends Living>
+	public interface OnLivingCreateListener<L extends Living>
 	{
-		void onLivingAdd(L living);
+		void onLivingCreate(L living);
 	}
 
-	public interface OnLivingRemoveListener<L extends Living>
+	public interface OnLivingDestroyListener<L extends Living>
 	{
-		void onLivingRemove(L living);
+		void onLivingDestroy(L living);
 	}
 
 	@SuppressWarnings("unchecked")
-	public final Listenable<OnLivingAddListener<L>> onLivingAdd = new Listenable<>((listener, objects) -> listener.onLivingAdd((L) objects[0]));
+	public final Listenable<OnLivingCreateListener<L>> onLivingCreate = new Listenable<>((listener, objects) -> listener.onLivingCreate((L) objects[0]));
 
 	@SuppressWarnings("unchecked")
-	public final Listenable<OnLivingRemoveListener<L>> onLivingRemove = new Listenable<>(((listener, objects) -> listener.onLivingRemove((L) objects[0])));
+	public final Listenable<OnLivingDestroyListener<L>> onLivingDestroy = new Listenable<>(((listener, objects) -> listener.onLivingDestroy((L) objects[0])));
 
 	private int NEXT_LIVING_ID = 0;
-	private final List<L> spawnList = new ArrayList<>();
-	private final List<L> spawnCache = new ArrayList<>();
+	private final List<L> createQueue = new ArrayList<>();
+	private final List<L> createCache = new ArrayList<>();
 	private final Map<Integer, L> livings = new HashMap<>();
 	private volatile boolean cached = false;
 
@@ -39,11 +39,11 @@ public class LivingManager<L extends Living>
 	{
 		if (!this.cached)
 		{
-			this.spawnList.add(living);
+			this.createQueue.add(living);
 		}
 		else
 		{
-			this.spawnCache.add(living);
+			this.createCache.add(living);
 		}
 
 		return living;
@@ -81,31 +81,31 @@ public class LivingManager<L extends Living>
 			{
 				living.onDestroy();
 				iter.remove();
-				this.onRemoveLiving(living);
+				this.onDestroyLiving(living);
 			}
 		}
 	}
 
 	public void flush(boolean doDead)
 	{
-		while(!this.spawnList.isEmpty())
+		while(!this.createQueue.isEmpty())
 		{
 			this.cached = true;
-			for (L living : this.spawnList)
+			for (L living : this.createQueue)
 			{
 				if (living.onCreate())
 				{
 					int id = this.getNextLivingID();
 					living.id = id;
 					this.livings.put(id, living);
-					this.onAddLiving(living);
+					this.onCreateLiving(living);
 				}
 			}
-			this.spawnList.clear();
+			this.createQueue.clear();
 			this.cached = false;
 
-			this.spawnList.addAll(this.spawnCache);
-			this.spawnCache.clear();
+			this.createQueue.addAll(this.createCache);
+			this.createCache.clear();
 		}
 
 		if (doDead)
@@ -118,7 +118,7 @@ public class LivingManager<L extends Living>
 				{
 					living.onDestroy();
 					iter.remove();
-					this.onRemoveLiving(living);
+					this.onDestroyLiving(living);
 				}
 			}
 		}
@@ -133,13 +133,13 @@ public class LivingManager<L extends Living>
 			living.setDead();
 			living.onDestroy();
 			iter.remove();
-			this.onRemoveLiving(living);
+			this.onDestroyLiving(living);
 		}
 
 		this.cached = true;
-		this.spawnList.clear();
+		this.createQueue.clear();
 		this.cached = false;
-		this.spawnCache.clear();
+		this.createCache.clear();
 		this.livings.clear();
 	}
 
@@ -153,13 +153,13 @@ public class LivingManager<L extends Living>
 		return NEXT_LIVING_ID++;
 	}
 
-	private void onAddLiving(L living)
+	private void onCreateLiving(L living)
 	{
-		this.onLivingAdd.notifyListeners(living);
+		this.onLivingCreate.notifyListeners(living);
 	}
 
-	private void onRemoveLiving(L living)
+	private void onDestroyLiving(L living)
 	{
-		this.onLivingRemove.notifyListeners(living);
+		this.onLivingDestroy.notifyListeners(living);
 	}
 }

@@ -1,10 +1,7 @@
-package net.jimboi.boron.stage_a;
+package net.jimboi.boron.stage_a.tung;
 
 import net.jimboi.boron.base.livingentity.EntityComponentRenderable;
 import net.jimboi.boron.base.livingentity.LivingEntity;
-import net.jimboi.boron.stage_a.tung.EntityPlayer;
-import net.jimboi.boron.stage_a.tung.SceneTung;
-import net.jimboi.boron.stage_a.tung.Tung;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
@@ -40,8 +37,11 @@ public class WorldTung extends SceneService implements Scene.OnSceneUpdateListen
 		Random rand = new Random();
 		for(int i = 0; i < this.tilemap.size(); ++i)
 		{
-			this.tilemap.set(i, rand.nextInt(4));
+			this.tilemap.set(i, 0);
 		}
+
+		this.tilemap.set(1, 1, 1);
+		this.tilemap.set(1, 2, 1);
 
 		Transform3 transform = new Transform3();
 		this.player = new EntityPlayer(transform, this.createRenderable(transform, "bunny"));

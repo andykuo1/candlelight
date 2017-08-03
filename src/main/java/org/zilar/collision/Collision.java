@@ -1,4 +1,4 @@
-package net.jimboi.boron.stage_a.shroom.woot.collision;
+package org.zilar.collision;
 
 import org.bstone.util.Pair;
 import org.bstone.util.TriFunction;

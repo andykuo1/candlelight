@@ -3,11 +3,11 @@ package net.jimboi.boron.stage_a.shroom.component;
 import net.jimboi.boron.base.livingentity.EntityComponentRenderable;
 import net.jimboi.boron.base.livingentity.EntityComponentTransform;
 import net.jimboi.boron.stage_a.shroom.woot.WorldWoot;
-import net.jimboi.boron.stage_a.shroom.woot.collision.DynamicCollider;
 
 import org.bstone.living.Living;
 import org.bstone.transform.Transform3;
 import org.bstone.transform.Transform3c;
+import org.zilar.collision.DynamicCollider;
 import org.zilar.entity.Entity;
 import org.zilar.entity.EntityComponent;
 

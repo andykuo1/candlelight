@@ -1,57 +1,85 @@
 package org.bstone.tick;
 
-import org.bstone.util.listener.Listenable;
-
 /**
  * Created by Andy on 3/1/17.
  */
-public class TickEngine
+public class TickEngine implements Runnable
 {
-	public interface OnFixedUpdateListener
-	{
-		void onUpdate(double delta);
-	}
-
-	public interface OnUpdateListener
-	{
-		void onUpdate();
-	}
-
-	public final Listenable<OnFixedUpdateListener> onFixedUpdate = new Listenable<>((listener, objects) -> listener.onUpdate((Double) objects[0]));
-	public final Listenable<OnUpdateListener> onUpdate = new Listenable<>((listener, objects) -> listener.onUpdate());
-
 	private volatile boolean running = false;
 
-	private final double dt = 1 / 60D;
-	private double t = 0.0;
+	private boolean dirty = true;
 
-	private double time = 0.0;
+	private final boolean limitFrameRate;
+	private final double timeStep;//nanoseconds per tick
 
-	private double newTime;
-	private double frameTime;
-	private double currentTime;
+	private double timePrevious;
+	private double timeLatency;
 
-	public TickEngine()
+	private double timeCounter;
+	private int tickCounter;
+	private int frameCounter;
+
+	private final TickHandler handler;
+
+	public TickEngine(int ticksPerSecond, boolean limitFrameRate, TickHandler handler)
 	{
-		this.running = true;
+		this.timeStep = 1000000000D / ticksPerSecond;
+		this.limitFrameRate = limitFrameRate;
+		this.handler = handler;
 	}
 
-	public void update()
+	@Override
+	public void run()
 	{
-		this.newTime = getCurrentTime();
-		this.frameTime = this.newTime - this.currentTime;
-		this.currentTime = this.newTime;
+		this.timeCounter = System.currentTimeMillis();
+		this.tickCounter = 0;
+		this.frameCounter = 0;
 
-		this.time += this.frameTime;
+		this.timePrevious = System.nanoTime();
+		this.timeLatency = 0;
 
-		while (this.time >= this.dt)
+		this.running = true;
+		this.handler.onFirstUpdate(this);
+		while(this.running)
 		{
-			this.onFixedUpdate.notifyListeners(this.dt);
-			this.time -= this.dt;
-			this.t += this.dt;
+			this.update();
+		}
+		this.handler.onLastUpdate(this);
+		this.running = false;
+	}
+
+	protected void update()
+	{
+		final double current = System.nanoTime();
+		final double elapsed = current - this.timePrevious;
+
+		this.timePrevious = current;
+		this.timeLatency += elapsed;
+
+		this.handler.onPreUpdate();
+
+		while(this.timeLatency >= this.timeStep)
+		{
+			this.handler.onFixedUpdate();
+			this.timeLatency -= this.timeStep;
+			this.tickCounter++;
+			this.dirty = true;
 		}
 
-		this.onUpdate.notifyListeners();
+		if (this.dirty || !this.limitFrameRate)
+		{
+			this.handler.onUpdate(this.timeLatency / this.timeStep);
+			this.frameCounter++;
+			this.dirty = false;
+		}
+
+		if (System.currentTimeMillis() - this.timeCounter > 1000)
+		{
+			this.timeCounter += 1000;
+			System.out.println("[UPS: " + this.tickCounter + " || FPS: " + this.frameCounter + "]");
+			this.tickCounter = 0;
+			this.frameCounter = 0;
+		}
 	}
 
 	public void stop()
@@ -59,13 +87,8 @@ public class TickEngine
 		this.running = false;
 	}
 
-	public boolean shouldKeepRunning()
+	public boolean isRunning()
 	{
 		return this.running;
-	}
-
-	public static double getCurrentTime()
-	{
-		return System.nanoTime() / 1000000000D;
 	}
 }

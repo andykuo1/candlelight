@@ -11,8 +11,8 @@ public class Shroom
 
 	public static void run(Class<? extends SceneShroomBase> sceneClass, String[] args)
 	{
-		ENGINE = new GameEngine(sceneClass, args);
-		ENGINE.run();
+		ENGINE = new GameEngine(args);
+		ENGINE.run(sceneClass);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -36,7 +36,7 @@ public class Shroom
 			throw new IllegalArgumentException("Unable to find class with name: " + classpath);
 		}
 
-		ENGINE = new GameEngine(sceneClass, args);
-		ENGINE.run();
+		ENGINE = new GameEngine(args);
+		ENGINE.run(sceneClass);
 	}
 }

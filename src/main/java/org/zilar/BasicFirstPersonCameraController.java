@@ -141,7 +141,7 @@ public class BasicFirstPersonCameraController extends CameraController implement
 			this.pitch = MathUtil.clamp(this.pitch, -MAX_PITCH, MAX_PITCH);
 		}
 
-		if (InputManager.isInputPressed("mouseleft"))
+		if (InputManager.isInputPressed("mouselock"))
 		{
 			inputEngine.getMouse().setCursorMode(!mouseLocked);
 		}

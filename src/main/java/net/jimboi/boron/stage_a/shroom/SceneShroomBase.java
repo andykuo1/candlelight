@@ -13,7 +13,7 @@ import org.zilar.entity.Entity;
 /**
  * Created by Andy on 7/17/17.
  */
-public abstract class SceneShroomBase extends SceneBase implements LivingManager.OnLivingAddListener<OldLivingEntity>, LivingManager.OnLivingRemoveListener<OldLivingEntity>
+public abstract class SceneShroomBase extends SceneBase implements LivingManager.OnLivingCreateListener<OldLivingEntity>, LivingManager.OnLivingDestroyListener<OldLivingEntity>
 {
 	protected CameraController cameraController;
 
@@ -34,8 +34,8 @@ public abstract class SceneShroomBase extends SceneBase implements LivingManager
 		this.cameraController = this.createMainCameraController();
 
 		this.livingManager = new LivingManager<>();
-		this.livingManager.onLivingAdd.addListener(this);
-		this.livingManager.onLivingRemove.addListener(this);
+		this.livingManager.onLivingCreate.addListener(this);
+		this.livingManager.onLivingDestroy.addListener(this);
 
 		this.world = this.createWorld();
 	}
@@ -83,14 +83,14 @@ public abstract class SceneShroomBase extends SceneBase implements LivingManager
 	}
 
 	@Override
-	public void onLivingAdd(OldLivingEntity living)
+	public void onLivingCreate(OldLivingEntity living)
 	{
 		Entity entity = this.getEntityManager().createEntity(living);
 		living.onEntityCreate(entity);
 	}
 
 	@Override
-	public void onLivingRemove(OldLivingEntity living)
+	public void onLivingDestroy(OldLivingEntity living)
 	{
 		Entity entity = this.getEntityManager().getEntityByComponent(living);
 		entity.setDead();

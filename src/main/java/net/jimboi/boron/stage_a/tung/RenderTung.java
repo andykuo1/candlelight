@@ -2,12 +2,11 @@ package net.jimboi.boron.stage_a.tung;
 
 import net.jimboi.boron.base.RenderAssetBase;
 import net.jimboi.boron.base.livingentity.EntityComponentRenderable;
-import net.jimboi.boron.stage_a.WorldTung;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
 import org.bstone.util.SemanticVersion;
-import org.bstone.window.camera.OrthographicCamera;
+import org.bstone.window.camera.PerspectiveCamera;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
@@ -40,7 +39,7 @@ public class RenderTung extends RenderAssetBase
 
 	public RenderTung()
 	{
-		super(new OrthographicCamera(640, 480), Tung.ENGINE.getAssetManager(), "tung", new SemanticVersion(0, 0, 0));
+		super(new PerspectiveCamera(640, 480), Tung.ENGINE.getAssetManager(), "tung", new SemanticVersion(0, 0, 0));
 	}
 
 	@Override

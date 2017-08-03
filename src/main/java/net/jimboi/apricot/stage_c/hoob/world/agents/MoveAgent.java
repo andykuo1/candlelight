@@ -2,10 +2,10 @@ package net.jimboi.apricot.stage_c.hoob.world.agents;
 
 import net.jimboi.apricot.stage_c.hoob.EntityComponentBoundingCollider;
 import net.jimboi.apricot.stage_c.hoob.world.World;
-import net.jimboi.boron.stage_a.shroom.woot.collision.DynamicCollider;
 
 import org.bstone.transform.Transform;
 import org.joml.Vector2f;
+import org.zilar.collision.DynamicCollider;
 import org.zilar.entity.Entity;
 
 /**

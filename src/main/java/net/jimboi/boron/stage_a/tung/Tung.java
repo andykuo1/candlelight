@@ -12,7 +12,7 @@ public class Tung
 
 	public static void main(String[] args)
 	{
-		ENGINE = new GameEngine(SceneTung.class, args);
-		ENGINE.run();
+		ENGINE = new GameEngine(args);
+		ENGINE.run(SceneTung.class);
 	}
 }

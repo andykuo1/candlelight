@@ -1,7 +1,6 @@
 package net.jimboi.boron.stage_a.tung;
 
 import net.jimboi.boron.base.SceneLivingBase;
-import net.jimboi.boron.stage_a.WorldTung;
 
 import org.bstone.transform.Transform3;
 import org.bstone.window.camera.CameraController;

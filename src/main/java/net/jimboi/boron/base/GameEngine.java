@@ -2,6 +2,7 @@ package net.jimboi.boron.base;
 
 import org.bstone.input.InputEngine;
 import org.bstone.tick.TickEngine;
+import org.bstone.tick.TickHandler;
 import org.bstone.window.Window;
 import org.qsilver.asset.AssetManager;
 import org.qsilver.poma.Poma;
@@ -21,8 +22,6 @@ public final class GameEngine
 		Poma.makeSystemLogger();
 	}
 
-	private final Class<? extends Scene> sceneClass;
-
 	protected final TickEngine tickEngine;
 	protected final Window window;
 	protected final InputEngine inputEngine;
@@ -31,38 +30,93 @@ public final class GameEngine
 	protected final AssetManager assetManager;
 	protected final SceneManager sceneManager;
 
-	public GameEngine(Class<? extends Scene> sceneClass, String[] args)
-	{
-		final String title = sceneClass.getSimpleName();
-		this.sceneClass = sceneClass;
+	private Class<? extends Scene> sceneClass;
 
+	public GameEngine(String[] args)
+	{
 		Poma.div();
-		Poma.info("The Wonderful Program: " + title);
+		Poma.info("The Great Engine");
 		Poma.info("By: Andrew Kuo");
 		Poma.info("Running program with args: " + Arrays.asList(args));
 		Poma.div();
 
-		this.window = new Window(title, 640, 480);
+		this.window = new Window("Demo", 640, 480);
 		this.inputEngine = this.window.getInputEngine();
 
-		this.tickEngine = new TickEngine();
+		this.tickEngine = new TickEngine(30, true, new TickHandler()
+		{
+			@Override
+			public void onFirstUpdate(TickEngine tickEngine)
+			{
+
+			}
+
+			@Override
+			public void onPreUpdate()
+			{
+
+			}
+
+			@Override
+			public void onFixedUpdate()
+			{
+				sceneManager.update(1);
+			}
+
+			private boolean flag = false;
+
+			@Override
+			public void onUpdate(double delta)
+			{
+				if (!flag)
+				{
+					if (window.shouldCloseWindow())
+					{
+						flag = true;
+						sceneManager.stopScene();
+						return;
+					}
+
+					window.update();
+				}
+				else if (!sceneManager.isActive())
+				{
+					tickEngine.stop();
+				}
+
+				renderEngine.update();
+
+				if (!flag)
+				{
+					window.poll();
+				}
+			}
+
+			@Override
+			public void onLastUpdate(TickEngine tickEngine)
+			{
+				assetManager.destroy();
+				renderEngine.stop();
+				window.destroy();
+			}
+		});
+
 		this.renderEngine = new RenderEngine(this.window);
 		this.sceneManager = new SceneManager(this.renderEngine);
 		this.assetManager = new AssetManager();
 
 		this.renderEngine.onRenderUpdate.addListener(this.assetManager::update);
-
-		this.tickEngine.onFixedUpdate.addListener(this.sceneManager::update);
-		this.tickEngine.onUpdate.addListener(this.renderEngine::update);
 	}
 
-	public GameEngine(String scenePath, String[] args)
+	public void run(String scenePath)
 	{
-		this(getSceneClass(scenePath), args);
+		this.run(getSceneClass(scenePath));
 	}
 
-	public void run()
+	public void run(Class<? extends Scene> sceneClass)
 	{
+		this.sceneClass = sceneClass;
+
 		Scene scene;
 		try
 		{
@@ -77,36 +131,7 @@ public final class GameEngine
 
 		this.renderEngine.start();
 
-		boolean flag = false;
-		while(this.tickEngine.shouldKeepRunning())
-		{
-			if (!flag)
-			{
-				if (this.window.shouldCloseWindow())
-				{
-					flag = true;
-					this.sceneManager.stopScene();
-					continue;
-				}
-
-				this.window.update();
-			}
-			else if (!this.sceneManager.isActive())
-			{
-				this.tickEngine.stop();
-			}
-
-			this.tickEngine.update();
-
-			if (!flag)
-			{
-				this.window.poll();
-			}
-		}
-
-		this.assetManager.destroy();
-		this.renderEngine.stop();
-		this.window.destroy();
+		this.tickEngine.run();
 	}
 
 	public TickEngine getTickEngine()

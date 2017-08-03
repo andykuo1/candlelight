@@ -2,7 +2,6 @@ package net.jimboi.boron.stage_a.shroom.woot;
 
 import net.jimboi.boron.stage_a.shroom.RenderShroomBase;
 import net.jimboi.boron.stage_a.shroom.Shroom;
-import net.jimboi.boron.stage_a.shroom.woot.collision.CollisionRenderer;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
@@ -12,6 +11,7 @@ import org.joml.Vector2f;
 import org.qsilver.asset.Asset;
 import org.qsilver.render.RenderEngine;
 import org.qsilver.resource.MeshLoader;
+import org.zilar.collision.CollisionRenderer;
 import org.zilar.meshbuilder.MeshBuilder;
 
 /**

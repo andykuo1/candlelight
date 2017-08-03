@@ -9,9 +9,9 @@ import org.zilar.entity.Entity;
 /**
  * Created by Andy on 7/21/17.
  */
-public abstract class SceneLivingBase extends SceneBase implements LivingManager.OnLivingAddListener<LivingEntity>, LivingManager.OnLivingRemoveListener<LivingEntity>
+public abstract class SceneLivingBase<T extends LivingEntity> extends SceneBase implements LivingManager.OnLivingCreateListener<T>, LivingManager.OnLivingDestroyListener<T>
 {
-	protected LivingManager<LivingEntity> livingManager;
+	protected LivingManager<T> livingManager;
 
 	@Override
 	protected void onSceneCreate()
@@ -19,8 +19,8 @@ public abstract class SceneLivingBase extends SceneBase implements LivingManager
 		super.onSceneCreate();
 
 		this.livingManager = new LivingManager<>();
-		this.livingManager.onLivingAdd.addListener(this);
-		this.livingManager.onLivingRemove.addListener(this);
+		this.livingManager.onLivingCreate.addListener(this);
+		this.livingManager.onLivingDestroy.addListener(this);
 	}
 
 	@Override
@@ -39,13 +39,13 @@ public abstract class SceneLivingBase extends SceneBase implements LivingManager
 		super.onSceneStop();
 	}
 
-	public LivingEntity spawn(LivingEntity living)
+	public <R extends T> R spawn(R living)
 	{
 		this.livingManager.add(living);
 		return living;
 	}
 
-	protected void onLivingEntityCreate(LivingEntity living, Entity entity)
+	protected void onLivingEntityCreate(T living, Entity entity)
 	{
 		entity.addComponent(new EntityComponentTransform(living.getTransform()));
 		if (living.getRenderable() != null)
@@ -54,13 +54,13 @@ public abstract class SceneLivingBase extends SceneBase implements LivingManager
 		}
 	}
 
-	protected void onLivingEntityDestroy(LivingEntity living, Entity entity)
+	protected void onLivingEntityDestroy(T living, Entity entity)
 	{
 
 	}
 
 	@Override
-	public final void onLivingAdd(LivingEntity living)
+	public final void onLivingCreate(T living)
 	{
 		Entity entity = this.getEntityManager().createEntity(living);
 		this.onLivingEntityCreate(living, entity);
@@ -68,7 +68,7 @@ public abstract class SceneLivingBase extends SceneBase implements LivingManager
 	}
 
 	@Override
-	public final void onLivingRemove(LivingEntity living)
+	public final void onLivingDestroy(T living)
 	{
 		Entity entity = this.getEntityManager().getEntityByComponent(living);
 		entity.setDead();
@@ -76,7 +76,7 @@ public abstract class SceneLivingBase extends SceneBase implements LivingManager
 		living.onEntityDestroy(entity);
 	}
 
-	public LivingManager<LivingEntity> getLivingManager()
+	public LivingManager<T> getLivingManager()
 	{
 		return this.livingManager;
 	}

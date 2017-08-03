@@ -7,7 +7,6 @@ import net.jimboi.apricot.stage_c.hoob.world.agents.MoveAgent;
 import net.jimboi.apricot.stage_c.hoob.world.agents.Town;
 import net.jimboi.apricot.stage_c.hoob.world.agents.Traveller;
 import net.jimboi.apricot.stage_c.hoob.world.agents.WorldAgent;
-import net.jimboi.boron.stage_a.shroom.woot.collision.Shape;
 
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputLayer;
@@ -17,6 +16,7 @@ import org.bstone.transform.Transform3;
 import org.bstone.util.direction.Direction;
 import org.bstone.window.view.ScreenSpace;
 import org.joml.Vector3f;
+import org.zilar.collision.Shape;
 import org.zilar.entity.Entity;
 
 import java.util.Iterator;
@@ -25,7 +25,7 @@ import java.util.Random;
 /**
  * Created by Andy on 7/13/17.
  */
-public class World implements LivingManager.OnLivingAddListener<WorldAgent>, LivingManager.OnLivingRemoveListener<WorldAgent>, InputLayer
+public class World implements LivingManager.OnLivingCreateListener<WorldAgent>, LivingManager.OnLivingDestroyListener<WorldAgent>, InputLayer
 {
 	public final SceneHoob scene;
 	public Vector3f pickPos;
@@ -33,8 +33,8 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 	public Traveller player;
 	public LivingManager<WorldAgent> agents = new LivingManager<>();
 	{
-		this.agents.onLivingAdd.addListener(this);
-		this.agents.onLivingRemove.addListener(this);
+		this.agents.onLivingCreate.addListener(this);
+		this.agents.onLivingDestroy.addListener(this);
 	}
 
 	private ScreenSpace screenSpace;
@@ -134,7 +134,7 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 	}
 
 	@Override
-	public void onLivingAdd(WorldAgent agent)
+	public void onLivingCreate(WorldAgent agent)
 	{
 		boolean motion = agent instanceof MoveAgent;
 		Shape shape = null;
@@ -173,7 +173,7 @@ public class World implements LivingManager.OnLivingAddListener<WorldAgent>, Liv
 	}
 
 	@Override
-	public void onLivingRemove(WorldAgent agent)
+	public void onLivingDestroy(WorldAgent agent)
 	{
 		this.scene.getEntityManager().getEntityByComponent(agent).setDead();
 	}
