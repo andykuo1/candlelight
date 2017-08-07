@@ -1,7 +1,9 @@
 package net.jimboi.apricot.stage_c.hoob;
 
 import net.jimboi.apricot.base.OldGameEngine;
-import net.jimboi.apricot.base.SceneBase;
+import net.jimboi.apricot.base.OldSceneBase;
+import net.jimboi.apricot.base.renderer.property.PropertyDiffuse;
+import net.jimboi.apricot.base.renderer.property.PropertyTexture;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderable;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform;
 import net.jimboi.apricot.stage_c.hoob.world.World;
@@ -9,6 +11,7 @@ import net.jimboi.apricot.stage_c.hoob.world.World;
 import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
+import org.bstone.render.Model;
 import org.bstone.transform.Transform3;
 import org.qsilver.asset.Asset;
 import org.zilar.BasicSideScrollCameraController;
@@ -16,16 +19,13 @@ import org.zilar.animation.AnimatorSpriteSheet;
 import org.zilar.collision.CollisionManager;
 import org.zilar.collision.Shape;
 import org.zilar.entity.Entity;
-import org.zilar.model.Model;
-import org.zilar.renderer.property.PropertyDiffuse;
-import org.zilar.renderer.property.PropertyTexture;
 import org.zilar.sprite.SpriteSheet;
 import org.zilar.sprite.TextureAtlas;
 
 /**
  * Created by Andy on 6/25/17.
  */
-public class SceneHoob extends SceneBase
+public class SceneHoob extends OldSceneBase
 {
 	//TODO: There is a leak with meshes...
 	public static void main(String[] args)
@@ -41,7 +41,7 @@ public class SceneHoob extends SceneBase
 
 	public SceneHoob()
 	{
-		super(new RenderHoob(), new BasicSideScrollCameraController());
+		super(new RenderHoob(OldGameEngine.RENDERENGINE), new BasicSideScrollCameraController());
 	}
 
 	@Override

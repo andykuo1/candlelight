@@ -4,8 +4,8 @@ import net.jimboi.boron.base.SceneLivingBase;
 import net.jimboi.boron.stage_a.candle.entity.EntityCandleBase;
 import net.jimboi.boron.stage_a.candle.world.WorldCandle;
 
+import org.bstone.render.RenderService;
 import org.bstone.window.camera.Camera;
-import org.qsilver.render.RenderService;
 
 /**
  * Created by Andy on 7/29/17.
@@ -25,7 +25,7 @@ public class SceneCandle extends SceneLivingBase<EntityCandleBase>
 	@Override
 	protected void onSceneStart()
 	{
-		this.startService(this.world);
+		this.world.start();
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class SceneCandle extends SceneLivingBase<EntityCandleBase>
 	{
 		super.onSceneStop();
 
-		this.stopService(this.world);
+		this.world.stop();
 	}
 
 	public WorldCandle getWorld()

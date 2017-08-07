@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public final class Shader implements AutoCloseable
 {
-	public static final Set<Shader> SHADERS = new RefCountSet<>();
+	public static final Set<Shader> SHADERS = new RefCountSet<>("Shader");
 
 	private final int type;
 	private int handle;

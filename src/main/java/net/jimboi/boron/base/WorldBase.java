@@ -12,17 +12,18 @@ public abstract class WorldBase extends SceneService
 
 	public WorldBase(Scene scene)
 	{
+		super(scene);
 		this.scene = scene;
 	}
 
 	@Override
-	protected void onStart(Scene handler)
+	protected void onServiceStart(Scene handler)
 	{
 		this.setupWorld();
 	}
 
 	@Override
-	protected void onStop(Scene handler)
+	protected void onServiceStop(Scene handler)
 	{
 
 	}

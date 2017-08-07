@@ -1,7 +1,7 @@
 package org.bstone.window;
 
-import org.bstone.input.InputEngine;
 import org.bstone.util.listener.Listenable;
+import org.bstone.window.input.InputEngine;
 import org.bstone.window.view.ViewPort;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
@@ -185,10 +185,14 @@ public class Window
 		GLFW.glfwSwapBuffers(this.handle);
 	}
 
+	public void updateInput()
+	{
+		this.inputEngine.update();
+	}
+
 	public void poll()
 	{
 		GLFW.glfwPollEvents();
-		this.inputEngine.update();
 	}
 
 	public void destroy()
@@ -200,6 +204,16 @@ public class Window
 		// Terminate GLFW and free the error callback
 		GLFW.glfwTerminate();
 		GLFW.glfwSetErrorCallback(null).free();
+	}
+
+	public void setWindowTitle(String title)
+	{
+		GLFW.glfwSetWindowTitle(this.handle, title);
+	}
+
+	public void setWindowSize(int width, int height)
+	{
+		GLFW.glfwSetWindowSize(this.handle, width, height);
 	}
 
 	public boolean shouldCloseWindow()

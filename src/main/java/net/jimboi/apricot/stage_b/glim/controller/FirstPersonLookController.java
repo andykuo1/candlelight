@@ -1,10 +1,11 @@
 package net.jimboi.apricot.stage_b.glim.controller;
 
-import org.bstone.input.InputEngine;
-import org.bstone.input.InputManager;
+import net.jimboi.apricot.base.input.OldInputManager;
+
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
 import org.bstone.window.camera.Camera;
+import org.bstone.window.input.InputEngine;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.joml.Vector3f;
@@ -37,8 +38,8 @@ public class FirstPersonLookController
 		{
 			//Update camera rotation
 			Vector2fc mouse = new Vector2f(
-					InputManager.getInputMotion("mousex"),
-					InputManager.getInputMotion("mousey")
+					OldInputManager.getInputMotion("mousex"),
+					OldInputManager.getInputMotion("mousey")
 			);
 
 			float rotx = -mouse.x() * this.sensitivity;
@@ -49,7 +50,7 @@ public class FirstPersonLookController
 			this.pitch = MathUtil.clamp(this.pitch, -MAX_PITCH, MAX_PITCH);
 		}
 
-		if (InputManager.isInputPressed("mouseleft"))
+		if (OldInputManager.isInputPressed("mouseleft"))
 		{
 			inputEngine.getMouse().setCursorMode(!mouseLocked);
 		}

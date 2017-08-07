@@ -1,14 +1,14 @@
 package org.qsilver.scene;
 
+import org.bstone.render.RenderEngine;
 import org.bstone.service.ServiceManager;
 import org.bstone.util.listener.Listenable;
 import org.qsilver.poma.Poma;
-import org.qsilver.render.RenderEngine;
 
 /**
  * Created by Andy on 3/1/17.
  */
-public abstract class Scene extends ServiceManager<Scene>
+public abstract class Scene
 {
 	public interface OnSceneCreateListener
 	{
@@ -53,7 +53,13 @@ public abstract class Scene extends ServiceManager<Scene>
 	public final Listenable<OnSceneUnloadListener> onSceneUnload = new Listenable<>((listener, objects) -> listener.onSceneUnload());
 	public final Listenable<OnSceneDestroyListener> onSceneDestroy = new Listenable<>((listener, objects) -> listener.onSceneDestroy());
 
+	protected final ServiceManager<SceneService, Scene> serviceManager;
 	SceneManager sceneManager;
+
+	public Scene()
+	{
+		this.serviceManager = new ServiceManager<>(this);
+	}
 
 	void create(SceneManager sceneManager)
 	{
@@ -76,10 +82,10 @@ public abstract class Scene extends ServiceManager<Scene>
 	{
 		Poma.div();
 		System.out.println("Starting Scene. . .");
-		this.beginServiceBlock();
+		this.serviceManager.beginServiceBlock();
 		this.onSceneStart();
 		this.onSceneStart.notifyListeners();
-		this.endServiceBlock();
+		this.serviceManager.endServiceBlock();
 
 		this.firstUpdate = true;
 	}
@@ -94,20 +100,21 @@ public abstract class Scene extends ServiceManager<Scene>
 			this.firstUpdate = false;
 		}
 
-		this.beginServiceBlock();
+		this.serviceManager.beginServiceBlock();
 		this.onSceneUpdate(delta);
+		this.serviceManager.forEach((service) -> service.onSceneUpdate(this));
 		this.onSceneUpdate.notifyListeners(delta);
-		this.endServiceBlock();
+		this.serviceManager.endServiceBlock();
 	}
 
 	void stop()
 	{
 		Poma.div();
 		System.out.println("Stopping Scene. . .");
-		this.beginServiceBlock();
+		this.serviceManager.beginServiceBlock();
 		this.onSceneStop();
 		this.onSceneStop.notifyListeners();
-		this.endServiceBlock();
+		this.serviceManager.endServiceBlock();
 	}
 
 	void unload(RenderEngine renderEngine)
@@ -125,7 +132,7 @@ public abstract class Scene extends ServiceManager<Scene>
 		this.onSceneDestroy();
 		this.onSceneDestroy.notifyListeners();
 		this.sceneManager = null;
-		this.clearServices();
+		this.serviceManager.clearServices();
 	}
 
 	protected abstract void onSceneCreate();
@@ -147,9 +154,8 @@ public abstract class Scene extends ServiceManager<Scene>
 		return this.sceneManager;
 	}
 
-	@Override
-	protected final Scene getServiceHandler()
+	public final ServiceManager<SceneService, Scene> getSceneServices()
 	{
-		return this;
+		return this.serviceManager;
 	}
 }

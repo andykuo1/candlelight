@@ -78,7 +78,7 @@ final class VertexBuffer
 		}
 		else if (vertexSize != limit)
 		{
-			throw new IllegalArgumentException("Failed to add vertex with size " + limit + ", expected vertex size " + vertexSize + "!");
+			throw new IllegalArgumentException("Failed to add vertex with size " + limit + ", expected vertex length " + vertexSize + "!");
 		}
 
 		while (this.buffer.hasRemaining())

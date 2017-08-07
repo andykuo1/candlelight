@@ -1,7 +1,7 @@
 package net.jimboi.boron.stage_a.candle.entity;
 
-import net.jimboi.boron.base.livingentity.EntityComponentRenderable;
-import net.jimboi.boron.base.livingentity.LivingEntity;
+import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
+import net.jimboi.boron.stage_a.base.livingentity.LivingEntity;
 import net.jimboi.boron.stage_a.candle.world.WorldCandle;
 
 import org.bstone.transform.Transform3;

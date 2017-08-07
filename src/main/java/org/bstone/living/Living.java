@@ -18,7 +18,7 @@ public abstract class Living
 	{
 	}
 
-	public void onUpdate(double delta)
+	public void onUpdate()
 	{
 	}
 

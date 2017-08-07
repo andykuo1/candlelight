@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public final class Texture implements AutoCloseable
 {
-	public static final Set<Texture> TEXTURES = new RefCountSet<>();
+	public static final Set<Texture> TEXTURES = new RefCountSet<>("Texture");
 
 	private static int getInternalTextureFormat(Bitmap.Format format)
 	{
@@ -67,10 +67,10 @@ public final class Texture implements AutoCloseable
 		}
 	}
 
-	private final Bitmap bitmap;
+	private Bitmap bitmap;
 
-	private final int width;
-	private final int height;
+	private int width;
+	private int height;
 
 	private int handle;
 
@@ -135,6 +135,14 @@ public final class Texture implements AutoCloseable
 		GL11.glDeleteTextures(this.handle);
 
 		TEXTURES.remove(this);
+	}
+
+	public void update(ByteBuffer pixelBuffer, int width, int height, Bitmap.Format format)
+	{
+		this.bitmap = null;
+		this.width = width;
+		this.height = height;
+		GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, this.width, this.height, getTextureFormat(format), getTextureBufferType(format), pixelBuffer);
 	}
 
 	public int handle()

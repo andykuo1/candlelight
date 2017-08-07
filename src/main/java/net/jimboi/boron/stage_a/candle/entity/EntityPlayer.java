@@ -1,6 +1,6 @@
 package net.jimboi.boron.stage_a.candle.entity;
 
-import net.jimboi.boron.base.livingentity.EntityComponentRenderable;
+import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
 import net.jimboi.boron.stage_a.candle.world.WorldCandle;
 
 import org.bstone.transform.Transform3;
@@ -28,9 +28,10 @@ public class EntityPlayer extends EntityCandleBase
 	}
 
 	@Override
-	public void onUpdate(double delta)
+	public void onUpdate()
 	{
-		super.onUpdate(delta);
+		final double delta = 0.02F;
+		super.onUpdate();
 		this.cameraController.update(delta);
 	}
 

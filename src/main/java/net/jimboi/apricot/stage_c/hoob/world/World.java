@@ -1,6 +1,7 @@
 package net.jimboi.apricot.stage_c.hoob.world;
 
 import net.jimboi.apricot.base.OldGameEngine;
+import net.jimboi.apricot.base.input.OldInputManager;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform;
 import net.jimboi.apricot.stage_c.hoob.SceneHoob;
 import net.jimboi.apricot.stage_c.hoob.world.agents.MoveAgent;
@@ -8,12 +9,11 @@ import net.jimboi.apricot.stage_c.hoob.world.agents.Town;
 import net.jimboi.apricot.stage_c.hoob.world.agents.Traveller;
 import net.jimboi.apricot.stage_c.hoob.world.agents.WorldAgent;
 
-import org.bstone.input.InputEngine;
-import org.bstone.input.InputLayer;
-import org.bstone.input.InputManager;
 import org.bstone.living.LivingManager;
 import org.bstone.transform.Transform3;
 import org.bstone.util.direction.Direction;
+import org.bstone.window.input.InputEngine;
+import org.bstone.window.input.InputLayer;
 import org.bstone.window.view.ScreenSpace;
 import org.joml.Vector3f;
 import org.zilar.collision.Shape;
@@ -63,8 +63,8 @@ public class World implements LivingManager.OnLivingCreateListener<WorldAgent>, 
 
 	public void update(double delta)
 	{
-		float mouseX = InputManager.getInputAmount("mousex");
-		float mouseY = InputManager.getInputAmount("mousey");
+		float mouseX = OldInputManager.getInputAmount("mousex");
+		float mouseY = OldInputManager.getInputAmount("mousey");
 		this.screenSpace.getPoint2DFromScreen(mouseX, mouseY, this.pickPos);
 
 		if (this.actionMove)
@@ -73,7 +73,7 @@ public class World implements LivingManager.OnLivingCreateListener<WorldAgent>, 
 			this.player.target.y = this.pickPos.y;
 		}
 
-		this.agents.update(delta);
+		this.agents.update();
 
 		this.updateEntities();
 	}
@@ -81,9 +81,9 @@ public class World implements LivingManager.OnLivingCreateListener<WorldAgent>, 
 	@Override
 	public void onInputUpdate(InputEngine inputEngine)
 	{
-		if (this.actionMove = InputManager.isInputDown("mouseleft"))
+		if (this.actionMove = OldInputManager.isInputDown("mouseleft"))
 		{
-			InputManager.consumeInput("mouseleft");
+			OldInputManager.consumeInput("mouseleft");
 		}
 	}
 

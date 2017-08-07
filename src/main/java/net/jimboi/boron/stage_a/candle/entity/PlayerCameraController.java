@@ -1,11 +1,12 @@
 package net.jimboi.boron.stage_a.candle.entity;
 
-import org.bstone.input.InputEngine;
-import org.bstone.input.InputLayer;
-import org.bstone.input.InputManager;
+import net.jimboi.apricot.base.input.OldInputManager;
+
 import org.bstone.transform.Transform3;
 import org.bstone.window.camera.Camera;
 import org.bstone.window.camera.CameraController;
+import org.bstone.window.input.InputEngine;
+import org.bstone.window.input.InputLayer;
 import org.joml.Vector3fc;
 
 /**
@@ -70,7 +71,7 @@ public class PlayerCameraController extends CameraController implements InputLay
 	@Override
 	public void onCameraStart(Camera camera)
 	{
-		InputManager.getInputEngine().addInputLayer(this);
+		OldInputManager.getInputEngine().addInputLayer(this);
 	}
 
 	@Override
@@ -107,7 +108,7 @@ public class PlayerCameraController extends CameraController implements InputLay
 	@Override
 	public void onCameraStop(Camera camera)
 	{
-		InputManager.getInputEngine().removeInputLayer(this);
+		OldInputManager.getInputEngine().removeInputLayer(this);
 	}
 
 	@Override
@@ -116,18 +117,18 @@ public class PlayerCameraController extends CameraController implements InputLay
 		if (this.target == null) return;
 
 		this.forward = 0;
-		if (InputManager.isInputDown("forward")) this.forward -= 1F;
-		if (InputManager.isInputDown("backward")) this.forward += 1F;
+		if (OldInputManager.isInputDown("forward")) this.forward -= 1F;
+		if (OldInputManager.isInputDown("backward")) this.forward += 1F;
 
 		this.right = 0;
-		if (InputManager.isInputDown("right")) this.right += 1F;
-		if (InputManager.isInputDown("left")) this.right -= 1F;
+		if (OldInputManager.isInputDown("right")) this.right += 1F;
+		if (OldInputManager.isInputDown("left")) this.right -= 1F;
 
 		this.up = 0;
-		if (InputManager.isInputDown("up")) this.up -= 1F;
-		if (InputManager.isInputDown("down")) this.up += 1F;
+		if (OldInputManager.isInputDown("up")) this.up -= 1F;
+		if (OldInputManager.isInputDown("down")) this.up += 1F;
 
-		this.sprint = InputManager.isInputDown("sprint");
+		this.sprint = OldInputManager.isInputDown("sprint");
 	}
 
 	public float getSpeed()

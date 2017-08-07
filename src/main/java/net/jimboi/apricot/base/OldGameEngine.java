@@ -1,12 +1,15 @@
 package net.jimboi.apricot.base;
 
-import org.bstone.input.InputEngine;
+import net.jimboi.apricot.base.input.OldInputManager;
+
+import org.bstone.render.RenderEngine;
+import org.bstone.render.RenderHandler;
 import org.bstone.tick.TickEngine;
 import org.bstone.tick.TickHandler;
 import org.bstone.window.Window;
+import org.bstone.window.input.InputEngine;
 import org.qsilver.asset.AssetManager;
 import org.qsilver.poma.Poma;
-import org.qsilver.render.RenderEngine;
 import org.qsilver.scene.Scene;
 import org.qsilver.scene.SceneManager;
 
@@ -63,13 +66,14 @@ public final class OldGameEngine
 
 		WINDOW = new Window("Application", 640, 480);
 		INPUTENGINE = WINDOW.getInputEngine();
+		OldInputManager.init(INPUTENGINE);
 
 		TICKENGINE = new TickEngine(60, true, new TickHandler()
 		{
 			@Override
 			public void onFirstUpdate(TickEngine tickEngine)
 			{
-				RENDERENGINE.start();
+				RENDERENGINE.load();
 			}
 
 			@Override
@@ -90,6 +94,7 @@ public final class OldGameEngine
 			@Override
 			public void onFixedUpdate()
 			{
+				WINDOW.updateInput();
 				SCENEMANAGER.update(0.02D);
 			}
 
@@ -107,7 +112,7 @@ public final class OldGameEngine
 					TICKENGINE.stop();
 				}
 
-				RENDERENGINE.update();
+				RENDERENGINE.update(delta);
 
 				if (!flag)
 				{
@@ -119,16 +124,33 @@ public final class OldGameEngine
 			public void onLastUpdate(TickEngine tickEngine)
 			{
 				ASSETMANAGER.destroy();
-				RENDERENGINE.stop();
+				RENDERENGINE.unload();
 				WINDOW.destroy();
 			}
 		});
 
-		RENDERENGINE = new RenderEngine(WINDOW);
-		SCENEMANAGER = new SceneManager(RENDERENGINE);
-		ASSETMANAGER = new AssetManager();
+		RENDERENGINE = new RenderEngine(new RenderHandler()
+		{
+			@Override
+			public void onRenderLoad(RenderEngine renderEngine)
+			{
+			}
 
-		RENDERENGINE.onRenderUpdate.addListener(ASSETMANAGER::update);
+			@Override
+			public void onRenderUnload(RenderEngine renderEngine)
+			{
+
+			}
+
+			@Override
+			public void onRenderUpdate(RenderEngine renderEngine, double delta)
+			{
+				SCENEMANAGER.renderUpdate(renderEngine);
+				ASSETMANAGER.update(renderEngine);
+			}
+		});
+		SCENEMANAGER = new SceneManager();
+		ASSETMANAGER = new AssetManager();
 
 		Scene scene;
 		try

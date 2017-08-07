@@ -24,8 +24,9 @@ public abstract class MoveAgent extends WorldAgent
 	}
 
 	@Override
-	public void onUpdate(double delta)
+	public void onUpdate()
 	{
+		final double delta = 0.02F;
 		Entity entity = this.world.scene.getEntityManager().getEntityByComponent(this);
 		DynamicCollider collider = entity.getComponent(EntityComponentBoundingCollider.class).getCollider();
 

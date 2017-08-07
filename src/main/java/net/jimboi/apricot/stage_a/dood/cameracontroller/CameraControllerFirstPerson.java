@@ -1,6 +1,7 @@
 package net.jimboi.apricot.stage_a.dood.cameracontroller;
 
-import org.bstone.input.InputManager;
+import net.jimboi.apricot.base.input.OldInputManager;
+
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
 import org.bstone.window.camera.Camera;
@@ -61,13 +62,13 @@ public class CameraControllerFirstPerson extends CameraController
 	@Override
 	public boolean onCameraUpdate(Camera camera, Transform3 cameraTransform, double delta)
 	{
-		boolean mouseLocked = InputManager.getInputEngine().getMouse().getCursorMode();
+		boolean mouseLocked = OldInputManager.getInputEngine().getMouse().getCursorMode();
 		if (mouseLocked)
 		{
 			//Update camera rotation
 			Vector2fc mouse = new Vector2f(
-					InputManager.getInputMotion("mousex"),
-					InputManager.getInputMotion("mousey"));
+					OldInputManager.getInputMotion("mousex"),
+					OldInputManager.getInputMotion("mousey"));
 
 			float rotx = -mouse.x() * this.sensitivity;
 			float roty = -mouse.y() * this.sensitivity;
@@ -87,22 +88,22 @@ public class CameraControllerFirstPerson extends CameraController
 			transform.rotation.normalize().invert();
 		}
 
-		if (InputManager.isInputPressed("mouseleft"))
+		if (OldInputManager.isInputPressed("mouseleft"))
 		{
-			InputManager.getInputEngine().getMouse().setCursorMode(!mouseLocked);
+			OldInputManager.getInputEngine().getMouse().setCursorMode(!mouseLocked);
 		}
 
 		this.forward = 0;
-		if (InputManager.isInputDown("forward")) this.forward += 1F;
-		if (InputManager.isInputDown("backward")) this.forward -= 1F;
+		if (OldInputManager.isInputDown("forward")) this.forward += 1F;
+		if (OldInputManager.isInputDown("backward")) this.forward -= 1F;
 
 		this.up = 0;
-		if (InputManager.isInputDown("up")) this.up -= 1F;
-		if (InputManager.isInputDown("down")) this.up += 1F;
+		if (OldInputManager.isInputDown("up")) this.up -= 1F;
+		if (OldInputManager.isInputDown("down")) this.up += 1F;
 
 		this.right = 0;
-		if (InputManager.isInputDown("right")) this.right += 1F;
-		if (InputManager.isInputDown("left")) this.right -= 1F;
+		if (OldInputManager.isInputDown("right")) this.right += 1F;
+		if (OldInputManager.isInputDown("left")) this.right -= 1F;
 
 
 		//Update Position

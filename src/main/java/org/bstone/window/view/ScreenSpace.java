@@ -21,6 +21,11 @@ public class ScreenSpace
 	protected final boolean leftToRight;
 	protected final boolean topToBottom;
 
+	public ScreenSpace(ViewPort viewport, Camera camera, Direction centerPoint, Direction positiveAxis)
+	{
+		this(viewport, camera, centerPoint, positiveAxis.isEast(), positiveAxis.isSouth());
+	}
+
 	public ScreenSpace(ViewPort viewport, Camera camera, Direction centerPoint, boolean leftToRight, boolean topToBottom)
 	{
 		this.viewport = viewport;
@@ -35,6 +40,20 @@ public class ScreenSpace
 	private static final Vector2f VEC2 = new Vector2f();
 	private static final Vector3f VEC3A = new Vector3f();
 	private static final Vector3f VEC3B = new Vector3f();
+
+	public Vector2f getPoint2DFromScreen(float screenX, float screenY, Vector2f dst)
+	{
+		Matrix4fc invertedViewProjection = this.getInvertedViewProjectionMatrix(MAT4);
+		Vector2fc screen = this.getScreenOffset(screenX, screenY, VEC2);
+
+		Vector3f near = unproject(invertedViewProjection, this.viewport, screen.x(), screen.y(), 0, VEC3A);
+		Vector3f far = unproject(invertedViewProjection, this.viewport, screen.x(), screen.y(), 1, VEC3B);
+
+		float f = (0 - near.z) / (far.z - near.z);
+		screenX = (near.x + f * (far.x - near.x));
+		screenY = (near.y + f * (far.y - near.y));
+		return dst.set(screenX, screenY);
+	}
 
 	public Vector3f getPoint2DFromScreen(float screenX, float screenY, Vector3f dst)
 	{

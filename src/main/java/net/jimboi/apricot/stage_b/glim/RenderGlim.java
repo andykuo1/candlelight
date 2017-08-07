@@ -1,15 +1,22 @@
 package net.jimboi.apricot.stage_b.glim;
 
 import net.jimboi.apricot.base.OldGameEngine;
-import net.jimboi.apricot.base.RenderBase;
-import net.jimboi.apricot.base.SceneBase;
+import net.jimboi.apricot.base.OldRenderBase;
+import net.jimboi.apricot.base.OldSceneBase;
+import net.jimboi.apricot.base.input.OldInputManager;
+import net.jimboi.apricot.base.renderer.BillboardRenderer;
+import net.jimboi.apricot.base.renderer.DiffuseRenderer;
+import net.jimboi.apricot.base.renderer.SimpleRenderer;
+import net.jimboi.apricot.base.renderer.WireframeRenderer;
+import net.jimboi.apricot.base.renderer.shadow.DynamicLight;
 import net.jimboi.apricot.stage_b.glim.bounding.BoundingManager;
 import net.jimboi.apricot.stage_b.glim.bounding.BoundingRenderer;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderable;
 
-import org.bstone.input.InputManager;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
+import org.bstone.render.RenderEngine;
+import org.bstone.render.Renderable;
 import org.bstone.util.SemanticVersion;
 import org.bstone.window.camera.PerspectiveCamera;
 import org.joml.Vector2f;
@@ -18,18 +25,11 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.qsilver.asset.Asset;
 import org.qsilver.asset.AssetManager;
-import org.qsilver.render.RenderEngine;
-import org.qsilver.render.Renderable;
 import org.qsilver.resource.MeshLoader;
 import org.qsilver.util.iterator.CastIterator;
 import org.qsilver.util.iterator.FilterIterator;
 import org.zilar.base.Assets;
 import org.zilar.meshbuilder.MeshBuilder;
-import org.zilar.renderer.BillboardRenderer;
-import org.zilar.renderer.DiffuseRenderer;
-import org.zilar.renderer.SimpleRenderer;
-import org.zilar.renderer.WireframeRenderer;
-import org.zilar.renderer.shadow.DynamicLight;
 import org.zilar.resource.ResourceLocation;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ import java.util.List;
 /**
  * Created by Andy on 6/1/17.
  */
-public class RenderGlim extends RenderBase
+public class RenderGlim extends OldRenderBase
 {
 	public static RenderGlim INSTANCE;
 	public static List<DynamicLight> LIGHTS = new ArrayList<>();
@@ -56,9 +56,9 @@ public class RenderGlim extends RenderBase
 
 	protected final Assets assets;
 
-	public RenderGlim()
+	public RenderGlim(RenderEngine renderEngine)
 	{
-		super(new PerspectiveCamera(640, 480));
+		super(renderEngine, new PerspectiveCamera(640, 480));
 
 		this.assets = Assets.create(OldGameEngine.ASSETMANAGER, "glim", new SemanticVersion("0.0.0"));
 		INSTANCE = this;
@@ -75,21 +75,21 @@ public class RenderGlim extends RenderBase
 		this.assets.load();
 
 		//Register Inputs
-		InputManager.registerMousePosX("mousex");
-		InputManager.registerMousePosY("mousey");
+		OldInputManager.registerMousePosX("mousex");
+		OldInputManager.registerMousePosY("mousey");
 
-		InputManager.registerMouse("mouseleft", GLFW.GLFW_MOUSE_BUTTON_LEFT);
-		InputManager.registerMouse("mouseright", GLFW.GLFW_MOUSE_BUTTON_LEFT);
-		InputManager.registerKey("mouselock", GLFW.GLFW_KEY_P);
+		OldInputManager.registerMouse("mouseleft", GLFW.GLFW_MOUSE_BUTTON_LEFT);
+		OldInputManager.registerMouse("mouseright", GLFW.GLFW_MOUSE_BUTTON_LEFT);
+		OldInputManager.registerKey("mouselock", GLFW.GLFW_KEY_P);
 
-		InputManager.registerKey("forward", GLFW.GLFW_KEY_W, GLFW.GLFW_KEY_UP);
-		InputManager.registerKey("backward", GLFW.GLFW_KEY_S, GLFW.GLFW_KEY_DOWN);
-		InputManager.registerKey("left", GLFW.GLFW_KEY_A, GLFW.GLFW_KEY_LEFT);
-		InputManager.registerKey("right", GLFW.GLFW_KEY_D, GLFW.GLFW_KEY_RIGHT);
-		InputManager.registerKey("up", GLFW.GLFW_KEY_E);
-		InputManager.registerKey("down", GLFW.GLFW_KEY_SPACE);
-		InputManager.registerKey("action", GLFW.GLFW_KEY_F);
-		InputManager.registerKey("sprint", GLFW.GLFW_KEY_LEFT_SHIFT, GLFW.GLFW_KEY_RIGHT_SHIFT);
+		OldInputManager.registerKey("forward", GLFW.GLFW_KEY_W, GLFW.GLFW_KEY_UP);
+		OldInputManager.registerKey("backward", GLFW.GLFW_KEY_S, GLFW.GLFW_KEY_DOWN);
+		OldInputManager.registerKey("left", GLFW.GLFW_KEY_A, GLFW.GLFW_KEY_LEFT);
+		OldInputManager.registerKey("right", GLFW.GLFW_KEY_D, GLFW.GLFW_KEY_RIGHT);
+		OldInputManager.registerKey("up", GLFW.GLFW_KEY_E);
+		OldInputManager.registerKey("down", GLFW.GLFW_KEY_SPACE);
+		OldInputManager.registerKey("action", GLFW.GLFW_KEY_F);
+		OldInputManager.registerKey("sprint", GLFW.GLFW_KEY_LEFT_SHIFT, GLFW.GLFW_KEY_RIGHT_SHIFT);
 
 		final AssetManager assets = OldGameEngine.ASSETMANAGER;
 
@@ -109,11 +109,16 @@ public class RenderGlim extends RenderBase
 		mb.clear();
 
 		//Renderers
-		this.simpleRenderer = renderEngine.startService(new SimpleRenderer(assets.getAsset(Program.class, "simple")));
-		this.diffuseRenderer = renderEngine.startService(new DiffuseRenderer(assets, OldGameEngine.WINDOW, this.getCamera(), RenderGlim.LIGHTS, assets.getAsset(Program.class, "diffuse")));
-		this.billboardRenderer = renderEngine.startService(new BillboardRenderer(assets.getAsset(Program.class, "billboard"), BillboardRenderer.Type.CYLINDRICAL));
-		this.wireframeRenderer = renderEngine.startService(new WireframeRenderer(assets.getAsset(Program.class, "wireframe")));
-		this.boundingRenderer = renderEngine.startService(new BoundingRenderer(assets.getAsset(Program.class, "wireframe")));
+		this.simpleRenderer = new SimpleRenderer(renderEngine, assets.getAsset(Program.class, "simple"), this.getCamera(), () -> new FilterIterator<>(scene.getEntityManager().getComponents(EntityComponentRenderable.class, new HashSet<>()).iterator(), (inst) -> inst.getRenderModel().getRenderType().equals("simple")));
+		this.simpleRenderer.start();
+		this.diffuseRenderer = new DiffuseRenderer(renderEngine, assets, OldGameEngine.WINDOW, this.getCamera(), RenderGlim.LIGHTS, assets.getAsset(Program.class, "diffuse"));
+		this.diffuseRenderer.start();
+		this.billboardRenderer = new BillboardRenderer(renderEngine, assets.getAsset(Program.class, "billboard"), BillboardRenderer.Type.CYLINDRICAL);
+		this.billboardRenderer.start();
+		this.wireframeRenderer = new WireframeRenderer(renderEngine, assets.getAsset(Program.class, "wireframe"));
+		this.wireframeRenderer.start();
+		this.boundingRenderer = new BoundingRenderer(renderEngine, assets.getAsset(Program.class, "wireframe"));
+		this.boundingRenderer.start();
 
 		//Lights
 		RenderGlim.LIGHTS.add(DynamicLight.createSpotLight(0, 0, 0, 0xFFFFFF, 0.4F, 0.1F, 0, 15F, 1, 1, 1));
@@ -127,7 +132,7 @@ public class RenderGlim extends RenderBase
 	@Override
 	public void onRender(RenderEngine renderEngine)
 	{
-		SceneBase scene = (SceneBase) OldGameEngine.SCENEMANAGER.getCurrentScene();
+		OldSceneBase scene = (OldSceneBase) OldGameEngine.SCENEMANAGER.getCurrentScene();
 		if (scene == null) return;
 
 		Collection<EntityComponentRenderable> instances = scene.getEntityManager().getComponents(EntityComponentRenderable.class, new HashSet<>());
@@ -137,13 +142,13 @@ public class RenderGlim extends RenderBase
 		iter = new CastIterator<>(instances.iterator());
 		this.diffuseRenderer.preRender(this.getCamera(), iter);
 
-		iter = new FilterIterator<>(instances.iterator(), (inst) -> inst.getModel().getRenderType().equals("diffuse"));
+		iter = new FilterIterator<>(instances.iterator(), (inst) -> inst.getRenderModel().getRenderType().equals("diffuse"));
 		this.diffuseRenderer.render(this.getCamera(), iter);
 
-		iter = new FilterIterator<>(instances.iterator(), (inst) -> inst.getModel().getRenderType().equals("billboard"));
+		iter = new FilterIterator<>(instances.iterator(), (inst) -> inst.getRenderModel().getRenderType().equals("billboard"));
 		this.billboardRenderer.render(this.getCamera(), iter);
 
-		iter = new FilterIterator<>(instances.iterator(), (inst) -> inst.getModel().getRenderType().equals("wireframe"));
+		iter = new FilterIterator<>(instances.iterator(), (inst) -> inst.getRenderModel().getRenderType().equals("wireframe"));
 		this.wireframeRenderer.render(this.getCamera(), iter);
 
 		if (this.boundingManager != null)
@@ -151,7 +156,7 @@ public class RenderGlim extends RenderBase
 			this.boundingRenderer.render(this.getCamera(), this.boundingManager.getBoundingIterator());
 		}
 
-		iter = new FilterIterator<>(instances.iterator(), (inst) -> inst.getModel().getRenderType().equals("simple"));
+		iter = new FilterIterator<>(instances.iterator(), (inst) -> inst.getRenderModel().getRenderType().equals("simple"));
 		this.simpleRenderer.render(this.getCamera(), iter);
 	}
 
@@ -160,11 +165,11 @@ public class RenderGlim extends RenderBase
 	{
 		this.assets.unload();
 
-		renderEngine.stopService(this.diffuseRenderer);
-		renderEngine.stopService(this.wireframeRenderer);
-		renderEngine.stopService(this.billboardRenderer);
-		renderEngine.stopService(this.simpleRenderer);
-		renderEngine.stopService(this.boundingRenderer);
+		this.diffuseRenderer.stop();
+		this.wireframeRenderer.stop();
+		this.billboardRenderer.stop();
+		this.simpleRenderer.stop();
+		this.boundingRenderer.stop();
 	}
 
 	@Override

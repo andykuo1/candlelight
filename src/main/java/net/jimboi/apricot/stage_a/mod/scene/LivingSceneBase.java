@@ -38,7 +38,7 @@ public abstract class LivingSceneBase extends Scene
 	@Override
 	protected void onSceneUpdate(double delta)
 	{
-		this.livingManager.update(delta);
+		this.livingManager.update();
 	}
 
 	@Override

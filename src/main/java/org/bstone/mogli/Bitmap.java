@@ -19,7 +19,7 @@ import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
  */
 public final class Bitmap implements AutoCloseable
 {
-	public static final Set<Bitmap> BITMAPS = new RefCountSet<>();
+	public static final Set<Bitmap> BITMAPS = new RefCountSet<>("Bitmap");
 
 	public enum Format
 	{
@@ -51,6 +51,7 @@ public final class Bitmap implements AutoCloseable
 	private final int height;
 	private final Format format;
 	private final ByteBuffer pixels;
+	private final boolean loadFromSTB;
 
 	public Bitmap(ResourceLocation location)
 	{
@@ -68,6 +69,7 @@ public final class Bitmap implements AutoCloseable
 		this.format = Format.valueOf(comp.get(0));
 
 		this.pixels = stbi_load_from_memory(imageBuffer, w, h, comp, 0);
+		this.loadFromSTB = true;
 		if (this.pixels == null)
 			throw new RuntimeException("Failed to load image: " + stbi_failure_reason());
 
@@ -78,10 +80,24 @@ public final class Bitmap implements AutoCloseable
 		BITMAPS.add(this);
 	}
 
+	public Bitmap(ByteBuffer pixelBuffer, int width, int height, Format format)
+	{
+		this.width = width;
+		this.height = height;
+		this.format = format;
+		this.pixels = pixelBuffer == null ? BufferUtils.createByteBuffer(this.width * this.height * this.format.getChannel()) : pixelBuffer;
+		this.loadFromSTB = false;
+
+		BITMAPS.add(this);
+	}
+
 	@Override
 	public void close()
 	{
-		STBImage.stbi_image_free(this.pixels);
+		if (this.loadFromSTB)
+		{
+			STBImage.stbi_image_free(this.pixels);
+		}
 
 		BITMAPS.remove(this);
 	}

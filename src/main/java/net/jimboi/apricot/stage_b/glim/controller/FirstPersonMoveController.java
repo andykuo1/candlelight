@@ -1,14 +1,14 @@
 package net.jimboi.apricot.stage_b.glim.controller;
 
+import net.jimboi.apricot.base.input.OldInputManager;
 import net.jimboi.apricot.stage_b.glim.bounding.Bounding;
 import net.jimboi.apricot.stage_b.glim.bounding.BoundingManager;
 import net.jimboi.apricot.stage_b.glim.bounding.IntersectionData;
 
-import org.bstone.input.InputEngine;
-import org.bstone.input.InputManager;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
 import org.bstone.window.camera.Camera;
+import org.bstone.window.input.InputEngine;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
@@ -43,18 +43,18 @@ public class FirstPersonMoveController
 	public void poll(InputEngine inputEngine)
 	{
 		this.forward = 0;
-		if (InputManager.isInputDown("forward")) this.forward += 1F;
-		if (InputManager.isInputDown("backward")) this.forward -= 1F;
+		if (OldInputManager.isInputDown("forward")) this.forward += 1F;
+		if (OldInputManager.isInputDown("backward")) this.forward -= 1F;
 
 		this.up = 0;
-		if (InputManager.isInputDown("up")) this.up -= 1F;
-		if (InputManager.isInputDown("down")) this.up += 1F;
+		if (OldInputManager.isInputDown("up")) this.up -= 1F;
+		if (OldInputManager.isInputDown("down")) this.up += 1F;
 
 		this.right = 0;
-		if (InputManager.isInputDown("right")) this.right += 1F;
-		if (InputManager.isInputDown("left")) this.right -= 1F;
+		if (OldInputManager.isInputDown("right")) this.right += 1F;
+		if (OldInputManager.isInputDown("left")) this.right -= 1F;
 
-		this.sprint = InputManager.isInputDown("sprint");
+		this.sprint = OldInputManager.isInputDown("sprint");
 	}
 
 	private static final Vector3f _VEC = new Vector3f();

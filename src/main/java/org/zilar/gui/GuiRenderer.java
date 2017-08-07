@@ -1,9 +1,13 @@
 package org.zilar.gui;
 
+import net.jimboi.apricot.base.renderer.property.PropertyTexture;
+
 import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Texture;
+import org.bstone.render.RenderEngine;
+import org.bstone.render.RenderService;
 import org.bstone.window.camera.Camera;
 import org.bstone.window.view.ScreenSpace;
 import org.joml.Matrix4f;
@@ -15,14 +19,11 @@ import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.qsilver.asset.Asset;
-import org.qsilver.render.RenderEngine;
-import org.qsilver.render.RenderService;
 import org.qsilver.util.ColorUtil;
 import org.zilar.gui.base.Gui;
 import org.zilar.gui.base.GuiManager;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;
-import org.zilar.renderer.property.PropertyTexture;
 import org.zilar.sprite.Sprite;
 
 import java.util.Iterator;
@@ -44,9 +45,9 @@ public class GuiRenderer extends RenderService
 
 	private Mesh QUAD;
 
-	public GuiRenderer(GuiManager guiManager, Asset<Program> program)
+	public GuiRenderer(RenderEngine renderEngine, GuiManager guiManager, Asset<Program> program)
 	{
-		super();
+		super(renderEngine);
 		this.guiManager = guiManager;
 		this.program = program;
 
@@ -54,7 +55,7 @@ public class GuiRenderer extends RenderService
 	}
 
 	@Override
-	protected void onStart(RenderEngine handler)
+	protected void onServiceStart(RenderEngine handler)
 	{
 		MeshBuilder mb = new MeshBuilder();
 		mb.addPlane(new Vector2f(0, 0), new Vector2f(1, 1), 0, new Vector2f(0, 0), new Vector2f(1, 1));
@@ -62,9 +63,15 @@ public class GuiRenderer extends RenderService
 	}
 
 	@Override
-	protected void onStop(RenderEngine handler)
+	protected void onServiceStop(RenderEngine handler)
 	{
 		QUAD.close();
+	}
+
+	@Override
+	protected void onRenderUpdate(RenderEngine renderEngine, double delta)
+	{
+
 	}
 
 	public void render()

@@ -111,7 +111,7 @@ public class InstanceManager
 			{
 				entry.parent.onInstanceUpdate(this, inst);
 
-				if (inst.isVisible())
+				if (inst.isRenderVisible())
 				{
 					this.renderFunction.apply(inst);
 				}

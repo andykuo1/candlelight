@@ -1,9 +1,7 @@
 package org.qsilver.scene;
 
-import org.bstone.service.Service;
-import org.bstone.service.ServiceManager;
+import org.bstone.render.RenderEngine;
 import org.bstone.util.listener.Listenable;
-import org.qsilver.render.RenderEngine;
 
 /**
  * Created by Andy on 3/1/17.
@@ -24,28 +22,6 @@ public class SceneManager
 	private SceneSetupHandler setupHandler;
 
 	private boolean active = false;
-
-	private final ServiceManager<RenderEngine> renderServices;
-	private final Service<RenderEngine> renderService;
-
-	public SceneManager(ServiceManager<RenderEngine> renderServices)
-	{
-		this.renderServices = renderServices;
-		this.renderService = new Service<RenderEngine>()
-		{
-			@Override
-			public void onStart(RenderEngine handler)
-			{
-				handler.onRenderUpdate.addListener(SceneManager.this::renderUpdate, Listenable.Phase.EARLY);
-			}
-
-			@Override
-			public void onStop(RenderEngine handler)
-			{
-				handler.onRenderUpdate.deleteListener(SceneManager.this::renderUpdate);
-			}
-		};
-	}
 
 	public void update(double delta)
 	{
@@ -107,13 +83,13 @@ public class SceneManager
 		}
 	}
 
-	public void renderUpdate(RenderEngine renderManager)
+	public void renderUpdate(RenderEngine renderEngine)
 	{
 		if (this.isSetupMode())
 		{
 			if (this.setupHandler != null && !this.setupHandler.isComplete())
 			{
-				this.setupHandler.onRenderUpdate(renderManager);
+				this.setupHandler.onRenderUpdate(renderEngine);
 			}
 		}
 	}
@@ -160,13 +136,11 @@ public class SceneManager
 		if (this.isSetupMode())
 		{
 			this.nextScene = scene;
-			this.renderServices.startService(this.renderService);
 		}
 		else
 		{
 			this.currScene = scene;
 			this.nextScene = null;
-			this.renderServices.stopService(this.renderService);
 		}
 	}
 
@@ -226,10 +200,8 @@ public class SceneManager
 					this.scene.destroy();
 					this.sceneDestroyed = true;
 				}
-				else
-				{
-					this.markComplete();
-				}
+
+				this.markComplete();
 			}
 		}
 
@@ -279,10 +251,8 @@ public class SceneManager
 					this.scene.start();
 					this.sceneStarted = true;
 				}
-				else
-				{
-					this.markComplete();
-				}
+
+				this.markComplete();
 			}
 		}
 

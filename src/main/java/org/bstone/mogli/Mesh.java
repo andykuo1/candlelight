@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public final class Mesh implements AutoCloseable
 {
-	public static final Set<Mesh> MESHES = new RefCountSet<>();
+	public static final Set<Mesh> MESHES = new RefCountSet<>("Mesh");
 
 	private int handle;
 	private VBO[] vertexBuffers;

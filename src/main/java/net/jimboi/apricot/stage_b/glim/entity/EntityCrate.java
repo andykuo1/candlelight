@@ -1,6 +1,10 @@
 package net.jimboi.apricot.stage_b.glim.entity;
 
 import net.jimboi.apricot.base.OldGameEngine;
+import net.jimboi.apricot.base.renderer.property.PropertyDiffuse;
+import net.jimboi.apricot.base.renderer.property.PropertyShadow;
+import net.jimboi.apricot.base.renderer.property.PropertySpecular;
+import net.jimboi.apricot.base.renderer.property.PropertyTexture;
 import net.jimboi.apricot.stage_b.glim.WorldGlim;
 import net.jimboi.apricot.stage_b.glim.bounding.square.AABB;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentBounding;
@@ -9,13 +13,9 @@ import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
+import org.bstone.render.Model;
 import org.bstone.transform.Transform3;
 import org.zilar.entity.Entity;
-import org.zilar.model.Model;
-import org.zilar.renderer.property.PropertyDiffuse;
-import org.zilar.renderer.property.PropertyShadow;
-import org.zilar.renderer.property.PropertySpecular;
-import org.zilar.renderer.property.PropertyTexture;
 
 /**
  * Created by Andy on 6/4/17.

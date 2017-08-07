@@ -7,4 +7,10 @@ import org.bstone.service.Service;
  */
 public abstract class SceneService extends Service<Scene>
 {
+	public SceneService(Scene scene)
+	{
+		super(scene.getSceneServices());
+	}
+
+	protected abstract void onSceneUpdate(Scene scene);
 }

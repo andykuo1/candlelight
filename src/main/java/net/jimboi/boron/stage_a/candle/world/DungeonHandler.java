@@ -1,21 +1,21 @@
 package net.jimboi.boron.stage_a.candle.world;
 
+import net.jimboi.apricot.base.renderer.property.PropertyTexture;
 import net.jimboi.boron.stage_a.candle.Candle;
 import net.jimboi.boron.stage_a.candle.CandleRenderer;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
+import org.bstone.render.Model;
+import org.bstone.render.RenderableBase;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.qsilver.asset.Asset;
-import org.qsilver.render.Renderable;
 import org.qsilver.resource.MeshLoader;
 import org.qsilver.util.map2d.IntMap;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.MeshData;
-import org.zilar.model.Model;
-import org.zilar.renderer.property.PropertyTexture;
 import org.zilar.sprite.Sprite;
 import org.zilar.sprite.TextureAtlas;
 
@@ -60,31 +60,12 @@ public class DungeonHandler
 		final MeshData meshdata = this.getMeshData();
 		if (this.model == null)
 		{
-			Asset<Mesh> mesh = Candle.ENGINE.getAssetManager().registerAsset(Mesh.class, "world", new MeshLoader.MeshParameter(meshdata, false));
+			Asset<Mesh> mesh = Candle.getCandle().getAssetManager().registerAsset(Mesh.class, "world", new MeshLoader.MeshParameter(meshdata, false));
 			this.model = new Model(mesh, this.world.getScene().getMaterialManager().createMaterial(
 					new PropertyTexture(this.texture)
 			), "simple");
 
-			renderer.addCustomRenderable(new Renderable()
-			{
-				@Override
-				public Model getModel()
-				{
-					return DungeonHandler.this.model;
-				}
-
-				@Override
-				public Matrix4f getRenderTransformation(Matrix4f dst)
-				{
-					return dst.translation(0, 0, -1);
-				}
-
-				@Override
-				public boolean isVisible()
-				{
-					return true;
-				}
-			});
+			renderer.addCustomRenderable(new RenderableBase(this.model, new Matrix4f().translation(0, 0, -1)));
 		}
 	}
 

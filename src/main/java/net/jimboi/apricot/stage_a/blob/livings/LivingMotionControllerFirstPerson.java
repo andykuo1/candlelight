@@ -1,14 +1,14 @@
 package net.jimboi.apricot.stage_a.blob.livings;
 
+import net.jimboi.apricot.base.input.OldInputManager;
 import net.jimboi.apricot.stage_a.base.OldMain;
 import net.jimboi.apricot.stage_a.blob.RendererBlob;
 
-import org.bstone.input.InputEngine;
-import org.bstone.input.InputLayer;
-import org.bstone.input.InputManager;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
 import org.bstone.window.camera.Camera;
+import org.bstone.window.input.InputEngine;
+import org.bstone.window.input.InputLayer;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.joml.Vector3f;
@@ -50,13 +50,13 @@ public abstract class LivingMotionControllerFirstPerson extends LivingMotion imp
 	}
 
 	@Override
-	public void onUpdate(double delta)
+	public void onUpdate()
 	{
 		this.motion.x += this.right;
 		this.motion.y += this.up;
 		this.motion.z += this.forward;
 
-		super.onUpdate(delta);
+		super.onUpdate();
 
 		Vector3fc pos = this.transform().position3();
 		//This is the wrong way... use camera controller instead!
@@ -74,8 +74,8 @@ public abstract class LivingMotionControllerFirstPerson extends LivingMotion imp
 
 			//Update camera rotation
 			Vector2fc mouse = new Vector2f(
-					InputManager.getInputMotion("mousex"),
-					InputManager.getInputMotion("mousey"));
+					OldInputManager.getInputMotion("mousex"),
+					OldInputManager.getInputMotion("mousey"));
 
 			float rotx = -mouse.x() * this.sensitivity;
 			float roty = -mouse.y() * this.sensitivity;
@@ -95,22 +95,22 @@ public abstract class LivingMotionControllerFirstPerson extends LivingMotion imp
 			transform.rotation.normalize().invert();
 		}
 
-		if (InputManager.isInputPressed("mouseleft"))
+		if (OldInputManager.isInputPressed("mouseleft"))
 		{
 			inputEngine.getMouse().setCursorMode(this.mouseLock = !this.mouseLock);
 		}
 
 		this.forward = 0;
-		if (InputManager.isInputDown("forward")) this.forward += 1F;
-		if (InputManager.isInputDown("backward")) this.forward -= 1F;
+		if (OldInputManager.isInputDown("forward")) this.forward += 1F;
+		if (OldInputManager.isInputDown("backward")) this.forward -= 1F;
 
 		this.up = 0;
-		if (InputManager.isInputDown("up")) this.up -= 1F;
-		if (InputManager.isInputDown("down")) this.up += 1F;
+		if (OldInputManager.isInputDown("up")) this.up -= 1F;
+		if (OldInputManager.isInputDown("down")) this.up += 1F;
 
 		this.right = 0;
-		if (InputManager.isInputDown("right")) this.right += 1F;
-		if (InputManager.isInputDown("left")) this.right -= 1F;
+		if (OldInputManager.isInputDown("right")) this.right += 1F;
+		if (OldInputManager.isInputDown("left")) this.right -= 1F;
 	}
 
 	@Override

@@ -20,7 +20,7 @@ import java.util.Set;
  */
 public final class Program implements AutoCloseable
 {
-	public static final Set<Program> PROGRAMS = new RefCountSet<>();
+	public static final Set<Program> PROGRAMS = new RefCountSet<>("Program");
 
 	private Shader[] shaders;
 	private int handle;

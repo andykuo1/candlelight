@@ -1,7 +1,12 @@
 package net.jimboi.apricot.stage_b.glim;
 
 import net.jimboi.apricot.base.OldGameEngine;
-import net.jimboi.apricot.base.SceneBase;
+import net.jimboi.apricot.base.OldSceneBase;
+import net.jimboi.apricot.base.renderer.property.PropertyDiffuse;
+import net.jimboi.apricot.base.renderer.property.PropertyShadow;
+import net.jimboi.apricot.base.renderer.property.PropertySpecular;
+import net.jimboi.apricot.base.renderer.property.PropertyTexture;
+import net.jimboi.apricot.base.renderer.shadow.DynamicLight;
 import net.jimboi.apricot.stage_b.glim.bounding.BoundingManager;
 import net.jimboi.apricot.stage_b.glim.entity.EntityBunny;
 import net.jimboi.apricot.stage_b.glim.entity.EntityCrate;
@@ -15,6 +20,7 @@ import net.jimboi.apricot.stage_b.glim.entity.system.EntitySystemHeading;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
+import org.bstone.render.Model;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
@@ -25,12 +31,6 @@ import org.qsilver.resource.TextureAtlasLoader;
 import org.zilar.animation.AnimatorSpriteSheet;
 import org.zilar.entity.Entity;
 import org.zilar.meshbuilder.MeshData;
-import org.zilar.model.Model;
-import org.zilar.renderer.property.PropertyDiffuse;
-import org.zilar.renderer.property.PropertyShadow;
-import org.zilar.renderer.property.PropertySpecular;
-import org.zilar.renderer.property.PropertyTexture;
-import org.zilar.renderer.shadow.DynamicLight;
 import org.zilar.sprite.SpriteSheet;
 import org.zilar.sprite.TextureAtlas;
 import org.zilar.sprite.TextureAtlasBuilder;
@@ -39,7 +39,7 @@ import org.zilar.sprite.TextureAtlasData;
 /**
  * Created by Andy on 6/1/17.
  */
-public class SceneGlim extends SceneBase
+public class SceneGlim extends OldSceneBase
 {
 	public static void main(String[] args)
 	{
@@ -59,7 +59,7 @@ public class SceneGlim extends SceneBase
 
 	public SceneGlim()
 	{
-		super(new RenderGlim(), new CameraControllerGlim());
+		super(new RenderGlim(OldGameEngine.RENDERENGINE), new CameraControllerGlim());
 	}
 
 	@Override
@@ -91,8 +91,8 @@ public class SceneGlim extends SceneBase
 
 		Asset<Texture> font = OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "font");
 
-		TextureAtlasBuilder tab = new TextureAtlasBuilder();
-		tab.addTileSheet(font, 0, 0, 16, 16, 0, 0, 16, 16);
+		TextureAtlasBuilder tab = new TextureAtlasBuilder(font, 256, 256);
+		tab.addTileSheet(0, 0, 16, 16, 0, 0, 16, 16);
 		TextureAtlasData atlas = tab.bake();
 		tab.clear();
 		Asset<TextureAtlas> textureAtlas = OldGameEngine.ASSETMANAGER.registerAsset(TextureAtlas.class, "font",

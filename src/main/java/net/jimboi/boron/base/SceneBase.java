@@ -1,11 +1,13 @@
 package net.jimboi.boron.base;
 
 import org.bstone.material.MaterialManager;
-import org.qsilver.render.RenderEngine;
-import org.qsilver.render.RenderService;
+import org.bstone.render.RenderEngine;
+import org.bstone.render.RenderService;
 import org.qsilver.scene.Scene;
 import org.zilar.animation.AnimationManager;
 import org.zilar.entity.EntityManager;
+
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created by Andy on 7/17/17.
@@ -31,19 +33,19 @@ public abstract class SceneBase extends Scene
 	{
 		try
 		{
-			this.renderer = this.getRenderClass().newInstance();
+			this.renderer = this.getRenderClass().getConstructor(RenderEngine.class).newInstance(renderEngine);
 
-			if (this.renderer instanceof RenderBase)
+			if (this.renderer instanceof RendererSceneBase)
 			{
-				((RenderBase) this.renderer).scene = this;
+				((RendererSceneBase) this.renderer).scene = this;
 			}
 		}
-		catch (InstantiationException | IllegalAccessException e)
+		catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e)
 		{
-			throw new IllegalArgumentException("Invalid render service class! Must have defined default constructor!");
+			throw new IllegalArgumentException("Invalid render service class! Must have defined a constructor with RenderEngine as the only argument!");
 		}
 
-		renderEngine.startService(this.renderer);
+		this.renderer.start();
 	}
 
 	@Override
@@ -65,7 +67,7 @@ public abstract class SceneBase extends Scene
 	@Override
 	protected final void onSceneUnload(RenderEngine renderEngine)
 	{
-		renderEngine.stopService(this.renderer);
+		this.renderer.stop();
 	}
 
 	@Override

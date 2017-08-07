@@ -2,6 +2,8 @@ package org.zilar.collision;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
+import org.bstone.render.RenderEngine;
+import org.bstone.render.RenderService;
 import org.bstone.transform.Transform2;
 import org.bstone.window.camera.Camera;
 import org.joml.Matrix4f;
@@ -11,8 +13,6 @@ import org.joml.Vector2fc;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.qsilver.asset.Asset;
-import org.qsilver.render.RenderEngine;
-import org.qsilver.render.RenderService;
 import org.qsilver.util.ColorUtil;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;
@@ -37,8 +37,9 @@ public class CollisionRenderer extends RenderService
 	private Mesh SEGMENT;
 	private Mesh POINT;
 
-	public CollisionRenderer(CollisionManager collisionManager, Asset<Program> program)
+	public CollisionRenderer(RenderEngine renderEngine, CollisionManager collisionManager, Asset<Program> program)
 	{
+		super(renderEngine);
 		this.collisionManager = collisionManager;
 		this.program = program;
 	}
@@ -50,7 +51,7 @@ public class CollisionRenderer extends RenderService
 	}
 
 	@Override
-	protected void onStart(RenderEngine handler)
+	protected void onServiceStart(RenderEngine handler)
 	{
 		MeshBuilder mb = new MeshBuilder();
 
@@ -72,12 +73,18 @@ public class CollisionRenderer extends RenderService
 	}
 
 	@Override
-	protected void onStop(RenderEngine handler)
+	protected void onServiceStop(RenderEngine handler)
 	{
 		CIRCLE.close();
 		QUAD.close();
 		POINT.close();
 		SEGMENT.close();
+	}
+
+	@Override
+	protected void onRenderUpdate(RenderEngine renderEngine, double delta)
+	{
+
 	}
 
 	public Mesh getMeshForShape(Shape shape)

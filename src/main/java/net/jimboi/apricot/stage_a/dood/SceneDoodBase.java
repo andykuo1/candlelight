@@ -5,7 +5,7 @@ import net.jimboi.apricot.stage_a.dood.entity.EntityManager;
 import net.jimboi.apricot.stage_a.mod.renderer.OldRenderService;
 import net.jimboi.apricot.stage_a.mod.scene.EntitySceneBase;
 
-import org.qsilver.render.RenderEngine;
+import org.bstone.render.RenderEngine;
 
 /**
  * Created by Andy on 5/21/17.
@@ -22,13 +22,13 @@ public abstract class SceneDoodBase extends EntitySceneBase implements EntityMan
 	@Override
 	protected final void onSceneLoad(RenderEngine renderEngine)
 	{
-		renderEngine.startService(this.renderer);
+		this.renderer.start();
 	}
 
 	@Override
 	protected final void onSceneUnload(RenderEngine renderEngine)
 	{
-		renderEngine.stopService(this.renderer);
+		this.renderer.stop();
 	}
 
 	@Override

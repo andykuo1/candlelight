@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public final class FBO implements AutoCloseable
 {
-	public static final Set<FBO> FBOS = new RefCountSet<>();
+	public static final Set<FBO> FBOS = new RefCountSet<>("FBO");
 
 	private final ViewPort viewport;
 

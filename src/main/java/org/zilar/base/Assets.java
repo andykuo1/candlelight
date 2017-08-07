@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.qsilver.asset.Asset;
+import org.qsilver.asset.AssetLoadable;
 import org.qsilver.asset.AssetManager;
 import org.qsilver.asset.assetloader.AssetArguments;
 import org.qsilver.asset.assetloader.AssetConstants;
@@ -71,7 +72,7 @@ public abstract class Assets
 			AssetConstants.registerClassFields(GL30.class);
 
 			AssetTypes.clear();
-			AssetTypes.registerAssetType(Shader.class, Asset<Shader>::new,
+			AssetTypes.registerAssetType(Shader.class, AssetLoadable<Shader>::new,
 					(type, args) ->
 					{
 						ResourceParameterProducer.validateArgumentLength(type, args, 2);
@@ -79,7 +80,7 @@ public abstract class Assets
 						ResourceParameterProducer.validateArgument(type, Integer.class, args[1]);
 						return new ShaderLoader.ShaderParameter((ResourceLocation) args[0], (int) args[1]);
 					});
-			AssetTypes.registerAssetType(Program.class, Asset<Program>::new,
+			AssetTypes.registerAssetType(Program.class, AssetLoadable<Program>::new,
 					(type, args) ->
 					{
 						ResourceParameterProducer.validateArgumentLength(type, args, 1);
@@ -102,14 +103,14 @@ public abstract class Assets
 						}
 						return new ProgramLoader.ProgramParameter(shaders);
 					});
-			AssetTypes.registerAssetType(Bitmap.class, Asset<Bitmap>::new,
+			AssetTypes.registerAssetType(Bitmap.class, AssetLoadable<Bitmap>::new,
 					(type, args) ->
 					{
 						ResourceParameterProducer.validateArgumentLength(type, args, 1);
 						ResourceParameterProducer.validateArgument(type, ResourceLocation.class, args[0]);
 						return new BitmapLoader.BitmapParameter((ResourceLocation) args[0]);
 					});
-			AssetTypes.registerAssetType(Texture.class, Asset<Texture>::new,
+			AssetTypes.registerAssetType(Texture.class, AssetLoadable<Texture>::new,
 					(type, args) ->
 					{
 						ResourceParameterProducer.validateArgumentLength(type, args, 3);
@@ -153,7 +154,7 @@ public abstract class Assets
 							throw new AssetFormatException("Unable to find asset '" + body + "'!");
 						System.err.println("Unable to find asset '" + body + "' (this is a dependency problem!) => Creating a placeholder instead...");
 						asset = AssetLoader.createUnsafeAsset(this.assetManager, type, id);
-						if (!this.assetManager.registerAsset(type, id, asset, false))
+						if (!this.assetManager.registerAsset(type, id, asset))
 						{
 							throw new IllegalStateException("Found another asset that already exists (although it should not)!");
 						}

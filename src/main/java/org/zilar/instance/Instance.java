@@ -1,9 +1,9 @@
 package org.zilar.instance;
 
+import org.bstone.render.Model;
+import org.bstone.render.Renderable;
 import org.bstone.transform.Transform;
 import org.joml.Matrix4f;
-import org.qsilver.render.Renderable;
-import org.zilar.model.Model;
 
 /**
  * Created by Andy on 4/8/17.
@@ -46,19 +46,19 @@ public final class Instance implements Renderable
 	}
 
 	@Override
-	public final Matrix4f getRenderTransformation(Matrix4f dst)
+	public final Matrix4f getRenderOffsetTransformation(Matrix4f dst)
 	{
-		return dst.set(this.transformation).mul(this.model.transformation());
+		return dst.set(this.transformation);
 	}
 
 	@Override
-	public final Model getModel()
+	public Model getRenderModel()
 	{
 		return this.model;
 	}
 
 	@Override
-	public final boolean isVisible()
+	public boolean isRenderVisible()
 	{
 		return this.visible;
 	}

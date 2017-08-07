@@ -24,8 +24,9 @@ public abstract class LivingMotion extends Living3
 	protected static final Vector3f _vec = new Vector3f();
 
 	@Override
-	public void onUpdate(double delta)
+	public void onUpdate()
 	{
+		final double delta = 0.02F;
 		Transform3 transform = this.transform();
 
 		//Motion

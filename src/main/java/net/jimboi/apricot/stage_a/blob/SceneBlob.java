@@ -1,10 +1,11 @@
 package net.jimboi.apricot.stage_a.blob;
 
+import net.jimboi.apricot.base.OldGameEngine;
+import net.jimboi.apricot.base.input.OldInputManager;
 import net.jimboi.apricot.stage_a.blob.livings.LivingPlayer;
 import net.jimboi.apricot.stage_a.blob.livings.LivingZombie;
 import net.jimboi.apricot.stage_a.mod.ModLight;
 
-import org.bstone.input.InputManager;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
@@ -18,7 +19,7 @@ public class SceneBlob extends SceneBlobBase
 
 	public SceneBlob()
 	{
-		super(new RendererBlob());
+		super(new RendererBlob(OldGameEngine.RENDERENGINE));
 	}
 
 	@Override
@@ -31,19 +32,19 @@ public class SceneBlob extends SceneBlobBase
 	@Override
 	protected void onSceneStart()
 	{
-		InputManager.registerMousePosX("mousex");
-		InputManager.registerMousePosY("mousey");
-		InputManager.registerMouseScrollY("scrolly");
+		OldInputManager.registerMousePosX("mousex");
+		OldInputManager.registerMousePosY("mousey");
+		OldInputManager.registerMouseScrollY("scrolly");
 
-		InputManager.registerMouse("mouseleft", GLFW.GLFW_MOUSE_BUTTON_LEFT);
-		InputManager.registerMouse("mouseright", GLFW.GLFW_MOUSE_BUTTON_RIGHT);
+		OldInputManager.registerMouse("mouseleft", GLFW.GLFW_MOUSE_BUTTON_LEFT);
+		OldInputManager.registerMouse("mouseright", GLFW.GLFW_MOUSE_BUTTON_RIGHT);
 
-		InputManager.registerKey("forward", GLFW.GLFW_KEY_W, GLFW.GLFW_KEY_UP);
-		InputManager.registerKey("backward", GLFW.GLFW_KEY_S, GLFW.GLFW_KEY_DOWN);
-		InputManager.registerKey("left", GLFW.GLFW_KEY_A, GLFW.GLFW_KEY_LEFT);
-		InputManager.registerKey("right", GLFW.GLFW_KEY_D, GLFW.GLFW_KEY_RIGHT);
-		InputManager.registerKey("up", GLFW.GLFW_KEY_E);
-		InputManager.registerKey("down", GLFW.GLFW_KEY_SPACE);
+		OldInputManager.registerKey("forward", GLFW.GLFW_KEY_W, GLFW.GLFW_KEY_UP);
+		OldInputManager.registerKey("backward", GLFW.GLFW_KEY_S, GLFW.GLFW_KEY_DOWN);
+		OldInputManager.registerKey("left", GLFW.GLFW_KEY_A, GLFW.GLFW_KEY_LEFT);
+		OldInputManager.registerKey("right", GLFW.GLFW_KEY_D, GLFW.GLFW_KEY_RIGHT);
+		OldInputManager.registerKey("up", GLFW.GLFW_KEY_E);
+		OldInputManager.registerKey("down", GLFW.GLFW_KEY_SPACE);
 
 		this.livingManager.add(new LivingZombie(1, 1, 1));
 	}

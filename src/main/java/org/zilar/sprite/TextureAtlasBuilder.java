@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Andy on 7/6/17.
+ * Created by Andy on 8/6/17.
  */
 public class TextureAtlasBuilder
 {
@@ -17,19 +17,16 @@ public class TextureAtlasBuilder
 	private int width;
 	private int height;
 
-	public TextureAtlasBuilder()
+	public TextureAtlasBuilder(Asset<Texture> texture, int textureWidth, int textureHeight)
 	{
+		this.texture = texture;
+
+		this.width = textureWidth;
+		this.height = textureHeight;
 	}
 
-	public TextureAtlasBuilder add(Asset<Texture> texture, int spriteX, int spriteY, int spriteWidth, int spriteHeight)
+	public TextureAtlasBuilder add(int spriteX, int spriteY, int spriteWidth, int spriteHeight)
 	{
-		if (this.texture != texture)
-		{
-			this.texture = texture;
-			this.width = this.texture.getSource().width();
-			this.height = this.texture.getSource().height();
-		}
-
 		float u = (this.width - spriteX - spriteWidth) / (float) this.width;
 		float v = (this.height - spriteY - spriteHeight) / (float) this.height;
 		float w = spriteWidth / (float) this.width;
@@ -40,54 +37,55 @@ public class TextureAtlasBuilder
 		return this;
 	}
 
-	public TextureAtlasBuilder addHorizontalStrip(Asset<Texture> texture, int spriteX, int spriteY, int spriteWidth, int spriteHeight, int borderMargin, int spriteCount)
+	public TextureAtlasBuilder addHorizontalStrip(int offsetX, int offsetY, int spriteWidth, int spriteHeight, int spacingX, int spriteCount)
 	{
 		for (int i = 0; i < spriteCount; ++i)
 		{
-			this.add(texture, spriteX + (i * (spriteWidth + borderMargin)), spriteY, spriteWidth, spriteHeight);
+			this.add(offsetX + (i * (spriteWidth + spacingX)), offsetY, spriteWidth, spriteHeight);
 		}
 
 		return this;
 	}
 
-	public TextureAtlasBuilder addVerticalStrip(Asset<Texture> texture, int spriteX, int spriteY, int spriteWidth, int spriteHeight, int borderMargin, int spriteCount)
+	public TextureAtlasBuilder addVerticalStrip(int offsetX, int offsetY, int spriteWidth, int spriteHeight, int spacingY, int spriteCount)
 	{
 		for (int i = 0; i < spriteCount; ++i)
 		{
-			this.add(texture, spriteX, spriteY + (i * (spriteHeight + borderMargin)), spriteWidth, spriteHeight);
+			this.add(offsetX, offsetY + (i * (spriteHeight + spacingY)), spriteWidth, spriteHeight);
 		}
 
 		return this;
 	}
 
-	public TextureAtlasBuilder addTileSheet(Asset<Texture> texture, int spriteX, int spriteY, int spriteWidth, int spriteHeight, int borderMarginX, int borderMarginY, int spriteRowLength, int spriteColumnLength)
+	public TextureAtlasBuilder addTileSheet(int offsetX, int offsetY, int spriteWidth, int spriteHeight, int spacingX, int spacingY, int spriteRowLength, int spriteColumnLength)
 	{
 		for(int i = 0; i < spriteColumnLength; ++i)
 		{
-			this.addHorizontalStrip(texture, spriteX, spriteY + (i * (spriteHeight + borderMarginY)), spriteWidth, spriteHeight, borderMarginX, spriteRowLength);
+			this.addHorizontalStrip(offsetX, offsetY + (i * (spriteHeight + spacingY)), spriteWidth, spriteHeight, spacingX, spriteRowLength);
 		}
 
 		return this;
 	}
 
-	public TextureAtlasBuilder addNineSheet(Asset<Texture> texture, int offsetX, int offsetY, int leftWidth, int bodyWidth, int rightWidth, int topHeight, int bodyHeight, int bottomHeight)
+	public TextureAtlasBuilder addNineSheet(int leftBorderSize, int rightBorderSize, int topBorderSize, int bottomBorderSize)
 	{
-		int x = offsetX;
-		int y = offsetY;
-		//Top
-		this.add(texture, x, y, leftWidth, topHeight);
-		this.add(texture, x + leftWidth, y, bodyWidth, topHeight);
-		this.add(texture, x + leftWidth + bodyWidth, y, rightWidth, topHeight);
+		int bodyWidth = this.width - leftBorderSize - rightBorderSize;
+		int bodyHeight = this.height - topBorderSize - bottomBorderSize;
 
-		//Middle
-		this.add(texture, x, y + topHeight, leftWidth, bodyHeight);
-		this.add(texture, x + leftWidth, y + topHeight, bodyWidth, bodyHeight);
-		this.add(texture, x + leftWidth + bodyWidth, y + topHeight, rightWidth, bodyHeight);
+		//TOP
+		this.add(0, 0, leftBorderSize, topBorderSize);
+		this.add(leftBorderSize, 0, bodyWidth, topBorderSize);
+		this.add(leftBorderSize + bodyWidth, 0, rightBorderSize, topBorderSize);
 
-		//Bottom
-		this.add(texture, x, y + topHeight + bodyHeight, leftWidth, bottomHeight);
-		this.add(texture, x + leftWidth, y + topHeight + bodyHeight, bodyWidth, bottomHeight);
-		this.add(texture, x + leftWidth + bodyWidth, y + topHeight + bodyHeight, rightWidth, bottomHeight);
+		//BODY
+		this.add(0, topBorderSize, leftBorderSize, bodyHeight);
+		this.add(leftBorderSize, topBorderSize, bodyWidth, bodyHeight);
+		this.add(leftBorderSize + bodyWidth, topBorderSize, rightBorderSize, bodyHeight);
+
+		//BOTTOM
+		this.add(0, topBorderSize + bodyHeight, leftBorderSize, bottomBorderSize);
+		this.add(leftBorderSize, topBorderSize + bodyHeight, bodyWidth, bottomBorderSize);
+		this.add(leftBorderSize + bodyWidth, topBorderSize + bodyHeight, rightBorderSize, bottomBorderSize);
 
 		return this;
 	}

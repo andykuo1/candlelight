@@ -3,10 +3,10 @@ package net.jimboi.apricot.stage_a.base;
 import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.stage_a.dood.SceneDood;
 
-import org.bstone.input.InputEngine;
+import org.bstone.render.RenderEngine;
 import org.bstone.tick.TickEngine;
 import org.bstone.window.Window;
-import org.qsilver.render.RenderEngine;
+import org.bstone.window.input.InputEngine;
 import org.qsilver.scene.Scene;
 import org.qsilver.scene.SceneManager;
 

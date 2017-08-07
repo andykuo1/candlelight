@@ -1,8 +1,7 @@
 package net.jimboi.apricot.stage_c.hoob.world.agents;
 
+import net.jimboi.apricot.base.input.OldInputManager;
 import net.jimboi.apricot.stage_c.hoob.world.World;
-
-import org.bstone.input.InputManager;
 
 import java.util.function.Consumer;
 
@@ -22,7 +21,7 @@ public class ActionAgent extends WorldAgent
 
 	public boolean tryActivate(float x, float y)
 	{
-		if (this.intersects(x, y) && InputManager.isInputReleased("mouseleft"))
+		if (this.intersects(x, y) && OldInputManager.isInputReleased("mouseleft"))
 		{
 			this.actionFunction.accept(this);
 			return true;

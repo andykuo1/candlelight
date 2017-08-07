@@ -1,6 +1,6 @@
 package org.qsilver.asset;
 
-import org.qsilver.render.RenderEngine;
+import org.bstone.render.RenderEngine;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,45 +38,72 @@ public class AssetManager
 		Asset asset = assetMap.get(id);
 		if (asset != null)
 		{
+			throw new IllegalArgumentException("Asset '" + assetType.getSimpleName() + "' with id '" + id + "' already exists!");
+
+			/*
 			if (!assetType.equals(asset.getType()))
 				throw new IllegalStateException("Asset '" + assetType.getSimpleName() + "' does not match type '" + asset.getType().getSimpleName() + "' which already exists!");
 
-			asset.params = params;
-			asset.id = id;
+			if (asset instanceof AssetLoadable)
+			{
+				((AssetLoadable) asset).params = params;
+				asset.id = id;
+			}
+
+			//Missing AssetWrappable
+			*/
 		}
 		else
 		{
-			asset = new Asset<>(this, assetType, id, params);
+			asset = new AssetLoadable<>(this, assetType, id, params);
 			assetMap.put(id, asset);
 		}
 		return asset;
 	}
 
-	public boolean registerAsset(Class assetType, String id, Asset asset, boolean overwrite)
+	public boolean registerAsset(Class assetType, String id, Asset asset)
 	{
 		Map<String, Asset> assetMap = this.getAssetMap(assetType);
 		Asset other = assetMap.get(id);
 		if (other != null)
 		{
+			throw new IllegalArgumentException("Asset '" + assetType.getSimpleName() + "' with id '" + id + "' already exists!");
+
+			/*
 			if (!assetType.equals(asset.getType()))
 				throw new IllegalStateException("Asset '" + assetType.getSimpleName() + "' does not match type '" + other.getType().getSimpleName() + "' which already exists!");
-
-			if (overwrite)
-			{
-				other.params = asset.params;
-				other.id = id;
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			*/
 		}
 		else
 		{
 			assetMap.put(id, asset);
+			return true;
 		}
-		return true;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> Asset<T> registerAsset(Class<T> assetType, T source, String id)
+	{
+		Map<String, Asset> assetMap = this.getAssetMap(assetType);
+		Asset asset = assetMap.get(id);
+		if (asset != null)
+		{
+			throw new IllegalArgumentException("Asset '" + assetType.getSimpleName() + "' with id '" + id + "' already exists!");
+
+			/*
+			if (!assetType.equals(asset.getType()))
+				throw new IllegalStateException("Asset '" + assetType.getSimpleName() + "' does not match type '" + asset.getType().getSimpleName() + "' which already exists!");
+
+			asset = new AssetLoadable<>(this, assetType, id, params);
+			assetMap.put(id, asset);
+			*/
+		}
+		else
+		{
+			asset = new AssetWrappable<>(assetType, source, id);
+			assetMap.put(id, asset);
+		}
+		return asset;
 	}
 
 	public boolean containsAsset(Class assetType, String id)
@@ -151,7 +178,10 @@ public class AssetManager
 			{
 				for (Asset<?> asset : assetMap.values())
 				{
-					if (asset.getLastActiveTime() > 0 && time - asset.getLastActiveTime() >= this.maxInactiveTime)
+					if (!(asset instanceof AssetLoadable)) continue;
+					AssetLoadable loadable = (AssetLoadable) asset;
+
+					if (loadable.getLastActiveTime() > 0 && time - loadable.getLastActiveTime() >= this.maxInactiveTime)
 					{
 						this.unloadResource(asset.getType(), asset.getID());
 					}

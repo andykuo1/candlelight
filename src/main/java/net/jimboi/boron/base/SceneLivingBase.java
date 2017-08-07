@@ -1,7 +1,7 @@
 package net.jimboi.boron.base;
 
-import net.jimboi.boron.base.livingentity.EntityComponentTransform;
-import net.jimboi.boron.base.livingentity.LivingEntity;
+import net.jimboi.boron.stage_a.base.livingentity.EntityComponentTransform;
+import net.jimboi.boron.stage_a.base.livingentity.LivingEntity;
 
 import org.bstone.living.LivingManager;
 import org.zilar.entity.Entity;
@@ -28,7 +28,7 @@ public abstract class SceneLivingBase<T extends LivingEntity> extends SceneBase 
 	{
 		super.onSceneUpdate(delta);
 
-		this.livingManager.update(delta);
+		this.livingManager.update();
 	}
 
 	@Override

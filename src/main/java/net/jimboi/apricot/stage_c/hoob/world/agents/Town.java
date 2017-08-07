@@ -19,9 +19,9 @@ public class Town extends StaticAgent
 	}
 
 	@Override
-	public void onUpdate(double delta)
+	public void onUpdate()
 	{
-		super.onUpdate(delta);
+		super.onUpdate();
 		if (this.pos.distanceSquared(this.world.player.pos) < 4F)
 		{
 			if (!this.menu)

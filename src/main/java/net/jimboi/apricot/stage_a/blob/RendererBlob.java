@@ -17,10 +17,10 @@ import net.jimboi.apricot.stage_a.mod.renderer.OldRenderService;
 import net.jimboi.apricot.stage_a.mod.resource.ModResourceLocation;
 
 import org.bstone.mogli.Texture;
+import org.bstone.render.RenderEngine;
 import org.bstone.window.camera.PerspectiveCamera;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.qsilver.render.RenderEngine;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.MeshData;
 import org.zilar.meshbuilder.ModelUtil;
@@ -42,8 +42,10 @@ public class RendererBlob extends OldRenderService implements InstanceManager.On
 
 	private MazeWorld world;
 
-	public RendererBlob()
+	public RendererBlob(RenderEngine renderEngine)
 	{
+		super(renderEngine);
+
 		RendererBlob.camera = new PerspectiveCamera(640, 480);
 
 		this.world = new MazeWorld(new Random(), 45);

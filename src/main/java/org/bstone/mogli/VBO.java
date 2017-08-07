@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public final class VBO implements AutoCloseable
 {
-	public static final Set<VBO> VBOS = new RefCountSet<>();
+	public static final Set<VBO> VBOS = new RefCountSet<>("VBO");
 
 	private int handle;
 	private int target;

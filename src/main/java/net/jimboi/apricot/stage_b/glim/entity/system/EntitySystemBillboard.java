@@ -1,5 +1,6 @@
 package net.jimboi.apricot.stage_b.glim.entity.system;
 
+import net.jimboi.apricot.base.renderer.BillboardRenderer;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentBillboard;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform;
 
@@ -10,7 +11,6 @@ import org.joml.Vector3f;
 import org.zilar.entity.AbstractUpdateableEntitySystem;
 import org.zilar.entity.Entity;
 import org.zilar.entity.EntityManager;
-import org.zilar.renderer.BillboardRenderer;
 
 import java.util.Collection;
 

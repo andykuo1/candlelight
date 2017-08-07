@@ -1,10 +1,10 @@
 package net.jimboi.apricot.stage_a.dood;
 
+import net.jimboi.apricot.base.input.OldInputManager;
 import net.jimboi.apricot.stage_a.mod.ModMaterial;
 import net.jimboi.apricot.stage_a.mod.model.Model;
 import net.jimboi.apricot.stage_a.mod.resource.ModResourceLocation;
 
-import org.bstone.input.InputManager;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
@@ -119,19 +119,19 @@ public class Resources
 	public static void load()
 	{
 		//Register Inputs
-		InputManager.registerMousePosX("mousex");
-		InputManager.registerMousePosY("mousey");
+		OldInputManager.registerMousePosX("mousex");
+		OldInputManager.registerMousePosY("mousey");
 
-		InputManager.registerMouse("mouseleft", GLFW.GLFW_MOUSE_BUTTON_LEFT);
-		InputManager.registerMouse("mouseright", GLFW.GLFW_MOUSE_BUTTON_LEFT);
+		OldInputManager.registerMouse("mouseleft", GLFW.GLFW_MOUSE_BUTTON_LEFT);
+		OldInputManager.registerMouse("mouseright", GLFW.GLFW_MOUSE_BUTTON_LEFT);
 
-		InputManager.registerKey("forward", GLFW.GLFW_KEY_W, GLFW.GLFW_KEY_UP);
-		InputManager.registerKey("backward", GLFW.GLFW_KEY_S, GLFW.GLFW_KEY_DOWN);
-		InputManager.registerKey("left", GLFW.GLFW_KEY_A, GLFW.GLFW_KEY_LEFT);
-		InputManager.registerKey("right", GLFW.GLFW_KEY_D, GLFW.GLFW_KEY_RIGHT);
-		InputManager.registerKey("up", GLFW.GLFW_KEY_E);
-		InputManager.registerKey("down", GLFW.GLFW_KEY_SPACE);
-		InputManager.registerKey("action", GLFW.GLFW_KEY_F);
+		OldInputManager.registerKey("forward", GLFW.GLFW_KEY_W, GLFW.GLFW_KEY_UP);
+		OldInputManager.registerKey("backward", GLFW.GLFW_KEY_S, GLFW.GLFW_KEY_DOWN);
+		OldInputManager.registerKey("left", GLFW.GLFW_KEY_A, GLFW.GLFW_KEY_LEFT);
+		OldInputManager.registerKey("right", GLFW.GLFW_KEY_D, GLFW.GLFW_KEY_RIGHT);
+		OldInputManager.registerKey("up", GLFW.GLFW_KEY_E);
+		OldInputManager.registerKey("down", GLFW.GLFW_KEY_SPACE);
+		OldInputManager.registerKey("action", GLFW.GLFW_KEY_F);
 
 		//Shaders
 		register("geometry.diffuse", new Shader(new ModResourceLocation("dood:diffuse.vsh"), GL_VERTEX_SHADER));

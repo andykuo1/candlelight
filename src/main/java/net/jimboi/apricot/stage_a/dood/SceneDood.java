@@ -1,5 +1,7 @@
 package net.jimboi.apricot.stage_a.dood;
 
+import net.jimboi.apricot.base.OldGameEngine;
+import net.jimboi.apricot.base.input.OldInputManager;
 import net.jimboi.apricot.stage_a.base.OldMain;
 import net.jimboi.apricot.stage_a.dood.component.ComponentBox2DBody;
 import net.jimboi.apricot.stage_a.dood.component.ComponentTransform;
@@ -11,10 +13,9 @@ import net.jimboi.apricot.stage_a.dood.system.SystemInstance;
 import net.jimboi.apricot.stage_a.dood.system.SystemMotion;
 import net.jimboi.apricot.stage_a.mod.ModLight;
 
-import org.bstone.input.InputEngine;
-import org.bstone.input.InputLayer;
-import org.bstone.input.InputManager;
 import org.bstone.window.camera.CameraController;
+import org.bstone.window.input.InputEngine;
+import org.bstone.window.input.InputLayer;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.joints.Joint;
@@ -40,7 +41,7 @@ public class SceneDood extends SceneDoodBase implements InputLayer
 
 	public SceneDood()
 	{
-		super(new RendererDood());
+		super(new RendererDood(OldGameEngine.RENDERENGINE));
 	}
 
 	private ModLight directionLight;
@@ -114,7 +115,7 @@ public class SceneDood extends SceneDoodBase implements InputLayer
 
 		Body playerBody = this.entityPlayer.getComponent(ComponentBox2DBody.class).getBody();
 
-		if (InputManager.isInputDown("action"))
+		if (OldInputManager.isInputDown("action"))
 		{
 			if (grabbedEntity == null)
 			{

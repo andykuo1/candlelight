@@ -1,6 +1,7 @@
 package net.jimboi.apricot.stage_a.dood.cameracontroller;
 
-import org.bstone.input.InputManager;
+import net.jimboi.apricot.base.input.OldInputManager;
+
 import org.bstone.transform.Transform3;
 import org.bstone.window.camera.Camera;
 import org.bstone.window.camera.CameraController;
@@ -56,16 +57,16 @@ public class CameraControllerSideScroll extends CameraController
 	@Override
 	public boolean onCameraUpdate(Camera camera, Transform3 cameraTransform, double delta)
 	{
-		if (InputManager.isInputDown("up")) this.forward -= this.speedForward;
-		if (InputManager.isInputDown("down")) this.forward += this.speedForward;
+		if (OldInputManager.isInputDown("up")) this.forward -= this.speedForward;
+		if (OldInputManager.isInputDown("down")) this.forward += this.speedForward;
 
 		this.up = 0;
-		if (InputManager.isInputDown("forward")) this.up += 1F;
-		if (InputManager.isInputDown("backward")) this.up -= 1F;
+		if (OldInputManager.isInputDown("forward")) this.up += 1F;
+		if (OldInputManager.isInputDown("backward")) this.up -= 1F;
 
 		this.right = 0;
-		if (InputManager.isInputDown("right")) this.right += 1F;
-		if (InputManager.isInputDown("left")) this.right -= 1F;
+		if (OldInputManager.isInputDown("right")) this.right += 1F;
+		if (OldInputManager.isInputDown("left")) this.right -= 1F;
 
 		this.updateForward(delta);
 		this.updateTargetPosition(delta);

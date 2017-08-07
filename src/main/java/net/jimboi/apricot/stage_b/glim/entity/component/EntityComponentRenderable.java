@@ -1,10 +1,10 @@
 package net.jimboi.apricot.stage_b.glim.entity.component;
 
+import org.bstone.render.Model;
+import org.bstone.render.Renderable;
 import org.bstone.transform.Transform3;
 import org.joml.Matrix4f;
-import org.qsilver.render.Renderable;
 import org.zilar.entity.EntityComponent;
-import org.zilar.model.Model;
 
 /**
  * Created by Andy on 6/1/17.
@@ -33,19 +33,19 @@ public class EntityComponentRenderable implements EntityComponent, Renderable
 	}
 
 	@Override
-	public Model getModel()
+	public Model getRenderModel()
 	{
 		return this.model;
 	}
 
 	@Override
-	public Matrix4f getRenderTransformation(Matrix4f dst)
+	public Matrix4f getRenderOffsetTransformation(Matrix4f dst)
 	{
 		return this.transform.getTransformation(dst);
 	}
 
 	@Override
-	public boolean isVisible()
+	public boolean isRenderVisible()
 	{
 		return this.visible;
 	}

@@ -7,8 +7,8 @@ import net.jimboi.apricot.stage_a.mod.instance.InstanceManager;
 import net.jimboi.apricot.stage_a.mod.render.Render;
 import net.jimboi.apricot.stage_a.mod.renderer.OldRenderService;
 
+import org.bstone.render.RenderEngine;
 import org.bstone.window.camera.PerspectiveCamera;
-import org.qsilver.render.RenderEngine;
 
 /**
  * Created by Andy on 5/30/17.
@@ -18,8 +18,10 @@ public class RendererDood extends OldRenderService implements InstanceManager.On
 	protected final net.jimboi.apricot.stage_a.mod.render.RenderManager renderManager;
 	protected final InstanceManager instanceManager;
 
-	public RendererDood()
+	public RendererDood(RenderEngine renderEngine)
 	{
+		super(renderEngine);
+
 		this.renderManager = new net.jimboi.apricot.stage_a.mod.render.RenderManager();
 
 		this.instanceManager = new InstanceManager((inst) ->

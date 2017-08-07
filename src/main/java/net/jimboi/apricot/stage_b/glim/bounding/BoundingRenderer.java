@@ -6,6 +6,8 @@ import net.jimboi.apricot.stage_b.glim.bounding.square.Circle;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
+import org.bstone.render.RenderEngine;
+import org.bstone.render.RenderService;
 import org.bstone.window.camera.Camera;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
@@ -14,8 +16,6 @@ import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.qsilver.asset.Asset;
 import org.qsilver.asset.AssetManager;
-import org.qsilver.render.RenderEngine;
-import org.qsilver.render.RenderService;
 import org.qsilver.resource.MeshLoader;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.MeshData;
@@ -39,13 +39,14 @@ public class BoundingRenderer extends RenderService
 	private Asset<Mesh> cylinder;
 	private Vector3f color = new Vector3f(1, 1, 1);
 
-	public BoundingRenderer(Asset<Program> program)
+	public BoundingRenderer(RenderEngine renderEngine, Asset<Program> program)
 	{
+		super(renderEngine);
 		this.program = program;
 	}
 
 	@Override
-	protected void onStart(RenderEngine handler)
+	protected void onServiceStart(RenderEngine handler)
 	{
 		AssetManager assetManager = OldGameEngine.ASSETMANAGER;
 
@@ -63,7 +64,13 @@ public class BoundingRenderer extends RenderService
 	}
 
 	@Override
-	protected void onStop(RenderEngine handler)
+	protected void onServiceStop(RenderEngine handler)
+	{
+
+	}
+
+	@Override
+	protected void onRenderUpdate(RenderEngine renderEngine, double delta)
 	{
 
 	}

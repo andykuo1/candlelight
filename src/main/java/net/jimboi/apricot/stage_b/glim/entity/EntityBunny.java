@@ -1,6 +1,10 @@
 package net.jimboi.apricot.stage_b.glim.entity;
 
 import net.jimboi.apricot.base.OldGameEngine;
+import net.jimboi.apricot.base.renderer.BillboardRenderer;
+import net.jimboi.apricot.base.renderer.property.PropertyDiffuse;
+import net.jimboi.apricot.base.renderer.property.PropertyShadow;
+import net.jimboi.apricot.base.renderer.property.PropertyTexture;
 import net.jimboi.apricot.stage_b.glim.WorldGlim;
 import net.jimboi.apricot.stage_b.glim.bounding.square.AABB;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentBillboard;
@@ -13,16 +17,12 @@ import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
+import org.bstone.render.Model;
 import org.bstone.transform.Transform3;
 import org.qsilver.asset.Asset;
 import org.qsilver.resource.TextureAtlasLoader;
 import org.zilar.animation.AnimatorSpriteSheet;
 import org.zilar.entity.Entity;
-import org.zilar.model.Model;
-import org.zilar.renderer.BillboardRenderer;
-import org.zilar.renderer.property.PropertyDiffuse;
-import org.zilar.renderer.property.PropertyShadow;
-import org.zilar.renderer.property.PropertyTexture;
 import org.zilar.sprite.SpriteSheet;
 import org.zilar.sprite.TextureAtlas;
 import org.zilar.sprite.TextureAtlasBuilder;
@@ -42,8 +42,8 @@ public class EntityBunny extends EntityGlim
 
 		if (!OldGameEngine.ASSETMANAGER.containsAsset(TextureAtlas.class, "bunny"))
 		{
-			TextureAtlasBuilder tab = new TextureAtlasBuilder();
-			tab.addHorizontalStrip(bunny, 0, 0, 48, 48, 0, 3);
+			TextureAtlasBuilder tab = new TextureAtlasBuilder(bunny, 144, 48);
+			tab.addHorizontalStrip(0, 0, 48, 48, 0, 3);
 			TextureAtlasData data = tab.bake();
 			tab.clear();
 

@@ -1,11 +1,12 @@
 package org.zilar.gui.base;
 
-import org.bstone.input.InputEngine;
-import org.bstone.input.InputLayer;
-import org.bstone.input.InputManager;
+import net.jimboi.apricot.base.input.OldInputManager;
+
 import org.bstone.util.direction.Direction;
 import org.bstone.window.camera.Camera;
 import org.bstone.window.camera.OrthographicCamera;
+import org.bstone.window.input.InputEngine;
+import org.bstone.window.input.InputLayer;
 import org.bstone.window.view.ScreenSpace;
 import org.bstone.window.view.ViewPort;
 import org.joml.Vector3f;
@@ -104,14 +105,14 @@ public class GuiManager implements InputLayer
 	@Override
 	public void onInputUpdate(InputEngine inputEngine)
 	{
-		this.inputSelect = InputManager.isInputDown("mouseleft");
+		this.inputSelect = OldInputManager.isInputDown("mouseleft");
 
-		float mouseX = InputManager.getInputAmount("mousex");
-		float mouseY = InputManager.getInputAmount("mousey");
+		float mouseX = OldInputManager.getInputAmount("mousex");
+		float mouseY = OldInputManager.getInputAmount("mousey");
 		Vector3f mouse = this.screenSpace.getPoint2DFromScreen(mouseX, mouseY, new Vector3f());
 		if (this.selector.update(this.elements.iterator(), mouse.x(), mouse.y(), this.inputSelect))
 		{
-			InputManager.consumeInput("mouseleft");
+			OldInputManager.consumeInput("mouseleft");
 		}
 	}
 

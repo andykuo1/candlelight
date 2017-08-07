@@ -36,9 +36,9 @@ public class LivingPlayer extends LivingMotionControllerFirstPerson
 	}
 
 	@Override
-	public void onUpdate(double delta)
+	public void onUpdate()
 	{
-		super.onUpdate(delta);
+		super.onUpdate();
 	}
 
 	@Override

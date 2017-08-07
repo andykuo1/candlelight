@@ -164,7 +164,7 @@ public class AssetLoader
 
 			params = createParameter(type, args);
 			asset = createAsset(this.assetManager, type, id, params);
-			if (!this.assetManager.registerAsset(type, id, asset, true))
+			if (!this.assetManager.registerAsset(type, id, asset))
 			{
 				throw new IllegalStateException("Unable to register asset!");
 			}

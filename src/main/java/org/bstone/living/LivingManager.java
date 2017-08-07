@@ -49,7 +49,7 @@ public class LivingManager<L extends Living>
 		return living;
 	}
 
-	public void update(double delta)
+	public void update()
 	{
 		this.flush(false);
 
@@ -65,7 +65,7 @@ public class LivingManager<L extends Living>
 		{
 			if (!living.isDead())
 			{
-				living.onUpdate(delta);
+				living.onUpdate();
 			}
 		}
 

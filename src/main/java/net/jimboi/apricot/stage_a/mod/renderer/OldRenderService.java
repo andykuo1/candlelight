@@ -1,13 +1,13 @@
 package net.jimboi.apricot.stage_a.mod.renderer;
 
+import org.bstone.render.RenderEngine;
+import org.bstone.render.RenderService;
 import org.bstone.util.listener.Listenable;
-import org.qsilver.render.RenderEngine;
-import org.qsilver.render.RenderService;
 
 /**
  * Created by Andy on 5/30/17.
  */
-public abstract class OldRenderService extends RenderService implements RenderEngine.OnRenderUpdateListener
+public abstract class OldRenderService extends RenderService
 {
 	public interface OnRenderUpdateListener
 	{
@@ -16,25 +16,28 @@ public abstract class OldRenderService extends RenderService implements RenderEn
 
 	public final Listenable<OnRenderUpdateListener> onRender = new Listenable<>((listener, objects) -> listener.onRender());
 
+	public OldRenderService(RenderEngine renderEngine)
+	{
+		super(renderEngine);
+	}
+
 	@Override
-	public void onRenderUpdate(RenderEngine renderEngine)
+	protected void onServiceStart(RenderEngine handler)
+	{
+		this.onRenderLoad(handler);
+	}
+
+	@Override
+	protected void onServiceStop(RenderEngine handler)
+	{
+		this.onRenderUnload(handler);
+	}
+
+	@Override
+	protected void onRenderUpdate(RenderEngine renderEngine, double delta)
 	{
 		this.onRender(renderEngine);
 		this.onRender.notifyListeners();
-	}
-
-	@Override
-	protected void onStart(RenderEngine handler)
-	{
-		this.onRenderLoad(handler);
-		handler.onRenderUpdate.addListener(this);
-	}
-
-	@Override
-	protected void onStop(RenderEngine handler)
-	{
-		handler.onRenderUpdate.deleteListener(this);
-		this.onRenderUnload(handler);
 	}
 
 	public abstract void onRenderLoad(RenderEngine renderEngine);

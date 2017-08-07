@@ -62,9 +62,9 @@ public abstract class LivingBase extends Living implements InstanceHandler
 	}
 
 	@Override
-	public void onUpdate(double delta)
+	public void onUpdate()
 	{
-		super.onUpdate(delta);
+		super.onUpdate();
 	}
 
 	@Override
