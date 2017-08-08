@@ -1,7 +1,7 @@
 package net.jimboi.boron.stage_a.base;
 
 import org.bstone.render.RenderEngine;
-import org.bstone.renderer.SimpleProgramRenderer;
+import org.bstone.render.renderer.SimpleProgramRenderer;
 import org.bstone.window.camera.Camera;
 import org.bstone.window.input.InputManager;
 import org.lwjgl.glfw.GLFW;

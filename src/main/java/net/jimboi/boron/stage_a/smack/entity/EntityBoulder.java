@@ -14,6 +14,6 @@ public class EntityBoulder extends SmackEntity
 	{
 		super(world, transform, size, world.createRenderable2D(transform, 'O', 0x888888));
 
-		renderable.getRenderModel().transformation().scale(size * 1.25F, size * 1.25F, 1);
+		this.renderable.getRenderModel().transformation().translate(1 / 16F, -1 / 16F, 0).scale(size * 1.25F, size * 1.25F, 1);
 	}
 }

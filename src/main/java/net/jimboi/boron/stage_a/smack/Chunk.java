@@ -3,8 +3,8 @@ package net.jimboi.boron.stage_a.smack;
 import net.jimboi.boron.stage_a.smack.entity.EntityAmmo;
 import net.jimboi.boron.stage_a.smack.entity.EntityBoulder;
 import net.jimboi.boron.stage_a.smack.entity.EntityMeat;
-import net.jimboi.boron.stage_a.smack.entity.EntityMonster;
 import net.jimboi.boron.stage_a.smack.entity.EntitySpawner;
+import net.jimboi.boron.stage_a.smack.entity.EntityZombie;
 
 import org.bstone.transform.Transform3;
 
@@ -78,7 +78,7 @@ public class Chunk
 
 		for(int i = 1; i < CHUNK_SIZE - 1; ++i)
 		{
-			chunk.entities.add(new EntityMeat(world, new Transform3().setPosition(posX + i, posY, 0), 0xFFFFFF));
+			chunk.entities.add(new EntityBoulder(world, new Transform3().setPosition(posX + i, posY, 0), 1));
 			chunk.entities.add(new EntityMeat(world, new Transform3().setPosition(posX + i, posY + CHUNK_SIZE, 0), 0xFFFFFF));
 			chunk.entities.add(new EntityMeat(world, new Transform3().setPosition(posX, posY + i, 0), 0xFFFFFF));
 			chunk.entities.add(new EntityMeat(world, new Transform3().setPosition(posX + CHUNK_SIZE, posY + i, 0), 0xFFFFFF));
@@ -102,7 +102,7 @@ public class Chunk
 
 		for(int i = random.nextInt(10); i > 0; --i)
 		{
-			chunk.entities.add(new EntityMonster(world, new Transform3().setPosition(posX + random.nextInt(16), posY + random.nextInt(16), 0)));
+			chunk.entities.add(new EntityZombie(world, new Transform3().setPosition(posX + random.nextInt(16), posY + random.nextInt(16), 0)));
 		}
 	}
 }

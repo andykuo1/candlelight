@@ -1,6 +1,6 @@
 package net.jimboi.boron.stage_a.base.livingentity;
 
-import org.bstone.render.Model;
+import org.bstone.render.model.Model;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3c;
 import org.joml.Matrix4f;

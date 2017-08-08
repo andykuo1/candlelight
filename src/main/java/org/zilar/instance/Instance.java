@@ -1,7 +1,7 @@
 package org.zilar.instance;
 
-import org.bstone.render.Model;
 import org.bstone.render.Renderable;
+import org.bstone.render.model.Model;
 import org.bstone.transform.Transform;
 import org.joml.Matrix4f;
 

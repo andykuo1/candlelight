@@ -2,8 +2,8 @@ package net.jimboi.boron.stage_a.smack;
 
 import net.jimboi.boron.stage_a.base.livingentity.LivingEntity;
 import net.jimboi.boron.stage_a.base.livingentity.LivingEntityManager;
-import net.jimboi.boron.stage_a.smack.aabb.BoundingBoxCollider;
-import net.jimboi.boron.stage_a.smack.aabb.BoundingBoxManager;
+import net.jimboi.boron.stage_a.smack.aabb.BoxCollider;
+import net.jimboi.boron.stage_a.smack.aabb.BoxCollisionManager;
 
 import org.zilar.entity.Entity;
 
@@ -12,11 +12,11 @@ import org.zilar.entity.Entity;
  */
 public class SmackEntityManager extends LivingEntityManager
 {
-	private final BoundingBoxManager boundingManager;
+	private final BoxCollisionManager boundingManager;
 
 	public SmackEntityManager()
 	{
-		 this.boundingManager = new BoundingBoxManager();
+		 this.boundingManager = new BoxCollisionManager();
 	}
 
 	@Override
@@ -32,9 +32,9 @@ public class SmackEntityManager extends LivingEntityManager
 	{
 		super.onLivingEntityCreate(living, entity);
 
-		if (living instanceof BoundingBoxCollider)
+		if (living instanceof BoxCollider)
 		{
-			this.boundingManager.add((BoundingBoxCollider) living);
+			this.boundingManager.add((BoxCollider) living);
 		}
 	}
 
@@ -43,13 +43,13 @@ public class SmackEntityManager extends LivingEntityManager
 	{
 		super.onLivingEntityDestroy(living, entity);
 
-		if (living instanceof BoundingBoxCollider)
+		if (living instanceof BoxCollider)
 		{
-			this.boundingManager.remove((BoundingBoxCollider) living);
+			this.boundingManager.remove((BoxCollider) living);
 		}
 	}
 
-	public BoundingBoxManager getBoundingManager()
+	public BoxCollisionManager getBoundingManager()
 	{
 		return this.boundingManager;
 	}

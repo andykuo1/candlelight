@@ -1,4 +1,4 @@
-package org.bstone.render;
+package org.bstone.render.model;
 
 import net.jimboi.apricot.base.renderer.property.PropertyTexture;
 

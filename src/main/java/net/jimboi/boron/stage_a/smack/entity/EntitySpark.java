@@ -1,19 +1,16 @@
 package net.jimboi.boron.stage_a.smack.entity;
 
-import net.jimboi.boron.stage_a.smack.SmackEntity;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
 
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
-import org.joml.Vector2f;
 import org.qsilver.util.ColorUtil;
 
 /**
  * Created by Andy on 8/6/17.
  */
-public class EntitySpark extends SmackEntity
+public class EntitySpark extends EntityMotion
 {
-	private Vector2f velocity = new Vector2f();
 	private float speed;
 
 	private int maxLife;
@@ -32,7 +29,7 @@ public class EntitySpark extends SmackEntity
 		float rad = this.transform.eulerRadians().z();
 		float dx = (float) Math.cos(rad);
 		float dy = (float) Math.sin(rad);
-		this.velocity.set(dx, dy).mul(this.speed);
+		this.motion.set(dx, dy).mul(this.speed);
 	}
 
 	@Override
@@ -40,7 +37,7 @@ public class EntitySpark extends SmackEntity
 	{
 		super.onUpdate();
 
-		this.transform.translate(this.velocity.x(), this.velocity.y(), 0);
+		//this.transform.translate(this.velocity.x(), this.velocity.y(), 0);
 		float scale = this.life / (float) this.maxLife;
 		this.transform.setScale(scale, scale, 1);
 

@@ -5,9 +5,13 @@ import net.jimboi.apricot.base.renderer.property.PropertyTexture;
 import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
 import net.jimboi.boron.stage_a.smack.aabb.AxisAlignedBoundingBox;
 import net.jimboi.boron.stage_a.smack.entity.EntityPlayer;
+import net.jimboi.boron.stage_a.smack.tile.DungeonHandler;
+import net.jimboi.boron.stage_a.smack.tile.DungeonModelManager;
 
-import org.bstone.render.Model;
+import org.bstone.render.RenderableBase;
+import org.bstone.render.model.Model;
 import org.bstone.transform.Transform3;
+import org.joml.Matrix4f;
 import org.qsilver.asset.Asset;
 
 import java.util.Random;
@@ -22,6 +26,9 @@ public class SmackWorld
 	private EntityPlayer player;
 	private Random rand;
 
+	private DungeonModelManager dungeonModelManager;
+	private DungeonHandler dungeonHandler;
+
 	private ChunkManager chunkManager;
 
 	public SmackWorld()
@@ -31,6 +38,9 @@ public class SmackWorld
 
 	public void onCreate()
 	{
+		this.dungeonModelManager = new DungeonModelManager(Smack.getSmack().materialManager, Asset.wrap(Smack.getSmack().texFont), Asset.wrap(Smack.getSmack().atsFont), "simple");
+		this.dungeonHandler = new DungeonHandler();
+
 		this.chunkManager = new ChunkManager();
 
 		Transform3 transform = new Transform3();
@@ -41,6 +51,9 @@ public class SmackWorld
 		this.smackManager.spawn(this.player);
 
 		//this.smackManager.spawn(new EntityMonster(this, new Transform3().setPosition(1, 1, 1)));
+		Model model = this.dungeonModelManager.createStaticDungeon(this.dungeonHandler.getTiles());
+		Smack.getSmack().renderables.add(new RenderableBase(model, new Matrix4f().translation(0, 0, -1)));
+		this.smackManager.getBoundingManager().add(this.dungeonHandler);
 	}
 
 	public void onDestroy()
@@ -82,7 +95,7 @@ public class SmackWorld
 
 	public AxisAlignedBoundingBox createBoundingBox(float x, float y, float width, float height)
 	{
-		return new AxisAlignedBoundingBox(x, y, width, height);
+		return new AxisAlignedBoundingBox(x, y, width / 2F, height / 2F);
 	}
 
 	public EntityComponentRenderable createRenderable2D(Transform3 transform, char c, int color)
@@ -108,5 +121,10 @@ public class SmackWorld
 	public SmackEntityManager getSmacks()
 	{
 		return this.smackManager;
+	}
+
+	public DungeonHandler getDungeonHandler()
+	{
+		return this.dungeonHandler;
 	}
 }

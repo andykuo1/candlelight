@@ -1,6 +1,6 @@
 package org.zilar.meshbuilder;
 
-import org.zilar.meshpack.MeshBuffer3;
+import org.zilar.meshbuilder.buffer.MeshBuffer3;
 
 /**
  * Created by Andy on 5/10/17.

@@ -1,9 +1,10 @@
 package net.jimboi.boron.stage_a.smack.entity;
 
 import net.jimboi.boron.stage_a.smack.DamageSource;
-import net.jimboi.boron.stage_a.smack.SmackEntity;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
-import net.jimboi.boron.stage_a.smack.aabb.IntersectionData;
+import net.jimboi.boron.stage_a.smack.aabb.ActiveBoxCollider;
+import net.jimboi.boron.stage_a.smack.aabb.BoxCollider;
+import net.jimboi.boron.stage_a.smack.aabb.BoxCollisionData;
 
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
@@ -12,7 +13,7 @@ import org.qsilver.util.ColorUtil;
 /**
  * Created by Andy on 8/5/17.
  */
-public class EntityBullet extends SmackEntity
+public class EntityBullet extends EntityMotion implements ActiveBoxCollider
 {
 	private float speed = 0.2F;
 	private int maxLife = 50;
@@ -36,7 +37,7 @@ public class EntityBullet extends SmackEntity
 		float rad = this.transform.eulerRadians().z();
 		float dx = (float) Math.cos(rad);
 		float dy = (float) Math.sin(rad);
-		this.transform.translate(dx * this.speed, dy * this.speed, 0);
+		this.motion.set(dx, dy).mul(this.speed);
 
 		if (this.life < this.maxLife / 6)
 		{
@@ -48,14 +49,6 @@ public class EntityBullet extends SmackEntity
 		if (this.life <= 0)
 		{
 			this.setDead();
-		}
-		else
-		{
-			IntersectionData data = this.world.getSmacks().getBoundingManager().checkFirstIntersection(this, (other) -> other instanceof EntityBoulder);
-			if (data != null)
-			{
-				this.damage(new DamageSource((EntityBoulder) data.getCollider()), 1);
-			}
 		}
 	}
 
@@ -77,7 +70,7 @@ public class EntityBullet extends SmackEntity
 
 		if (source != null)
 		{
-			if (source.getEntity() instanceof EntityMonster)
+			if (source.getEntity() instanceof EntityZombie)
 			{
 				for (int i = this.world.getRandom().nextInt(4) + 3; i > 0; --i)
 				{
@@ -108,5 +101,34 @@ public class EntityBullet extends SmackEntity
 		transform.rotation.rotationZ(this.transform.eulerRadians().z() - Transform.PI + (Transform.HALF_PI / 2F) * (this.world.getRandom().nextFloat() - 0.5F));
 
 		this.world.spawn(new EntitySpark(this.world, transform, color, this.speed * 0.6F));
+	}
+
+	@Override
+	public void onPreCollisionUpdate()
+	{
+
+	}
+
+	@Override
+	public void onCollision(BoxCollisionData collision)
+	{
+		BoxCollider collider = collision.getCollider();
+		if (collider instanceof EntityBoulder)
+		{
+			this.damage(new DamageSource((EntityBoulder) collider), 1);
+			this.transform.setPosition(collision.getPoint().x(), collision.getPoint().y(), 0);
+		}
+	}
+
+	@Override
+	public void onPostCollisionUpdate()
+	{
+
+	}
+
+	@Override
+	public boolean canCollideWith(BoxCollider collider)
+	{
+		return collider instanceof EntityBoulder;
 	}
 }

@@ -1,4 +1,4 @@
-package org.bstone.renderer;
+package org.bstone.render.renderer;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;

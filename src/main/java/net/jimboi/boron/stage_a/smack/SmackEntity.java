@@ -3,14 +3,14 @@ package net.jimboi.boron.stage_a.smack;
 import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
 import net.jimboi.boron.stage_a.base.livingentity.LivingEntity;
 import net.jimboi.boron.stage_a.smack.aabb.AxisAlignedBoundingBox;
-import net.jimboi.boron.stage_a.smack.aabb.BoundingBoxCollider;
+import net.jimboi.boron.stage_a.smack.aabb.BoxCollider;
 
 import org.bstone.transform.Transform3;
 
 /**
  * Created by Andy on 8/6/17.
  */
-public class SmackEntity extends LivingEntity implements BoundingBoxCollider
+public class SmackEntity extends LivingEntity implements BoxCollider
 {
 	protected final SmackWorld world;
 	protected final AxisAlignedBoundingBox boundingBox;
@@ -24,17 +24,6 @@ public class SmackEntity extends LivingEntity implements BoundingBoxCollider
 		this.world = world;
 
 		this.boundingBox = size > 0 ? this.world.createBoundingBox(transform.position3().x(), transform.position3().y(), size, size) : null;
-	}
-
-	@Override
-	public void onLateUpdate()
-	{
-		super.onLateUpdate();
-
-		if (this.boundingBox != null)
-		{
-			this.boundingBox.setPosition(this.transform.position3().x(), this.transform.position3().y());
-		}
 	}
 
 	protected void onDamageTaken(DamageSource source, int damage)

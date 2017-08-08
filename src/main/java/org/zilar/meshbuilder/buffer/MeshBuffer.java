@@ -1,4 +1,4 @@
-package org.zilar.meshpack;
+package org.zilar.meshbuilder.buffer;
 
 import org.lwjgl.BufferUtils;
 

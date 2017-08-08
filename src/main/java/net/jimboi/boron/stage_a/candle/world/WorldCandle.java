@@ -10,7 +10,7 @@ import net.jimboi.boron.stage_a.candle.entity.EntityPlayer;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
-import org.bstone.render.Model;
+import org.bstone.render.model.Model;
 import org.bstone.transform.Transform3;
 import org.qsilver.scene.Scene;
 import org.zilar.sprite.SpriteSheet;

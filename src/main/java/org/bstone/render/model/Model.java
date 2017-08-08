@@ -1,4 +1,4 @@
-package org.bstone.render;
+package org.bstone.render.model;
 
 import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;

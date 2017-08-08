@@ -6,8 +6,8 @@ import net.jimboi.boron.stage_a.candle.CandleRenderer;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
-import org.bstone.render.Model;
 import org.bstone.render.RenderableBase;
+import org.bstone.render.model.Model;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;

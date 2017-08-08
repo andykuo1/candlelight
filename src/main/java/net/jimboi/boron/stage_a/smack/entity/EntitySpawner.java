@@ -4,19 +4,16 @@ import net.jimboi.apricot.base.renderer.property.PropertyColor;
 import net.jimboi.boron.stage_a.smack.DamageSource;
 import net.jimboi.boron.stage_a.smack.SmackEntity;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
-import net.jimboi.boron.stage_a.smack.aabb.BoundingBoxActiveCollider;
-import net.jimboi.boron.stage_a.smack.aabb.BoundingBoxCollider;
-import net.jimboi.boron.stage_a.smack.aabb.IntersectionData;
+import net.jimboi.boron.stage_a.smack.aabb.BoxCollisionData;
+import net.jimboi.boron.stage_a.smack.aabb.BoxCollisionSolver;
 
 import org.bstone.transform.Transform3;
 import org.qsilver.util.ColorUtil;
 
-import java.util.List;
-
 /**
  * Created by Andy on 8/6/17.
  */
-public class EntitySpawner extends SmackEntity implements BoundingBoxActiveCollider
+public class EntitySpawner extends SmackEntity
 {
 	protected float hurt;
 	protected int color;
@@ -57,6 +54,13 @@ public class EntitySpawner extends SmackEntity implements BoundingBoxActiveColli
 
 			this.cooldown = this.world.getRandom().nextInt(this.maxCooldown - this.minCooldown) + this.minCooldown;
 		}
+
+		BoxCollisionData data = BoxCollisionSolver.checkFirstCollision(this, this.world.getSmacks().getBoundingManager().getColliders(), (other) -> other instanceof EntityBullet);
+		if (data != null && data.getCollider() instanceof EntityBullet)
+		{
+			((EntityBullet) data.getCollider()).damage(new DamageSource(this), 1);
+			this.damage(null, 1);
+		}
 	}
 
 	@Override
@@ -68,29 +72,6 @@ public class EntitySpawner extends SmackEntity implements BoundingBoxActiveColli
 		{
 			this.fireMeat();
 		}
-	}
-
-
-	@Override
-	public void onCheckIntersection(List<IntersectionData> intersections)
-	{
-		if (!intersections.isEmpty())
-		{
-			SmackEntity other = (SmackEntity) intersections.get(0).getCollider();
-
-			if (other instanceof EntityBullet)
-			{
-				other.damage(new DamageSource(this), 1);
-
-				this.damage(null, 1);
-			}
-		}
-	}
-
-	@Override
-	public boolean canCollideWith(BoundingBoxCollider collider)
-	{
-		return collider instanceof SmackEntity && !((SmackEntity) collider).isDead() && (collider instanceof EntityBullet);
 	}
 
 	@Override
@@ -135,6 +116,6 @@ public class EntitySpawner extends SmackEntity implements BoundingBoxActiveColli
 	{
 		Transform3 transform = new Transform3();
 		transform.position.set(this.transform.position3());
-		this.world.spawn(new EntityMonster(this.world, transform));
+		this.world.spawn(new EntityZombie(this.world, transform));
 	}
 }

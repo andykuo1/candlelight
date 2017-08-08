@@ -1,9 +1,9 @@
 package net.jimboi.boron.stage_a.smack.aabb;
 
 /**
- * Created by Andy on 8/6/17.
+ * Created by Andy on 8/7/17.
  */
-public interface BoundingBoxCollider
+public interface BoxCollider
 {
 	AxisAlignedBoundingBox getBoundingBox();
 

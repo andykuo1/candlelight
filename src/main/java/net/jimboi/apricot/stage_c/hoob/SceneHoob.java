@@ -11,7 +11,7 @@ import net.jimboi.apricot.stage_c.hoob.world.World;
 import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
-import org.bstone.render.Model;
+import org.bstone.render.model.Model;
 import org.bstone.transform.Transform3;
 import org.qsilver.asset.Asset;
 import org.zilar.BasicSideScrollCameraController;

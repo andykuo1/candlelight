@@ -4,7 +4,7 @@ import net.jimboi.apricot.base.renderer.property.PropertyColor;
 import net.jimboi.apricot.base.renderer.property.PropertyTexture;
 import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
 import net.jimboi.boron.stage_a.smack.aabb.AxisAlignedBoundingBox;
-import net.jimboi.boron.stage_a.smack.aabb.BoundingBoxCollider;
+import net.jimboi.boron.stage_a.smack.aabb.BoxCollider;
 
 import org.bstone.game.GameEngine;
 import org.bstone.game.GameHandler;
@@ -13,13 +13,13 @@ import org.bstone.material.MaterialManager;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
-import org.bstone.render.Model;
 import org.bstone.render.RenderEngine;
 import org.bstone.render.Renderable;
-import org.bstone.render.TextModel;
-import org.bstone.render.TextModelManager;
-import org.bstone.renderer.SimpleProgramRenderer;
-import org.bstone.renderer.WireframeProgramRenderer;
+import org.bstone.render.model.Model;
+import org.bstone.render.model.TextModel;
+import org.bstone.render.model.TextModelManager;
+import org.bstone.render.renderer.SimpleProgramRenderer;
+import org.bstone.render.renderer.WireframeProgramRenderer;
 import org.bstone.util.direction.Direction;
 import org.bstone.window.Window;
 import org.bstone.window.camera.Camera;
@@ -28,7 +28,6 @@ import org.bstone.window.input.InputManager;
 import org.bstone.window.view.ScreenSpace;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
-import org.joml.Vector2fc;
 import org.joml.Vector4f;
 import org.joml.Vector4fc;
 import org.lwjgl.glfw.GLFW;
@@ -44,7 +43,6 @@ import org.zilar.sprite.TextureAtlas;
 import org.zilar.sprite.TextureAtlasBuilder;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -119,9 +117,9 @@ public class Smack implements GameHandler
 	public SimpleProgramRenderer simpleRenderer;
 	public WireframeProgramRenderer wireframeRenderer;
 
-	private TextModel ammoModel;
+	public TextModel ammoModel;
 
-	private Set<Renderable> renderables = new HashSet<>();
+	public Set<Renderable> renderables = new HashSet<>();
 	private Set<EntityComponentRenderable> renderables2 = new HashSet<>();
 
 	@Override
@@ -230,16 +228,13 @@ public class Smack implements GameHandler
 				Matrix4f matrix = new Matrix4f();
 				Vector4fc color = new Vector4f(0, 1, 0, 1);
 
-				Iterator<BoundingBoxCollider> colliders = this.world.getSmacks().getBoundingManager().getColliderIterator();
-				while (colliders.hasNext())
+				Iterable<BoxCollider> colliders = this.world.getSmacks().getBoundingManager().getColliders();
+				for(BoxCollider collider : colliders)
 				{
-					BoundingBoxCollider collider = colliders.next();
-					AxisAlignedBoundingBox boundingBox = collider.getBoundingBox();
-					if (boundingBox != null)
+					AxisAlignedBoundingBox box = collider.getBoundingBox();
+					if (box != null)
 					{
-						Vector2fc pos = boundingBox.getPosition();
-						Vector2fc size = boundingBox.getSize();
-						matrix.identity().translation(pos.x(), pos.y(), 1).scale(size.x(), size.y(), 1);
+						matrix.identity().translation(box.getCenterX(), box.getCenterY(), 1).scale(box.getHalfWidth() * 2, box.getHalfHeight() * 2, 1);
 						this.wireframeRenderer.draw(this.quad, color, matrix);
 					}
 				}

@@ -1,20 +1,16 @@
 package net.jimboi.boron.stage_a.smack.entity;
 
 import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
-import net.jimboi.boron.stage_a.smack.SmackEntity;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
 
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
-import org.joml.Vector2f;
 
 /**
  * Created by Andy on 8/6/17.
  */
-public class EntityParticleBouncy extends SmackEntity
+public class EntityParticleBouncy extends EntityMotion
 {
-	private Vector2f velocity = new Vector2f();
-	private float friction = 0.1F;
 	private float speed;
 
 	private boolean falling;
@@ -33,7 +29,8 @@ public class EntityParticleBouncy extends SmackEntity
 		float rad = this.world.getRandom().nextFloat() * Transform.PI2;
 		float dx = (float) Math.cos(rad);
 		float dy = (float) Math.sin(rad);
-		this.velocity.set(dx, dy).mul(this.speed);
+		this.motion.set(dx, dy).mul(this.speed);
+		this.friction = 0.1F;
 
 		this.motionFall = (this.world.getRandom().nextFloat() * 0.05F) + 0.05F;
 		this.falling = true;
@@ -61,8 +58,7 @@ public class EntityParticleBouncy extends SmackEntity
 			}
 		}
 
-		this.velocity.mul(1 - this.friction);
-		this.transform.translate(this.velocity.x(), this.velocity.y() + this.motionFall, 0);
+		this.transform.translate(0, this.motionFall, 0);
 		float scale = this.initScale + this.fallOffset / 4;
 		this.transform.setScale(scale, scale, 1);
 	}

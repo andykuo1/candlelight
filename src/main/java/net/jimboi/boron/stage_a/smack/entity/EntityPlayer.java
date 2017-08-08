@@ -6,9 +6,11 @@ import net.jimboi.boron.stage_a.smack.MotionHelper;
 import net.jimboi.boron.stage_a.smack.Smack;
 import net.jimboi.boron.stage_a.smack.SmackEntity;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
-import net.jimboi.boron.stage_a.smack.aabb.BoundingBoxActiveCollider;
-import net.jimboi.boron.stage_a.smack.aabb.BoundingBoxCollider;
-import net.jimboi.boron.stage_a.smack.aabb.IntersectionData;
+import net.jimboi.boron.stage_a.smack.aabb.ActiveBoxCollider;
+import net.jimboi.boron.stage_a.smack.aabb.BoxCollider;
+import net.jimboi.boron.stage_a.smack.aabb.BoxCollisionData;
+import net.jimboi.boron.stage_a.smack.aabb.GridCollider;
+import net.jimboi.boron.stage_a.smack.tile.DungeonHandler;
 
 import org.bstone.transform.Transform3;
 import org.bstone.window.input.InputManager;
@@ -16,12 +18,11 @@ import org.joml.Vector2f;
 import org.qsilver.util.MathUtil;
 
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by Andy on 8/5/17.
  */
-public class EntityPlayer extends SmackEntity implements BoundingBoxActiveCollider
+public class EntityPlayer extends EntityMotion implements ActiveBoxCollider
 {
 	private int ammo = 7;
 
@@ -34,7 +35,6 @@ public class EntityPlayer extends SmackEntity implements BoundingBoxActiveCollid
 
 	private Vector2f mouseTarget = new Vector2f();
 	private Vector2f moveTarget = new Vector2f();
-	private Vector2f velocity = new Vector2f();
 	private float speed = 0.1F;
 
 	private float pickupRadius = 2;
@@ -42,6 +42,8 @@ public class EntityPlayer extends SmackEntity implements BoundingBoxActiveCollid
 	public EntityPlayer(SmackWorld world, Transform3 transform)
 	{
 		super(world, transform, 0.8F, world.createRenderable2D(transform, '@', 0xFF00FF));
+
+		this.friction = 0.1F;
 	}
 
 	@Override
@@ -88,10 +90,12 @@ public class EntityPlayer extends SmackEntity implements BoundingBoxActiveCollid
 
 		if (!MotionHelper.isWithinDistanceSquared(this.transform, this.moveTarget.x(), this.moveTarget.y(), 0.01F))
 		{
-			MotionHelper.getDirectionTowards(this.transform, this.moveTarget.x(), this.moveTarget.y(), this.velocity);
-			this.velocity.mul(this.speed);
-
-			this.transform.translate(this.velocity.x(), this.velocity.y(), 0);
+			MotionHelper.getDirectionTowards(this.transform, this.moveTarget.x(), this.moveTarget.y(), this.motion);
+			this.motion.mul(this.speed);
+		}
+		else
+		{
+			this.motion.set(0);
 		}
 
 		Iterator<LivingEntity> livings = this.world.getSmacks().getLivingManager().getLivingIterator();
@@ -108,39 +112,6 @@ public class EntityPlayer extends SmackEntity implements BoundingBoxActiveCollid
 		}
 	}
 
-	@Override
-	public void onCheckIntersection(List<IntersectionData> intersections)
-	{
-		if (!intersections.isEmpty())
-		{
-			SmackEntity other = (SmackEntity) intersections.get(0).getCollider();
-
-			this.velocity.set(0);
-			for(IntersectionData intersection : intersections)
-			{
-				BoundingBoxCollider collider = intersection.getCollider();
-				if (collider instanceof EntityBoulder)
-				{
-					this.velocity.sub(intersection.getDelta().x(), intersection.getDelta().y());
-				}
-				else if (collider instanceof EntityAmmo)
-				{
-					this.ammo += ((EntityAmmo) collider).getAmount();
-
-					other.damage(new DamageSource(this), 1);
-				}
-			}
-			this.transform.translate(this.velocity.x(), this.velocity.y(), 0);
-			this.velocity.set(0);
-		}
-	}
-
-	@Override
-	public boolean canCollideWith(BoundingBoxCollider collider)
-	{
-		return collider instanceof SmackEntity && !((SmackEntity) collider).isDead() && (collider instanceof EntityAmmo || collider instanceof EntityBoulder);
-	}
-
 	public void fireBullet()
 	{
 		Transform3 transform = new Transform3();
@@ -153,5 +124,42 @@ public class EntityPlayer extends SmackEntity implements BoundingBoxActiveCollid
 	public int getAmmo()
 	{
 		return this.ammo;
+	}
+
+	@Override
+	public void onPreCollisionUpdate()
+	{
+		this.boundingBox.setCenter(this.transform.position3().x(), this.transform.position3().y());
+	}
+
+	@Override
+	public void onCollision(BoxCollisionData collision)
+	{
+		BoxCollider other = collision.getCollider();
+		if (other instanceof EntityBoulder)
+		{
+			this.move(collision.getDelta().x(), collision.getDelta().y());
+		}
+		else if (other instanceof EntityAmmo)
+		{
+			this.ammo += ((EntityAmmo) other).getAmount();
+
+			((EntityAmmo) other).damage(new DamageSource(this), 1);
+		}
+		else if (other instanceof GridCollider)
+		{
+			this.move(collision.getDelta().x(), collision.getDelta().y());
+		}
+	}
+
+	@Override
+	public void onPostCollisionUpdate()
+	{
+	}
+
+	@Override
+	public boolean canCollideWith(BoxCollider collider)
+	{
+		return (collider instanceof SmackEntity && !((SmackEntity) collider).isDead() && (collider instanceof EntityAmmo || collider instanceof EntityBoulder)) || collider instanceof DungeonHandler;
 	}
 }

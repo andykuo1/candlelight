@@ -20,7 +20,7 @@ import net.jimboi.apricot.stage_b.glim.entity.system.EntitySystemHeading;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
-import org.bstone.render.Model;
+import org.bstone.render.model.Model;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
 import org.joml.Vector3f;

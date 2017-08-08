@@ -17,7 +17,7 @@ import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
-import org.bstone.render.Model;
+import org.bstone.render.model.Model;
 import org.bstone.transform.Transform3;
 import org.qsilver.asset.Asset;
 import org.qsilver.resource.TextureAtlasLoader;

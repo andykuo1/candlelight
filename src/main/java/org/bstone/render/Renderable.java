@@ -1,5 +1,6 @@
 package org.bstone.render;
 
+import org.bstone.render.model.Model;
 import org.joml.Matrix4f;
 
 /**

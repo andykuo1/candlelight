@@ -6,9 +6,9 @@ import net.jimboi.boron.stage_a.smack.DamageSource;
 import net.jimboi.boron.stage_a.smack.MotionHelper;
 import net.jimboi.boron.stage_a.smack.SmackEntity;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
-import net.jimboi.boron.stage_a.smack.aabb.BoundingBoxActiveCollider;
-import net.jimboi.boron.stage_a.smack.aabb.BoundingBoxCollider;
-import net.jimboi.boron.stage_a.smack.aabb.IntersectionData;
+import net.jimboi.boron.stage_a.smack.aabb.ActiveBoxCollider;
+import net.jimboi.boron.stage_a.smack.aabb.BoxCollider;
+import net.jimboi.boron.stage_a.smack.aabb.BoxCollisionData;
 
 import org.bstone.transform.Transform3;
 import org.bstone.transform.Transform3c;
@@ -16,26 +16,22 @@ import org.joml.Vector2f;
 import org.qsilver.util.ColorUtil;
 
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by Andy on 8/6/17.
  */
-public class EntityMonster extends SmackEntity implements BoundingBoxActiveCollider
+public class EntityZombie extends EntityMotion implements ActiveBoxCollider
 {
 	protected float hurt;
 
 	protected int color;
 
 	protected Transform3c target;
-	protected Vector2f velocity;
 	protected float speed = 0.06F;
 
-	public EntityMonster(SmackWorld world, Transform3 transform)
+	public EntityZombie(SmackWorld world, Transform3 transform)
 	{
 		super(world, transform, 1, world.createRenderable2D(transform, 'Z', 0x00FF00));
-
-		this.velocity = new Vector2f();
 
 		this.health = 2;
 
@@ -76,8 +72,8 @@ public class EntityMonster extends SmackEntity implements BoundingBoxActiveColli
 		{
 			if (!MotionHelper.isWithinDistanceSquared(this.transform, this.target, 0.1F))
 			{
-				MotionHelper.getDirectionTowards(this.transform, this.target.position3().x(), this.target.position3().y(), this.velocity).mul(this.speed);
-				this.transform.translate(this.velocity.x(), this.velocity.y(), 0);
+				MotionHelper.getDirectionTowards(this.transform, this.target.position3().x(), this.target.position3().y(), this.motion).mul(this.speed);
+				//this.transform.translate(this.velocity.x(), this.velocity.y(), 0);
 			}
 		}
 	}
@@ -91,42 +87,6 @@ public class EntityMonster extends SmackEntity implements BoundingBoxActiveColli
 		{
 			this.fireMeat();
 		}
-	}
-
-	@Override
-	public void onCheckIntersection(List<IntersectionData> intersections)
-	{
-		if (!intersections.isEmpty())
-		{
-			SmackEntity other = (SmackEntity) intersections.get(0).getCollider();
-
-			if (other instanceof EntityBullet)
-			{
-				other.damage(new DamageSource(this), 1);
-
-				this.damage(null, 1);
-
-				Vector2f vec = MotionHelper.getDirectionTowards(this.transform, other.getTransform().position3().x(), other.getTransform().position3().y(), new Vector2f()).negate().mul(0.2F);
-				this.transform.position.add(vec.x(), vec.y(), 0);
-			}
-
-			this.velocity.set(0);
-			for(IntersectionData intersection : intersections)
-			{
-				if (intersection.getCollider() instanceof EntityBoulder)
-				{
-					this.velocity.sub(intersection.getDelta().x(), intersection.getDelta().y());
-				}
-			}
-			this.transform.translate(this.velocity.x(), this.velocity.y(), 0);
-			this.velocity.set(0);
-		}
-	}
-
-	@Override
-	public boolean canCollideWith(BoundingBoxCollider collider)
-	{
-		return collider instanceof SmackEntity && !((SmackEntity) collider).isDead() && (collider instanceof EntityBullet || collider instanceof EntityBoulder);
 	}
 
 	@Override
@@ -168,5 +128,42 @@ public class EntityMonster extends SmackEntity implements BoundingBoxActiveColli
 		transform.position.set(this.transform.position3());
 
 		this.world.spawn(new EntityMeat(this.world, transform, 0xFF0000));
+	}
+
+	@Override
+	public void onPreCollisionUpdate()
+	{
+		this.boundingBox.setCenter(this.transform.position3().x(), this.transform.position3().y());
+	}
+
+	@Override
+	public void onCollision(BoxCollisionData collision)
+	{
+		BoxCollider other = collision.getCollider();
+
+		if (other instanceof EntityBullet)
+		{
+			EntityBullet bullet = (EntityBullet) other;
+			bullet.damage(new DamageSource(this), 1);
+			this.damage(null, 1);
+
+			Vector2f vec = MotionHelper.getDirectionTowards(this.transform, bullet.getTransform().position3().x(), bullet.getTransform().position3().y(), new Vector2f()).negate().mul(0.2F);
+			this.move(vec.x(), vec.y());
+		}
+		else if (other instanceof EntityBoulder)
+		{
+			this.move(collision.getDelta().x(), collision.getDelta().y());
+		}
+	}
+
+	@Override
+	public void onPostCollisionUpdate()
+	{
+	}
+
+	@Override
+	public boolean canCollideWith(BoxCollider collider)
+	{
+		return collider instanceof SmackEntity && !((SmackEntity) collider).isDead() && (collider instanceof EntityBullet || collider instanceof EntityBoulder);
 	}
 }

@@ -1,7 +1,7 @@
 package net.jimboi.apricot.stage_b.glim.entity.component;
 
-import org.bstone.render.Model;
 import org.bstone.render.Renderable;
+import org.bstone.render.model.Model;
 import org.bstone.transform.Transform3;
 import org.joml.Matrix4f;
 import org.zilar.entity.EntityComponent;

@@ -1,149 +1,64 @@
 package net.jimboi.boron.stage_a.smack.aabb;
 
-import org.joml.Vector2f;
-import org.joml.Vector2fc;
-import org.qsilver.util.MathUtil;
-
 /**
- * Created by Andy on 8/6/17.
+ * Created by Andy on 8/7/17.
  */
-public class AxisAlignedBoundingBox
+public class AxisAlignedBoundingBox extends Box
 {
-	private final Vector2f position = new Vector2f();
-	private final Vector2f size = new Vector2f();
+	protected float centerX;
+	protected float centerY;
+	protected float halfWidth;
+	protected float halfHeight;
 
-	public AxisAlignedBoundingBox(float x, float y, float width, float height)
+	public AxisAlignedBoundingBox(float centerX, float centerY, float halfWidth, float halfHeight)
 	{
-		this.position.set(x, y);
-		this.size.set(width, height);
+		this.centerX = centerX;
+		this.centerY = centerY;
+		this.halfWidth = halfWidth;
+		this.halfHeight = halfHeight;
 	}
 
-	public void setPosition(float x, float y)
+	public void expand(float w, float h)
 	{
-		this.position.set(x, y);
+		this.halfWidth += w / 2;
+		this.halfHeight += h / 2;
 	}
 
-	public void setWidth(float width)
+	public void offset(float x, float y)
 	{
-		this.size.x = width;
+		this.centerX += x;
+		this.centerY += y;
 	}
 
-	public void setHeight(float height)
+	public void setCenter(float centerX, float centerY)
 	{
-		this.size.y = height;
+		this.centerX = centerX;
+		this.centerY = centerY;
 	}
 
-	public final Vector2fc getPosition()
+	public void setHalfSize(float halfWidth, float halfHeight)
 	{
-		return this.position;
+		this.halfWidth = halfWidth;
+		this.halfHeight = halfHeight;
 	}
 
-	public final Vector2fc getSize()
+	public float getCenterX()
 	{
-		return this.size;
+		return this.centerX;
 	}
 
-	public static IntersectionData test(AxisAlignedBoundingBox collider, AxisAlignedBoundingBox other, IntersectionData dst)
+	public float getCenterY()
 	{
-		final float ox = other.getPosition().x();
-		final float oy = other.getPosition().y();
-		final float ow = other.getSize().x() / 2F;
-		final float oh = other.getSize().y() / 2F;
-
-		final float cx = collider.getPosition().x();
-		final float cy = collider.getPosition().y();
-		final float cw = collider.getSize().x() / 2F;
-		final float ch = collider.getSize().y() / 2F;
-
-		float dx = ox - cx;
-		float px = (ow + cw) - Math.abs(dx);
-		if (px <= 0) return null;
-
-		float dy = oy - cy;
-		float py = (oh + ch) - Math.abs(dy);
-		if (py <= 0) return null;
-
-		if (px < py)
-		{
-			float sx = MathUtil.sign(dx);
-			dst.delta.x = px * sx;
-			dst.normal.x = sx;
-			dst.point.x = cx + (cw * sx);
-			dst.point.y = oy;
-
-			dst.delta.y = 0;
-			dst.normal.y= 0;
-		}
-		else
-		{
-			float sy = MathUtil.sign(dy);
-			dst.delta.y = py * sy;
-			dst.normal.y = sy;
-			dst.point.x = ox;
-			dst.point.y = cy + (ch * sy);
-
-			dst.delta.x = 0;
-			dst.normal.x = 0;
-		}
-
-		return dst;
+		return this.centerY;
 	}
 
-	public static IntersectionData test(AxisAlignedBoundingBox collider, float x, float y, float dx, float dy, float paddingX, float paddingY, IntersectionData dst)
+	public float getHalfWidth()
 	{
-		final float cx = collider.getPosition().x();
-		final float cy = collider.getPosition().y();
-		final float cw = collider.getSize().x() / 2F;
-		final float ch = collider.getSize().y() / 2F;
-
-		float scaleX = 1.0F / dx;
-		float scaleY = 1.0F / dy;
-		float signX = MathUtil.sign(scaleX);
-		float signY = MathUtil.sign(scaleY);
-
-		float deltaTimeX = signX * (cw + paddingX);
-		float deltaTimeY = signY * (ch + paddingY);
-
-		float nearTimeX = (cx - deltaTimeX - x) * scaleX;
-		float nearTimeY = (cy - deltaTimeY - y) * scaleY;
-		float farTimeX = (cx + deltaTimeX - x) * scaleX;
-		float farTimeY = (cy + deltaTimeY - y) * scaleY;
-
-		if (nearTimeX > farTimeY || nearTimeY > farTimeY) return null;
-
-		float nearTime = Math.max(nearTimeX, nearTimeY);
-		float farTime = Math.min(farTimeX, farTimeY);
-
-		if (nearTime >= 1 || farTime <= 0) return null;
-
-		float dt = MathUtil.clamp(nearTime, 0, 1);
-		if (nearTimeX > nearTimeY)
-		{
-			dst.normal.x = -signX;
-			dst.normal.y = 0;
-		}
-		else
-		{
-			dst.normal.x = 0;
-			dst.normal.y = -signY;
-		}
-
-		dst.delta.x = dt * dx;
-		dst.delta.y = dt * dy;
-		dst.point.x = x + dst.delta.x;
-		dst.point.y = y + dst.delta.y;
-		return dst;
+		return this.halfWidth;
 	}
 
-	public static IntersectionData testSweep(AxisAlignedBoundingBox collider, AxisAlignedBoundingBox other, float dx, float dy, IntersectionData dst)
+	public float getHalfHeight()
 	{
-		if (dx == 0 && dy == 0)
-		{
-			return test(collider, other, dst);
-		}
-		else
-		{
-			return test(collider, other.getPosition().x(), other.getPosition().y(), dx, dy, other.getSize().x(), other.getSize().y(), dst);
-		}
+		return this.halfHeight;
 	}
 }

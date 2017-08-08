@@ -1,4 +1,4 @@
-package org.zilar.meshpack;
+package org.zilar.meshbuilder.buffer;
 
 /**
  * Created by Andy on 6/12/17.
