@@ -1,8 +1,7 @@
 package net.jimboi.boron.stage_a.smack.tile;
 
-import net.jimboi.boron.stage_a.smack.aabb.GridAlignedBoundingBox;
-import net.jimboi.boron.stage_a.smack.aabb.GridBasedBoundingMap;
-import net.jimboi.boron.stage_a.smack.aabb.GridCollider;
+import net.jimboi.boron.stage_a.smack.collisionbox.box.GridBasedBoundingBox;
+import net.jimboi.boron.stage_a.smack.collisionbox.collider.BoxCollider;
 
 import org.qsilver.util.map2d.IntMap;
 
@@ -11,10 +10,10 @@ import java.util.Random;
 /**
  * Created by Andy on 8/7/17.
  */
-public class DungeonHandler implements GridCollider
+public class DungeonHandler implements BoxCollider
 {
 	private IntMap tilemap = new IntMap(16, 16);
-	private GridBasedBoundingMap gridBox;
+	private GridBasedBoundingBox gridBox;
 
 	public DungeonHandler()
 	{
@@ -29,7 +28,7 @@ public class DungeonHandler implements GridCollider
 		this.tilemap.set(4, 7, 1);
 		this.tilemap.set(4, 8, 1);
 
-		this.gridBox = new GridBasedBoundingMap(0, 0, this.tilemap.width, this.tilemap.height);
+		this.gridBox = new GridBasedBoundingBox(0, 0, this.tilemap.width, this.tilemap.height);
 		for(int i = 0; i < this.tilemap.size(); ++i)
 		{
 			this.gridBox.setSolid(i, this.tilemap.get(i) != 0);
@@ -48,16 +47,8 @@ public class DungeonHandler implements GridCollider
 	}
 
 	@Override
-	public GridBasedBoundingMap getGridBox()
+	public GridBasedBoundingBox getBoundingBox()
 	{
 		return this.gridBox;
-	}
-
-	private GridAlignedBoundingBox boundingBox = new GridAlignedBoundingBox(0, 0, 1, 1);
-
-	@Override
-	public GridAlignedBoundingBox getBoundingBox()
-	{
-		return this.boundingBox;
 	}
 }

@@ -1,4 +1,6 @@
-package net.jimboi.boron.stage_a.smack.aabb;
+package net.jimboi.boron.stage_a.smack.collisionbox.response;
+
+import net.jimboi.boron.stage_a.smack.collisionbox.collider.BoxCollider;
 
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
@@ -6,12 +8,12 @@ import org.joml.Vector2fc;
 /**
  * Created by Andy on 8/7/17.
  */
-public final class BoxCollisionData
+public final class CollisionResponse
 {
-	BoxCollider collider;
-	final Vector2f delta = new Vector2f();
-	final Vector2f point = new Vector2f();
-	final Vector2f normal = new Vector2f();
+	public BoxCollider collider;
+	public final Vector2f delta = new Vector2f();
+	public final Vector2f point = new Vector2f();
+	public final Vector2f normal = new Vector2f();
 
 	public Vector2fc getDelta()
 	{
@@ -33,7 +35,7 @@ public final class BoxCollisionData
 		return this.collider;
 	}
 
-	public void set(BoxCollisionData data)
+	public void set(CollisionResponse data)
 	{
 		this.delta.set(data.delta);
 		this.normal.set(data.normal);

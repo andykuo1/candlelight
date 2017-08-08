@@ -3,7 +3,7 @@ package net.jimboi.boron.stage_a.smack;
 import net.jimboi.apricot.base.renderer.property.PropertyColor;
 import net.jimboi.apricot.base.renderer.property.PropertyTexture;
 import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
-import net.jimboi.boron.stage_a.smack.aabb.AxisAlignedBoundingBox;
+import net.jimboi.boron.stage_a.smack.collisionbox.box.AxisAlignedBoundingBox;
 import net.jimboi.boron.stage_a.smack.entity.EntityPlayer;
 import net.jimboi.boron.stage_a.smack.tile.DungeonHandler;
 import net.jimboi.boron.stage_a.smack.tile.DungeonModelManager;

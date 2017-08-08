@@ -2,8 +2,8 @@ package net.jimboi.boron.stage_a.smack;
 
 import net.jimboi.boron.stage_a.base.livingentity.LivingEntity;
 import net.jimboi.boron.stage_a.base.livingentity.LivingEntityManager;
-import net.jimboi.boron.stage_a.smack.aabb.BoxCollider;
-import net.jimboi.boron.stage_a.smack.aabb.BoxCollisionManager;
+import net.jimboi.boron.stage_a.smack.collisionbox.CollisionBoxManager;
+import net.jimboi.boron.stage_a.smack.collisionbox.collider.BoxCollider;
 
 import org.zilar.entity.Entity;
 
@@ -12,11 +12,11 @@ import org.zilar.entity.Entity;
  */
 public class SmackEntityManager extends LivingEntityManager
 {
-	private final BoxCollisionManager boundingManager;
+	private final CollisionBoxManager boundingManager;
 
 	public SmackEntityManager()
 	{
-		 this.boundingManager = new BoxCollisionManager();
+		 this.boundingManager = new CollisionBoxManager();
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class SmackEntityManager extends LivingEntityManager
 		}
 	}
 
-	public BoxCollisionManager getBoundingManager()
+	public CollisionBoxManager getBoundingManager()
 	{
 		return this.boundingManager;
 	}

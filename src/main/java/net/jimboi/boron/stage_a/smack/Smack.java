@@ -3,8 +3,7 @@ package net.jimboi.boron.stage_a.smack;
 import net.jimboi.apricot.base.renderer.property.PropertyColor;
 import net.jimboi.apricot.base.renderer.property.PropertyTexture;
 import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
-import net.jimboi.boron.stage_a.smack.aabb.AxisAlignedBoundingBox;
-import net.jimboi.boron.stage_a.smack.aabb.BoxCollider;
+import net.jimboi.boron.stage_a.smack.collisionbox.CollisionBoxRenderer;
 
 import org.bstone.game.GameEngine;
 import org.bstone.game.GameHandler;
@@ -19,7 +18,6 @@ import org.bstone.render.model.Model;
 import org.bstone.render.model.TextModel;
 import org.bstone.render.model.TextModelManager;
 import org.bstone.render.renderer.SimpleProgramRenderer;
-import org.bstone.render.renderer.WireframeProgramRenderer;
 import org.bstone.util.direction.Direction;
 import org.bstone.window.Window;
 import org.bstone.window.camera.Camera;
@@ -29,7 +27,6 @@ import org.bstone.window.view.ScreenSpace;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
-import org.joml.Vector4fc;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -115,7 +112,7 @@ public class Smack implements GameHandler
 	public TextureAtlas atsFont;
 	public FontSheet fontSheet;
 	public SimpleProgramRenderer simpleRenderer;
-	public WireframeProgramRenderer wireframeRenderer;
+	public CollisionBoxRenderer collisionBoxRenderer;
 
 	public TextModel ammoModel;
 
@@ -155,7 +152,7 @@ public class Smack implements GameHandler
 		this.textModelManager = new TextModelManager(this.materialManager, this.fontSheet, "simple");
 
 		this.simpleRenderer = new SimpleProgramRenderer();
-		this.wireframeRenderer = new WireframeProgramRenderer();
+		this.collisionBoxRenderer = new CollisionBoxRenderer();
 
 		this.ammoModel = this.textModelManager.createDynamicText("___");
 		this.renderables.add(new Renderable()
@@ -223,23 +220,11 @@ public class Smack implements GameHandler
 
 		if (this.debugMode)
 		{
-			this.wireframeRenderer.bind(this.camera.view(), this.camera.projection());
+			this.collisionBoxRenderer.bind(this.camera.view(), this.camera.projection());
 			{
-				Matrix4f matrix = new Matrix4f();
-				Vector4fc color = new Vector4f(0, 1, 0, 1);
-
-				Iterable<BoxCollider> colliders = this.world.getSmacks().getBoundingManager().getColliders();
-				for(BoxCollider collider : colliders)
-				{
-					AxisAlignedBoundingBox box = collider.getBoundingBox();
-					if (box != null)
-					{
-						matrix.identity().translation(box.getCenterX(), box.getCenterY(), 1).scale(box.getHalfWidth() * 2, box.getHalfHeight() * 2, 1);
-						this.wireframeRenderer.draw(this.quad, color, matrix);
-					}
-				}
+				this.collisionBoxRenderer.draw(this.world.getSmacks().getBoundingManager().getColliders(), 0x00FF00);
 			}
-			this.wireframeRenderer.unbind();
+			this.collisionBoxRenderer.unbind();
 		}
 	}
 
@@ -247,7 +232,7 @@ public class Smack implements GameHandler
 	public void onUnload(RenderEngine renderEngine)
 	{
 		this.simpleRenderer.close();
-		this.wireframeRenderer.close();
+		this.collisionBoxRenderer.close();
 		this.textModelManager.destroy();
 		this.bmpFont.close();
 		this.texFont.close();

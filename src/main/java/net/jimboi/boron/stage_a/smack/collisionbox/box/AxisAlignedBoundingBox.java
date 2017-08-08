@@ -1,9 +1,9 @@
-package net.jimboi.boron.stage_a.smack.aabb;
+package net.jimboi.boron.stage_a.smack.collisionbox.box;
 
 /**
  * Created by Andy on 8/7/17.
  */
-public class AxisAlignedBoundingBox extends Box
+public class AxisAlignedBoundingBox extends BoundingBox
 {
 	protected float centerX;
 	protected float centerY;

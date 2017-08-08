@@ -2,9 +2,9 @@ package net.jimboi.boron.stage_a.smack.entity;
 
 import net.jimboi.boron.stage_a.smack.DamageSource;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
-import net.jimboi.boron.stage_a.smack.aabb.ActiveBoxCollider;
-import net.jimboi.boron.stage_a.smack.aabb.BoxCollider;
-import net.jimboi.boron.stage_a.smack.aabb.BoxCollisionData;
+import net.jimboi.boron.stage_a.smack.collisionbox.collider.ActiveBoxCollider;
+import net.jimboi.boron.stage_a.smack.collisionbox.collider.BoxCollider;
+import net.jimboi.boron.stage_a.smack.collisionbox.response.CollisionResponse;
 
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
@@ -110,14 +110,16 @@ public class EntityBullet extends EntityMotion implements ActiveBoxCollider
 	}
 
 	@Override
-	public void onCollision(BoxCollisionData collision)
+	public boolean onCollision(CollisionResponse collision)
 	{
 		BoxCollider collider = collision.getCollider();
 		if (collider instanceof EntityBoulder)
 		{
 			this.damage(new DamageSource((EntityBoulder) collider), 1);
 			this.transform.setPosition(collision.getPoint().x(), collision.getPoint().y(), 0);
+			return true;
 		}
+		return false;
 	}
 
 	@Override

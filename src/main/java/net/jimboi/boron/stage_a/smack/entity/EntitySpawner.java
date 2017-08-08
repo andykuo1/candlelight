@@ -4,8 +4,7 @@ import net.jimboi.apricot.base.renderer.property.PropertyColor;
 import net.jimboi.boron.stage_a.smack.DamageSource;
 import net.jimboi.boron.stage_a.smack.SmackEntity;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
-import net.jimboi.boron.stage_a.smack.aabb.BoxCollisionData;
-import net.jimboi.boron.stage_a.smack.aabb.BoxCollisionSolver;
+import net.jimboi.boron.stage_a.smack.collisionbox.response.CollisionSolver;
 
 import org.bstone.transform.Transform3;
 import org.qsilver.util.ColorUtil;
@@ -55,12 +54,19 @@ public class EntitySpawner extends SmackEntity
 			this.cooldown = this.world.getRandom().nextInt(this.maxCooldown - this.minCooldown) + this.minCooldown;
 		}
 
-		BoxCollisionData data = BoxCollisionSolver.checkFirstCollision(this, this.world.getSmacks().getBoundingManager().getColliders(), (other) -> other instanceof EntityBullet);
-		if (data != null && data.getCollider() instanceof EntityBullet)
-		{
-			((EntityBullet) data.getCollider()).damage(new DamageSource(this), 1);
-			this.damage(null, 1);
-		}
+		CollisionSolver.checkCollision(this.getBoundingBox(),
+				this.world.getSmacks().getBoundingManager().getColliders(),
+				(other) -> other instanceof EntityBullet,
+				(collision) ->
+				{
+					if (collision != null && collision.getCollider() instanceof EntityBullet)
+					{
+						((EntityBullet) collision.getCollider()).damage(new DamageSource(this), 1);
+						this.damage(null, 1);
+					}
+					return false;
+				}
+		);
 	}
 
 	@Override

@@ -6,10 +6,9 @@ import net.jimboi.boron.stage_a.smack.MotionHelper;
 import net.jimboi.boron.stage_a.smack.Smack;
 import net.jimboi.boron.stage_a.smack.SmackEntity;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
-import net.jimboi.boron.stage_a.smack.aabb.ActiveBoxCollider;
-import net.jimboi.boron.stage_a.smack.aabb.BoxCollider;
-import net.jimboi.boron.stage_a.smack.aabb.BoxCollisionData;
-import net.jimboi.boron.stage_a.smack.aabb.GridCollider;
+import net.jimboi.boron.stage_a.smack.collisionbox.collider.ActiveBoxCollider;
+import net.jimboi.boron.stage_a.smack.collisionbox.collider.BoxCollider;
+import net.jimboi.boron.stage_a.smack.collisionbox.response.CollisionResponse;
 import net.jimboi.boron.stage_a.smack.tile.DungeonHandler;
 
 import org.bstone.transform.Transform3;
@@ -133,7 +132,7 @@ public class EntityPlayer extends EntityMotion implements ActiveBoxCollider
 	}
 
 	@Override
-	public void onCollision(BoxCollisionData collision)
+	public boolean onCollision(CollisionResponse collision)
 	{
 		BoxCollider other = collision.getCollider();
 		if (other instanceof EntityBoulder)
@@ -146,10 +145,11 @@ public class EntityPlayer extends EntityMotion implements ActiveBoxCollider
 
 			((EntityAmmo) other).damage(new DamageSource(this), 1);
 		}
-		else if (other instanceof GridCollider)
+		else if (other instanceof DungeonHandler)
 		{
 			this.move(collision.getDelta().x(), collision.getDelta().y());
 		}
+		return false;
 	}
 
 	@Override

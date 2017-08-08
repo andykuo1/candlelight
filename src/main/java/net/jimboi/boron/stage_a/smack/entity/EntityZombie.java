@@ -6,9 +6,9 @@ import net.jimboi.boron.stage_a.smack.DamageSource;
 import net.jimboi.boron.stage_a.smack.MotionHelper;
 import net.jimboi.boron.stage_a.smack.SmackEntity;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
-import net.jimboi.boron.stage_a.smack.aabb.ActiveBoxCollider;
-import net.jimboi.boron.stage_a.smack.aabb.BoxCollider;
-import net.jimboi.boron.stage_a.smack.aabb.BoxCollisionData;
+import net.jimboi.boron.stage_a.smack.collisionbox.collider.ActiveBoxCollider;
+import net.jimboi.boron.stage_a.smack.collisionbox.collider.BoxCollider;
+import net.jimboi.boron.stage_a.smack.collisionbox.response.CollisionResponse;
 
 import org.bstone.transform.Transform3;
 import org.bstone.transform.Transform3c;
@@ -137,7 +137,7 @@ public class EntityZombie extends EntityMotion implements ActiveBoxCollider
 	}
 
 	@Override
-	public void onCollision(BoxCollisionData collision)
+	public boolean onCollision(CollisionResponse collision)
 	{
 		BoxCollider other = collision.getCollider();
 
@@ -154,6 +154,8 @@ public class EntityZombie extends EntityMotion implements ActiveBoxCollider
 		{
 			this.move(collision.getDelta().x(), collision.getDelta().y());
 		}
+
+		return false;
 	}
 
 	@Override
