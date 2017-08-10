@@ -1,6 +1,6 @@
 package net.jimboi.apricot.base.renderer.property;
 
-import org.bstone.material.Property;
+import net.jimboi.apricot.base.material.Property;
 
 /**
  * Created by Andy on 6/8/17.

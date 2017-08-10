@@ -1,16 +1,16 @@
 package net.jimboi.apricot.base.renderer;
 
+import net.jimboi.apricot.base.material.OldMaterial;
+import net.jimboi.apricot.base.render.OldModel;
+import net.jimboi.apricot.base.render.OldRenderable;
 import net.jimboi.apricot.base.renderer.property.PropertyDiffuse;
 import net.jimboi.apricot.base.renderer.property.PropertyTexture;
 
-import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Texture;
 import org.bstone.render.RenderEngine;
 import org.bstone.render.RenderService;
-import org.bstone.render.Renderable;
-import org.bstone.render.model.Model;
 import org.bstone.window.camera.Camera;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
@@ -32,13 +32,13 @@ public class SimpleRenderer extends RenderService
 {
 	private final Asset<Program> program;
 	private final Camera camera;
-	private final Iterable<Renderable> renderables;
+	private final Iterable<OldRenderable> renderables;
 
 	private final Matrix4f modelViewProjMatrix = new Matrix4f();
 	private final Matrix4f modelViewMatrix = new Matrix4f();
 	private final Matrix4f modelMatrix = new Matrix4f();
 
-	public SimpleRenderer(RenderEngine renderEngine, Asset<Program> program, Camera camera, Iterable<Renderable> renderables)
+	public SimpleRenderer(RenderEngine renderEngine, Asset<Program> program, Camera camera, Iterable<OldRenderable> renderables)
 	{
 		super(renderEngine);
 		this.program = program;
@@ -62,7 +62,7 @@ public class SimpleRenderer extends RenderService
 		//this.render(this.camera, this.renderables.iterator());
 	}
 
-	public void render(Camera camera, Iterator<Renderable> iterator)
+	public void render(Camera camera, Iterator<OldRenderable> iterator)
 	{
 		Matrix4fc u_model_view_projection;
 		Matrix4fc u_model;
@@ -84,12 +84,12 @@ public class SimpleRenderer extends RenderService
 
 			while (iterator.hasNext())
 			{
-				final Renderable inst = iterator.next();
+				final OldRenderable inst = iterator.next();
 				if (!inst.isRenderVisible()) continue;
 
-				final Model model = inst.getRenderModel();
+				final OldModel model = inst.getRenderModel();
 				final Mesh mesh = model.getMesh().getSource();
-				final Material material = model.getMaterial();
+				final OldMaterial material = model.getMaterial();
 
 				Texture texture = null;
 				Sprite sprite = null;

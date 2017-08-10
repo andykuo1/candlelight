@@ -1,9 +1,9 @@
 package net.jimboi.boron.stage_a.smack;
 
+import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
+import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
 import net.jimboi.boron.stage_a.base.livingentity.LivingEntity;
-import net.jimboi.boron.stage_a.smack.collisionbox.box.AxisAlignedBoundingBox;
-import net.jimboi.boron.stage_a.smack.collisionbox.collider.BoxCollider;
 
 import org.bstone.transform.Transform3;
 

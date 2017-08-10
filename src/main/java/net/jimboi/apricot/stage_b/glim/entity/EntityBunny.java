@@ -1,6 +1,7 @@
 package net.jimboi.apricot.stage_b.glim.entity;
 
 import net.jimboi.apricot.base.OldGameEngine;
+import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.renderer.BillboardRenderer;
 import net.jimboi.apricot.base.renderer.property.PropertyDiffuse;
 import net.jimboi.apricot.base.renderer.property.PropertyShadow;
@@ -17,7 +18,6 @@ import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
-import org.bstone.render.model.Model;
 import org.bstone.transform.Transform3;
 import org.qsilver.asset.Asset;
 import org.qsilver.resource.TextureAtlasLoader;
@@ -56,7 +56,7 @@ public class EntityBunny extends EntityGlim
 
 		return MANAGER.createEntity(
 				new EntityComponentTransform(transform),
-				new EntityComponentRenderable(transform, new Model(
+				new EntityComponentRenderable(transform, new OldModel(
 						OldGameEngine.ASSETMANAGER.getAsset(Mesh.class, "plane"),
 						SCENE.getMaterialManager().createMaterial(
 								new PropertyDiffuse(),

@@ -4,10 +4,14 @@ import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
 import org.bstone.mogli.Texture;
+import org.bstone.render.material.Material;
+import org.bstone.render.material.PropertyColor;
+import org.bstone.render.material.PropertyTexture;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
+import org.joml.Vector4f;
 import org.joml.Vector4fc;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -19,29 +23,27 @@ import org.zilar.sprite.Sprite;
 /**
  * Created by Andy on 8/4/17.
  */
-public class SimpleProgramRenderer implements AutoCloseable
+public class SimpleProgramRenderer extends ProgramRenderer
 {
-	protected final Program program;
-
 	private final Matrix4f viewProjection = new Matrix4f();
 	private final Matrix4f modelViewProjection = new Matrix4f();
+	private final Vector4f color = new Vector4f();
 
 	public SimpleProgramRenderer()
 	{
+		super(new Program(), new Material());
+
 		Shader vsh = new Shader(new ResourceLocation("base:simple.vsh"), GL20.GL_VERTEX_SHADER);
 		Shader fsh = new Shader(new ResourceLocation("base:simple.fsh"), GL20.GL_FRAGMENT_SHADER);
-		this.program = new Program();
 		this.program.link(vsh, fsh);
 		vsh.close();
 		fsh.close();
+
+		PropertyTexture.addProperty(this.material);
+		PropertyColor.addProperty(this.material);
 	}
 
 	@Override
-	public void close()
-	{
-		this.program.close();
-	}
-
 	public void bind(Matrix4fc view, Matrix4fc projection)
 	{
 		final Program program = this.program;
@@ -50,10 +52,22 @@ public class SimpleProgramRenderer implements AutoCloseable
 		this.viewProjection.set(projection).mul(view);
 	}
 
+	@Override
 	public void unbind()
 	{
 		final Program program = this.program;
 		program.unbind();
+	}
+
+	public void draw(Mesh mesh, Material material, Matrix4fc transformation)
+	{
+		this.draw(mesh,
+				PropertyTexture.getTexture(material),
+				PropertyTexture.getSpriteOffset(material),
+				PropertyTexture.getSpriteScale(material),
+				PropertyTexture.getTransparency(material),
+				PropertyColor.getNormalizedRGBA(material),
+				transformation);
 	}
 
 	public void draw(Mesh mesh, Sprite sprite, boolean transparency, Vector4fc color, Matrix4fc transformation)
@@ -67,7 +81,8 @@ public class SimpleProgramRenderer implements AutoCloseable
 		program.setUniform("u_model_view_projection", this.viewProjection.mul(transformation, this.modelViewProjection));
 		mesh.bind();
 		{
-			program.setUniform("u_color", color);
+			this.color.set(color).w = 1;
+			program.setUniform("u_color", this.color);
 
 			if (texture != null)
 			{
@@ -88,5 +103,10 @@ public class SimpleProgramRenderer implements AutoCloseable
 			}
 		}
 		mesh.unbind();
+	}
+
+	public Material getDefaultMaterial()
+	{
+		return this.material;
 	}
 }

@@ -1,7 +1,7 @@
 package org.bstone.render.model;
 
-import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
+import org.bstone.render.material.Material;
 import org.qsilver.asset.Asset;
 
 /**
@@ -12,9 +12,9 @@ public class TextModel extends Model
 	private TextModelManager textModelManager;
 	private String text;
 
-	TextModel(TextModelManager textModelManager, String text, Asset<Mesh> mesh, Material material, String renderType)
+	TextModel(TextModelManager textModelManager, String text, Asset<Mesh> mesh, Material material)
 	{
-		super(mesh, material, renderType);
+		super(mesh, material);
 
 		this.textModelManager = textModelManager;
 		this.text = text;

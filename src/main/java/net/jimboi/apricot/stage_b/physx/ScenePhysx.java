@@ -3,6 +3,7 @@ package net.jimboi.apricot.stage_b.physx;
 import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.OldSceneBase;
 import net.jimboi.apricot.base.input.OldInputManager;
+import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.renderer.property.PropertyDiffuse;
 import net.jimboi.apricot.base.renderer.property.PropertyShadow;
 import net.jimboi.apricot.base.renderer.property.PropertySpecular;
@@ -16,7 +17,6 @@ import net.jimboi.apricot.stage_b.glim.entity.system.EntitySystemBillboard;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
-import org.bstone.render.model.Model;
 import org.bstone.transform.Transform3;
 import org.bstone.util.direction.Direction;
 import org.bstone.window.view.ScreenSpace;
@@ -83,7 +83,7 @@ public class ScenePhysx extends OldSceneBase
 		transform.position.set(x, y, z);
 		this.entityManager.createEntity(
 				new EntityComponentTransform(transform),
-				new EntityComponentRenderable(transform, new Model(
+				new EntityComponentRenderable(transform, new OldModel(
 						OldGameEngine.ASSETMANAGER.getAsset(Mesh.class, "plane"),
 						this.getMaterialManager().createMaterial(
 								new PropertyDiffuse(),

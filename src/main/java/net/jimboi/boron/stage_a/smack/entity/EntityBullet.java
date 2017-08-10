@@ -1,10 +1,11 @@
 package net.jimboi.boron.stage_a.smack.entity;
 
+import net.jimboi.boron.stage_a.base.collisionbox.collider.ActiveBoxCollider;
+import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
+import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionResponse;
 import net.jimboi.boron.stage_a.smack.DamageSource;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
-import net.jimboi.boron.stage_a.smack.collisionbox.collider.ActiveBoxCollider;
-import net.jimboi.boron.stage_a.smack.collisionbox.collider.BoxCollider;
-import net.jimboi.boron.stage_a.smack.collisionbox.response.CollisionResponse;
+import net.jimboi.boron.stage_a.smack.tile.DungeonHandler;
 
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
@@ -119,6 +120,12 @@ public class EntityBullet extends EntityMotion implements ActiveBoxCollider
 			this.transform.setPosition(collision.getPoint().x(), collision.getPoint().y(), 0);
 			return true;
 		}
+		else if (collider instanceof DungeonHandler)
+		{
+			this.damage(new DamageSource(null), 1);
+			this.transform.setPosition(collision.getPoint().x(), collision.getPoint().y(), 0);
+			return true;
+		}
 		return false;
 	}
 
@@ -131,6 +138,6 @@ public class EntityBullet extends EntityMotion implements ActiveBoxCollider
 	@Override
 	public boolean canCollideWith(BoxCollider collider)
 	{
-		return collider instanceof EntityBoulder;
+		return collider instanceof EntityBoulder || collider instanceof DungeonHandler;
 	}
 }

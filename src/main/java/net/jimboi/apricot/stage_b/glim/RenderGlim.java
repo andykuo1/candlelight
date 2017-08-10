@@ -4,6 +4,7 @@ import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.OldRenderBase;
 import net.jimboi.apricot.base.OldSceneBase;
 import net.jimboi.apricot.base.input.OldInputManager;
+import net.jimboi.apricot.base.render.OldRenderable;
 import net.jimboi.apricot.base.renderer.BillboardRenderer;
 import net.jimboi.apricot.base.renderer.DiffuseRenderer;
 import net.jimboi.apricot.base.renderer.SimpleRenderer;
@@ -16,7 +17,6 @@ import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderabl
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.render.RenderEngine;
-import org.bstone.render.Renderable;
 import org.bstone.util.SemanticVersion;
 import org.bstone.window.camera.PerspectiveCamera;
 import org.joml.Vector2f;
@@ -137,7 +137,7 @@ public class RenderGlim extends OldRenderBase
 
 		Collection<EntityComponentRenderable> instances = scene.getEntityManager().getComponents(EntityComponentRenderable.class, new HashSet<>());
 
-		Iterator<Renderable> iter;
+		Iterator<OldRenderable> iter;
 
 		iter = new CastIterator<>(instances.iterator());
 		this.diffuseRenderer.preRender(this.getCamera(), iter);

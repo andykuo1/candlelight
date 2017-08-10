@@ -3,10 +3,8 @@ package org.bstone.window;
 import org.bstone.util.listener.Listenable;
 import org.bstone.window.input.InputEngine;
 import org.bstone.window.view.ViewPort;
-import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
@@ -34,6 +32,11 @@ public class Window
 	public final Listenable<OnWindowSizeChanged> onWindowSizeChanged = new Listenable<>(((listener, objects) -> listener.onWindowSizeChanged((Integer) objects[0], (Integer) objects[1], (Integer) objects[2], (Integer) objects[3])));
 
 	public final Listenable<OnViewPortChanged> onViewPortChanged = new Listenable<>(((listener, objects) -> listener.onViewPortChanged((ViewPort) objects[0], (ViewPort) objects[1])));
+
+	public static void setCurrentWindowContext(Window window)
+	{
+		GLFW.glfwMakeContextCurrent(window.handle);
+	}
 
 	private final InputEngine inputEngine;
 
@@ -86,17 +89,6 @@ public class Window
 		this.width = width;
 		this.height = height;
 
-		System.out.println("LWJGL " + Version.getVersion());
-		System.out.println("JOML 1.9.2");
-
-		// Setup an error callback. The default implementation
-		// will print the error message in System.err.
-		GLFWErrorCallback.createPrint(System.err).set();
-
-		// Initialize GLFW. Most GLFW functions will not work before doing this.
-		if ( !GLFW.glfwInit() )
-			throw new IllegalStateException("Unable to initialize GLFW");
-
 		// Configure GLFW
 		GLFW.glfwDefaultWindowHints(); // optional, the current window hints are already the default
 		GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE); // the window will stay hidden after creation
@@ -109,8 +101,10 @@ public class Window
 
 		// Create the window
 		this.handle = GLFW.glfwCreateWindow(this.width, this.height, title, MemoryUtil.NULL, MemoryUtil.NULL);
-		if ( handle == MemoryUtil.NULL )
+		if (this.handle == MemoryUtil.NULL)
+		{
 			throw new RuntimeException("Failed to create the GLFW window");
+		}
 
 		//Create the input context
 		this.inputEngine = new InputEngine(this);
@@ -126,7 +120,8 @@ public class Window
 		});
 
 		// Get the thread stack and push a new frame
-		try ( MemoryStack stack = MemoryStack.stackPush() ) {
+		try (MemoryStack stack = MemoryStack.stackPush())
+		{
 			IntBuffer pWidth = stack.mallocInt(1); // int*
 			IntBuffer pHeight = stack.mallocInt(1); // int*
 
@@ -141,22 +136,23 @@ public class Window
 
 			// Center the window
 			GLFW.glfwSetWindowPos(
-					handle,
+					this.handle,
 					(vidmode.width() - this.width) / 2,
 					(vidmode.height() - this.height) / 2
 			);
 		} // the stack frame is popped automatically
 
 		// Make the OpenGL context current
-		GLFW.glfwMakeContextCurrent(handle);
+		GLFW.glfwMakeContextCurrent(this.handle);
+
 		// Enable v-sync
 		GLFW.glfwSwapInterval(1);
 
 		// Make the window visible
-		GLFW.glfwShowWindow(handle);
+		GLFW.glfwShowWindow(this.handle);
 
 		//Focus the window
-		GLFW.glfwFocusWindow(handle);
+		GLFW.glfwFocusWindow(this.handle);
 
 		// This line is critical for LWJGL's interoperation with GLFW's
 		// OpenGL context, or any context that is managed externally.
@@ -164,6 +160,8 @@ public class Window
 		// creates the GLCapabilities instance and makes the OpenGL
 		// bindings available for use.
 		GL.createCapabilities();
+
+		System.out.println("OPENGL " + GL11.glGetString(GL11.GL_VERSION));
 
 		// Set the clear color
 		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -198,12 +196,8 @@ public class Window
 	public void destroy()
 	{
 		// Free the window callbacks and destroy the window
-		Callbacks.glfwFreeCallbacks(handle);
-		GLFW.glfwDestroyWindow(handle);
-
-		// Terminate GLFW and free the error callback
-		GLFW.glfwTerminate();
-		GLFW.glfwSetErrorCallback(null).free();
+		Callbacks.glfwFreeCallbacks(this.handle);
+		GLFW.glfwDestroyWindow(this.handle);
 	}
 
 	public void setWindowTitle(String title)

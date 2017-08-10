@@ -1,6 +1,7 @@
 package net.jimboi.apricot.base.renderer.property;
 
-import org.bstone.material.Property;
+import net.jimboi.apricot.base.material.Property;
+
 import org.bstone.mogli.Texture;
 import org.qsilver.asset.Asset;
 import org.zilar.sprite.Sprite;

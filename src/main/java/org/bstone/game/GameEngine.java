@@ -86,6 +86,8 @@ public class GameEngine implements TickHandler, RenderHandler
 
 		this.inputManager.clear();
 		this.window.destroy();
+
+		this.renderEngine.destroy();
 	}
 
 	@Override

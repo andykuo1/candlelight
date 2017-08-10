@@ -3,6 +3,8 @@ package org.bstone.render.renderer;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
+import org.bstone.render.material.Material;
+import org.bstone.render.material.PropertyColor;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector4fc;
@@ -13,41 +15,50 @@ import org.zilar.resource.ResourceLocation;
 /**
  * Created by Andy on 8/5/17.
  */
-public class WireframeProgramRenderer  implements AutoCloseable
+public class WireframeProgramRenderer extends ProgramRenderer
 {
-	protected final Program program;
-
 	private final Matrix4f viewProjection = new Matrix4f();
 	private final Matrix4f modelViewProjection = new Matrix4f();
 
 	public WireframeProgramRenderer()
 	{
+		super(new Program(), new Material());
+
 		Shader vsh = new Shader(new ResourceLocation("base:wireframe.vsh"), GL20.GL_VERTEX_SHADER);
 		Shader fsh = new Shader(new ResourceLocation("base:wireframe.fsh"), GL20.GL_FRAGMENT_SHADER);
-		this.program = new Program();
 		this.program.link(vsh, fsh);
 		vsh.close();
 		fsh.close();
+
+		PropertyColor.addProperty(this.material);
 	}
 
 	@Override
-	public void close()
-	{
-		this.program.close();
-	}
-
 	public void bind(Matrix4fc view, Matrix4fc projection)
 	{
 		final Program program = this.program;
 		program.bind();
 
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+
 		this.viewProjection.set(projection).mul(view);
 	}
 
+	@Override
 	public void unbind()
 	{
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+
 		final Program program = this.program;
 		program.unbind();
+	}
+
+	@Override
+	public void draw(Mesh mesh, Material material, Matrix4fc transformation)
+	{
+		this.draw(mesh,
+				PropertyColor.getNormalizedRGBA(material),
+				transformation);
 	}
 
 	public void draw(Mesh mesh, Vector4fc color, Matrix4fc transformation)

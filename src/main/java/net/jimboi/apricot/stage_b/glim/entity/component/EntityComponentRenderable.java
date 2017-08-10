@@ -1,7 +1,8 @@
 package net.jimboi.apricot.stage_b.glim.entity.component;
 
-import org.bstone.render.Renderable;
-import org.bstone.render.model.Model;
+import net.jimboi.apricot.base.render.OldModel;
+import net.jimboi.apricot.base.render.OldRenderable;
+
 import org.bstone.transform.Transform3;
 import org.joml.Matrix4f;
 import org.zilar.entity.EntityComponent;
@@ -9,13 +10,13 @@ import org.zilar.entity.EntityComponent;
 /**
  * Created by Andy on 6/1/17.
  */
-public class EntityComponentRenderable implements EntityComponent, Renderable
+public class EntityComponentRenderable implements EntityComponent, OldRenderable
 {
 	public final Transform3 transform;
-	public final Model model;
+	public final OldModel model;
 	public boolean visible;
 
-	public EntityComponentRenderable(Transform3 transform, Model model)
+	public EntityComponentRenderable(Transform3 transform, OldModel model)
 	{
 		this.transform = transform;
 		this.model = model;
@@ -33,7 +34,7 @@ public class EntityComponentRenderable implements EntityComponent, Renderable
 	}
 
 	@Override
-	public Model getRenderModel()
+	public OldModel getRenderModel()
 	{
 		return this.model;
 	}

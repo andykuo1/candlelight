@@ -1,15 +1,15 @@
 package net.jimboi.apricot.base.renderer;
 
+import net.jimboi.apricot.base.material.OldMaterial;
+import net.jimboi.apricot.base.render.OldModel;
+import net.jimboi.apricot.base.render.OldRenderable;
 import net.jimboi.apricot.base.renderer.property.PropertyTexture;
 
-import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Texture;
 import org.bstone.render.RenderEngine;
 import org.bstone.render.RenderService;
-import org.bstone.render.Renderable;
-import org.bstone.render.model.Model;
 import org.bstone.window.camera.Camera;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
@@ -63,7 +63,7 @@ public class BillboardRenderer extends RenderService
 
 	}
 
-	public void render(Camera camera, Iterator<Renderable> iterator)
+	public void render(Camera camera, Iterator<OldRenderable> iterator)
 	{
 		Matrix4fc proj = camera.projection();
 		Matrix4fc view = camera.view();
@@ -76,12 +76,12 @@ public class BillboardRenderer extends RenderService
 
 			while (iterator.hasNext())
 			{
-				final Renderable inst = iterator.next();
+				final OldRenderable inst = iterator.next();
 				if (!inst.isRenderVisible()) continue;
 
-				final Model model = inst.getRenderModel();
+				final OldModel model = inst.getRenderModel();
 				final Mesh mesh = model.getMesh().getSource();
-				final Material material = model.getMaterial();
+				final OldMaterial material = model.getMaterial();
 
 				Texture texture = null;
 				Sprite sprite = null;

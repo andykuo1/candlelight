@@ -1,19 +1,18 @@
 package net.jimboi.boron.stage_a.smack;
 
-import net.jimboi.apricot.base.renderer.property.PropertyColor;
-import net.jimboi.apricot.base.renderer.property.PropertyTexture;
+import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxRenderer;
 import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
-import net.jimboi.boron.stage_a.smack.collisionbox.CollisionBoxRenderer;
 
 import org.bstone.game.GameEngine;
 import org.bstone.game.GameHandler;
-import org.bstone.material.Material;
-import org.bstone.material.MaterialManager;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
 import org.bstone.render.RenderEngine;
 import org.bstone.render.Renderable;
+import org.bstone.render.material.Material;
+import org.bstone.render.material.PropertyColor;
+import org.bstone.render.material.PropertyTexture;
 import org.bstone.render.model.Model;
 import org.bstone.render.model.TextModel;
 import org.bstone.render.model.TextModelManager;
@@ -21,12 +20,11 @@ import org.bstone.render.renderer.SimpleProgramRenderer;
 import org.bstone.util.direction.Direction;
 import org.bstone.window.Window;
 import org.bstone.window.camera.Camera;
-import org.bstone.window.camera.OrthographicCamera;
+import org.bstone.window.camera.PerspectiveCamera;
 import org.bstone.window.input.InputManager;
 import org.bstone.window.view.ScreenSpace;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
-import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -101,7 +99,6 @@ public class Smack implements GameHandler
 		this.world.onDestroy();
 	}
 
-	public MaterialManager materialManager;
 	public TextModelManager textModelManager;
 	public Camera camera;
 
@@ -115,6 +112,7 @@ public class Smack implements GameHandler
 	public CollisionBoxRenderer collisionBoxRenderer;
 
 	public TextModel ammoModel;
+	public Model shadowModel;
 
 	public Set<Renderable> renderables = new HashSet<>();
 	private Set<EntityComponentRenderable> renderables2 = new HashSet<>();
@@ -122,12 +120,17 @@ public class Smack implements GameHandler
 	@Override
 	public void onLoad(RenderEngine renderEngine)
 	{
-		this.camera = new OrthographicCamera(640, 480);
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glCullFace(GL11.GL_BACK);
+
+		this.camera = new PerspectiveCamera(640, 480);
+		//((OrthographicCamera)this.camera).setClippingBound(-5, 5, 5, -5);
 
 		this.getInput().registerMousePosX("mousex");
 		this.getInput().registerMousePosY("mousey");
 		this.getInput().registerMouse("mouseleft", GLFW.GLFW_MOUSE_BUTTON_LEFT);
 		this.getInput().registerMouse("mouseright", GLFW.GLFW_MOUSE_BUTTON_RIGHT);
+		this.getInput().registerMouseScrollY("zoom");
 		this.getInput().registerKey("debug", GLFW.GLFW_KEY_P);
 
 		MeshBuilder mb = new MeshBuilder();
@@ -148,25 +151,48 @@ public class Smack implements GameHandler
 
 		this.fontSheet = new FontSheet(Asset.wrap(this.atsFont), 0, (char) 0, (char) 255);
 
-		this.materialManager = new MaterialManager();
-		this.textModelManager = new TextModelManager(this.materialManager, this.fontSheet, "simple");
+		this.textModelManager = new TextModelManager(this.fontSheet);
 
 		this.simpleRenderer = new SimpleProgramRenderer();
 		this.collisionBoxRenderer = new CollisionBoxRenderer();
 
 		this.ammoModel = this.textModelManager.createDynamicText("___");
+		this.ammoModel.getMaterial().setProperty(PropertyTexture.TRANSPARENCY, true);
+		PropertyColor.setColor(this.ammoModel.getMaterial(), 0x007BFF);
+
+		this.shadowModel = new Model(this.ammoModel.getMesh(), this.ammoModel.getMaterial().derive(new Material()));
+		this.shadowModel.transformation().set(this.ammoModel.transformation());
+		PropertyColor.setColor(this.shadowModel.getMaterial(), 0x29424A);
+
 		this.renderables.add(new Renderable()
 		{
 			@Override
 			public Matrix4f getRenderOffsetTransformation(Matrix4f dst)
 			{
-				return dst.translation(Smack.this.getWorld().getPlayer().getTransform().position3()).translate(1, 1, 0);
+				//TODO: ATTENTION! THIS HAS Z OFFSET!
+				return dst.translation(Smack.this.getWorld().getPlayer().getTransform().position3()).translate(1, 1, 5.1F);
 			}
 
 			@Override
 			public Model getRenderModel()
 			{
 				return Smack.this.ammoModel;
+			}
+		});
+
+		this.renderables.add(new Renderable()
+		{
+			@Override
+			public Matrix4f getRenderOffsetTransformation(Matrix4f dst)
+			{
+				//TODO: ATTENTION! THIS HAS Z OFFSET!
+				return dst.translation(Smack.this.getWorld().getPlayer().getTransform().position3()).translate(1 + 0.08F, 1 - 0.08F, 5);
+			}
+
+			@Override
+			public Model getRenderModel()
+			{
+				return Smack.this.shadowModel;
 			}
 		});
 	}
@@ -190,29 +216,21 @@ public class Smack implements GameHandler
 		this.simpleRenderer.bind(this.camera.view(), this.camera.projection());
 		{
 			Matrix4f matrix = new Matrix4f();
-			Vector4f vec4 = new Vector4f();
 
 			for (Renderable renderable : this.renderables)
 			{
 				this.simpleRenderer.draw(renderable.getRenderModel().getMesh().getSource(),
-						renderable.getRenderModel().getMaterial().getComponent(PropertyTexture.class).getSprite(),
-						true,
-						vec4.set(1, 1, 1, 0),
+						renderable.getRenderModel().getMaterial(),
 						renderable.getRenderTransformation(matrix));
 			}
 
 			this.renderables2.clear();
-			this.world.getSmacks().getEntityManager().getSimilarComponents(EntityComponentRenderable.class, this.renderables2);
+			this.world.getSmacks().getEntities().getSimilarComponents(EntityComponentRenderable.class, this.renderables2);
 
 			for (EntityComponentRenderable renderable : this.renderables2)
 			{
-				final Material material = renderable.getRenderModel().getMaterial();
-				final PropertyTexture propertyTexture = material.getComponent(PropertyTexture.class);
-				final PropertyColor propertyColor = material.getComponent(PropertyColor.class);
 				this.simpleRenderer.draw(renderable.getRenderModel().getMesh().getSource(),
-						propertyTexture.getSprite(),
-						true,
-						propertyColor.getColor(),
+						renderable.getRenderModel().getMaterial(),
 						renderable.getRenderTransformation(matrix));
 			}
 		}

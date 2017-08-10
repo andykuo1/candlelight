@@ -1,8 +1,8 @@
 package org.zilar.gui;
 
+import net.jimboi.apricot.base.material.OldMaterial;
 import net.jimboi.apricot.base.renderer.property.PropertyTexture;
 
-import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Texture;
@@ -105,7 +105,7 @@ public class GuiRenderer extends RenderService
 				Sprite sprite = null;
 				if (gui instanceof GuiMaterial)
 				{
-					Material material = ((GuiMaterial) gui).material;
+					OldMaterial material = ((GuiMaterial) gui).material;
 
 					if (material.hasComponent(PropertyTexture.class))
 					{

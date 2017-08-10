@@ -1,6 +1,7 @@
 package org.zilar.gui;
 
-import org.bstone.material.Material;
+import net.jimboi.apricot.base.material.OldMaterial;
+
 import org.zilar.gui.base.Gui;
 
 /**
@@ -8,9 +9,9 @@ import org.zilar.gui.base.Gui;
  */
 public class GuiMaterial extends Gui
 {
-	public Material material;
+	public OldMaterial material;
 
-	public GuiMaterial(Material material)
+	public GuiMaterial(OldMaterial material)
 	{
 		this.material = material;
 	}

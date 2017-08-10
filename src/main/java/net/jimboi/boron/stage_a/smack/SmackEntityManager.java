@@ -1,16 +1,16 @@
 package net.jimboi.boron.stage_a.smack;
 
+import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxManager;
+import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.boron.stage_a.base.livingentity.LivingEntity;
 import net.jimboi.boron.stage_a.base.livingentity.LivingEntityManager;
-import net.jimboi.boron.stage_a.smack.collisionbox.CollisionBoxManager;
-import net.jimboi.boron.stage_a.smack.collisionbox.collider.BoxCollider;
 
 import org.zilar.entity.Entity;
 
 /**
  * Created by Andy on 8/6/17.
  */
-public class SmackEntityManager extends LivingEntityManager
+public class SmackEntityManager extends LivingEntityManager<LivingEntity>
 {
 	private final CollisionBoxManager boundingManager;
 

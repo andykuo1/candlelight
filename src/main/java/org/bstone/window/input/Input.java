@@ -30,6 +30,7 @@ public final class Input
 	public void consume()
 	{
 		this.amount = 0;
+		this.nextAmount = 0;
 	}
 
 	public boolean isDown()

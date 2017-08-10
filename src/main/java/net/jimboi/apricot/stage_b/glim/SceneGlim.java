@@ -2,6 +2,7 @@ package net.jimboi.apricot.stage_b.glim;
 
 import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.OldSceneBase;
+import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.renderer.property.PropertyDiffuse;
 import net.jimboi.apricot.base.renderer.property.PropertyShadow;
 import net.jimboi.apricot.base.renderer.property.PropertySpecular;
@@ -20,7 +21,6 @@ import net.jimboi.apricot.stage_b.glim.entity.system.EntitySystemHeading;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
-import org.bstone.render.model.Model;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
@@ -105,7 +105,7 @@ public class SceneGlim extends OldSceneBase
 		this.getEntityManager().createEntity(
 				new EntityComponentRenderable(
 						new Transform3(),
-						new Model(OldGameEngine.ASSETMANAGER.getAsset(Mesh.class, "dungeon"),
+						new OldModel(OldGameEngine.ASSETMANAGER.getAsset(Mesh.class, "dungeon"),
 								this.getMaterialManager().createMaterial(
 										new PropertyDiffuse(),
 										new PropertySpecular(),
@@ -120,7 +120,7 @@ public class SceneGlim extends OldSceneBase
 		this.shadowplane = this.getEntityManager().createEntity(
 				new EntityComponentRenderable(
 						new Transform3(),
-						new Model(OldGameEngine.ASSETMANAGER.getAsset(Mesh.class, "plane"),
+						new OldModel(OldGameEngine.ASSETMANAGER.getAsset(Mesh.class, "plane"),
 								this.getMaterialManager().createMaterial(
 										new PropertyDiffuse(),
 										new PropertySpecular(),

@@ -1,14 +1,14 @@
 package net.jimboi.boron.stage_a.smack.entity;
 
+import net.jimboi.boron.stage_a.base.collisionbox.collider.ActiveBoxCollider;
+import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
+import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionResponse;
 import net.jimboi.boron.stage_a.base.livingentity.LivingEntity;
 import net.jimboi.boron.stage_a.smack.DamageSource;
 import net.jimboi.boron.stage_a.smack.MotionHelper;
 import net.jimboi.boron.stage_a.smack.Smack;
 import net.jimboi.boron.stage_a.smack.SmackEntity;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
-import net.jimboi.boron.stage_a.smack.collisionbox.collider.ActiveBoxCollider;
-import net.jimboi.boron.stage_a.smack.collisionbox.collider.BoxCollider;
-import net.jimboi.boron.stage_a.smack.collisionbox.response.CollisionResponse;
 import net.jimboi.boron.stage_a.smack.tile.DungeonHandler;
 
 import org.bstone.transform.Transform3;
@@ -28,20 +28,23 @@ public class EntityPlayer extends EntityMotion implements ActiveBoxCollider
 	private int maxCooldown = 5;
 	private int cooldown;
 
-	private float bulletSpeed = 0.4F;
+	private float bulletSpeed = 0.2F;
 
 	private Vector2f lookDir = new Vector2f(-1, 0);
 
 	private Vector2f mouseTarget = new Vector2f();
 	private Vector2f moveTarget = new Vector2f();
-	private float speed = 0.1F;
+	private float speed = 0.06F;
 
 	private float pickupRadius = 2;
 
 	public EntityPlayer(SmackWorld world, Transform3 transform)
 	{
-		super(world, transform, 0.8F, world.createRenderable2D(transform, '@', 0xFF00FF));
+		super(world, transform, 0.4F, world.createRenderable2D(transform, '@', 0xFF00FF));
 
+		this.getRenderable().getRenderModel().transformation().scale(0.8F, 0.8F, 1);
+
+		this.moveTarget.set(transform.position3().x(), transform.position3().y());
 		this.friction = 0.1F;
 	}
 
@@ -97,7 +100,7 @@ public class EntityPlayer extends EntityMotion implements ActiveBoxCollider
 			this.motion.set(0);
 		}
 
-		Iterator<LivingEntity> livings = this.world.getSmacks().getLivingManager().getLivingIterator();
+		Iterator<LivingEntity> livings = this.world.getSmacks().getLivings().getLivingIterator();
 		while (livings.hasNext())
 		{
 			LivingEntity living = livings.next();

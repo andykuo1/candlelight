@@ -1,11 +1,11 @@
 package net.jimboi.boron.stage_a.smack.entity;
 
-import net.jimboi.apricot.base.renderer.property.PropertyColor;
+import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionSolver;
 import net.jimboi.boron.stage_a.smack.DamageSource;
 import net.jimboi.boron.stage_a.smack.SmackEntity;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
-import net.jimboi.boron.stage_a.smack.collisionbox.response.CollisionSolver;
 
+import org.bstone.render.material.PropertyColor;
 import org.bstone.transform.Transform3;
 import org.qsilver.util.ColorUtil;
 
@@ -31,7 +31,7 @@ public class EntitySpawner extends SmackEntity
 		this.minCooldown = 100;
 		this.cooldown = this.maxCooldown;
 
-		this.color = ColorUtil.getColor(this.getRenderable().getRenderModel().getMaterial().getComponent(PropertyColor.class).getColor());
+		this.color = PropertyColor.getColor(this.getRenderable().getRenderModel().getMaterial());
 	}
 
 	@Override
@@ -40,14 +40,13 @@ public class EntitySpawner extends SmackEntity
 		if (this.hurt > 0)
 		{
 			this.hurt -= 0.2F;
-			PropertyColor propertyColor = this.getRenderable().getRenderModel().getMaterial().getComponent(PropertyColor.class);
-			propertyColor.setColor(ColorUtil.getColorMix(this.color, 0xFF0000, this.hurt));
+			PropertyColor.setColor(this.getRenderable().getRenderModel().getMaterial(), ColorUtil.getColorMix(this.color, 0xFF0000, this.hurt));
 		}
 
 		super.onUpdate();
 
 		--this.cooldown;
-		if (this.cooldown <= 0)
+		if (this.cooldown <= 0 && this.transform.position3().distanceSquared(this.world.getPlayer().getTransform().position3()) < 32)
 		{
 			this.spawn();
 
@@ -89,8 +88,7 @@ public class EntitySpawner extends SmackEntity
 
 		if (this.hurt > 0)
 		{
-			PropertyColor propertyColor = this.getRenderable().getRenderModel().getMaterial().getComponent(PropertyColor.class);
-			propertyColor.setColor(ColorUtil.getColorMix(this.color, 0xFF0000, this.hurt));
+			PropertyColor.setColor(this.getRenderable().getRenderModel().getMaterial(), ColorUtil.getColorMix(this.color, 0xFF0000, this.hurt));
 		}
 	}
 

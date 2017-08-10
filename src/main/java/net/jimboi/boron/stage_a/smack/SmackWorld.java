@@ -1,19 +1,24 @@
 package net.jimboi.boron.stage_a.smack;
 
-import net.jimboi.apricot.base.renderer.property.PropertyColor;
-import net.jimboi.apricot.base.renderer.property.PropertyTexture;
+import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
 import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
-import net.jimboi.boron.stage_a.smack.collisionbox.box.AxisAlignedBoundingBox;
+import net.jimboi.boron.stage_a.base.livingentity.LivingEntity;
+import net.jimboi.boron.stage_a.smack.chunk.Chunk;
+import net.jimboi.boron.stage_a.smack.chunk.ChunkManager;
 import net.jimboi.boron.stage_a.smack.entity.EntityPlayer;
 import net.jimboi.boron.stage_a.smack.tile.DungeonHandler;
 import net.jimboi.boron.stage_a.smack.tile.DungeonModelManager;
+import net.jimboi.boron.stage_a.smack.tile.LevelGenerator;
 
-import org.bstone.render.RenderableBase;
+import org.bstone.render.material.Material;
+import org.bstone.render.material.PropertyColor;
+import org.bstone.render.material.PropertyTexture;
 import org.bstone.render.model.Model;
 import org.bstone.transform.Transform3;
-import org.joml.Matrix4f;
+import org.joml.Vector2f;
 import org.qsilver.asset.Asset;
 
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -38,12 +43,14 @@ public class SmackWorld
 
 	public void onCreate()
 	{
-		this.dungeonModelManager = new DungeonModelManager(Smack.getSmack().materialManager, Asset.wrap(Smack.getSmack().texFont), Asset.wrap(Smack.getSmack().atsFont), "simple");
-		this.dungeonHandler = new DungeonHandler();
+		this.dungeonModelManager = new DungeonModelManager(Asset.wrap(Smack.getSmack().texFont), Asset.wrap(Smack.getSmack().atsFont));
+		this.dungeonHandler = new DungeonHandler(this, 0);
 
 		this.chunkManager = new ChunkManager();
 
 		Transform3 transform = new Transform3();
+		Vector2f pos = LevelGenerator.getRandomSpawn(this.rand, this.dungeonHandler.getCurrentLevel().getTileMap(), new Vector2f());
+		transform.setPosition(pos.x(), pos.y(), 0);
 		this.player = new EntityPlayer(this, transform);
 		this.cameraController = new FollowCameraController();
 		this.cameraController.start(Smack.getSmack().camera);
@@ -51,9 +58,12 @@ public class SmackWorld
 		this.smackManager.spawn(this.player);
 
 		//this.smackManager.spawn(new EntityMonster(this, new Transform3().setPosition(1, 1, 1)));
-		Model model = this.dungeonModelManager.createStaticDungeon(this.dungeonHandler.getTiles());
-		Smack.getSmack().renderables.add(new RenderableBase(model, new Matrix4f().translation(0, 0, -1)));
-		this.smackManager.getBoundingManager().add(this.dungeonHandler);
+		/*
+		Model model = this.dungeonModelManager.createStaticDungeon(this.dungeonHandler.getCurrentLevel().getTileMap());
+		//TODO: I believe this is the only place where it has a z offset!
+		Smack.getSmack().renderables.add(new RenderableBase(model, new Matrix4f().translation(0, 0, -0.1F)));
+		this.smackManager.getBoundings().add(this.dungeonHandler);
+		 */
 	}
 
 	public void onDestroy()
@@ -100,12 +110,37 @@ public class SmackWorld
 
 	public EntityComponentRenderable createRenderable2D(Transform3 transform, char c, int color)
 	{
+		Material material = new Material();
+		PropertyTexture.addProperty(material);
+		PropertyTexture.setSprite(material, Smack.getSmack().fontSheet.get(c));
+		PropertyColor.addProperty(material);
+		PropertyColor.setColor(material, color);
+
 		return new EntityComponentRenderable(transform,
-				new Model(Asset.wrap(Smack.getSmack().quad),
-				Smack.getSmack().materialManager.createMaterial(
-						new PropertyTexture(Smack.getSmack().fontSheet.get(c)),
-						new PropertyColor(color)
-				), "simple"));
+				new Model(Asset.wrap(Smack.getSmack().quad), material)
+		);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends LivingEntity> T getNearestEntity(float x, float y, Class<? extends T> entity)
+	{
+		LivingEntity nearest = null;
+		float distance = -1F;
+		Iterator<LivingEntity> livings = this.smackManager.getLivings().getLivingIterator();
+		while(livings.hasNext())
+		{
+			LivingEntity living = livings.next();
+			if (entity.isAssignableFrom(living.getClass()))
+			{
+				float f = living.getTransform().position3().distanceSquared(x, y, 0);
+				if (nearest == null || f < distance)
+				{
+					nearest = living;
+					distance = f;
+				}
+			}
+		}
+		return (T) nearest;
 	}
 
 	public Random getRandom()

@@ -7,10 +7,10 @@ import org.zilar.entity.EntityManager;
 /**
  * Created by Andy on 8/5/17.
  */
-public class LivingEntityManager
+public class LivingEntityManager<L extends LivingEntity>
 {
 	private EntityManager entityManager;
-	private LivingManager<LivingEntity> livingManager;
+	private LivingManager<L> livingManager;
 	private LivingManagerListener listener;
 
 	public LivingEntityManager()
@@ -34,13 +34,13 @@ public class LivingEntityManager
 		this.livingManager.onLivingDestroy.deleteListener(this.listener);
 	}
 
-	public <R extends LivingEntity> R spawn(R living)
+	public <R extends L> R spawn(R living)
 	{
 		this.livingManager.add(living);
 		return living;
 	}
 
-	protected void onLivingEntityCreate(LivingEntity living, Entity entity)
+	protected void onLivingEntityCreate(L living, Entity entity)
 	{
 		entity.addComponent(new EntityComponentTransform(living.getTransform()));
 		if (living.getRenderable() != null)
@@ -49,24 +49,24 @@ public class LivingEntityManager
 		}
 	}
 
-	protected void onLivingEntityDestroy(LivingEntity living, Entity entity)
+	protected void onLivingEntityDestroy(L living, Entity entity)
 	{
 	}
 
-	public LivingManager<LivingEntity> getLivingManager()
+	public LivingManager<L> getLivings()
 	{
 		return this.livingManager;
 	}
 
-	public EntityManager getEntityManager()
+	public EntityManager getEntities()
 	{
 		return this.entityManager;
 	}
 
-	private class LivingManagerListener implements LivingManager.OnLivingCreateListener<LivingEntity>, LivingManager.OnLivingDestroyListener<LivingEntity>
+	private class LivingManagerListener implements LivingManager.OnLivingCreateListener<L>, LivingManager.OnLivingDestroyListener<L>
 	{
 		@Override
-		public void onLivingCreate(LivingEntity living)
+		public void onLivingCreate(L living)
 		{
 			Entity entity = LivingEntityManager.this.entityManager.createEntity(living);
 			LivingEntityManager.this.onLivingEntityCreate(living, entity);
@@ -74,7 +74,7 @@ public class LivingEntityManager
 		}
 
 		@Override
-		public void onLivingDestroy(LivingEntity living)
+		public void onLivingDestroy(L living)
 		{
 			Entity entity = LivingEntityManager.this.entityManager.getEntityByComponent(living);
 			entity.setDead();

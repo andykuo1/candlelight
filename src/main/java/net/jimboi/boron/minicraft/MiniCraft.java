@@ -8,7 +8,9 @@ import org.bstone.window.Window;
 import org.bstone.window.camera.Camera;
 import org.bstone.window.camera.OrthographicCamera;
 import org.bstone.window.input.InputManager;
+import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWErrorCallback;
 
 /**
  * Created by Andy on 8/3/17.
@@ -35,13 +37,26 @@ public class MiniCraft implements TickHandler
 	public InputManager inputManager;
 
 	public Camera camera;
-	public Renderer renderer;
+	public MiniRenderer renderer;
 
 	public Game world;
 
 	@Override
 	public void onFirstUpdate(TickEngine tickEngine)
 	{
+		System.out.println("LWJGL " + Version.getVersion());
+		System.out.println("JOML 1.9.2");
+
+		// Setup an error callback. The default implementation
+		// will print the error message in System.err.
+		GLFWErrorCallback.createPrint(System.err).set();
+
+		// Initialize GLFW. Most GLFW functions will not work before doing this.
+		if (!GLFW.glfwInit())
+		{
+			throw new IllegalStateException("Unable to initialize GLFW");
+		}
+
 		this.window = new Window("MiniCraft", 640, 480);
 		this.inputManager = new InputManager(this.window.getInputEngine());
 
@@ -54,7 +69,7 @@ public class MiniCraft implements TickHandler
 
 		this.camera = new OrthographicCamera(640, 480);
 
-		this.renderer = new Renderer(this.camera);
+		this.renderer = new MiniRenderer(this.camera);
 		this.renderer.load();
 
 		this.world = new Game(this.renderer.bmpScreen);
@@ -100,5 +115,9 @@ public class MiniCraft implements TickHandler
 
 		this.inputManager.clear();
 		this.window.destroy();
+
+		// Terminate GLFW and free the error callback
+		GLFW.glfwTerminate();
+		GLFW.glfwSetErrorCallback(null).free();
 	}
 }

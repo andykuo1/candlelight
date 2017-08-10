@@ -1,17 +1,17 @@
 package net.jimboi.apricot.base.renderer.shadow;
 
+import net.jimboi.apricot.base.material.OldMaterial;
+import net.jimboi.apricot.base.render.OldModel;
+import net.jimboi.apricot.base.render.OldRenderable;
 import net.jimboi.apricot.base.renderer.property.PropertyShadow;
 import net.jimboi.apricot.base.renderer.property.PropertyTexture;
 
-import org.bstone.material.Material;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.FBO;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
 import org.bstone.mogli.Texture;
-import org.bstone.render.Renderable;
-import org.bstone.render.model.Model;
 import org.bstone.window.Window;
 import org.bstone.window.camera.PerspectiveCamera;
 import org.joml.Matrix4f;
@@ -79,7 +79,7 @@ public class ShadowRenderer
 		this.shadowFBO.close();
 	}
 
-	public void render(Iterator<Renderable> instances, DynamicLight light)
+	public void render(Iterator<OldRenderable> instances, DynamicLight light)
 	{
 		this.shadowBox.update();
 
@@ -98,12 +98,12 @@ public class ShadowRenderer
 		{
 			while (instances.hasNext())
 			{
-				final Renderable inst = instances.next();
+				final OldRenderable inst = instances.next();
 				if (!inst.isRenderVisible()) continue;
 
-				final Model model = inst.getRenderModel();
+				final OldModel model = inst.getRenderModel();
 				final Mesh mesh = model.getMesh().getSource();
-				final Material material = model.getMaterial();
+				final OldMaterial material = model.getMaterial();
 
 				if (!material.hasComponent(PropertyShadow.class)) continue;
 				if (!material.getComponent(PropertyShadow.class).castShadow) continue;

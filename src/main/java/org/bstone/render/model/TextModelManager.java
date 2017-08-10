@@ -1,10 +1,8 @@
 package org.bstone.render.model;
 
-import net.jimboi.apricot.base.renderer.property.PropertyTexture;
-
-import org.bstone.material.Material;
-import org.bstone.material.MaterialManager;
 import org.bstone.mogli.Mesh;
+import org.bstone.render.material.Material;
+import org.bstone.render.material.PropertyTexture;
 import org.joml.Vector2f;
 import org.qsilver.asset.Asset;
 import org.zilar.meshbuilder.MeshBuilder;
@@ -26,15 +24,15 @@ public class TextModelManager
 	private Map<String, Mesh> texts = new HashMap<>();
 	private Set<Mesh> meshes = new HashSet<>();
 	private FontSheet fontsheet;
-	private String renderType;
 	private Material material;
 
-	public TextModelManager(MaterialManager materialManager, FontSheet fontsheet, String renderType)
+	public TextModelManager(FontSheet fontsheet)
 	{
 		this.fontsheet = fontsheet;
-		this.renderType = renderType;
 
-		this.material = materialManager.createMaterial(new PropertyTexture(this.fontsheet.get((char) 0).getTexture()));
+		this.material = new Material();
+		PropertyTexture.addProperty(this.material);
+		PropertyTexture.setTexture(this.material, this.fontsheet.get((char) 0).getTexture());
 	}
 
 	public void destroy()
@@ -55,9 +53,6 @@ public class TextModelManager
 
 	public Model createStaticText(String text)
 	{
-		float width = this.getTextWidth(text);
-		float height = this.getTextHeight(text);
-
 		Mesh mesh;
 		if (this.texts.containsKey(text))
 		{
@@ -65,30 +60,22 @@ public class TextModelManager
 		}
 		else
 		{
-			mesh = ModelUtil.createStaticMesh(this.buildMeshFromText(text, width, height));
+			mesh = ModelUtil.createStaticMesh(this.buildMeshFromText(text));
 			this.texts.put(text, mesh);
 		}
-		Model model = new Model(Asset.wrap(mesh), this.material, this.renderType);
-		model.transformation().scale(width, height, 1);
-		return model;
+		return new Model(Asset.wrap(mesh), this.material);
 	}
 
 	public TextModel createDynamicText(String text)
 	{
-		float width = this.getTextWidth(text);
-		float height = this.getTextHeight(text);
-		Mesh mesh = ModelUtil.createDynamicMesh(this.buildMeshFromText(text, width, height));
+		Mesh mesh = ModelUtil.createDynamicMesh(this.buildMeshFromText(text));
 		this.meshes.add(mesh);
-		TextModel model = new TextModel(this, text, Asset.wrap(mesh), this.material, this.renderType);
-		model.transformation().scale(width, height, 1);
-		return model;
+		return new TextModel(this, text, Asset.wrap(mesh), this.material);
 	}
 
 	public void updateText(TextModel model, String text)
 	{
-		float width = this.getTextWidth(text);
-		float height = this.getTextHeight(text);
-		MeshData meshdata = this.buildMeshFromText(text, width, height);
+		MeshData meshdata = this.buildMeshFromText(text);
 		Mesh mesh = model.getMesh().getSource();
 		mesh.bind();
 		{
@@ -97,19 +84,19 @@ public class TextModelManager
 		mesh.unbind();
 	}
 
-	public MeshData buildMeshFromText(String text, float textWidth, float textHeight)
+	public MeshData buildMeshFromText(String text)
 	{
 		MeshBuilder mb = new MeshBuilder();
 		float x = 0;
 		float y = 0;
 
-		float w = 1 / textWidth;
-		float h = 1 / textHeight;
+		float w = 1;
+		float h = 1;
 
-		float u = 0;
-		float v = 0;
-		float tw = 0;
-		float th = 0;
+		float u;
+		float v;
+		float tw;
+		float th;
 
 		for(int i = 0; i < text.length(); ++i)
 		{

@@ -13,7 +13,7 @@ import com.mojang.ld22.screen.TitleMenu;
 import com.mojang.ld22.screen.WonMenu;
 
 import net.jimboi.boron.minicraft.MiniCraft;
-import net.jimboi.boron.minicraft.Renderer;
+import net.jimboi.boron.minicraft.MiniRenderer;
 
 import org.bstone.mogli.Bitmap;
 
@@ -146,7 +146,7 @@ public class Game
 
 	}
 
-	public void render(Renderer renderer)
+	public void render(MiniRenderer renderer)
 	{
 		int xScroll = player.x - screen.w / 2;
 		int yScroll = player.y - (screen.h - 8) / 2;

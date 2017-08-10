@@ -64,10 +64,6 @@ public final class OldGameEngine
 		Poma.info("Running program with args: " + Arrays.asList(args));
 		Poma.div();
 
-		WINDOW = new Window("Application", 640, 480);
-		INPUTENGINE = WINDOW.getInputEngine();
-		OldInputManager.init(INPUTENGINE);
-
 		TICKENGINE = new TickEngine(60, true, new TickHandler()
 		{
 			@Override
@@ -126,6 +122,7 @@ public final class OldGameEngine
 				ASSETMANAGER.destroy();
 				RENDERENGINE.unload();
 				WINDOW.destroy();
+				RENDERENGINE.destroy();
 			}
 		});
 
@@ -149,6 +146,11 @@ public final class OldGameEngine
 				ASSETMANAGER.update(renderEngine);
 			}
 		});
+
+		WINDOW = new Window("Application", 640, 480);
+		INPUTENGINE = WINDOW.getInputEngine();
+		OldInputManager.init(INPUTENGINE);
+
 		SCENEMANAGER = new SceneManager();
 		ASSETMANAGER = new AssetManager();
 

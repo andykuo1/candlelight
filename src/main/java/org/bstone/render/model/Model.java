@@ -1,25 +1,23 @@
 package org.bstone.render.model;
 
-import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
+import org.bstone.render.material.Material;
 import org.joml.Matrix4f;
 import org.qsilver.asset.Asset;
 
 /**
- * Created by Andy on 6/13/17.
+ * Created by Andy on 8/10/17.
  */
 public class Model
 {
-	private final Asset<Mesh> mesh;
-	private final Material material;
-	private final String renderType;
-	private final Matrix4f transformation = new Matrix4f();
+	protected final Asset<Mesh> mesh;
+	protected final Matrix4f transformation = new Matrix4f();
+	protected final Material material;
 
-	public Model(Asset<Mesh> mesh, Material material, String renderType)
+	public Model(Asset<Mesh> mesh, Material material)
 	{
 		this.mesh = mesh;
 		this.material = material;
-		this.renderType = renderType;
 	}
 
 	public Asset<Mesh> getMesh()
@@ -30,11 +28,6 @@ public class Model
 	public Material getMaterial()
 	{
 		return this.material;
-	}
-
-	public String getRenderType()
-	{
-		return this.renderType;
 	}
 
 	public Matrix4f transformation()

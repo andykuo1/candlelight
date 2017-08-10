@@ -2,16 +2,16 @@ package net.jimboi.apricot.stage_c.hoob;
 
 import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.OldSceneBase;
+import net.jimboi.apricot.base.material.OldMaterial;
+import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.renderer.property.PropertyDiffuse;
 import net.jimboi.apricot.base.renderer.property.PropertyTexture;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderable;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform;
 import net.jimboi.apricot.stage_c.hoob.world.World;
 
-import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
-import org.bstone.render.model.Model;
 import org.bstone.transform.Transform3;
 import org.qsilver.asset.Asset;
 import org.zilar.BasicSideScrollCameraController;
@@ -115,11 +115,11 @@ public class SceneHoob extends OldSceneBase
 		}
 
 		Asset<Mesh> mesh = OldGameEngine.ASSETMANAGER.getAsset(Mesh.class, meshID);
-		Material material = this.getMaterialManager().createMaterial(
+		OldMaterial material = this.getMaterialManager().createMaterial(
 				new PropertyDiffuse(),
 				spritesheet != null ? new PropertyTexture(spritesheet) : new PropertyTexture(texture)
 		);
-		Model model = new Model(mesh, material, "simple");
+		OldModel model = new OldModel(mesh, material, "simple");
 		return this.getEntityManager().createEntity(
 				new EntityComponentTransform(transform),
 				new EntityComponentRenderable(transform, model),

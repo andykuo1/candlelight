@@ -1,6 +1,7 @@
 package net.jimboi.apricot.base;
 
-import org.bstone.material.MaterialManager;
+import net.jimboi.apricot.base.material.MaterialManager;
+
 import org.bstone.render.RenderEngine;
 import org.bstone.window.camera.CameraController;
 import org.qsilver.scene.Scene;

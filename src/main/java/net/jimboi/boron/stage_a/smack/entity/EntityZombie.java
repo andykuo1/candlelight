@@ -1,15 +1,16 @@
 package net.jimboi.boron.stage_a.smack.entity;
 
-import net.jimboi.apricot.base.renderer.property.PropertyColor;
+import net.jimboi.boron.stage_a.base.collisionbox.collider.ActiveBoxCollider;
+import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
+import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionResponse;
 import net.jimboi.boron.stage_a.base.livingentity.LivingEntity;
 import net.jimboi.boron.stage_a.smack.DamageSource;
 import net.jimboi.boron.stage_a.smack.MotionHelper;
 import net.jimboi.boron.stage_a.smack.SmackEntity;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
-import net.jimboi.boron.stage_a.smack.collisionbox.collider.ActiveBoxCollider;
-import net.jimboi.boron.stage_a.smack.collisionbox.collider.BoxCollider;
-import net.jimboi.boron.stage_a.smack.collisionbox.response.CollisionResponse;
+import net.jimboi.boron.stage_a.smack.tile.DungeonHandler;
 
+import org.bstone.render.material.PropertyColor;
 import org.bstone.transform.Transform3;
 import org.bstone.transform.Transform3c;
 import org.joml.Vector2f;
@@ -35,7 +36,7 @@ public class EntityZombie extends EntityMotion implements ActiveBoxCollider
 
 		this.health = 2;
 
-		this.color = ColorUtil.getColor(this.getRenderable().getRenderModel().getMaterial().getComponent(PropertyColor.class).getColor());
+		this.color = PropertyColor.getColor(this.getRenderable().getRenderModel().getMaterial());
 	}
 
 	@Override
@@ -44,8 +45,7 @@ public class EntityZombie extends EntityMotion implements ActiveBoxCollider
 		if (this.hurt > 0)
 		{
 			this.hurt -= 0.2F;
-			PropertyColor propertyColor = this.getRenderable().getRenderModel().getMaterial().getComponent(PropertyColor.class);
-			propertyColor.setColor(ColorUtil.getColorMix(this.color, 0xFF0000, this.hurt));
+			PropertyColor.setColor(this.getRenderable().getRenderModel().getMaterial(), ColorUtil.getColorMix(this.color, 0xFF0000, this.hurt));
 		}
 
 		super.onUpdate();
@@ -54,13 +54,13 @@ public class EntityZombie extends EntityMotion implements ActiveBoxCollider
 		{
 			if (this.world.getRandom().nextInt(10) != 0) return;
 
-			Iterator<LivingEntity> livings = this.world.getSmacks().getLivingManager().getLivingIterator();
+			Iterator<LivingEntity> livings = this.world.getSmacks().getLivings().getLivingIterator();
 			while (livings.hasNext())
 			{
 				LivingEntity living = livings.next();
 				if (living instanceof EntityPlayer)
 				{
-					if (MotionHelper.isWithinDistanceSquared(this.transform, living.getTransform().position3().x(), living.getTransform().position3().y(), 64))
+					if (MotionHelper.isWithinDistanceSquared(this.transform, living.getTransform().position3().x(), living.getTransform().position3().y(), 32))
 					{
 						this.target = living.getTransform();
 						break;
@@ -98,8 +98,7 @@ public class EntityZombie extends EntityMotion implements ActiveBoxCollider
 
 		if (this.hurt > 0)
 		{
-			PropertyColor propertyColor = this.getRenderable().getRenderModel().getMaterial().getComponent(PropertyColor.class);
-			propertyColor.setColor(ColorUtil.getColorMix(this.color, 0xFF0000, this.hurt));
+			PropertyColor.setColor(this.getRenderable().getRenderModel().getMaterial(), ColorUtil.getColorMix(this.color, 0xFF0000, this.hurt));
 		}
 	}
 
@@ -150,7 +149,7 @@ public class EntityZombie extends EntityMotion implements ActiveBoxCollider
 			Vector2f vec = MotionHelper.getDirectionTowards(this.transform, bullet.getTransform().position3().x(), bullet.getTransform().position3().y(), new Vector2f()).negate().mul(0.2F);
 			this.move(vec.x(), vec.y());
 		}
-		else if (other instanceof EntityBoulder)
+		else if (other instanceof EntityBoulder || other instanceof DungeonHandler)
 		{
 			this.move(collision.getDelta().x(), collision.getDelta().y());
 		}
@@ -166,6 +165,6 @@ public class EntityZombie extends EntityMotion implements ActiveBoxCollider
 	@Override
 	public boolean canCollideWith(BoxCollider collider)
 	{
-		return collider instanceof SmackEntity && !((SmackEntity) collider).isDead() && (collider instanceof EntityBullet || collider instanceof EntityBoulder);
+		return (collider instanceof SmackEntity && !((SmackEntity) collider).isDead() && (collider instanceof EntityBullet || collider instanceof EntityBoulder)) || collider instanceof DungeonHandler;
 	}
 }

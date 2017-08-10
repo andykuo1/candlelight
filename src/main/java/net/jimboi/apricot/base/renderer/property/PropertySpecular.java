@@ -1,6 +1,7 @@
 package net.jimboi.apricot.base.renderer.property;
 
-import org.bstone.material.Property;
+import net.jimboi.apricot.base.material.Property;
+
 import org.joml.Vector3f;
 import org.qsilver.util.ColorUtil;
 

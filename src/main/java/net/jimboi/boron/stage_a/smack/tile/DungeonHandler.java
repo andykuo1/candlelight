@@ -1,7 +1,9 @@
 package net.jimboi.boron.stage_a.smack.tile;
 
-import net.jimboi.boron.stage_a.smack.collisionbox.box.GridBasedBoundingBox;
-import net.jimboi.boron.stage_a.smack.collisionbox.collider.BoxCollider;
+import net.jimboi.boron.stage_a.base.collisionbox.box.GridBasedBoundingBox;
+import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
+import net.jimboi.boron.stage_a.base.livingentity.LivingEntity;
+import net.jimboi.boron.stage_a.smack.SmackWorld;
 
 import org.qsilver.util.map2d.IntMap;
 
@@ -12,43 +14,39 @@ import java.util.Random;
  */
 public class DungeonHandler implements BoxCollider
 {
-	private IntMap tilemap = new IntMap(16, 16);
-	private GridBasedBoundingBox gridBox;
+	private Random random;
+	private Level currentLevel;
+	private GridBasedBoundingBox boundingBox;
 
-	public DungeonHandler()
+	public DungeonHandler(SmackWorld world, long seed)
 	{
-		Random rand = new Random();
-		for(int i = 0; i < this.tilemap.size(); ++i)
-		{
-			this.tilemap.set(i, 0);
-		}
-		this.tilemap.set(4, 4, 1);
-		this.tilemap.set(4, 5, 1);
-		this.tilemap.set(4, 6, 1);
-		this.tilemap.set(4, 7, 1);
-		this.tilemap.set(4, 8, 1);
+		this.random = new Random();
+		this.createLevel(world, seed);
+	}
 
-		this.gridBox = new GridBasedBoundingBox(0, 0, this.tilemap.width, this.tilemap.height);
-		for(int i = 0; i < this.tilemap.size(); ++i)
+	public void createLevel(SmackWorld world, long seed)
+	{
+		this.currentLevel = LevelGenerator.generate(world, seed);
+		IntMap tilemap = this.currentLevel.getTileMap();
+		this.boundingBox = new GridBasedBoundingBox(0, 0, tilemap.width, tilemap.height);
+		for (int i = 0; i < tilemap.size(); ++i)
 		{
-			this.gridBox.setSolid(i, this.tilemap.get(i) != 0);
+			this.boundingBox.setSolid(i, tilemap.get(i) == 0);
+		}
+		for(LivingEntity entity : this.currentLevel.getEntities())
+		{
+			world.getSmacks().getLivings().add(entity);
 		}
 	}
 
-	public boolean intersects(float x, float y)
+	public Level getCurrentLevel()
 	{
-		if (x < 0 || y < 0 || x > this.tilemap.width || y > this.tilemap.height) return true;
-		return this.tilemap.get((int) Math.floor(x), (int) Math.floor(y)) == 1;
-	}
-
-	public IntMap getTiles()
-	{
-		return this.tilemap;
+		return this.currentLevel;
 	}
 
 	@Override
 	public GridBasedBoundingBox getBoundingBox()
 	{
-		return this.gridBox;
+		return this.boundingBox;
 	}
 }

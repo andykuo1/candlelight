@@ -3,6 +3,7 @@ package net.jimboi.apricot.stage_c.hoob;
 import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.OldRenderBase;
 import net.jimboi.apricot.base.input.OldInputManager;
+import net.jimboi.apricot.base.render.OldRenderable;
 import net.jimboi.apricot.base.renderer.SimpleRenderer;
 import net.jimboi.apricot.base.renderer.property.PropertyTexture;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderable;
@@ -11,7 +12,6 @@ import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Texture;
 import org.bstone.render.RenderEngine;
-import org.bstone.render.Renderable;
 import org.bstone.util.SemanticVersion;
 import org.bstone.window.camera.OrthographicCamera;
 import org.bstone.window.camera.PerspectiveCamera;
@@ -191,7 +191,7 @@ public class RenderHoob extends OldRenderBase
 
 		Collection<EntityComponentRenderable> renderables = this.getScene().getEntityManager().getComponents(EntityComponentRenderable.class, new HashSet<>());
 
-		Iterator<Renderable> iter = new CastIterator<>(renderables.iterator());
+		Iterator<OldRenderable> iter = new CastIterator<>(renderables.iterator());
 		this.simpleRenderer.render(this.getCamera(), iter);
 
 		this.collisionRenderer.render(this.getCamera(), new Matrix4f());
