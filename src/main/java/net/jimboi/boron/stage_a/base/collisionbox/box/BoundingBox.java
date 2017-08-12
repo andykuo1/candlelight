@@ -5,4 +5,5 @@ package net.jimboi.boron.stage_a.base.collisionbox.box;
  */
 public abstract class BoundingBox
 {
+	public abstract boolean isWithinRange(float x, float y, float radius);
 }

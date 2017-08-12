@@ -36,7 +36,7 @@ public class EntityZombie extends EntityMotion implements ActiveBoxCollider
 
 		this.health = 2;
 
-		this.color = PropertyColor.getColor(this.getRenderable().getRenderModel().getMaterial());
+		this.color = PropertyColor.PROPERTY.getColor(this.getRenderable().getRenderModel().getMaterial());
 	}
 
 	@Override
@@ -45,7 +45,9 @@ public class EntityZombie extends EntityMotion implements ActiveBoxCollider
 		if (this.hurt > 0)
 		{
 			this.hurt -= 0.2F;
-			PropertyColor.setColor(this.getRenderable().getRenderModel().getMaterial(), ColorUtil.getColorMix(this.color, 0xFF0000, this.hurt));
+			PropertyColor.PROPERTY.bind(this.getRenderable().getRenderModel().getMaterial())
+					.setColor(ColorUtil.getColorMix(this.color, 0xFF0000, this.hurt))
+					.unbind();
 		}
 
 		super.onUpdate();
@@ -98,7 +100,9 @@ public class EntityZombie extends EntityMotion implements ActiveBoxCollider
 
 		if (this.hurt > 0)
 		{
-			PropertyColor.setColor(this.getRenderable().getRenderModel().getMaterial(), ColorUtil.getColorMix(this.color, 0xFF0000, this.hurt));
+			PropertyColor.PROPERTY.bind(this.getRenderable().getRenderModel().getMaterial())
+					.setColor(ColorUtil.getColorMix(this.color, 0xFF0000, this.hurt))
+					.unbind();
 		}
 	}
 

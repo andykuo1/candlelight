@@ -3,7 +3,6 @@ package net.jimboi.boron.stage_a.goblet.entity;
 import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
-import net.jimboi.boron.stage_a.goblet.GobletEntity;
 import net.jimboi.boron.stage_a.goblet.GobletWorld;
 
 import org.bstone.transform.Transform3;
@@ -11,7 +10,7 @@ import org.bstone.transform.Transform3;
 /**
  * Created by Andy on 8/9/17.
  */
-public class EntitySolid extends GobletEntity implements BoxCollider
+public class EntitySolid extends EntityBase implements BoxCollider
 {
 	protected final AxisAlignedBoundingBox boundingBox;
 

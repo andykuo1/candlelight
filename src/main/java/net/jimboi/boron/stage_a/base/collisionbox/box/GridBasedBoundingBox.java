@@ -27,6 +27,12 @@ public class GridBasedBoundingBox extends BoundingBox
 		this.boundingBox = new GridAlignedBoundingBox(this.offsetX, this.offsetY, 1, 1);
 	}
 
+	@Override
+	public boolean isWithinRange(float x, float y, float radius)
+	{
+		return x + radius >= this.offsetX && x - radius < this.offsetX + this.width && y + radius >= this.offsetY && y - radius < this.offsetY + this.height;
+	}
+
 	public void offset(int x, int y)
 	{
 		this.offsetX += x;
@@ -65,6 +71,9 @@ public class GridBasedBoundingBox extends BoundingBox
 
 		float offsetX = x - this.offsetX;
 		float offsetY = y - this.offsetY;
+
+		radiusX = Math.abs(radiusX);
+		radiusY = Math.abs(radiusY);
 
 		if (offsetX + radiusX < 0 || offsetY + radiusY < 0 || offsetX - radiusX >= this.width || offsetY - radiusY >= this.height) return boxes;
 

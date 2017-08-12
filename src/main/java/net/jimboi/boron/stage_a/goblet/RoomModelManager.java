@@ -1,8 +1,9 @@
-package net.jimboi.boron.stage_a.smack.tile;
+package net.jimboi.boron.stage_a.goblet;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
 import org.bstone.render.material.Material;
+import org.bstone.render.material.PropertyColor;
 import org.bstone.render.material.PropertyTexture;
 import org.bstone.render.model.Model;
 import org.joml.Vector2f;
@@ -21,22 +22,23 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * Created by Andy on 8/7/17.
+ * Created by Andy on 8/10/17.
  */
-public class DungeonModelManager
+public class RoomModelManager
 {
 	private Asset<Texture> texture;
 	private Asset<TextureAtlas> textureAtlas;
 	private Set<Mesh> meshes = new HashSet<>();
 	private Material material;
 
-	public DungeonModelManager(Asset<Texture> texture, Asset<TextureAtlas> textureAtlas)
+	public RoomModelManager(Asset<Texture> texture, Asset<TextureAtlas> textureAtlas)
 	{
 		this.texture = texture;
 		this.textureAtlas = textureAtlas;
 
 		this.material = new Material();
 		this.material.addProperty(PropertyTexture.PROPERTY);
+		this.material.addProperty(PropertyColor.PROPERTY);
 		PropertyTexture.PROPERTY.bind(this.material)
 				.setTexture(this.texture)
 				.unbind();
@@ -44,7 +46,7 @@ public class DungeonModelManager
 
 	public void destroy()
 	{
-		for(Mesh mesh : this.meshes)
+		for (Mesh mesh : this.meshes)
 		{
 			mesh.close();
 		}
@@ -52,11 +54,13 @@ public class DungeonModelManager
 		this.meshes.clear();
 	}
 
-	public Model createStaticDungeon(IntMap tiles)
+	public Model createStaticRoom(Room room)
 	{
-		Mesh mesh = ModelUtil.createStaticMesh(createMesh3DFromMap(tiles, this.textureAtlas));
+		Mesh mesh = ModelUtil.createStaticMesh(createMesh3DFromMap(room.tilemap, this.textureAtlas));
 		this.meshes.add(mesh);
-		return new Model(Asset.wrap(mesh), this.material);
+		Model model = new Model(Asset.wrap(mesh), this.material);
+		model.transformation().translation(room.offsetX, room.offsetY, 0);
+		return model;
 	}
 
 	private static MeshData createMesh2DFromMap(IntMap map, Asset<TextureAtlas> textureAtlas)
@@ -77,7 +81,7 @@ public class DungeonModelManager
 				Vector2fc wallPos = new Vector2f(x, y);
 
 				int tile = map.get(x, y);
-				if (tile != 0)
+				if (tile == 0)
 				{
 					tile = 9 * 16;
 					if (!isSolid(map, x + 1, y)) tile += 1;
@@ -190,7 +194,7 @@ public class DungeonModelManager
 
 	private static boolean isSolid(IntMap map, int x, int y)
 	{
-		if (x < 0 || x >= map.width || y < 0 || y >= map.height) return true;
-		return map.get(x, y) == 0;
+		if (x < 0 || x >= map.width || y < 0 || y >= map.height) return false;
+		return map.get(x, y) != 0;
 	}
 }

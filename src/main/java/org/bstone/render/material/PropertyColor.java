@@ -1,53 +1,40 @@
 package org.bstone.render.material;
 
-import org.joml.Vector4f;
-import org.joml.Vector4fc;
+import org.joml.Vector3f;
+import org.joml.Vector3fc;
 import org.qsilver.util.ColorUtil;
 
 /**
  * Created by Andy on 8/10/17.
  */
-public class PropertyColor
+public class PropertyColor extends Property<ContextColor>
 {
-	public static final String COLOR = "color";
+	public static final PropertyColor PROPERTY = new PropertyColor(new ContextColor());
 
-	public static Material addProperty(Material material)
+	public static final String COLOR_NAME = "color";
+
+	public static final Vector3fc COLOR_DEFAULT = new Vector3f(1, 1, 1);
+
+	protected PropertyColor(ContextColor context)
 	{
-		material.addProperty(COLOR, Vector4fc.class, new Vector4f(1, 1, 1, 0));
-		return material;
+		super(context);
 	}
 
-	public static Material setNormalizedRGBA(Material material, Vector4fc nrgba)
+	@Override
+	protected void addSupportForMaterial(Material material)
 	{
-		if (!material.hasProperty(COLOR))
-		{
-			material.addProperty(COLOR, Vector4fc.class);
-		}
-
-		material.setProperty(COLOR, nrgba);
-		return material;
+		material.addProperty(COLOR_NAME, Vector3fc.class, COLOR_DEFAULT);
 	}
 
-	public static Material setColor(Material material, int color)
+	public Vector3fc getNormalizedRGB(Material material)
 	{
-		if (!material.hasProperty(COLOR))
-		{
-			material.addProperty(COLOR, Vector4fc.class);
-		}
-
-		material.setProperty(COLOR, ColorUtil.getNormalizedRGBA(color, new Vector4f()));
-		return material;
+		return material.getProperty(Vector3fc.class, COLOR_NAME);
 	}
 
-	public static Vector4fc getNormalizedRGBA(Material material)
+	public int getColor(Material material)
 	{
-		return material.getProperty(Vector4fc.class, COLOR);
-	}
-
-	public static int getColor(Material material)
-	{
-		Vector4fc nrgba = material.getProperty(Vector4fc.class, COLOR);
-		if (nrgba == null) return 0;
-		return ColorUtil.getColor(nrgba);
+		Vector3fc color = this.getNormalizedRGB(material);
+		if (color == null) return 0;
+		return ColorUtil.getColor(color);
 	}
 }

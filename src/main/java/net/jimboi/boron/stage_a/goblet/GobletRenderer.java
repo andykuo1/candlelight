@@ -53,8 +53,8 @@ public class GobletRenderer
 
 	private TextModelManager textModelManager;
 
-	private Set<Renderable> renderables;
-	private Set<EntityComponentRenderable> renderComponents;
+	public Set<Renderable> renderables;
+	public Set<EntityComponentRenderable> renderComponents;
 
 	public void load(RenderEngine renderEngine)
 	{

@@ -9,8 +9,8 @@ import org.bstone.mogli.Mesh;
 import org.bstone.render.renderer.WireframeProgramRenderer;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
-import org.joml.Vector4f;
-import org.joml.Vector4fc;
+import org.joml.Vector3f;
+import org.joml.Vector3fc;
 import org.qsilver.util.ColorUtil;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;
@@ -43,7 +43,7 @@ public class CollisionBoxRenderer extends WireframeProgramRenderer
 	public void draw(Iterable<BoxCollider> colliders, int color)
 	{
 		Matrix4f matTransform = new Matrix4f();
-		Vector4fc vecColor = ColorUtil.getNormalizedRGBA(color, new Vector4f());
+		Vector3fc vecColor = ColorUtil.getNormalizedRGB(color, new Vector3f());
 
 		for(BoxCollider collider : colliders)
 		{

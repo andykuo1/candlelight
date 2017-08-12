@@ -42,6 +42,12 @@ public class AxisAlignedBoundingBox extends BoundingBox
 		this.halfHeight = halfHeight;
 	}
 
+	@Override
+	public boolean isWithinRange(float x, float y, float radius)
+	{
+		return x + radius >= this.centerX - this.halfWidth && x - radius <= this.centerX + this.halfWidth && y + radius >= this.centerY - this.halfHeight && y - radius <= this.centerY + this.halfHeight;
+	}
+
 	public float getCenterX()
 	{
 		return this.centerX;

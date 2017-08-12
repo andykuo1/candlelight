@@ -7,7 +7,8 @@ import org.bstone.render.material.Material;
 import org.bstone.render.material.PropertyColor;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
-import org.joml.Vector4fc;
+import org.joml.Vector3fc;
+import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.zilar.resource.ResourceLocation;
@@ -19,6 +20,7 @@ public class WireframeProgramRenderer extends ProgramRenderer
 {
 	private final Matrix4f viewProjection = new Matrix4f();
 	private final Matrix4f modelViewProjection = new Matrix4f();
+	private final Vector4f color = new Vector4f();
 
 	public WireframeProgramRenderer()
 	{
@@ -30,7 +32,7 @@ public class WireframeProgramRenderer extends ProgramRenderer
 		vsh.close();
 		fsh.close();
 
-		PropertyColor.addProperty(this.material);
+		this.material.addProperty(PropertyColor.PROPERTY);
 	}
 
 	@Override
@@ -57,17 +59,17 @@ public class WireframeProgramRenderer extends ProgramRenderer
 	public void draw(Mesh mesh, Material material, Matrix4fc transformation)
 	{
 		this.draw(mesh,
-				PropertyColor.getNormalizedRGBA(material),
+				PropertyColor.PROPERTY.getNormalizedRGB(material),
 				transformation);
 	}
 
-	public void draw(Mesh mesh, Vector4fc color, Matrix4fc transformation)
+	public void draw(Mesh mesh, Vector3fc color, Matrix4fc transformation)
 	{
 		final Program program = this.program;
 		program.setUniform("u_model_view_projection", this.viewProjection.mul(transformation, this.modelViewProjection));
 		mesh.bind();
 		{
-			program.setUniform("u_color", color);
+			program.setUniform("u_color", this.color.set(color.x(), color.y(), color.z(), 1));
 			GL11.glDrawElements(GL11.GL_LINE_LOOP, mesh.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 		}
 		mesh.unbind();

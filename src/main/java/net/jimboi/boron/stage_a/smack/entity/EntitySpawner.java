@@ -31,7 +31,7 @@ public class EntitySpawner extends SmackEntity
 		this.minCooldown = 100;
 		this.cooldown = this.maxCooldown;
 
-		this.color = PropertyColor.getColor(this.getRenderable().getRenderModel().getMaterial());
+		this.color = PropertyColor.PROPERTY.getColor(this.getRenderable().getRenderModel().getMaterial());
 	}
 
 	@Override
@@ -40,7 +40,9 @@ public class EntitySpawner extends SmackEntity
 		if (this.hurt > 0)
 		{
 			this.hurt -= 0.2F;
-			PropertyColor.setColor(this.getRenderable().getRenderModel().getMaterial(), ColorUtil.getColorMix(this.color, 0xFF0000, this.hurt));
+			PropertyColor.PROPERTY.bind(this.getRenderable().getRenderModel().getMaterial())
+					.setColor(ColorUtil.getColorMix(this.color, 0xFF0000, this.hurt))
+					.unbind();
 		}
 
 		super.onUpdate();
@@ -88,7 +90,9 @@ public class EntitySpawner extends SmackEntity
 
 		if (this.hurt > 0)
 		{
-			PropertyColor.setColor(this.getRenderable().getRenderModel().getMaterial(), ColorUtil.getColorMix(this.color, 0xFF0000, this.hurt));
+			PropertyColor.PROPERTY.bind(this.getRenderable().getRenderModel().getMaterial())
+					.setColor(ColorUtil.getColorMix(this.color, 0xFF0000, this.hurt))
+					.unbind();
 		}
 	}
 

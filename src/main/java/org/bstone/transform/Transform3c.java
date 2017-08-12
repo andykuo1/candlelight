@@ -49,6 +49,21 @@ public interface Transform3c extends Transform
 	Vector3fc position3();
 	Vector3fc scale3();
 
+	default float posX()
+	{
+		return this.position3().x();
+	}
+
+	default float posY()
+	{
+		return this.position3().y();
+	}
+
+	default float posZ()
+	{
+		return this.position3().z();
+	}
+
 	default DerivedTransform3 derive3()
 	{
 		return new DerivedTransform3(this);

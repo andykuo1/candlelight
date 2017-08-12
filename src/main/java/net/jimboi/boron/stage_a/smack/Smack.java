@@ -157,12 +157,16 @@ public class Smack implements GameHandler
 		this.collisionBoxRenderer = new CollisionBoxRenderer();
 
 		this.ammoModel = this.textModelManager.createDynamicText("___");
-		this.ammoModel.getMaterial().setProperty(PropertyTexture.TRANSPARENCY, true);
-		PropertyColor.setColor(this.ammoModel.getMaterial(), 0x007BFF);
+		this.ammoModel.getMaterial().setProperty(PropertyTexture.TRANSPARENCY_NAME, true);
+		PropertyColor.PROPERTY.bind(this.ammoModel.getMaterial())
+				.setColor(0x007BFF)
+				.unbind();
 
 		this.shadowModel = new Model(this.ammoModel.getMesh(), this.ammoModel.getMaterial().derive(new Material()));
 		this.shadowModel.transformation().set(this.ammoModel.transformation());
-		PropertyColor.setColor(this.shadowModel.getMaterial(), 0x29424A);
+		PropertyColor.PROPERTY.bind(this.shadowModel.getMaterial())
+				.setColor(0x29424A)
+				.unbind();
 
 		this.renderables.add(new Renderable()
 		{

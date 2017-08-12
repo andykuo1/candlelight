@@ -106,23 +106,23 @@ public class CollisionSolver
 		return response;
 	}
 
-	public static CollisionResponse solve(AxisAlignedBoundingBox collider, float posX, float posY, float dx, float dy, float paddingX, float paddingY)
+	public static CollisionResponse solve(float posX, float posY, float dx, float dy, float paddingX, float paddingY, AxisAlignedBoundingBox other)
 	{
 		float scaleX = 1F / dx;
 		float scaleY = 1F / dy;
 		float signX = MathUtil.sign(scaleX);
 		float signY = MathUtil.sign(scaleY);
-		float segmentWidth = signX * (collider.getHalfWidth() + paddingX);
-		float segmentHeight = signY * (collider.getHalfHeight() + paddingY);
-		float nearTimeX = (collider.getCenterX() - segmentWidth - posX) * scaleX;
-		float nearTimeY = (collider.getCenterY() - segmentHeight - posY) * scaleY;
-		float farTimeX = (collider.getCenterX() + segmentWidth - posX) * scaleX;
-		float farTimeY = (collider.getCenterY() + segmentHeight - posY) * scaleY;
+		float segmentWidth = signX * (other.getHalfWidth() + paddingX);
+		float segmentHeight = signY * (other.getHalfHeight() + paddingY);
+		float nearTimeX = (other.getCenterX() - segmentWidth - posX) * scaleX;
+		float nearTimeY = (other.getCenterY() - segmentHeight - posY) * scaleY;
+		float farTimeX = (other.getCenterX() + segmentWidth - posX) * scaleX;
+		float farTimeY = (other.getCenterY() + segmentHeight - posY) * scaleY;
 
 		if (nearTimeX > farTimeY || nearTimeY > farTimeX) return null;
 
-		float nearTime = Math.max(nearTimeX, nearTimeY);
-		float farTime = Math.min(farTimeX, farTimeY);
+		float nearTime = nearTimeX > nearTimeY ? nearTimeX : nearTimeY;
+		float farTime = farTimeX < farTimeY ? farTimeX : farTimeY;
 
 		if (nearTime >= 1 || farTime <= 0) return null;
 
@@ -148,5 +148,38 @@ public class CollisionSolver
 	public static CollisionResponse solve(AxisAlignedBoundingBox collider, GridAlignedBoundingBox other)
 	{
 		return solve(collider, (AxisAlignedBoundingBox) other);
+	}
+
+	public static CollisionResponse solve(float posX, float posY, float dx, float dy, float paddingX, float paddingY, GridAlignedBoundingBox other)
+	{
+		return solve(posX, posY, dx, dy, paddingX, paddingY, (AxisAlignedBoundingBox) other);
+	}
+
+	public static CollisionResponse solve(float posX, float posY, float dx, float dy, float paddingX, float paddingY, GridBasedBoundingBox other)
+	{
+		List<GridAlignedBoundingBox> others = other.getSubBox(posX, posY, dx, dy);
+		if (!others.isEmpty())
+		{
+			CollisionResponse result = null;
+
+			for(GridAlignedBoundingBox gabb : others)
+			{
+				CollisionResponse response = solve(posX, posY, -dx, -dy, paddingX, paddingY, gabb);
+				if (response != null)
+				{
+					return response;
+					/*
+					if (result == null || result.getPoint().distanceSquared(posX, posY) > response.getPoint().distanceSquared(posX, posY))
+					{
+						result = response;
+					}
+					*/
+				}
+			}
+
+			return result;
+		}
+
+		return null;
 	}
 }

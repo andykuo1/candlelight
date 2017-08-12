@@ -4,17 +4,21 @@ import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxManager;
 import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
 import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
 import net.jimboi.boron.stage_a.goblet.entity.EntityPlayer;
+import net.jimboi.boron.stage_a.goblet.entity.EntityRat;
 
+import org.bstone.render.RenderableBase;
 import org.bstone.render.material.Material;
 import org.bstone.render.material.PropertyColor;
 import org.bstone.render.material.PropertyTexture;
 import org.bstone.render.model.Model;
 import org.bstone.transform.Transform3;
 import org.bstone.transform.Transform3c;
+import org.joml.Matrix4f;
 import org.joml.Vector3fc;
 import org.qsilver.asset.Asset;
 
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  * Created by Andy on 8/9/17.
@@ -22,10 +26,14 @@ import java.util.Iterator;
 public class GobletWorld
 {
 	private final GobletEntityManager entityManager;
+	private final Random random = new Random();
 
 	private GobletCameraController cameraController;
 
 	private EntityPlayer player;
+
+	private RoomModelManager roomModelManager;
+	private Room room;
 
 	public GobletWorld()
 	{
@@ -41,10 +49,32 @@ public class GobletWorld
 		this.player = new EntityPlayer(this, transform);
 		this.spawnEntity(this.player);
 		this.cameraController.setTarget(transform);
+
+		this.room = new Room(0, 0, 10, 10);
+		this.spawnEntity(new EntityRat(this, new Transform3().setPosition(5 + 0.5F, 5 + 0.5F, 0)));
+		/*
+		for(int i = 0; i < 10; ++i)
+		{
+			for(int j = 0; j < 10; ++j)
+			{
+				if (this.random.nextInt(4) == 0)
+				{
+					this.spawnEntity(new EntityRat(this, new Transform3().setPosition(i + 0.5F, j + 0.5F, 0)));
+				}
+			}
+		}
+		*/
+		this.getBoundingManager().add(this.room);
+
+		this.roomModelManager = new RoomModelManager(Asset.wrap(Goblet.getGoblet().getRender().texFont), Asset.wrap(Goblet.getGoblet().getRender().atsFont));
+		Model model = this.roomModelManager.createStaticRoom(this.room);
+		Goblet.getGoblet().getRender().renderables.add(new RenderableBase(model, new Matrix4f()));
 	}
 
 	public void stop()
 	{
+		this.roomModelManager.destroy();
+
 		this.cameraController.stop();
 
 		this.entityManager.destroy();
@@ -89,11 +119,16 @@ public class GobletWorld
 	public Material createMaterial2D(char c, int color)
 	{
 		Material material = new Material();
-		PropertyTexture.addProperty(material);
-		PropertyColor.addProperty(material);
+		material.addProperty(PropertyTexture.PROPERTY);
+		material.addProperty(PropertyColor.PROPERTY);
 
-		PropertyTexture.setSprite(material, Goblet.getGoblet().getRender().fontSheet.get(c));
-		PropertyColor.setColor(material, color);
+		PropertyTexture.PROPERTY.bind(material)
+				.setSprite(Goblet.getGoblet().getRender().fontSheet.get(c))
+				.unbind();
+		PropertyColor.PROPERTY.bind(material)
+				.setColor(color)
+				.unbind();
+
 		return material;
 	}
 
@@ -117,6 +152,16 @@ public class GobletWorld
 			}
 		}
 		return (T) nearest;
+	}
+
+	public Room getRoom(float x, float y)
+	{
+		return this.room;
+	}
+
+	public Random getRandom()
+	{
+		return this.random;
 	}
 
 	public EntityPlayer getPlayer()

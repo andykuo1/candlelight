@@ -11,7 +11,8 @@ import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
-import org.joml.Vector4fc;
+import org.joml.Vector3fc;
+import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
@@ -32,6 +33,7 @@ public class BillboardProgramRenderer extends ProgramRenderer
 
 	private final Matrix4f view = new Matrix4f();
 	private final Matrix4f modelView = new Matrix4f();
+	private final Vector4f color = new Vector4f();
 
 	public BillboardProgramRenderer()
 	{
@@ -42,8 +44,8 @@ public class BillboardProgramRenderer extends ProgramRenderer
 		vsh.close();
 		fsh.close();
 
-		PropertyTexture.addProperty(this.material);
-		PropertyColor.addProperty(this.material);
+		this.material.addProperty(PropertyTexture.PROPERTY);
+		this.material.addProperty(PropertyColor.PROPERTY);
 	}
 
 	@Override
@@ -72,20 +74,20 @@ public class BillboardProgramRenderer extends ProgramRenderer
 	public void draw(Type type, Mesh mesh, Material material, Matrix4fc transformation)
 	{
 		this.draw(type, mesh,
-				PropertyTexture.getTexture(material),
-				PropertyTexture.getSpriteOffset(material),
-				PropertyTexture.getSpriteScale(material),
-				PropertyTexture.getTransparency(material),
-				PropertyColor.getNormalizedRGBA(material),
+				PropertyTexture.PROPERTY.getTexture(material),
+				PropertyTexture.PROPERTY.getSpriteOffset(material),
+				PropertyTexture.PROPERTY.getSpriteScale(material),
+				PropertyTexture.PROPERTY.getTransparency(material),
+				PropertyColor.PROPERTY.getNormalizedRGB(material),
 				transformation);
 	}
 
-	public void draw(Type type, Mesh mesh, Sprite sprite, boolean transparency, Vector4fc color, Matrix4fc transformation)
+	public void draw(Type type, Mesh mesh, Sprite sprite, boolean transparency, Vector3fc color, Matrix4fc transformation)
 	{
 		this.draw(type, mesh, sprite.getTexture(), new Vector2f(sprite.getU(), sprite.getV()), new Vector2f(sprite.getWidth(), sprite.getHeight()), transparency, color, transformation);
 	}
 
-	public void draw(Type type, Mesh mesh, Asset<Texture> texture, Vector2fc spriteOffset, Vector2fc spriteScale, boolean transparency, Vector4fc color, Matrix4fc transformation)
+	public void draw(Type type, Mesh mesh, Asset<Texture> texture, Vector2fc spriteOffset, Vector2fc spriteScale, boolean transparency, Vector3fc color, Matrix4fc transformation)
 	{
 		final Program program = this.program;
 		final Texture currentTexture = texture == null ? null : texture.getSource();
@@ -94,7 +96,7 @@ public class BillboardProgramRenderer extends ProgramRenderer
 		mesh.bind();
 		{
 			program.setUniform("u_billboard_type", type.ordinal());
-			program.setUniform("u_color", color);
+			program.setUniform("u_color", this.color.set(color.x(), color.y(), color.z(), 1));
 
 			if (currentTexture != null)
 			{

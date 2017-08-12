@@ -31,8 +31,10 @@ public class TextModelManager
 		this.fontsheet = fontsheet;
 
 		this.material = new Material();
-		PropertyTexture.addProperty(this.material);
-		PropertyTexture.setTexture(this.material, this.fontsheet.get((char) 0).getTexture());
+		this.material.addProperty(PropertyTexture.PROPERTY);
+		PropertyTexture.PROPERTY.bind(this.material)
+				.setTexture(this.fontsheet.get((char) 0).getTexture())
+				.unbind();
 	}
 
 	public void destroy()

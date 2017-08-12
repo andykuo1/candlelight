@@ -111,10 +111,15 @@ public class SmackWorld
 	public EntityComponentRenderable createRenderable2D(Transform3 transform, char c, int color)
 	{
 		Material material = new Material();
-		PropertyTexture.addProperty(material);
-		PropertyTexture.setSprite(material, Smack.getSmack().fontSheet.get(c));
-		PropertyColor.addProperty(material);
-		PropertyColor.setColor(material, color);
+		material.addProperty(PropertyTexture.PROPERTY);
+		material.addProperty(PropertyColor.PROPERTY);
+
+		PropertyTexture.PROPERTY.bind(material)
+				.setSprite(Smack.getSmack().fontSheet.get(c))
+				.unbind();
+		PropertyColor.PROPERTY.bind(material)
+				.setColor(color)
+				.unbind();
 
 		return new EntityComponentRenderable(transform,
 				new Model(Asset.wrap(Smack.getSmack().quad), material)

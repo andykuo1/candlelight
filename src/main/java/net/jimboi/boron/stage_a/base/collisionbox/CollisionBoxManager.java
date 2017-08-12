@@ -4,7 +4,10 @@ import net.jimboi.boron.stage_a.base.collisionbox.collider.ActiveBoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionSolver;
 
+import org.qsilver.util.iterator.FilterIterator;
+
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -47,6 +50,17 @@ public class CollisionBoxManager
 			CollisionSolver.checkCollision(collider, this.colliders, collider::canCollideWith, collider::onCollision);
 			collider.onPostCollisionUpdate();
 		}
+	}
+
+	public Iterable<BoxCollider> getNearestColliders(float x, float y, float radius)
+	{
+		return new Iterable<BoxCollider>(){
+			@Override
+			public Iterator<BoxCollider> iterator()
+			{
+				return new FilterIterator<>(CollisionBoxManager.this.colliders.iterator(), ((collider) -> collider.getBoundingBox().isWithinRange(x, y, radius)));
+			}
+		};
 	}
 
 	public Iterable<BoxCollider> getColliders()

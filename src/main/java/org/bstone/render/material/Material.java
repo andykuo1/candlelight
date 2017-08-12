@@ -29,6 +29,11 @@ public class Material
 		this.types.put(name, type);
 	}
 
+	public void addProperty(Property property)
+	{
+		property.addSupportForMaterial(this);
+	}
+
 	public Object removeProperty(String name)
 	{
 		Object o = this.values.remove(name);
@@ -41,14 +46,22 @@ public class Material
 		return this.types.containsKey(name);
 	}
 
+	public Class<?> getPropertyType(String name)
+	{
+		return this.types.get(name);
+	}
+
 	@SuppressWarnings("unchecked")
 	public <T> T getProperty(Class<? super T> type, String name)
 	{
 		Class<?> valueType = this.types.get(name);
-		if (!valueType.isAssignableFrom(type))
+		if (valueType == null) return null;
+
+		if (!type.isAssignableFrom(valueType))
 		{
 			throw new IllegalArgumentException("Found invalid type for property with name '" + name + "' - Expected '" + valueType.getSimpleName() + "', but found " + type.getSimpleName() + "' instead!");
 		}
+
 		return (T) this.values.get(name);
 	}
 
@@ -56,13 +69,18 @@ public class Material
 	{
 		if (!this.types.containsKey(name))
 		{
-			throw new IllegalArgumentException("Cannot find property of type '" + value.getClass().getSimpleName() + "' with name '" + name + "'!");
+			this.addProperty(name, value.getClass());
 		}
 
 		Class<?> valueType = this.types.get(name);
 		if (!valueType.isInstance(value))
 		{
 			throw new IllegalArgumentException("Found invalid type for property with name '" + name + "' - Expected '" + valueType.getSimpleName() + "', but found " + value.getClass().getSimpleName() + "' instead!");
+		}
+		else if (!valueType.equals(value.getClass()))
+		{
+			//Cast down the value type to match for accessors
+			this.types.put(name, value.getClass());
 		}
 
 		this.values.put(name, value);

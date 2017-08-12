@@ -4,97 +4,55 @@ import org.bstone.mogli.Texture;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.qsilver.asset.Asset;
-import org.zilar.sprite.Sprite;
 
 /**
  * Created by Andy on 8/10/17.
  */
-public class PropertyTexture
+public class PropertyTexture extends Property<ContextTexture>
 {
-	public static final String TEXTURE = "texture";
-	public static final String SPRITE_OFFSET = "spriteOffset";
-	public static final String SPRITE_SCALE = "spriteScale";
-	public static final String TRANSPARENCY = "transparency";
+	public static final PropertyTexture PROPERTY = new PropertyTexture(new ContextTexture());
 
-	public static Material addProperty(Material material)
+	public static final String TEXTURE_NAME = "texture";
+	public static final String SPRITE_OFFSET_NAME = "spriteOffset";
+	public static final String SPRITE_SCALE_NAME = "spriteScale";
+	public static final String TRANSPARENCY_NAME = "transparency";
+
+	public static final Vector2fc SPRITE_OFFSET_DEFAULT = new Vector2f();
+	public static final Vector2fc SPRITE_SCALE_DEFAULT = new Vector2f(1, 1);
+	public static final boolean TRANSPARENCY_DEFAULT = true;
+
+	protected PropertyTexture(ContextTexture context)
 	{
-		material.addProperty(TEXTURE, Asset.class);
-		material.addProperty(SPRITE_OFFSET, Vector2fc.class, new Vector2f());
-		material.addProperty(SPRITE_SCALE, Vector2fc.class, new Vector2f(1, 1));
-		material.addProperty(TRANSPARENCY, Boolean.class, true);
-		return material;
+		super(context);
 	}
 
-	public static Material setSprite(Material material, Sprite sprite)
+	@Override
+	protected void addSupportForMaterial(Material material)
 	{
-		setTexture(material, sprite.getTexture());
-		setSpriteOffset(material, new Vector2f(sprite.getU(), sprite.getV()));
-		setSpriteScale(material, new Vector2f(sprite.getWidth(), sprite.getHeight()));
-		return material;
-	}
-
-	public static Material setTexture(Material material, Asset<Texture> texture)
-	{
-		if (!material.hasProperty(TEXTURE))
-		{
-			material.addProperty(TEXTURE, Asset.class);
-		}
-
-		material.setProperty(TEXTURE, texture);
-		return material;
-	}
-
-	public static Material setSpriteOffset(Material material, Vector2fc spriteOffset)
-	{
-		if (!material.hasProperty(SPRITE_OFFSET))
-		{
-			material.addProperty(SPRITE_OFFSET, Vector2fc.class);
-		}
-
-		material.setProperty(SPRITE_OFFSET, spriteOffset);
-		return material;
-	}
-
-	public static Material setSpriteScale(Material material, Vector2fc spriteScale)
-	{
-		if (!material.hasProperty(SPRITE_SCALE))
-		{
-			material.addProperty(SPRITE_SCALE, Vector2fc.class);
-		}
-
-		material.setProperty(SPRITE_SCALE, spriteScale);
-		return material;
-	}
-
-	public static Material setTransparency(Material material, boolean transparency)
-	{
-		if (!material.hasProperty(TRANSPARENCY))
-		{
-			material.addProperty(TRANSPARENCY, Boolean.class);
-		}
-
-		material.setProperty(TRANSPARENCY, transparency);
-		return material;
+		material.addProperty(TEXTURE_NAME, Asset.class);
+		material.addProperty(SPRITE_OFFSET_NAME, Vector2fc.class, SPRITE_OFFSET_DEFAULT);
+		material.addProperty(SPRITE_SCALE_NAME, Vector2fc.class, SPRITE_SCALE_DEFAULT);
+		material.addProperty(TRANSPARENCY_NAME, Boolean.class, TRANSPARENCY_DEFAULT);
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Asset<Texture> getTexture(Material material)
+	public Asset<Texture> getTexture(Material material)
 	{
-		return (Asset<Texture>) material.getProperty(Asset.class, TEXTURE);
+		return (Asset<Texture>) material.getProperty(Asset.class, TEXTURE_NAME);
 	}
 
-	public static Vector2fc getSpriteOffset(Material material)
+	public Vector2fc getSpriteOffset(Material material)
 	{
-		return material.getProperty(Vector2fc.class, SPRITE_OFFSET);
+		return material.getProperty(Vector2fc.class, SPRITE_OFFSET_NAME);
 	}
 
-	public static Vector2fc getSpriteScale(Material material)
+	public Vector2fc getSpriteScale(Material material)
 	{
-		return material.getProperty(Vector2fc.class, SPRITE_SCALE);
+		return material.getProperty(Vector2fc.class, SPRITE_SCALE_NAME);
 	}
 
-	public static boolean getTransparency(Material material)
+	public boolean getTransparency(Material material)
 	{
-		return material.getProperty(Boolean.class, TRANSPARENCY);
+		return material.getProperty(Boolean.class, TRANSPARENCY_NAME);
 	}
 }

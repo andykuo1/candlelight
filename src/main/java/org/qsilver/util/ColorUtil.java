@@ -28,7 +28,7 @@ public class ColorUtil
 
 	public static int getColor(Vector4fc nrgba)
 	{
-		return ((((int) nrgba.w() * 255) & 0xFF) << 24) | ((((int) nrgba.x() * 255) & 0xFF) << 16) | ((((int) nrgba.y() * 255) & 0xFF) << 8) | (((int) nrgba.z() * 255) & 0xFF);
+		return ((((int) (nrgba.w() * 255)) & 0xFF) << 24) | ((((int) (nrgba.x() * 255)) & 0xFF) << 16) | ((((int) (nrgba.y() * 255)) & 0xFF) << 8) | (((int) (nrgba.z() * 255)) & 0xFF);
 	}
 
 	public static int getColor(int red, int green, int blue)
@@ -36,9 +36,9 @@ public class ColorUtil
 		return ((red & 0xFF) << 16) | ((green & 0xFF) << 8) | (blue & 0xFF);
 	}
 
-	public static int getColor(Vector3fc nrgba)
+	public static int getColor(Vector3fc nrgb)
 	{
-		return ((((int) nrgba.x() * 255) & 0xFF) << 16) | ((((int) nrgba.y() * 255) & 0xFF) << 8) | (((int) nrgba.z() * 255) & 0xFF);
+		return ((((int) (nrgb.x() * 255)) & 0xFF) << 16) | ((((int) (nrgb.y() * 255)) & 0xFF) << 8) | (((int) (nrgb.z() * 255)) & 0xFF);
 	}
 
 	public static Vector4i getRGBA(int color, Vector4i dst)
