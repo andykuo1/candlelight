@@ -1,6 +1,7 @@
 package org.zilar.entity;
 
-import org.bstone.component.ComponentManager;
+import net.jimboi.apricot.base.component.ComponentManager;
+
 import org.bstone.util.listener.Listenable;
 
 import java.util.Iterator;

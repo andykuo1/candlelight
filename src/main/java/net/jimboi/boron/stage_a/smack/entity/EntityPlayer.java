@@ -3,7 +3,6 @@ package net.jimboi.boron.stage_a.smack.entity;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.ActiveBoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionResponse;
-import net.jimboi.boron.stage_a.base.livingentity.LivingEntity;
 import net.jimboi.boron.stage_a.smack.DamageSource;
 import net.jimboi.boron.stage_a.smack.MotionHelper;
 import net.jimboi.boron.stage_a.smack.Smack;
@@ -11,12 +10,11 @@ import net.jimboi.boron.stage_a.smack.SmackEntity;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
 import net.jimboi.boron.stage_a.smack.tile.DungeonHandler;
 
+import org.bstone.livingentity.LivingEntity;
 import org.bstone.transform.Transform3;
 import org.bstone.window.input.InputManager;
 import org.joml.Vector2f;
 import org.qsilver.util.MathUtil;
-
-import java.util.Iterator;
 
 /**
  * Created by Andy on 8/5/17.
@@ -49,9 +47,9 @@ public class EntityPlayer extends EntityMotion implements ActiveBoxCollider
 	}
 
 	@Override
-	public void onUpdate()
+	public void onLivingUpdate()
 	{
-		super.onUpdate();
+		super.onLivingUpdate();
 
 		final InputManager input = Smack.getSmack().getInput();
 		final float mouseX = input.getInputAmount("mousex");
@@ -100,15 +98,14 @@ public class EntityPlayer extends EntityMotion implements ActiveBoxCollider
 			this.motion.set(0);
 		}
 
-		Iterator<LivingEntity> livings = this.world.getSmacks().getLivings().getLivingIterator();
-		while (livings.hasNext())
+		for(LivingEntity living : this.world.getSmacks().getLivingEntities())
 		{
-			LivingEntity living = livings.next();
 			if (living instanceof EntityAmmo)
 			{
-				if (MotionHelper.isWithinDistanceSquared(this.transform, living.getTransform().position3().x(), living.getTransform().position3().y(), this.pickupRadius * this.pickupRadius))
+				EntityAmmo entityAmmo = (EntityAmmo) living;
+				if (MotionHelper.isWithinDistanceSquared(this.transform, entityAmmo.getTransform().position3().x(), entityAmmo.getTransform().position3().y(), this.pickupRadius * this.pickupRadius))
 				{
-					((EntityAmmo) living).setPosition(MathUtil.lerp(living.getTransform().position3().x(), this.transform.position3().x(), 0.06F), MathUtil.lerp(living.getTransform().position3().y(), this.transform.position3().y(), 0.06F));
+					((EntityAmmo) living).setPosition(MathUtil.lerp(entityAmmo.getTransform().position3().x(), this.transform.position3().x(), 0.06F), MathUtil.lerp(entityAmmo.getTransform().position3().y(), this.transform.position3().y(), 0.06F));
 				}
 			}
 		}

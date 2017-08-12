@@ -1,9 +1,10 @@
 package net.jimboi.boron.stage_a.goblet.entity;
 
+import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
-import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
 import net.jimboi.boron.stage_a.goblet.GobletWorld;
 
+import org.bstone.living.LivingManager;
 import org.bstone.render.material.Material;
 import org.bstone.render.material.PropertyColor;
 import org.bstone.transform.Transform3;
@@ -27,7 +28,7 @@ public class EntityHurtable extends EntityMotion implements IBurnable
 
 	protected int burnRate = 60;
 
-	public EntityHurtable(GobletWorld world, Transform3 transform, AxisAlignedBoundingBox boundingBox, EntityComponentRenderable renderable)
+	public EntityHurtable(GobletWorld world, Transform3 transform, AxisAlignedBoundingBox boundingBox, ComponentRenderable renderable)
 	{
 		super(world, transform, boundingBox, renderable);
 
@@ -35,18 +36,14 @@ public class EntityHurtable extends EntityMotion implements IBurnable
 	}
 
 	@Override
-	public boolean onCreate()
+	public void onLivingCreate(LivingManager livingManager)
 	{
 		this.health = this.maxHealth;
-
-		return super.onCreate();
 	}
 
 	@Override
-	public void onUpdate()
+	public void onLivingUpdate()
 	{
-		super.onUpdate();
-
 		if (this.fireTicks > 0)
 		{
 			--this.fireTicks;

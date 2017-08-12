@@ -28,9 +28,9 @@ public class EntityRat extends EntityHurtable implements ActiveBoxCollider
 	}
 
 	@Override
-	public void onUpdate()
+	public void onLivingUpdate()
 	{
-		super.onUpdate();
+		super.onLivingUpdate();
 
 		EntityPlayer entityPlayer = (EntityPlayer) this.getWorld().getPlayer();
 		Room room = this.world.getRoom(this.transform.posX(), this.transform.posY());

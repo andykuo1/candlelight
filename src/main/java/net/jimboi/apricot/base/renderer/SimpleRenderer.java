@@ -3,8 +3,8 @@ package net.jimboi.apricot.base.renderer;
 import net.jimboi.apricot.base.material.OldMaterial;
 import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.render.OldRenderable;
-import net.jimboi.apricot.base.renderer.property.PropertyDiffuse;
-import net.jimboi.apricot.base.renderer.property.PropertyTexture;
+import net.jimboi.apricot.base.renderer.property.OldPropertyDiffuse;
+import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
@@ -98,18 +98,18 @@ public class SimpleRenderer extends RenderService
 				boolean u_transparency = def_transparency;
 				Vector4fc u_diffuse_color = def_diffuse_color;
 
-				if (material.hasComponent(PropertyTexture.class))
+				if (material.hasComponent(OldPropertyTexture.class))
 				{
-					PropertyTexture propertyTexture = material.getComponent(PropertyTexture.class);
+					OldPropertyTexture propertyTexture = material.getComponent(OldPropertyTexture.class);
 					texture = propertyTexture.getTexture().getSource();
 					sprite = propertyTexture.getSprite();
 					u_transparency = propertyTexture.isTransparent();
 				}
 				program.setUniform("u_transparency", u_transparency);
 
-				if (material.hasComponent(PropertyDiffuse.class))
+				if (material.hasComponent(OldPropertyDiffuse.class))
 				{
-					PropertyDiffuse propertyDiffuse = material.getComponent(PropertyDiffuse.class);
+					OldPropertyDiffuse propertyDiffuse = material.getComponent(OldPropertyDiffuse.class);
 					u_diffuse_color = propertyDiffuse.diffuseColor;
 				}
 				program.setUniform("u_diffuse_color", u_diffuse_color);

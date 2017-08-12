@@ -1,21 +1,21 @@
-package net.jimboi.boron.stage_a.base.livingentity;
+package net.jimboi.boron.stage_a.base.basicobject;
 
+import org.bstone.entity.Component;
 import org.bstone.render.Renderable;
 import org.bstone.render.model.Model;
 import org.bstone.transform.Transform;
 import org.joml.Matrix4f;
-import org.zilar.entity.EntityComponent;
 
 /**
- * Created by Andy on 7/18/17.
+ * Created by Andy on 8/12/17.
  */
-public class EntityComponentRenderable implements EntityComponent, Renderable
+public class ComponentRenderable implements Component, Renderable
 {
 	public Transform transform;
 	public Model model;
 	private boolean visible;
 
-	public EntityComponentRenderable(Transform transform, Model model)
+	public ComponentRenderable(Transform transform, Model model)
 	{
 		this.transform = transform;
 		this.model = model;

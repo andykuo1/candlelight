@@ -1,4 +1,4 @@
-package org.bstone.component;
+package net.jimboi.apricot.base.component;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * Created by Andy on 5/21/17.
  */
-public class ComponentManager<E extends ManifestEntity, C extends Component>
+public class ComponentManager<E extends ManifestEntity, C extends OldComponent>
 {
 	private static int NEXT_ENTITY_ID = 0;
 

@@ -3,8 +3,8 @@ package net.jimboi.apricot.base.renderer.shadow;
 import net.jimboi.apricot.base.material.OldMaterial;
 import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.render.OldRenderable;
-import net.jimboi.apricot.base.renderer.property.PropertyShadow;
-import net.jimboi.apricot.base.renderer.property.PropertyTexture;
+import net.jimboi.apricot.base.renderer.property.OldPropertyShadow;
+import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
 
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.FBO;
@@ -105,15 +105,15 @@ public class ShadowRenderer
 				final Mesh mesh = model.getMesh().getSource();
 				final OldMaterial material = model.getMaterial();
 
-				if (!material.hasComponent(PropertyShadow.class)) continue;
-				if (!material.getComponent(PropertyShadow.class).castShadow) continue;
+				if (!material.hasComponent(OldPropertyShadow.class)) continue;
+				if (!material.getComponent(OldPropertyShadow.class).castShadow) continue;
 
 				Texture texture = null;
 				Sprite sprite = null;
 
-				if (material.hasComponent(PropertyTexture.class))
+				if (material.hasComponent(OldPropertyTexture.class))
 				{
-					PropertyTexture prop = material.getComponent(PropertyTexture.class);
+					OldPropertyTexture prop = material.getComponent(OldPropertyTexture.class);
 					texture = prop.getTexture().getSource();
 					sprite = prop.getSprite();
 					program.setUniform("u_transparency", prop.isTransparent());

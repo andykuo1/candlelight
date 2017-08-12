@@ -25,9 +25,9 @@ public class EntityThrust extends EntitySolid implements ActiveBoxCollider, IDam
 	}
 
 	@Override
-	public void onUpdate()
+	public void onLivingUpdate()
 	{
-		super.onUpdate();
+		super.onLivingUpdate();
 
 		++this.age;
 		this.getRenderable().getRenderModel().transformation().translation(-Math.abs(0.6F - (this.age / (float) this.maxAge)), 0, 0).rotateZ(Transform.HALF_PI);

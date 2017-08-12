@@ -2,10 +2,10 @@ package net.jimboi.apricot.stage_b.glim.entity;
 
 import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.render.OldModel;
-import net.jimboi.apricot.base.renderer.property.PropertyDiffuse;
-import net.jimboi.apricot.base.renderer.property.PropertyShadow;
-import net.jimboi.apricot.base.renderer.property.PropertySpecular;
-import net.jimboi.apricot.base.renderer.property.PropertyTexture;
+import net.jimboi.apricot.base.renderer.property.OldPropertyDiffuse;
+import net.jimboi.apricot.base.renderer.property.OldPropertyShadow;
+import net.jimboi.apricot.base.renderer.property.OldPropertySpecular;
+import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
 import net.jimboi.apricot.stage_b.glim.WorldGlim;
 import net.jimboi.apricot.stage_b.glim.bounding.square.AABB;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentBounding;
@@ -31,10 +31,10 @@ public class EntityCrate extends EntityGlim
 				new EntityComponentRenderable(transform, new OldModel(
 						OldGameEngine.ASSETMANAGER.getAsset(Mesh.class, "box"),
 						SCENE.getMaterialManager().createMaterial(
-								new PropertyDiffuse(),
-								new PropertySpecular(),
-								new PropertyShadow(true, true),
-								new PropertyTexture(OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "crate"))),
+								new OldPropertyDiffuse(),
+								new OldPropertySpecular(),
+								new OldPropertyShadow(true, true),
+								new OldPropertyTexture(OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "crate"))),
 						"diffuse")),
 				new EntityComponentBounding(world.getBoundingManager().create(new AABB(transform.position.x, transform.position.z, 0.5F, 0.5F))));
 	}

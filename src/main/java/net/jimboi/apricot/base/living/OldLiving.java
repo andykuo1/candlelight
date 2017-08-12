@@ -1,14 +1,14 @@
-package org.bstone.living;
+package net.jimboi.apricot.base.living;
 
 /**
  * Created by Andy on 3/4/17.
  */
-public abstract class Living
+public abstract class OldLiving
 {
 	int id;
 	private boolean dead;
 
-	public Living()
+	public OldLiving()
 	{
 	}
 

@@ -3,7 +3,7 @@ package net.jimboi.apricot.base.renderer;
 import net.jimboi.apricot.base.material.OldMaterial;
 import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.render.OldRenderable;
-import net.jimboi.apricot.base.renderer.property.PropertyDiffuse;
+import net.jimboi.apricot.base.renderer.property.OldPropertyDiffuse;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
@@ -72,9 +72,9 @@ public class WireframeRenderer extends RenderService
 				final Mesh mesh = model.getMesh().getSource();
 				final OldMaterial material = model.getMaterial();
 
-				if (material.hasComponent(PropertyDiffuse.class))
+				if (material.hasComponent(OldPropertyDiffuse.class))
 				{
-					PropertyDiffuse propDiffuse = material.getComponent(PropertyDiffuse.class);
+					OldPropertyDiffuse propDiffuse = material.getComponent(OldPropertyDiffuse.class);
 					Vector3f diffuseColor;
 					diffuseColor = new Vector3f();
 					diffuseColor.x = propDiffuse.diffuseColor.x;

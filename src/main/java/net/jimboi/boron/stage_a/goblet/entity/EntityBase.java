@@ -1,6 +1,6 @@
 package net.jimboi.boron.stage_a.goblet.entity;
 
-import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
+import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.goblet.GobletEntity;
 import net.jimboi.boron.stage_a.goblet.GobletWorld;
 
@@ -14,7 +14,7 @@ public class EntityBase extends GobletEntity
 {
 	protected final int mainColor;
 
-	public EntityBase(GobletWorld world, Transform3 transform, EntityComponentRenderable renderable)
+	public EntityBase(GobletWorld world, Transform3 transform, ComponentRenderable renderable)
 	{
 		super(world, transform, renderable);
 

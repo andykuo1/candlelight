@@ -33,9 +33,9 @@ public class EntitySpark extends EntityMotion
 	}
 
 	@Override
-	public void onUpdate()
+	public void onLivingUpdate()
 	{
-		super.onUpdate();
+		super.onLivingUpdate();
 
 		//this.transform.translate(this.velocity.x(), this.velocity.y(), 0);
 		float scale = this.life / (float) this.maxLife;

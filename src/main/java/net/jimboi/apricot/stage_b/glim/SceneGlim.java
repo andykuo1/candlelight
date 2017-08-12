@@ -3,10 +3,10 @@ package net.jimboi.apricot.stage_b.glim;
 import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.OldSceneBase;
 import net.jimboi.apricot.base.render.OldModel;
-import net.jimboi.apricot.base.renderer.property.PropertyDiffuse;
-import net.jimboi.apricot.base.renderer.property.PropertyShadow;
-import net.jimboi.apricot.base.renderer.property.PropertySpecular;
-import net.jimboi.apricot.base.renderer.property.PropertyTexture;
+import net.jimboi.apricot.base.renderer.property.OldPropertyDiffuse;
+import net.jimboi.apricot.base.renderer.property.OldPropertyShadow;
+import net.jimboi.apricot.base.renderer.property.OldPropertySpecular;
+import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
 import net.jimboi.apricot.base.renderer.shadow.DynamicLight;
 import net.jimboi.apricot.stage_b.glim.bounding.BoundingManager;
 import net.jimboi.apricot.stage_b.glim.entity.EntityBunny;
@@ -107,10 +107,10 @@ public class SceneGlim extends OldSceneBase
 						new Transform3(),
 						new OldModel(OldGameEngine.ASSETMANAGER.getAsset(Mesh.class, "dungeon"),
 								this.getMaterialManager().createMaterial(
-										new PropertyDiffuse(),
-										new PropertySpecular(),
-										new PropertyShadow(true, true),
-										new PropertyTexture(OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "font"))),
+										new OldPropertyDiffuse(),
+										new OldPropertySpecular(),
+										new OldPropertyShadow(true, true),
+										new OldPropertyTexture(OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "font"))),
 								"diffuse"))
 		);
 
@@ -122,10 +122,10 @@ public class SceneGlim extends OldSceneBase
 						new Transform3(),
 						new OldModel(OldGameEngine.ASSETMANAGER.getAsset(Mesh.class, "plane"),
 								this.getMaterialManager().createMaterial(
-										new PropertyDiffuse(),
-										new PropertySpecular(),
-										new PropertyShadow(true, true),
-										new PropertyTexture(OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "shadowmap"))),//spritesheet)),
+										new OldPropertyDiffuse(),
+										new OldPropertySpecular(),
+										new OldPropertyShadow(true, true),
+										new OldPropertyTexture(OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "shadowmap"))),//spritesheet)),
 							"billboard"))
 		);
 

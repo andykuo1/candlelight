@@ -32,9 +32,9 @@ public class EntityFire extends GobletEntity implements IDamageSource
 	}
 
 	@Override
-	public void onUpdate()
+	public void onLivingUpdate()
 	{
-		super.onUpdate();
+		super.onLivingUpdate();
 
 		++this.age;
 		if (this.age > this.maxAge * 3)

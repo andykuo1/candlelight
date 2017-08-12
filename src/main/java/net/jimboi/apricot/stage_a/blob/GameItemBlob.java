@@ -1,16 +1,16 @@
 package net.jimboi.apricot.stage_a.blob;
 
+import net.jimboi.apricot.base.living.OldLiving;
 import net.jimboi.apricot.stage_a.mod.ModMaterial;
 import net.jimboi.apricot.stage_a.mod.instance.Instance;
 import net.jimboi.apricot.stage_a.mod.model.Model;
 
-import org.bstone.living.Living;
 import org.bstone.transform.Transform3;
 
 /**
  * Created by Andy on 4/19/17.
  */
-public class GameItemBlob extends Living
+public class GameItemBlob extends OldLiving
 {
 	private final Transform3 transform = new Transform3();
 

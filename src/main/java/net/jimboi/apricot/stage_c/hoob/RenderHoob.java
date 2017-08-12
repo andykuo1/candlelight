@@ -5,7 +5,7 @@ import net.jimboi.apricot.base.OldRenderBase;
 import net.jimboi.apricot.base.input.OldInputManager;
 import net.jimboi.apricot.base.render.OldRenderable;
 import net.jimboi.apricot.base.renderer.SimpleRenderer;
-import net.jimboi.apricot.base.renderer.property.PropertyTexture;
+import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderable;
 
 import org.bstone.mogli.Mesh;
@@ -126,7 +126,7 @@ public class RenderHoob extends OldRenderBase
 		button.setEnabled(false);
 		panel.addChild(button);
 
-		GuiMaterial mat = new GuiMaterial(this.scene.getMaterialManager().createMaterial(new PropertyTexture(OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "bunny"))));
+		GuiMaterial mat = new GuiMaterial(this.scene.getMaterialManager().createMaterial(new OldPropertyTexture(OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "bunny"))));
 		mat.setPosition(0.5F, 0.5F);
 		mat.setSize(1, 1);
 		panel.addChild(mat);

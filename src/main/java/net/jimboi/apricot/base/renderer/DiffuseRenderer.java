@@ -3,10 +3,10 @@ package net.jimboi.apricot.base.renderer;
 import net.jimboi.apricot.base.material.OldMaterial;
 import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.render.OldRenderable;
-import net.jimboi.apricot.base.renderer.property.PropertyDiffuse;
-import net.jimboi.apricot.base.renderer.property.PropertyShadow;
-import net.jimboi.apricot.base.renderer.property.PropertySpecular;
-import net.jimboi.apricot.base.renderer.property.PropertyTexture;
+import net.jimboi.apricot.base.renderer.property.OldPropertyDiffuse;
+import net.jimboi.apricot.base.renderer.property.OldPropertyShadow;
+import net.jimboi.apricot.base.renderer.property.OldPropertySpecular;
+import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
 import net.jimboi.apricot.base.renderer.shadow.DynamicLight;
 import net.jimboi.apricot.base.renderer.shadow.ShadowBox;
 import net.jimboi.apricot.base.renderer.shadow.ShadowRenderer;
@@ -114,30 +114,30 @@ public class DiffuseRenderer extends RenderService
 				float shininess = 0;
 				boolean shadow = false;
 
-				if (material.hasComponent(PropertyDiffuse.class))
+				if (material.hasComponent(OldPropertyDiffuse.class))
 				{
-					PropertyDiffuse propDiffuse = material.getComponent(PropertyDiffuse.class);
+					OldPropertyDiffuse propDiffuse = material.getComponent(OldPropertyDiffuse.class);
 					program.setUniform("u_diffuse_color", propDiffuse.diffuseColor);
 				}
 
-				if (material.hasComponent(PropertyTexture.class))
+				if (material.hasComponent(OldPropertyTexture.class))
 				{
-					PropertyTexture propTexture = material.getComponent(PropertyTexture.class);
+					OldPropertyTexture propTexture = material.getComponent(OldPropertyTexture.class);
 					texture = propTexture.getTexture().getSource();
 					sprite = propTexture.getSprite();
 					program.setUniform("u_transparency", propTexture.isTransparent());
 				}
 
-				if (material.hasComponent(PropertySpecular.class))
+				if (material.hasComponent(OldPropertySpecular.class))
 				{
-					PropertySpecular propSpecular = material.getComponent(PropertySpecular.class);
+					OldPropertySpecular propSpecular = material.getComponent(OldPropertySpecular.class);
 					specularColor = propSpecular.specularColor;
 					shininess = propSpecular.shininess;
 				}
 
-				if (material.hasComponent(PropertyShadow.class))
+				if (material.hasComponent(OldPropertyShadow.class))
 				{
-					shadow = material.getComponent(PropertyShadow.class).receiveShadow;
+					shadow = material.getComponent(OldPropertyShadow.class).receiveShadow;
 					if (shadow)
 					{
 						program.setUniform("u_shadow_transform", this.shadowRenderer.getToShadowMapSpaceMatrix());

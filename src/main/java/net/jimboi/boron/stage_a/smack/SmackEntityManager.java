@@ -2,15 +2,14 @@ package net.jimboi.boron.stage_a.smack;
 
 import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxManager;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
-import net.jimboi.boron.stage_a.base.livingentity.LivingEntity;
-import net.jimboi.boron.stage_a.base.livingentity.LivingEntityManager;
 
-import org.zilar.entity.Entity;
+import org.bstone.livingentity.LivingEntity;
+import org.bstone.livingentity.LivingEntityManager;
 
 /**
  * Created by Andy on 8/6/17.
  */
-public class SmackEntityManager extends LivingEntityManager<LivingEntity>
+public class SmackEntityManager extends LivingEntityManager
 {
 	private final CollisionBoxManager boundingManager;
 
@@ -28,9 +27,9 @@ public class SmackEntityManager extends LivingEntityManager<LivingEntity>
 	}
 
 	@Override
-	protected void onLivingEntityCreate(LivingEntity living, Entity entity)
+	public void onLivingCreate(LivingEntity living)
 	{
-		super.onLivingEntityCreate(living, entity);
+		super.onLivingCreate(living);
 
 		if (living instanceof BoxCollider)
 		{
@@ -39,9 +38,9 @@ public class SmackEntityManager extends LivingEntityManager<LivingEntity>
 	}
 
 	@Override
-	protected void onLivingEntityDestroy(LivingEntity living, Entity entity)
+	public void onLivingDestroy(LivingEntity living)
 	{
-		super.onLivingEntityDestroy(living, entity);
+		super.onLivingDestroy(living);
 
 		if (living instanceof BoxCollider)
 		{

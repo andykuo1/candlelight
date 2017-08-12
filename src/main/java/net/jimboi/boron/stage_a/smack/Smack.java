@@ -1,7 +1,7 @@
 package net.jimboi.boron.stage_a.smack;
 
+import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxRenderer;
-import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
 
 import org.bstone.game.GameEngine;
 import org.bstone.game.GameHandler;
@@ -115,7 +115,7 @@ public class Smack implements GameHandler
 	public Model shadowModel;
 
 	public Set<Renderable> renderables = new HashSet<>();
-	private Set<EntityComponentRenderable> renderables2 = new HashSet<>();
+	private Set<ComponentRenderable> renderables2 = new HashSet<>();
 
 	@Override
 	public void onLoad(RenderEngine renderEngine)
@@ -229,9 +229,9 @@ public class Smack implements GameHandler
 			}
 
 			this.renderables2.clear();
-			this.world.getSmacks().getEntities().getSimilarComponents(EntityComponentRenderable.class, this.renderables2);
+			this.world.getSmacks().getEntityManager().getComponents(ComponentRenderable.class, this.renderables2);
 
-			for (EntityComponentRenderable renderable : this.renderables2)
+			for (ComponentRenderable renderable : this.renderables2)
 			{
 				this.simpleRenderer.draw(renderable.getRenderModel().getMesh().getSource(),
 						renderable.getRenderModel().getMaterial(),

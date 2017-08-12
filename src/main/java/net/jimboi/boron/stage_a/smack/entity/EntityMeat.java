@@ -22,9 +22,9 @@ public class EntityMeat extends EntityParticleBouncy
 	}
 
 	@Override
-	public void onUpdate()
+	public void onLivingUpdate()
 	{
-		super.onUpdate();
+		super.onLivingUpdate();
 
 		--this.life;
 		if (this.life <= 0)

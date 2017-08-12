@@ -3,7 +3,7 @@ package net.jimboi.apricot.base.renderer;
 import net.jimboi.apricot.base.material.OldMaterial;
 import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.render.OldRenderable;
-import net.jimboi.apricot.base.renderer.property.PropertyTexture;
+import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
@@ -87,9 +87,9 @@ public class BillboardRenderer extends RenderService
 				Sprite sprite = null;
 				boolean transparency = false;
 
-				if (material.hasComponent(PropertyTexture.class))
+				if (material.hasComponent(OldPropertyTexture.class))
 				{
-					PropertyTexture propTexture = material.getComponent(PropertyTexture.class);
+					OldPropertyTexture propTexture = material.getComponent(OldPropertyTexture.class);
 					texture = propTexture.getTexture().getSource();
 					sprite = propTexture.getSprite();
 					transparency = propTexture.isTransparent();

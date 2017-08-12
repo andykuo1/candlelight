@@ -4,8 +4,8 @@ import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.OldSceneBase;
 import net.jimboi.apricot.base.material.OldMaterial;
 import net.jimboi.apricot.base.render.OldModel;
-import net.jimboi.apricot.base.renderer.property.PropertyDiffuse;
-import net.jimboi.apricot.base.renderer.property.PropertyTexture;
+import net.jimboi.apricot.base.renderer.property.OldPropertyDiffuse;
+import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderable;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform;
 import net.jimboi.apricot.stage_c.hoob.world.World;
@@ -116,8 +116,8 @@ public class SceneHoob extends OldSceneBase
 
 		Asset<Mesh> mesh = OldGameEngine.ASSETMANAGER.getAsset(Mesh.class, meshID);
 		OldMaterial material = this.getMaterialManager().createMaterial(
-				new PropertyDiffuse(),
-				spritesheet != null ? new PropertyTexture(spritesheet) : new PropertyTexture(texture)
+				new OldPropertyDiffuse(),
+				spritesheet != null ? new OldPropertyTexture(spritesheet) : new OldPropertyTexture(texture)
 		);
 		OldModel model = new OldModel(mesh, material, "simple");
 		return this.getEntityManager().createEntity(

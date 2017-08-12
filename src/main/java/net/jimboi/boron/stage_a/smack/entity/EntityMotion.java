@@ -1,6 +1,6 @@
 package net.jimboi.boron.stage_a.smack.entity;
 
-import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
+import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.smack.SmackEntity;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
 
@@ -16,15 +16,15 @@ public abstract class EntityMotion extends SmackEntity
 	protected Vector2f motion = new Vector2f();
 	protected float friction = 0;
 
-	public EntityMotion(SmackWorld world, Transform3 transform, float size, EntityComponentRenderable renderable)
+	public EntityMotion(SmackWorld world, Transform3 transform, float size, ComponentRenderable renderable)
 	{
 		super(world, transform, size, renderable);
 	}
 
 	@Override
-	public void onLateUpdate()
+	public void onLivingLateUpdate()
 	{
-		super.onLateUpdate();
+		super.onLivingLateUpdate();
 
 		this.onMotionUpdate();
 		this.onPositionUpdate(this.motion);

@@ -1,6 +1,6 @@
 package net.jimboi.apricot.base.renderer.property;
 
-import net.jimboi.apricot.base.material.Property;
+import net.jimboi.apricot.base.material.OldProperty;
 
 import org.joml.Vector4f;
 import org.joml.Vector4fc;
@@ -9,17 +9,17 @@ import org.qsilver.util.ColorUtil;
 /**
  * Created by Andy on 8/5/17.
  */
-public class PropertyColor extends Property
+public class OldPropertyColor extends OldProperty
 {
 	private final Vector4f color = new Vector4f();
 
-	public PropertyColor(int color)
+	public OldPropertyColor(int color)
 	{
 		ColorUtil.getNormalizedRGBA(color, this.color);
 		this.color.w = 1;
 	}
 
-	public PropertyColor setColor(int color)
+	public OldPropertyColor setColor(int color)
 	{
 		ColorUtil.getNormalizedRGBA(color, this.color);
 		this.color.w = 1;

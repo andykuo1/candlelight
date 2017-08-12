@@ -2,9 +2,9 @@ package net.jimboi.boron.stage_a.smack.tile;
 
 import net.jimboi.boron.stage_a.base.collisionbox.box.GridBasedBoundingBox;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
-import net.jimboi.boron.stage_a.base.livingentity.LivingEntity;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
 
+import org.bstone.livingentity.LivingEntity;
 import org.qsilver.util.map2d.IntMap;
 
 import java.util.Random;
@@ -35,7 +35,7 @@ public class DungeonHandler implements BoxCollider
 		}
 		for(LivingEntity entity : this.currentLevel.getEntities())
 		{
-			world.getSmacks().getLivings().add(entity);
+			world.getSmacks().getLivingManager().addLiving(entity);
 		}
 	}
 

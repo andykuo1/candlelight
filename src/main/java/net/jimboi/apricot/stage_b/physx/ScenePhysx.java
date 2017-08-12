@@ -4,10 +4,10 @@ import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.OldSceneBase;
 import net.jimboi.apricot.base.input.OldInputManager;
 import net.jimboi.apricot.base.render.OldModel;
-import net.jimboi.apricot.base.renderer.property.PropertyDiffuse;
-import net.jimboi.apricot.base.renderer.property.PropertyShadow;
-import net.jimboi.apricot.base.renderer.property.PropertySpecular;
-import net.jimboi.apricot.base.renderer.property.PropertyTexture;
+import net.jimboi.apricot.base.renderer.property.OldPropertyDiffuse;
+import net.jimboi.apricot.base.renderer.property.OldPropertyShadow;
+import net.jimboi.apricot.base.renderer.property.OldPropertySpecular;
+import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
 import net.jimboi.apricot.stage_b.glim.RenderGlim;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponent2D;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderable;
@@ -86,10 +86,10 @@ public class ScenePhysx extends OldSceneBase
 				new EntityComponentRenderable(transform, new OldModel(
 						OldGameEngine.ASSETMANAGER.getAsset(Mesh.class, "plane"),
 						this.getMaterialManager().createMaterial(
-								new PropertyDiffuse(),
-								new PropertySpecular(),
-								new PropertyShadow(true, true),
-								new PropertyTexture(OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "bunny")).setTransparent(true)),
+								new OldPropertyDiffuse(),
+								new OldPropertySpecular(),
+								new OldPropertyShadow(true, true),
+								new OldPropertyTexture(OldGameEngine.ASSETMANAGER.getAsset(Texture.class, "bunny")).setTransparent(true)),
 						"simple")),
 				new EntityComponent2D());
 		return transform;

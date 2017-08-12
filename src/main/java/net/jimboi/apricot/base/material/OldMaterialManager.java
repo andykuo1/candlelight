@@ -1,27 +1,27 @@
 package net.jimboi.apricot.base.material;
 
-import org.bstone.component.ComponentManager;
+import net.jimboi.apricot.base.component.ComponentManager;
 
 import java.util.Collection;
 
 /**
  * Created by Andy on 6/8/17.
  */
-public class MaterialManager extends ComponentManager<OldMaterial, Property>
+public class OldMaterialManager extends ComponentManager<OldMaterial, OldProperty>
 {
-	public MaterialManager()
+	public OldMaterialManager()
 	{
-		super(Property.class);
+		super(OldProperty.class);
 	}
 
-	public OldMaterial createMaterial(Property... properties)
+	public OldMaterial createMaterial(OldProperty... properties)
 	{
 		return this.addEntity(new OldMaterial(), properties);
 	}
 
-	public Property getDefaultProperty(Class<? extends Property> componentType)
+	public OldProperty getDefaultProperty(Class<? extends OldProperty> componentType)
 	{
-		Collection<Property> collection = this.getComponentMap(componentType).values();
+		Collection<OldProperty> collection = this.getComponentMap(componentType).values();
 		if (collection.isEmpty())
 		{
 			throw new IllegalStateException("Default property for " + componentType + " does not exist!");
@@ -32,7 +32,7 @@ public class MaterialManager extends ComponentManager<OldMaterial, Property>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Property> T getComponentByEntity(Class<T> componentType, OldMaterial entity)
+	public <T extends OldProperty> T getComponentByEntity(Class<T> componentType, OldMaterial entity)
 	{
 		T t = super.getComponentByEntity(componentType, entity);
 		if (t != null) return t;

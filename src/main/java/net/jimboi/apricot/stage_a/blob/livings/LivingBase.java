@@ -1,5 +1,6 @@
 package net.jimboi.apricot.stage_a.blob.livings;
 
+import net.jimboi.apricot.base.living.OldLiving;
 import net.jimboi.apricot.stage_a.blob.RenderUtil;
 import net.jimboi.apricot.stage_a.mod.ModMaterial;
 import net.jimboi.apricot.stage_a.mod.instance.Instance;
@@ -7,7 +8,6 @@ import net.jimboi.apricot.stage_a.mod.instance.InstanceHandler;
 import net.jimboi.apricot.stage_a.mod.instance.InstanceManager;
 import net.jimboi.apricot.stage_a.mod.model.Model;
 
-import org.bstone.living.Living;
 import org.bstone.transform.Transform3;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Andy on 4/30/17.
  */
-public abstract class LivingBase extends Living implements InstanceHandler
+public abstract class LivingBase extends OldLiving implements InstanceHandler
 {
 	private final Transform3 transform;
 

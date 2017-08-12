@@ -24,9 +24,9 @@ public class EntityPing extends SmackEntity
 	}
 
 	@Override
-	public void onUpdate()
+	public void onLivingUpdate()
 	{
-		super.onUpdate();
+		super.onLivingUpdate();
 
 		float scale = 0;
 		if (this.progress1 > 0)

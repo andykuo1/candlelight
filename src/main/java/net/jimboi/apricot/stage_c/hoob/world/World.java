@@ -2,6 +2,7 @@ package net.jimboi.apricot.stage_c.hoob.world;
 
 import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.input.OldInputManager;
+import net.jimboi.apricot.base.living.OldLivingManager;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform;
 import net.jimboi.apricot.stage_c.hoob.SceneHoob;
 import net.jimboi.apricot.stage_c.hoob.world.agents.MoveAgent;
@@ -9,7 +10,6 @@ import net.jimboi.apricot.stage_c.hoob.world.agents.Town;
 import net.jimboi.apricot.stage_c.hoob.world.agents.Traveller;
 import net.jimboi.apricot.stage_c.hoob.world.agents.WorldAgent;
 
-import org.bstone.living.LivingManager;
 import org.bstone.transform.Transform3;
 import org.bstone.util.direction.Direction;
 import org.bstone.window.input.InputEngine;
@@ -25,13 +25,13 @@ import java.util.Random;
 /**
  * Created by Andy on 7/13/17.
  */
-public class World implements LivingManager.OnLivingCreateListener<WorldAgent>, LivingManager.OnLivingDestroyListener<WorldAgent>, InputLayer
+public class World implements OldLivingManager.OnLivingCreateListener<WorldAgent>, OldLivingManager.OnLivingDestroyListener<WorldAgent>, InputLayer
 {
 	public final SceneHoob scene;
 	public Vector3f pickPos;
 
 	public Traveller player;
-	public LivingManager<WorldAgent> agents = new LivingManager<>();
+	public OldLivingManager<WorldAgent> agents = new OldLivingManager<>();
 	{
 		this.agents.onLivingCreate.addListener(this);
 		this.agents.onLivingDestroy.addListener(this);
@@ -112,7 +112,7 @@ public class World implements LivingManager.OnLivingCreateListener<WorldAgent>, 
 		agent.setDead();
 	}
 
-	public LivingManager<WorldAgent> getAgents()
+	public OldLivingManager<WorldAgent> getAgents()
 	{
 		return this.agents;
 	}

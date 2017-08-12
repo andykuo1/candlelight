@@ -1,8 +1,7 @@
 package net.jimboi.boron.stage_a.smack;
 
+import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
-import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
-import net.jimboi.boron.stage_a.base.livingentity.LivingEntity;
 import net.jimboi.boron.stage_a.smack.chunk.Chunk;
 import net.jimboi.boron.stage_a.smack.chunk.ChunkManager;
 import net.jimboi.boron.stage_a.smack.entity.EntityPlayer;
@@ -10,6 +9,7 @@ import net.jimboi.boron.stage_a.smack.tile.DungeonHandler;
 import net.jimboi.boron.stage_a.smack.tile.DungeonModelManager;
 import net.jimboi.boron.stage_a.smack.tile.LevelGenerator;
 
+import org.bstone.livingentity.LivingEntity;
 import org.bstone.render.material.Material;
 import org.bstone.render.material.PropertyColor;
 import org.bstone.render.material.PropertyTexture;
@@ -18,7 +18,6 @@ import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
 import org.qsilver.asset.Asset;
 
-import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -55,7 +54,7 @@ public class SmackWorld
 		this.cameraController = new FollowCameraController();
 		this.cameraController.start(Smack.getSmack().camera);
 		this.cameraController.setTarget(transform);
-		this.smackManager.spawn(this.player);
+		this.smackManager.addLivingEntity(this.player);
 
 		//this.smackManager.spawn(new EntityMonster(this, new Transform3().setPosition(1, 1, 1)));
 		/*
@@ -69,7 +68,7 @@ public class SmackWorld
 	public void onDestroy()
 	{
 		this.cameraController.stop();
-		this.smackManager.destroy();
+		this.smackManager.clear();
 	}
 
 	public void onUpdate()
@@ -100,7 +99,7 @@ public class SmackWorld
 
 	public void spawn(SmackEntity entity)
 	{
-		this.smackManager.spawn(entity);
+		this.smackManager.addLivingEntity(entity);
 	}
 
 	public AxisAlignedBoundingBox createBoundingBox(float x, float y, float width, float height)
@@ -108,7 +107,7 @@ public class SmackWorld
 		return new AxisAlignedBoundingBox(x, y, width / 2F, height / 2F);
 	}
 
-	public EntityComponentRenderable createRenderable2D(Transform3 transform, char c, int color)
+	public ComponentRenderable createRenderable2D(Transform3 transform, char c, int color)
 	{
 		Material material = new Material();
 		material.addProperty(PropertyTexture.PROPERTY);
@@ -121,26 +120,26 @@ public class SmackWorld
 				.setColor(color)
 				.unbind();
 
-		return new EntityComponentRenderable(transform,
+		return new ComponentRenderable(transform,
 				new Model(Asset.wrap(Smack.getSmack().quad), material)
 		);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends LivingEntity> T getNearestEntity(float x, float y, Class<? extends T> entity)
+	public <T extends SmackEntity> T getNearestEntity(float x, float y, Class<? extends T> entity)
 	{
-		LivingEntity nearest = null;
+		SmackEntity nearest = null;
 		float distance = -1F;
-		Iterator<LivingEntity> livings = this.smackManager.getLivings().getLivingIterator();
-		while(livings.hasNext())
+		Iterable<LivingEntity> livings = this.smackManager.getLivingEntities();
+		for(LivingEntity living : livings)
 		{
-			LivingEntity living = livings.next();
 			if (entity.isAssignableFrom(living.getClass()))
 			{
-				float f = living.getTransform().position3().distanceSquared(x, y, 0);
+				SmackEntity smackEntity = (SmackEntity) living;
+				float f = smackEntity.getTransform().position3().distanceSquared(x, y, 0);
 				if (nearest == null || f < distance)
 				{
-					nearest = living;
+					nearest = smackEntity;
 					distance = f;
 				}
 			}

@@ -1,9 +1,9 @@
-package org.bstone.component;
+package net.jimboi.apricot.base.component;
 
 /**
  * Created by Andy on 5/21/17.
  */
-public class ManifestEntity<C extends Component>
+public class ManifestEntity<C extends OldComponent>
 {
 	ComponentManager componentManager = null;
 	int id = -1;

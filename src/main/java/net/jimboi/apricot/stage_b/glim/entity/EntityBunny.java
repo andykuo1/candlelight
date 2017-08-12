@@ -3,9 +3,9 @@ package net.jimboi.apricot.stage_b.glim.entity;
 import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.renderer.BillboardRenderer;
-import net.jimboi.apricot.base.renderer.property.PropertyDiffuse;
-import net.jimboi.apricot.base.renderer.property.PropertyShadow;
-import net.jimboi.apricot.base.renderer.property.PropertyTexture;
+import net.jimboi.apricot.base.renderer.property.OldPropertyDiffuse;
+import net.jimboi.apricot.base.renderer.property.OldPropertyShadow;
+import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
 import net.jimboi.apricot.stage_b.glim.WorldGlim;
 import net.jimboi.apricot.stage_b.glim.bounding.square.AABB;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentBillboard;
@@ -59,9 +59,9 @@ public class EntityBunny extends EntityGlim
 				new EntityComponentRenderable(transform, new OldModel(
 						OldGameEngine.ASSETMANAGER.getAsset(Mesh.class, "plane"),
 						SCENE.getMaterialManager().createMaterial(
-								new PropertyDiffuse(),
-								new PropertyShadow(true, true),
-								new PropertyTexture(bunnySheet).setTransparent(true)),
+								new OldPropertyDiffuse(),
+								new OldPropertyShadow(true, true),
+								new OldPropertyTexture(bunnySheet).setTransparent(true)),
 						"diffuse")),
 				new EntityComponentBounding(world.getBoundingManager().create(new AABB(transform.position.x, transform.position.z, 0.2F, 0.2F))),
 				new EntityComponentHeading( 0.2F, 1F),

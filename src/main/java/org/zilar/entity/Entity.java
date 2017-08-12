@@ -1,6 +1,6 @@
 package org.zilar.entity;
 
-import org.bstone.component.ManifestEntity;
+import net.jimboi.apricot.base.component.ManifestEntity;
 
 /**
  * Created by Andy on 6/25/17.

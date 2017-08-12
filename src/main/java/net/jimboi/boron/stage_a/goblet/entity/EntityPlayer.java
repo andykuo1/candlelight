@@ -132,9 +132,9 @@ public class EntityPlayer extends EntityMotion implements ActiveBoxCollider
 	}
 
 	@Override
-	public void onUpdate()
+	public void onLivingUpdate()
 	{
-		super.onUpdate();
+		super.onLivingUpdate();
 
 		float mousex = Goblet.getGoblet().getInput().getInputAmount("mousex");
 		float mousey = Goblet.getGoblet().getInput().getInputAmount("mousey");

@@ -1,11 +1,12 @@
 package net.jimboi.boron.stage_a.goblet;
 
+import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxManager;
 import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
-import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
 import net.jimboi.boron.stage_a.goblet.entity.EntityPlayer;
 import net.jimboi.boron.stage_a.goblet.entity.EntityRat;
 
+import org.bstone.livingentity.LivingEntity;
 import org.bstone.render.RenderableBase;
 import org.bstone.render.material.Material;
 import org.bstone.render.material.PropertyColor;
@@ -17,7 +18,6 @@ import org.joml.Matrix4f;
 import org.joml.Vector3fc;
 import org.qsilver.asset.Asset;
 
-import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -77,7 +77,7 @@ public class GobletWorld
 
 		this.cameraController.stop();
 
-		this.entityManager.destroy();
+		this.entityManager.clear();
 	}
 
 	public void update()
@@ -88,7 +88,7 @@ public class GobletWorld
 
 	public void spawnEntity(GobletEntity entity)
 	{
-		this.entityManager.spawn(entity);
+		this.entityManager.addLivingEntity(entity);
 	}
 
 	public Transform3 createTransform(Transform3c transform)
@@ -106,9 +106,9 @@ public class GobletWorld
 		return new AxisAlignedBoundingBox(pos.x(), pos.y(), size / 2F, size / 2F);
 	}
 
-	public EntityComponentRenderable createRenderable2D(Transform3 transform, char c, int color)
+	public ComponentRenderable createRenderable2D(Transform3 transform, char c, int color)
 	{
-		return new EntityComponentRenderable(transform, this.createModel2D(c, color));
+		return new ComponentRenderable(transform, this.createModel2D(c, color));
 	}
 
 	public Model createModel2D(char c, int color)
@@ -137,16 +137,16 @@ public class GobletWorld
 	{
 		GobletEntity nearest = null;
 		float distance = -1F;
-		Iterator<GobletEntity> livings = this.entityManager.getLivings().getLivingIterator();
-		while(livings.hasNext())
+		Iterable<LivingEntity> livings = this.entityManager.getLivingEntities();
+		for(LivingEntity living : livings)
 		{
-			GobletEntity living = livings.next();
 			if (entity.isAssignableFrom(living.getClass()))
 			{
-				float f = living.getTransform().position3().distanceSquared(x, y, 0);
+				GobletEntity gobletEntity = (GobletEntity) living;
+				float f = gobletEntity.getTransform().position3().distanceSquared(x, y, 0);
 				if (nearest == null || f < distance)
 				{
-					nearest = living;
+					nearest = gobletEntity;
 					distance = f;
 				}
 			}
@@ -176,6 +176,6 @@ public class GobletWorld
 
 	public CollisionBoxManager getBoundingManager()
 	{
-		return this.entityManager.getBoundings();
+		return this.entityManager.getBoundingManager();
 	}
 }

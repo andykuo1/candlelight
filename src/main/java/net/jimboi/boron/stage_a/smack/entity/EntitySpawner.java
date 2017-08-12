@@ -35,7 +35,7 @@ public class EntitySpawner extends SmackEntity
 	}
 
 	@Override
-	public void onUpdate()
+	public void onLivingUpdate()
 	{
 		if (this.hurt > 0)
 		{
@@ -45,7 +45,7 @@ public class EntitySpawner extends SmackEntity
 					.unbind();
 		}
 
-		super.onUpdate();
+		super.onLivingUpdate();
 
 		--this.cooldown;
 		if (this.cooldown <= 0 && this.transform.position3().distanceSquared(this.world.getPlayer().getTransform().position3()) < 32)
@@ -71,9 +71,9 @@ public class EntitySpawner extends SmackEntity
 	}
 
 	@Override
-	public void onDestroy()
+	public void onLivingDestroy()
 	{
-		super.onDestroy();
+		super.onLivingDestroy();
 
 		for(int i = 8; i > 0; --i)
 		{

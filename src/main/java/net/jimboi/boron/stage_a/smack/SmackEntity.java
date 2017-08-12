@@ -1,23 +1,23 @@
 package net.jimboi.boron.stage_a.smack;
 
+import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
+import net.jimboi.boron.stage_a.base.basicobject.LivingEntityBase;
 import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
-import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
-import net.jimboi.boron.stage_a.base.livingentity.LivingEntity;
 
 import org.bstone.transform.Transform3;
 
 /**
  * Created by Andy on 8/6/17.
  */
-public class SmackEntity extends LivingEntity implements BoxCollider
+public class SmackEntity extends LivingEntityBase implements BoxCollider
 {
 	protected final SmackWorld world;
 	protected final AxisAlignedBoundingBox boundingBox;
 
 	protected int health;
 
-	public SmackEntity(SmackWorld world, Transform3 transform, float size, EntityComponentRenderable renderable)
+	public SmackEntity(SmackWorld world, Transform3 transform, float size, ComponentRenderable renderable)
 	{
 		super(transform, renderable);
 

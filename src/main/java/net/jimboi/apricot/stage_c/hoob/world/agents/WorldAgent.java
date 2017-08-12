@@ -1,15 +1,15 @@
 package net.jimboi.apricot.stage_c.hoob.world.agents;
 
+import net.jimboi.apricot.base.living.OldLiving;
 import net.jimboi.apricot.stage_c.hoob.world.World;
 
-import org.bstone.living.Living;
 import org.joml.Vector2f;
 import org.zilar.entity.EntityComponent;
 
 /**
  * Created by Andy on 7/13/17.
  */
-public abstract class WorldAgent extends Living implements EntityComponent
+public abstract class WorldAgent extends OldLiving implements EntityComponent
 {
 	public final World world;
 	private final float size;

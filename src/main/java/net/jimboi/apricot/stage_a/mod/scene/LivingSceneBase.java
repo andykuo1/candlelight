@@ -1,9 +1,9 @@
 package net.jimboi.apricot.stage_a.mod.scene;
 
+import net.jimboi.apricot.base.living.OldLiving;
+import net.jimboi.apricot.base.living.OldLivingManager;
 import net.jimboi.apricot.stage_a.blob.livings.LivingBase;
 
-import org.bstone.living.Living;
-import org.bstone.living.LivingManager;
 import org.qsilver.scene.Scene;
 
 import java.util.HashSet;
@@ -15,12 +15,12 @@ import java.util.Set;
  */
 public abstract class LivingSceneBase extends Scene
 {
-	protected final LivingManager<Living> livingManager;
+	protected final OldLivingManager<OldLiving> livingManager;
 	protected final Set<LivingBase> entities = new HashSet<>();
 
 	public LivingSceneBase()
 	{
-		this.livingManager = new LivingManager<>();
+		this.livingManager = new OldLivingManager<>();
 		this.livingManager.onLivingCreate.addListener((living -> {
 			if (living instanceof LivingBase)
 			{
@@ -47,7 +47,7 @@ public abstract class LivingSceneBase extends Scene
 		this.livingManager.destroy();
 	}
 
-	public LivingManager<Living> getLivingManager()
+	public OldLivingManager<OldLiving> getLivingManager()
 	{
 		return this.livingManager;
 	}

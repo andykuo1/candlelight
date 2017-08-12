@@ -1,17 +1,17 @@
 package net.jimboi.apricot.stage_a.blob;
 
+import net.jimboi.apricot.base.living.OldLiving;
+import net.jimboi.apricot.base.living.OldLivingManager;
 import net.jimboi.apricot.stage_a.mod.instance.InstanceHandler;
 import net.jimboi.apricot.stage_a.mod.renderer.OldRenderService;
 import net.jimboi.apricot.stage_a.mod.scene.LivingSceneBase;
 
-import org.bstone.living.Living;
-import org.bstone.living.LivingManager;
 import org.bstone.render.RenderEngine;
 
 /**
  * Created by Andy on 4/30/17.
  */
-public abstract class SceneBlobBase extends LivingSceneBase implements LivingManager.OnLivingCreateListener, LivingManager.OnLivingDestroyListener
+public abstract class SceneBlobBase extends LivingSceneBase implements OldLivingManager.OnLivingCreateListener, OldLivingManager.OnLivingDestroyListener
 {
 	protected final OldRenderService renderer;
 
@@ -36,7 +36,7 @@ public abstract class SceneBlobBase extends LivingSceneBase implements LivingMan
 	}
 
 	@Override
-	public void onLivingCreate(Living living)
+	public void onLivingCreate(OldLiving living)
 	{
 		if (living instanceof InstanceHandler)
 		{
@@ -45,7 +45,7 @@ public abstract class SceneBlobBase extends LivingSceneBase implements LivingMan
 	}
 
 	@Override
-	public void onLivingDestroy(Living living)
+	public void onLivingDestroy(OldLiving living)
 	{
 	}
 }

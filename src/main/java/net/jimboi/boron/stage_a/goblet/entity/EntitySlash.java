@@ -23,9 +23,9 @@ public class EntitySlash extends EntitySolid implements ActiveBoxCollider, IDama
 	}
 
 	@Override
-	public void onUpdate()
+	public void onLivingUpdate()
 	{
-		super.onUpdate();
+		super.onLivingUpdate();
 
 		++this.age;
 		this.getRenderable().getRenderModel().transformation().translation(-Math.abs(0.5F - (this.age / (float) this.maxAge)) * 0.5F, 0.5F - (this.age / (float) this.maxAge), 0);

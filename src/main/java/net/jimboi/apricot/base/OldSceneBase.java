@@ -1,6 +1,6 @@
 package net.jimboi.apricot.base;
 
-import net.jimboi.apricot.base.material.MaterialManager;
+import net.jimboi.apricot.base.material.OldMaterialManager;
 
 import org.bstone.render.RenderEngine;
 import org.bstone.window.camera.CameraController;
@@ -17,7 +17,7 @@ public abstract class OldSceneBase extends Scene
 	private CameraController cameraController;
 
 	protected EntityManager entityManager;
-	protected MaterialManager materialManager;
+	protected OldMaterialManager materialManager;
 	protected AnimationManager animationManager;
 
 	public OldSceneBase(OldRenderBase renderer, CameraController cameraController)
@@ -32,7 +32,7 @@ public abstract class OldSceneBase extends Scene
 	protected void onSceneCreate()
 	{
 		this.entityManager = new EntityManager();
-		this.materialManager = new MaterialManager();
+		this.materialManager = new OldMaterialManager();
 		this.animationManager = new AnimationManager();
 	}
 
@@ -88,7 +88,7 @@ public abstract class OldSceneBase extends Scene
 		return this.animationManager;
 	}
 
-	public MaterialManager getMaterialManager()
+	public OldMaterialManager getMaterialManager()
 	{
 		return this.materialManager;
 	}

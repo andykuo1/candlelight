@@ -2,14 +2,14 @@ package net.jimboi.boron.stage_a.goblet;
 
 import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxManager;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
-import net.jimboi.boron.stage_a.base.livingentity.LivingEntityManager;
 
-import org.zilar.entity.Entity;
+import org.bstone.livingentity.LivingEntity;
+import org.bstone.livingentity.LivingEntityManager;
 
 /**
  * Created by Andy on 8/9/17.
  */
-public class GobletEntityManager extends LivingEntityManager<GobletEntity>
+public class GobletEntityManager extends LivingEntityManager
 {
 	private final CollisionBoxManager boundingManager;
 
@@ -27,9 +27,9 @@ public class GobletEntityManager extends LivingEntityManager<GobletEntity>
 	}
 
 	@Override
-	protected void onLivingEntityCreate(GobletEntity living, Entity entity)
+	public void onLivingCreate(LivingEntity living)
 	{
-		super.onLivingEntityCreate(living, entity);
+		super.onLivingCreate(living);
 
 		if (living instanceof BoxCollider)
 		{
@@ -38,9 +38,9 @@ public class GobletEntityManager extends LivingEntityManager<GobletEntity>
 	}
 
 	@Override
-	protected void onLivingEntityDestroy(GobletEntity living, Entity entity)
+	public void onLivingDestroy(LivingEntity living)
 	{
-		super.onLivingEntityDestroy(living, entity);
+		super.onLivingDestroy(living);
 
 		if (living instanceof BoxCollider)
 		{
@@ -48,7 +48,7 @@ public class GobletEntityManager extends LivingEntityManager<GobletEntity>
 		}
 	}
 
-	public CollisionBoxManager getBoundings()
+	public CollisionBoxManager getBoundingManager()
 	{
 		return this.boundingManager;
 	}

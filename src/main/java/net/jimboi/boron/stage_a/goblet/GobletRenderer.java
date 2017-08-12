@@ -1,7 +1,7 @@
 package net.jimboi.boron.stage_a.goblet;
 
+import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxRenderer;
-import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
 
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
@@ -54,7 +54,7 @@ public class GobletRenderer
 	private TextModelManager textModelManager;
 
 	public Set<Renderable> renderables;
-	public Set<EntityComponentRenderable> renderComponents;
+	public Set<ComponentRenderable> renderComponents;
 
 	public void load(RenderEngine renderEngine)
 	{
@@ -129,9 +129,9 @@ public class GobletRenderer
 			}
 
 			this.renderComponents.clear();
-			Goblet.getGoblet().getWorld().getEntityManager().getEntities().getSimilarComponents(EntityComponentRenderable.class, this.renderComponents);
+			Goblet.getGoblet().getWorld().getEntityManager().getEntityManager().getComponents(ComponentRenderable.class, this.renderComponents);
 
-			for (EntityComponentRenderable renderable : this.renderComponents)
+			for (ComponentRenderable renderable : this.renderComponents)
 			{
 				this.simpleRenderer.draw(renderable.getRenderModel().getMesh().getSource(),
 						renderable.getRenderModel().getMaterial(),

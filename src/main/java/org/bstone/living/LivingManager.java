@@ -9,157 +9,142 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Andy on 3/4/17.
+ * Created by Andy on 8/12/17.
  */
-public class LivingManager<L extends Living>
+public class LivingManager<L extends ILiving>
 {
-	public interface OnLivingCreateListener<L extends Living>
+	public interface OnLivingCreateListener<L extends ILiving>
 	{
 		void onLivingCreate(L living);
 	}
 
-	public interface OnLivingDestroyListener<L extends Living>
+	public interface OnLivingDestroyListener<L extends ILiving>
 	{
 		void onLivingDestroy(L living);
 	}
 
 	@SuppressWarnings("unchecked")
-	public final Listenable<OnLivingCreateListener<L>> onLivingCreate = new Listenable<>((listener, objects) -> listener.onLivingCreate((L) objects[0]));
-
+	public final Listenable<OnLivingCreateListener<L>> onLivingCreate
+			= new Listenable<>((listener, objects) -> listener.onLivingCreate((L) objects[0]));
 	@SuppressWarnings("unchecked")
-	public final Listenable<OnLivingDestroyListener<L>> onLivingDestroy = new Listenable<>(((listener, objects) -> listener.onLivingDestroy((L) objects[0])));
+	public final Listenable<OnLivingDestroyListener<L>> onLivingDestroy
+			= new Listenable<>(((listener, objects) -> listener.onLivingDestroy((L) objects[0])));
 
 	private int NEXT_LIVING_ID = 0;
+
 	private final List<L> createQueue = new ArrayList<>();
 	private final List<L> createCache = new ArrayList<>();
 	private final Map<Integer, L> livings = new HashMap<>();
 	private volatile boolean cached = false;
 
-	public L add(L living)
-	{
-		if (!this.cached)
-		{
-			this.createQueue.add(living);
-		}
-		else
-		{
-			this.createCache.add(living);
-		}
-
-		return living;
-	}
-
 	public void update()
 	{
 		this.flush(false);
 
-		for(Living living : this.livings.values())
+		for(L living : this.livings.values())
 		{
 			if (!living.isDead())
 			{
-				living.onEarlyUpdate();
+				living.onLivingUpdate();
 			}
 		}
 
-		for(Living living : this.livings.values())
+		Iterator<L> livings = this.livings.values().iterator();
+		while(livings.hasNext())
 		{
+			L living = livings.next();
 			if (!living.isDead())
 			{
-				living.onUpdate();
-			}
-		}
-
-		Iterator<L> iter = this.livings.values().iterator();
-		while(iter.hasNext())
-		{
-			L living = iter.next();
-			if (!living.isDead())
-			{
-				living.onLateUpdate();
+				living.onLivingLateUpdate();
 			}
 			else
 			{
-				living.onDestroy();
-				iter.remove();
-				this.onDestroyLiving(living);
+				living.onLivingDestroy();
+
+				this.onLivingDestroy.notifyListeners(living);
+
+				livings.remove();
+
+				living.setLivingManager(null);
+				living.setLivingID(-1);
 			}
 		}
 	}
 
-	public void flush(boolean doDead)
+	public L addLiving(L living)
+	{
+		if (this.cached)
+		{
+			this.createCache.add(living);
+		}
+		else
+		{
+			this.createQueue.add(living);
+		}
+		return living;
+	}
+
+	public void flush(boolean doDestroy)
 	{
 		while(!this.createQueue.isEmpty())
 		{
 			this.cached = true;
-			for (L living : this.createQueue)
+
+			for(L living : this.createQueue)
 			{
-				if (living.onCreate())
-				{
-					int id = this.getNextLivingID();
-					living.id = id;
-					this.livings.put(id, living);
-					this.onCreateLiving(living);
-				}
+				int id = this.getNextAvailableLivingID();
+				living.setLivingID(id);
+				living.setLivingManager(this);
+
+				this.livings.put(living.getLivingID(), living);
+
+				living.onLivingCreate(this);
+
+				this.onLivingCreate.notifyListeners(living);
 			}
 			this.createQueue.clear();
+
 			this.cached = false;
 
 			this.createQueue.addAll(this.createCache);
 			this.createCache.clear();
 		}
 
-		if (doDead)
+		if (doDestroy)
 		{
-			Iterator<L> iter = this.livings.values().iterator();
-			while (iter.hasNext())
+			Iterator<L> livings = this.livings.values().iterator();
+			while(livings.hasNext())
 			{
-				L living = iter.next();
+				L living = livings.next();
 				if (living.isDead())
 				{
-					living.onDestroy();
-					iter.remove();
-					this.onDestroyLiving(living);
+					living.onLivingDestroy();
+
+					this.onLivingDestroy.notifyListeners(living);
+
+					livings.remove();
+
+					living.setLivingManager(null);
+					living.setLivingID(-1);
 				}
 			}
 		}
 	}
 
-	public void destroy()
+	public void clear()
 	{
-		Iterator<L> iter = this.livings.values().iterator();
-		while(iter.hasNext())
-		{
-			L living = iter.next();
-			living.setDead();
-			living.onDestroy();
-			iter.remove();
-			this.onDestroyLiving(living);
-		}
-
-		this.cached = true;
-		this.createQueue.clear();
-		this.cached = false;
 		this.createCache.clear();
+		this.createQueue.clear();
 		this.livings.clear();
 	}
 
-	public Iterator<L> getLivingIterator()
+	public Iterable<L> getLivings()
 	{
-		return this.livings.values().iterator();
+		return this.livings.values();
 	}
 
-	private int getNextLivingID()
+	public int getNextAvailableLivingID()
 	{
 		return NEXT_LIVING_ID++;
-	}
-
-	private void onCreateLiving(L living)
-	{
-		this.onLivingCreate.notifyListeners(living);
-	}
-
-	private void onDestroyLiving(L living)
-	{
-		this.onLivingDestroy.notifyListeners(living);
 	}
 }

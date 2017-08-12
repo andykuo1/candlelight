@@ -1,6 +1,6 @@
 package net.jimboi.boron.stage_a.smack.entity;
 
-import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
+import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
 
 import org.bstone.transform.Transform;
@@ -20,7 +20,7 @@ public class EntityParticleBouncy extends EntityMotion
 
 	private float initScale = 0;
 
-	public EntityParticleBouncy(SmackWorld world, Transform3 transform, float size, EntityComponentRenderable renderable)
+	public EntityParticleBouncy(SmackWorld world, Transform3 transform, float size, ComponentRenderable renderable)
 	{
 		super(world, transform, size, renderable);
 
@@ -40,9 +40,9 @@ public class EntityParticleBouncy extends EntityMotion
 	}
 
 	@Override
-	public void onUpdate()
+	public void onLivingUpdate()
 	{
-		super.onUpdate();
+		super.onLivingUpdate();
 
 		if (this.falling)
 		{

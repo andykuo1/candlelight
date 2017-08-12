@@ -1,10 +1,10 @@
 package net.jimboi.boron.stage_a.goblet.entity;
 
+import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.ActiveBoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionResponse;
-import net.jimboi.boron.stage_a.base.livingentity.EntityComponentRenderable;
 import net.jimboi.boron.stage_a.goblet.GobletWorld;
 import net.jimboi.boron.stage_a.goblet.Room;
 
@@ -24,7 +24,7 @@ public class EntityThrowable extends EntityMotion implements ActiveBoxCollider
 	private float fallMotion;
 	private float fallOffset;
 
-	public EntityThrowable(GobletWorld world, Transform3 transform, AxisAlignedBoundingBox boundingBox, EntityComponentRenderable renderable, float dx, float dy, float dz)
+	public EntityThrowable(GobletWorld world, Transform3 transform, AxisAlignedBoundingBox boundingBox, ComponentRenderable renderable, float dx, float dy, float dz)
 	{
 		super(world, transform, boundingBox, renderable);
 

@@ -3,20 +3,18 @@ package net.jimboi.boron.stage_a.smack.entity;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.ActiveBoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionResponse;
-import net.jimboi.boron.stage_a.base.livingentity.LivingEntity;
 import net.jimboi.boron.stage_a.smack.DamageSource;
 import net.jimboi.boron.stage_a.smack.MotionHelper;
 import net.jimboi.boron.stage_a.smack.SmackEntity;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
 import net.jimboi.boron.stage_a.smack.tile.DungeonHandler;
 
+import org.bstone.livingentity.LivingEntity;
 import org.bstone.render.material.PropertyColor;
 import org.bstone.transform.Transform3;
 import org.bstone.transform.Transform3c;
 import org.joml.Vector2f;
 import org.qsilver.util.ColorUtil;
-
-import java.util.Iterator;
 
 /**
  * Created by Andy on 8/6/17.
@@ -40,7 +38,7 @@ public class EntityZombie extends EntityMotion implements ActiveBoxCollider
 	}
 
 	@Override
-	public void onUpdate()
+	public void onLivingUpdate()
 	{
 		if (this.hurt > 0)
 		{
@@ -50,21 +48,20 @@ public class EntityZombie extends EntityMotion implements ActiveBoxCollider
 					.unbind();
 		}
 
-		super.onUpdate();
+		super.onLivingUpdate();
 
 		if (this.target == null)
 		{
 			if (this.world.getRandom().nextInt(10) != 0) return;
 
-			Iterator<LivingEntity> livings = this.world.getSmacks().getLivings().getLivingIterator();
-			while (livings.hasNext())
+			for(LivingEntity living : this.world.getSmacks().getLivingEntities())
 			{
-				LivingEntity living = livings.next();
 				if (living instanceof EntityPlayer)
 				{
-					if (MotionHelper.isWithinDistanceSquared(this.transform, living.getTransform().position3().x(), living.getTransform().position3().y(), 32))
+					EntityPlayer entityPlayer = (EntityPlayer) living;
+					if (MotionHelper.isWithinDistanceSquared(this.transform, entityPlayer.getTransform().position3().x(), entityPlayer.getTransform().position3().y(), 32))
 					{
-						this.target = living.getTransform();
+						this.target = entityPlayer.getTransform();
 						break;
 					}
 				}
@@ -81,9 +78,9 @@ public class EntityZombie extends EntityMotion implements ActiveBoxCollider
 	}
 
 	@Override
-	public void onDestroy()
+	public void onLivingDestroy()
 	{
-		super.onDestroy();
+		super.onLivingDestroy();
 
 		for(int i = 4; i > 0; --i)
 		{

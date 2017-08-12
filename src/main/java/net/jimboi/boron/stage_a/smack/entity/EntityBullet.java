@@ -31,9 +31,9 @@ public class EntityBullet extends EntityMotion implements ActiveBoxCollider
 	}
 
 	@Override
-	public void onUpdate()
+	public void onLivingUpdate()
 	{
-		super.onUpdate();
+		super.onLivingUpdate();
 
 		float rad = this.transform.eulerRadians().z();
 		float dx = (float) Math.cos(rad);
@@ -54,9 +54,9 @@ public class EntityBullet extends EntityMotion implements ActiveBoxCollider
 	}
 
 	@Override
-	public void onDestroy()
+	public void onLivingDestroy()
 	{
-		super.onDestroy();
+		super.onLivingDestroy();
 
 		for(int i = 2; i > 0; --i)
 		{

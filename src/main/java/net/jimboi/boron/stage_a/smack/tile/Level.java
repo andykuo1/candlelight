@@ -1,7 +1,6 @@
 package net.jimboi.boron.stage_a.smack.tile;
 
-import net.jimboi.boron.stage_a.base.livingentity.LivingEntity;
-
+import org.bstone.livingentity.LivingEntity;
 import org.qsilver.util.map2d.ByteMap;
 import org.qsilver.util.map2d.IntMap;
 

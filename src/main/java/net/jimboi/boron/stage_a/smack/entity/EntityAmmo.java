@@ -21,9 +21,9 @@ public class EntityAmmo extends EntityParticleBouncy
 	}
 
 	@Override
-	public void onUpdate()
+	public void onLivingUpdate()
 	{
-		super.onUpdate();
+		super.onLivingUpdate();
 		this.age++;
 		float scale = (float) Math.cos(this.age / this.pulseSpeed) * 0.1F + 0.9F;
 		this.transform.setScale(scale, scale, 1);

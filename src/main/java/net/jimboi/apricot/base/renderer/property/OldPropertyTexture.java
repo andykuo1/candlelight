@@ -1,6 +1,6 @@
 package net.jimboi.apricot.base.renderer.property;
 
-import net.jimboi.apricot.base.material.Property;
+import net.jimboi.apricot.base.material.OldProperty;
 
 import org.bstone.mogli.Texture;
 import org.qsilver.asset.Asset;
@@ -10,7 +10,7 @@ import org.zilar.sprite.SpriteSheet;
 /**
  * Created by Andy on 6/8/17.
  */
-public class PropertyTexture extends Property
+public class OldPropertyTexture extends OldProperty
 {
 	private SpriteSheet spritesheet;
 	private Sprite sprite;
@@ -18,26 +18,26 @@ public class PropertyTexture extends Property
 
 	private boolean transparent = false;
 
-	public PropertyTexture(SpriteSheet spritesheet)
+	public OldPropertyTexture(SpriteSheet spritesheet)
 	{
 		this.spritesheet = spritesheet;
 		this.sprite = this.spritesheet.get();
 		this.texture = this.sprite.getTexture();
 	}
 
-	public PropertyTexture(Sprite sprite)
+	public OldPropertyTexture(Sprite sprite)
 	{
 		this.sprite = sprite;
 		this.texture = this.sprite.getTexture();
 	}
 
-	public PropertyTexture(Asset<Texture> texture)
+	public OldPropertyTexture(Asset<Texture> texture)
 	{
 		this.texture = texture;
 		this.sprite = new Sprite(this.texture, 0, 0, 1, 1);
 	}
 
-	public PropertyTexture setTransparent(boolean transparent)
+	public OldPropertyTexture setTransparent(boolean transparent)
 	{
 		this.transparent = transparent;
 		return this;
