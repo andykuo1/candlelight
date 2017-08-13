@@ -100,7 +100,9 @@ public class EntityManager<E extends IEntity>
 		if (component == null) return false;
 
 		Map<E, Component> entityComponentMap = this.components.computeIfAbsent(component.getClass(), key -> new HashMap<>());
-		entityComponentMap.put(entity, component);
+		Component result = entityComponentMap.put(entity, component);
+
+		if (result != null) throw new IllegalArgumentException("Cannot add component '" + component.getClass().getSimpleName() + "', since there exists another component of the same type in the same entity!");
 
 		this.onEntityComponentAdd.notifyListeners(entity, component);
 
@@ -131,17 +133,25 @@ public class EntityManager<E extends IEntity>
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends Component> T getComponentFromEntity(E entity, Class<? super T> type)
+	public <T extends Component> T getComponentFromEntity(E entity, Class<? extends T> type)
 	{
 		Map<E, Component> entityComponentMap = this.components.get(type);
+
 		if (entityComponentMap == null)
 		{
-			if (type.getSuperclass().equals(Component.class))
+			for (Class<? extends Component> componentType : this.components.keySet())
 			{
-				return null;
+				if (type.isAssignableFrom(componentType))
+				{
+					Component component = this.components.get(componentType).get(entity);
+					if (component != null)
+					{
+						return (T) component;
+					}
+				}
 			}
 
-			return this.getComponentFromEntity(entity, type.getSuperclass());
+			return null;
 		}
 
 		return (T) entityComponentMap.get(entity);

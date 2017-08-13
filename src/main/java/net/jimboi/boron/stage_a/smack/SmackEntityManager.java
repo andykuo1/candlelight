@@ -33,7 +33,7 @@ public class SmackEntityManager extends LivingEntityManager
 
 		if (living instanceof BoxCollider)
 		{
-			this.boundingManager.add((BoxCollider) living);
+			this.boundingManager.addCollider((BoxCollider) living);
 		}
 	}
 
@@ -44,7 +44,7 @@ public class SmackEntityManager extends LivingEntityManager
 
 		if (living instanceof BoxCollider)
 		{
-			this.boundingManager.remove((BoxCollider) living);
+			this.boundingManager.removeCollider((BoxCollider) living);
 		}
 	}
 

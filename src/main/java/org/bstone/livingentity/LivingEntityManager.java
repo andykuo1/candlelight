@@ -1,5 +1,6 @@
 package org.bstone.livingentity;
 
+import org.bstone.entity.Component;
 import org.bstone.entity.EntityManager;
 import org.bstone.living.LivingManager;
 
@@ -10,7 +11,9 @@ public class LivingEntityManager implements
 		EntityManager.OnEntityCreateListener<LivingEntity>,
 		EntityManager.OnEntityDestroyListener<LivingEntity>,
 		LivingManager.OnLivingCreateListener<LivingEntity>,
-		LivingManager.OnLivingDestroyListener<LivingEntity>
+		LivingManager.OnLivingDestroyListener<LivingEntity>,
+		EntityManager.OnEntityComponentAddListener<LivingEntity>,
+		EntityManager.OnEntityComponentRemoveListener<LivingEntity>
 {
 	protected final EntityManager<LivingEntity> entityManager;
 	protected final LivingManager<LivingEntity> livingManager;
@@ -22,6 +25,8 @@ public class LivingEntityManager implements
 
 		this.entityManager.onEntityCreate.addListener(this);
 		this.entityManager.onEntityDestroy.addListener(this);
+		this.entityManager.onEntityComponentAdd.addListener(this);
+		this.entityManager.onEntityComponentRemove.addListener(this);
 		this.livingManager.onLivingCreate.addListener(this);
 		this.livingManager.onLivingDestroy.addListener(this);
 	}
@@ -35,6 +40,8 @@ public class LivingEntityManager implements
 	{
 		this.livingManager.onLivingCreate.deleteListener(this);
 		this.livingManager.onLivingDestroy.deleteListener(this);
+		this.entityManager.onEntityComponentAdd.deleteListener(this);
+		this.entityManager.onEntityComponentRemove.deleteListener(this);
 		this.entityManager.onEntityCreate.deleteListener(this);
 		this.entityManager.onEntityDestroy.deleteListener(this);
 		this.livingManager.clear();
@@ -63,6 +70,18 @@ public class LivingEntityManager implements
 		{
 			entity.setDead();
 		}
+	}
+
+	@Override
+	public void onEntityComponentAdd(LivingEntity entity, Component component)
+	{
+
+	}
+
+	@Override
+	public void onEntityComponentRemove(LivingEntity entity, Component component)
+	{
+
 	}
 
 	@Override

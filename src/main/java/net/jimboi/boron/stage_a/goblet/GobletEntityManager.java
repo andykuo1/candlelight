@@ -27,13 +27,21 @@ public class GobletEntityManager extends LivingEntityManager
 	}
 
 	@Override
+	public void clear()
+	{
+		super.clear();
+
+		this.boundingManager.clear();
+	}
+
+	@Override
 	public void onLivingCreate(LivingEntity living)
 	{
 		super.onLivingCreate(living);
 
 		if (living instanceof BoxCollider)
 		{
-			this.boundingManager.add((BoxCollider) living);
+			this.boundingManager.addCollider((BoxCollider) living);
 		}
 	}
 
@@ -44,7 +52,7 @@ public class GobletEntityManager extends LivingEntityManager
 
 		if (living instanceof BoxCollider)
 		{
-			this.boundingManager.remove((BoxCollider) living);
+			this.boundingManager.removeCollider((BoxCollider) living);
 		}
 	}
 

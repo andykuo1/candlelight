@@ -46,13 +46,13 @@ public class EntityMotion extends EntitySolid
 		}
 	}
 
-	public void move(float x, float y)
+	public void move(float dx, float dy)
 	{
-		this.transform.translate(x, y, 0);
+		this.transform.translate(dx, dy, 0);
 
 		if (this.boundingBox != null)
 		{
-			this.boundingBox.offset(x, y);
+			this.boundingBox.offset(dx, dy);
 		}
 	}
 

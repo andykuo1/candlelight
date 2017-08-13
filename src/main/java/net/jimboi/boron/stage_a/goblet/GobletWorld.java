@@ -64,7 +64,7 @@ public class GobletWorld
 			}
 		}
 		*/
-		this.getBoundingManager().add(this.room);
+		this.getBoundingManager().addCollider(this.room);
 
 		this.roomModelManager = new RoomModelManager(Asset.wrap(Goblet.getGoblet().getRender().texFont), Asset.wrap(Goblet.getGoblet().getRender().atsFont));
 		Model model = this.roomModelManager.createStaticRoom(this.room);

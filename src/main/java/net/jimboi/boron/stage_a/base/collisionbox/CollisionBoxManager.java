@@ -24,7 +24,7 @@ public class CollisionBoxManager
 		this.actives.clear();
 	}
 
-	public void add(BoxCollider collider)
+	public void addCollider(BoxCollider collider)
 	{
 		this.colliders.add(collider);
 		if (collider instanceof ActiveBoxCollider)
@@ -33,7 +33,7 @@ public class CollisionBoxManager
 		}
 	}
 
-	public void remove(BoxCollider collider)
+	public void removeCollider(BoxCollider collider)
 	{
 		this.colliders.remove(collider);
 		if (collider instanceof ActiveBoxCollider)
