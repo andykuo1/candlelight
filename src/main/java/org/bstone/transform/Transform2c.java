@@ -34,6 +34,24 @@ public interface Transform2c extends Transform3c, DirectionVector2
 	Vector2fc position2();
 	Vector2fc scale2();
 
+	@Override
+	default float posX()
+	{
+		return this.position2().x();
+	}
+
+	@Override
+	default float posY()
+	{
+		return this.position2().y();
+	}
+
+	@Override
+	default float posZ()
+	{
+		return 0;
+	}
+
 	default DerivedTransform2 derive2()
 	{
 		return new DerivedTransform2(this);

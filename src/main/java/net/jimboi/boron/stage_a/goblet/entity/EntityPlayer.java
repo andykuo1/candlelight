@@ -6,6 +6,7 @@ import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionResponse;
 import net.jimboi.boron.stage_a.goblet.Goblet;
 import net.jimboi.boron.stage_a.goblet.GobletWorld;
 import net.jimboi.boron.stage_a.goblet.Room;
+import net.jimboi.boron.stage_a.goblet.tick.TickCounter;
 
 import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
@@ -15,7 +16,7 @@ import org.qsilver.util.MathUtil;
 /**
  * Created by Andy on 8/9/17.
  */
-public class EntityPlayer extends EntityMotion implements ActiveBoxCollider
+public class EntityPlayer extends EntityHurtable implements ActiveBoxCollider
 {
 	private Vector2f direction = new Vector2f();
 	private Vector2f mousePos = new Vector2f();
@@ -25,12 +26,10 @@ public class EntityPlayer extends EntityMotion implements ActiveBoxCollider
 	private float rollSpeed = 0.25F;
 	private boolean rolling;
 
-	private int maxRollingTicks = 6;
-	private int rollingTicks = 0;
-
-	private int maxRollingInputTicks = 12;
+	protected final TickCounter rollingTicks = new TickCounter(6);
+	protected final TickCounter rollingInputTicks = new TickCounter(12);
 	private int maxRollingCooldownTicks = 15;
-	private int rollingInputTicks = 0;
+
 	private int rollingInputDir = -1;
 
 	public EntityPlayer(GobletWorld world, Transform3 transform)
@@ -39,15 +38,44 @@ public class EntityPlayer extends EntityMotion implements ActiveBoxCollider
 				world.createBoundingBox(transform, 0.6F),
 				world.createRenderable2D(transform, '@', 0xFF00FF));
 
-		this.speed = 0.1F;
-		this.friction = 0.2F;
+		this.speed = 0.03F;
+		this.componentMotion.setFriction(0.3F);
+		this.maxHealth = 100;
+	}
+
+	@Override
+	public boolean canSetFire(float x, float y, float strength)
+	{
+		if (this.rolling) return false;
+		return super.canSetFire(x, y, strength);
+	}
+
+	@Override
+	public boolean canTakeDamageFrom(IDamageSource damageSource)
+	{
+		if (this.rolling) return false;
+		return super.canTakeDamageFrom(damageSource);
 	}
 
 	private void roll(float dx, float dy)
 	{
 		this.rolling = true;
-		this.rollingTicks = this.maxRollingTicks;
-		this.motion.set(dx, dy).mul(this.rollSpeed);
+		this.rollingTicks.reset();
+		this.componentMotion.addMotion(dx * this.rollSpeed, dy * this.rollSpeed);
+		this.componentMotion.setOnGround(false);
+	}
+
+	private void updateRollInput(float dx, float dy, int inputDir)
+	{
+		if (this.rollingInputTicks.getTicks() == -1 && this.rollingInputDir != inputDir)
+		{
+			this.rollingInputTicks.reset();
+			this.rollingInputDir = inputDir;
+		}
+		else if (this.rollingInputDir == inputDir && !this.rollingInputTicks.isBuffering() && !this.rollingInputTicks.isComplete())
+		{
+			this.roll(dx, dy);
+		}
 	}
 
 	private void updateRoll()
@@ -55,78 +83,46 @@ public class EntityPlayer extends EntityMotion implements ActiveBoxCollider
 		if (this.rolling)
 		{
 			//Control the roll
-			--this.rollingTicks;
-			if (this.rollingTicks <= 0)
+			this.rollingTicks.tick();
+			if (this.rollingTicks.isComplete())
 			{
 				this.rolling = false;
-				this.rollingTicks = 0;
-				this.rollingInputTicks = -this.maxRollingCooldownTicks;
+				this.rollingInputTicks.resetWithBuffer(this.maxRollingCooldownTicks);
 				this.rollingInputDir = -1;
+				this.componentMotion.setOnGround(true);
 			}
 		}
 		else
 		{
 			//Try to start a roll
-			if (this.rollingInputTicks >= this.maxRollingInputTicks)
+			if (this.rollingInputTicks.isComplete())
 			{
-				this.rollingInputTicks = -1;
+				this.rollingInputTicks.resetWithBuffer(1);
 				this.rollingInputDir = -1;
 			}
-			else if (this.rollingInputTicks >= 0 || this.rollingInputTicks < -1)
+			else if (!this.rollingInputTicks.isBuffering() || this.rollingInputTicks.getTicks() < -1)
 			{
-				++this.rollingInputTicks;
+				this.rollingInputTicks.tick();
 			}
 
 			if (Goblet.getGoblet().getInput().isInputPressed("left"))
 			{
-				if (this.rollingInputTicks == -1 && this.rollingInputDir != 0)
-				{
-					this.rollingInputTicks = 0;
-					this.rollingInputDir = 0;
-				}
-				else if (this.rollingInputDir == 0 && this.rollingInputTicks >= 0 && this.rollingInputTicks < this.maxRollingInputTicks)
-				{
-					this.roll(-1, 0);
-				}
+				this.updateRollInput(-1, 0, 0);
 			}
 
 			if (Goblet.getGoblet().getInput().isInputPressed("right"))
 			{
-				if (this.rollingInputTicks == -1 && this.rollingInputDir != 1)
-				{
-					this.rollingInputTicks = 0;
-					this.rollingInputDir = 1;
-				}
-				else if (this.rollingInputDir == 1 && this.rollingInputTicks >= 0 && this.rollingInputTicks < this.maxRollingInputTicks)
-				{
-					this.roll(1, 0);
-				}
+				this.updateRollInput(1, 0, 1);
 			}
 
 			if (Goblet.getGoblet().getInput().isInputPressed("up"))
 			{
-				if (this.rollingInputTicks == -1 && this.rollingInputDir != 2)
-				{
-					this.rollingInputTicks = 0;
-					this.rollingInputDir = 2;
-				}
-				else if (this.rollingInputDir == 2 && this.rollingInputTicks >= 0 && this.rollingInputTicks < this.maxRollingInputTicks)
-				{
-					this.roll(0, 1);
-				}
+				this.updateRollInput(0, 1, 2);
 			}
 
 			if (Goblet.getGoblet().getInput().isInputPressed("down"))
 			{
-				if (this.rollingInputTicks == -1 && this.rollingInputDir != 3)
-				{
-					this.rollingInputTicks = 0;
-					this.rollingInputDir = 3;
-				}
-				else if (this.rollingInputDir == 3 && this.rollingInputTicks >= 0 && this.rollingInputTicks < this.maxRollingInputTicks)
-				{
-					this.roll(0, -1);
-				}
+				this.updateRollInput(0, -1, 3);
 			}
 		}
 	}
@@ -148,51 +144,50 @@ public class EntityPlayer extends EntityMotion implements ActiveBoxCollider
 		{
 			if (Goblet.getGoblet().getInput().isInputDown("left"))
 			{
-				this.motion.x = -this.speed;
+				this.componentMotion.addMotion(-this.speed, 0);
 			}
 
 			if (Goblet.getGoblet().getInput().isInputDown("right"))
 			{
-				this.motion.x = this.speed;
+				this.componentMotion.addMotion(this.speed, 0);
 			}
 
 			if (Goblet.getGoblet().getInput().isInputDown("up"))
 			{
-				this.motion.y = this.speed;
+				this.componentMotion.addMotion(0, this.speed);
 			}
 
 			if (Goblet.getGoblet().getInput().isInputDown("down"))
 			{
-				this.motion.y = -this.speed;
+				this.componentMotion.addMotion(0, -this.speed);
 			}
 
 			if (Goblet.getGoblet().getInput().isInputReleased("mouseright"))
 			{
-				this.direction.normalize();
+				this.direction.normalize().mul(0.8F);
 				Transform3 transform = this.transform.derive3();
 				transform.position.add(this.direction.x(), this.direction.y(), 0);
 
-				this.world.spawnEntity(this.world.getRandom().nextBoolean() ? new EntitySlash(this.world, transform) : new EntityThrust(this.world, transform));
+				this.world.spawnEntity(this.world.getRandom().nextBoolean() ? new EntitySlash(this.world, transform, this) : new EntityThrust(this.world, transform, this));
 			}
 
 			if (Goblet.getGoblet().getInput().isInputReleased("mouseleft"))
 			{
 				float dist = this.direction.length();
-				float throwSpeed = MathUtil.clamp(dist * 0.025F, 0, 0.25F);
-				float zSpeed = (dist * EntityThrowable.GRAVITY / 2F) / throwSpeed;
-				this.direction.normalize().mul(throwSpeed);
+				if (dist < 1F)
+				{
+					this.direction.mul(0.05F);
+					this.world.spawnEntity(new EntityGrenade(this.world, this.world.createTransform(this.transform), this.direction.x(), this.direction.y(), 0, Explosions.getRandomExplosion(this.world.getRandom())));
+				}
+				else
+				{
+					float throwSpeed = MathUtil.clamp(dist * 0.025F, 0, 0.25F);
+					float zSpeed = (dist * EntityThrowable.GRAVITY / 2F) / throwSpeed;
+					this.direction.normalize().mul(throwSpeed);
 
-				this.world.spawnEntity(new EntityBomb(this.world, this.world.createTransform(this.transform), this.direction.x(), this.direction.y(), zSpeed, Explosions.getRandomExplosion(this.world.getRandom())));
+					this.world.spawnEntity(new EntityGrenade(this.world, this.world.createTransform(this.transform), this.direction.x(), this.direction.y(), zSpeed, Explosions.getRandomExplosion(this.world.getRandom())));
+				}
 			}
-		}
-	}
-
-	@Override
-	public void onMotionUpdate()
-	{
-		if (!this.rolling)
-		{
-			super.onMotionUpdate();
 		}
 	}
 

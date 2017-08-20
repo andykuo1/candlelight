@@ -3,6 +3,7 @@ package net.jimboi.boron.stage_a.goblet.entity;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.boron.stage_a.goblet.GobletEntity;
 import net.jimboi.boron.stage_a.goblet.GobletWorld;
+import net.jimboi.boron.stage_a.goblet.tick.TickCounter;
 
 import org.bstone.render.material.PropertyColor;
 import org.bstone.transform.Transform3;
@@ -18,15 +19,15 @@ public class EntityFire extends GobletEntity implements IDamageSource
 
 	private float strength;
 	private int delay = 60;
-	private int maxAge = 10;
-	private int age;
+
+	protected final TickCounter ageTicks = new TickCounter(5);
 
 	public EntityFire(GobletWorld world, Transform3 transform, float strength)
 	{
 		super(world, transform, world.createRenderable2D(transform, 'F', ColorUtil.getColorMix(EARLY_COLOR, LATE_COLOR, world.getRandom().nextFloat() * 0.6F)));
 
 		this.strength = strength;
-		this.age = -(int) ((1 - this.strength) * this.delay);
+		this.ageTicks.setTicks(-(int) (((1 - this.strength) * this.delay) * 0.5F));
 
 		this.transform.setScale(0, 0, 1);
 	}
@@ -36,21 +37,24 @@ public class EntityFire extends GobletEntity implements IDamageSource
 	{
 		super.onLivingUpdate();
 
-		++this.age;
-		if (this.age > this.maxAge * 3)
+		this.ageTicks.tick();
+
+		final int ticks = this.ageTicks.getTicks();
+
+		if (ticks > this.ageTicks.getMaxTicks() * 3)
 		{
 			this.setDead();
 		}
-		if (this.age > this.maxAge * 2)
+		if (ticks > this.ageTicks.getMaxTicks() * 2)
 		{
-			float scale = (3 - this.age / (float) this.maxAge);
+			float scale = (3 - this.ageTicks.getProgress());
 			this.transform.setScale(scale, scale, 1);
 		}
-		else if (this.age > this.maxAge)
+		else if (ticks > this.ageTicks.getMaxTicks())
 		{
 
 		}
-		else if (this.age == this.maxAge)
+		else if (ticks == this.ageTicks.getMaxTicks())
 		{
 			for(BoxCollider collider : this.world.getBoundingManager().getNearestColliders(this.transform.posX(), this.transform.posY(), 0.5F))
 			{
@@ -70,9 +74,9 @@ public class EntityFire extends GobletEntity implements IDamageSource
 							LATE_COLOR, 0.5F))
 					.unbind();
 		}
-		else if (this.age > 0)
+		else if (ticks > 0)
 		{
-			float scale = (this.age / (float) this.maxAge);
+			final float scale = this.ageTicks.getProgress();
 			this.transform.setScale(scale, scale, 1);
 			//PropertyColor.setColor(this.getRenderable().getRenderModel().getMaterial(), ColorUtil.getColorMix(EARLY_COLOR, LATE_COLOR, scale));
 		}

@@ -23,7 +23,7 @@ public class Room implements BoxCollider
 
 		for(int i = 0; i < this.tilemap.size(); ++i)
 		{
-			this.tilemap.set(i, Math.random() < 0.2F ? 1 : 0);
+			this.tilemap.set(i, Math.random() < 0.4F ? 1 : 0);
 		}
 
 		this.boundingBox = new GridBasedBoundingBox(this.offsetX, this.offsetY, width, height);
@@ -45,6 +45,16 @@ public class Room implements BoxCollider
 	{
 		int tile = this.getTile(x, y);
 		return tile == 1;
+	}
+
+	public int getWidth()
+	{
+		return this.tilemap.width;
+	}
+
+	public int getHeight()
+	{
+		return this.tilemap.height;
 	}
 
 	@Override

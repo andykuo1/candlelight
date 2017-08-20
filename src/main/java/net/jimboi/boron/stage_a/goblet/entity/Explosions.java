@@ -21,8 +21,8 @@ public class Explosions
 	{
 		//return FLASH;
 		//return BARS;
-		//return RING;
-		return EXPLOSIONS.get(random.nextInt(EXPLOSIONS.size()));
+		return RING;
+		//return EXPLOSIONS.get(random.nextInt(EXPLOSIONS.size()));
 	}
 
 	//EXPLOSIONS

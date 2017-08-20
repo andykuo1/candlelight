@@ -3,6 +3,7 @@ package net.jimboi.boron.stage_a.goblet.entity;
 import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
 import net.jimboi.boron.stage_a.goblet.GobletWorld;
+import net.jimboi.boron.stage_a.goblet.tick.TickCounter;
 
 import org.bstone.living.LivingManager;
 import org.bstone.render.material.Material;
@@ -20,11 +21,9 @@ public class EntityHurtable extends EntityMotion implements IBurnable
 	protected int maxHealth;
 	protected int health;
 
-	protected int maxDamageTicks = 30;
-	protected int damageTicks;
+	protected final TickCounter damageTicks = new TickCounter(30, true);
 
-	protected int maxFireTicks = 180 + 1;
-	protected int fireTicks;
+	protected final TickCounter fireTicks = new TickCounter(180, true);
 
 	protected int burnRate = 60;
 
@@ -44,22 +43,22 @@ public class EntityHurtable extends EntityMotion implements IBurnable
 	@Override
 	public void onLivingUpdate()
 	{
-		if (this.fireTicks > 0)
+		if (!this.fireTicks.isComplete())
 		{
-			--this.fireTicks;
+			this.fireTicks.tick();
 
-			if (this.fireTicks % this.burnRate == 0)
+			if (this.fireTicks.getTicks() % this.burnRate == 0)
 			{
 				this.damage(null, 1);
 			}
 		}
 
-		if (this.damageTicks > 0)
+		if (!this.damageTicks.isComplete())
 		{
-			--this.damageTicks;
+			this.damageTicks.tick();
 			Material material = this.getRenderable().getRenderModel().getMaterial();
 			PropertyColor.PROPERTY.bind(material)
-					.setColor(ColorUtil.getColorMix(this.mainColor, this.hurtColor, this.damageTicks / (float) this.maxDamageTicks))
+					.setColor(ColorUtil.getColorMix(this.mainColor, this.hurtColor, 1 - this.damageTicks.getProgress()))
 					.unbind();
 		}
 	}
@@ -74,19 +73,20 @@ public class EntityHurtable extends EntityMotion implements IBurnable
 	@Override
 	public void setOnFire(float strength)
 	{
-		this.fireTicks = this.maxFireTicks;
+		this.fireTicks.reset();
+		this.damage(null, 2);
 	}
 
 	@Override
 	public void extinguish()
 	{
-		this.fireTicks = 0;
+		this.fireTicks.setComplete();
 	}
 
 	@Override
 	public boolean isOnFire()
 	{
-		return this.fireTicks > 0;
+		return !this.fireTicks.isComplete();
 	}
 
 	public void onDamageTaken(IDamageSource damageSource, int amount)
@@ -103,7 +103,7 @@ public class EntityHurtable extends EntityMotion implements IBurnable
 		if (this.canTakeDamageFrom(damageSource))
 		{
 			this.health -= amount;
-			this.damageTicks = this.maxDamageTicks;
+			this.damageTicks.reset();
 
 			this.onDamageTaken(damageSource, amount);
 
@@ -126,6 +126,6 @@ public class EntityHurtable extends EntityMotion implements IBurnable
 
 	public boolean isBeingDamaged()
 	{
-		return this.damageTicks > 0;
+		return !this.damageTicks.isComplete();
 	}
 }

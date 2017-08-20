@@ -9,7 +9,7 @@ import net.jimboi.boron.stage_a.goblet.GobletWorld;
 import net.jimboi.boron.stage_a.goblet.Room;
 
 import org.bstone.transform.Transform3;
-import org.joml.Vector2fc;
+import org.joml.Vector2f;
 
 /**
  * Created by Andy on 8/9/17.
@@ -28,17 +28,26 @@ public class EntityThrowable extends EntityMotion implements ActiveBoxCollider
 	{
 		super(world, transform, boundingBox, renderable);
 
-		this.motion.set(dx, dy);
+		this.componentMotion.motion.set(dx, dy);
 		this.fallMotion = dz;
 		this.fallOffset = 0;
 		this.falling = this.fallMotion > 0;
-		this.friction = 0.1F;
+		this.componentMotion.setFriction(0.05F);
 		this.restitution = 0.6F;
+
+		this.componentMotion.setOnGround(!this.falling);
+
+		if (!this.falling)
+		{
+			this.onFallToGround();
+		}
 	}
 
 	@Override
-	public void onMotionUpdate()
+	public void onLivingLateUpdate()
 	{
+		super.onLivingLateUpdate();
+
 		if (this.falling)
 		{
 			this.fallMotion -= GRAVITY;
@@ -49,27 +58,14 @@ public class EntityThrowable extends EntityMotion implements ActiveBoxCollider
 				this.fallOffset = 0;
 				this.falling = false;
 				this.onFallToGround();
+				this.componentMotion.setOnGround(true);
 			}
-		}
-		else
-		{
-			super.onMotionUpdate();
+			this.getRenderable().getRenderModel().transformation().identity().scale(1 + this.fallOffset / 2F, 1 + this.fallOffset / 2F, 0);
 		}
 	}
 
 	public void onFallToGround()
 	{
-	}
-
-	@Override
-	public void onPositionUpdate(Vector2fc offset)
-	{
-		super.onPositionUpdate(offset);
-
-		if (this.falling)
-		{
-			this.getRenderable().getRenderModel().transformation().identity().scale(1 + this.fallOffset / 2F, 1 + this.fallOffset / 2F, 0);
-		}
 	}
 
 	@Override
@@ -85,11 +81,17 @@ public class EntityThrowable extends EntityMotion implements ActiveBoxCollider
 		{
 			this.move(collision.getDelta().x(), collision.getDelta().y());
 
-			float f = this.motion.dot(collision.getNormal()) * 2;
-			this.motion.sub(collision.getNormal().x() * f, collision.getNormal().y() * f);
-			this.motion.mul(this.restitution);
+			Vector2f motion = this.componentMotion.motion;
+			float f = motion.dot(collision.getNormal()) * 2;
+			motion.sub(collision.getNormal().x() * f, collision.getNormal().y() * f);
+			motion.mul(this.restitution);
 
 			this.onBounce(collision);
+		}
+		else
+		{
+			Vector2f motion = this.componentMotion.motion;
+			motion.add(collision.getDelta().x() / 100F, collision.getDelta().y() / 100F);
 		}
 
 		return false;
@@ -109,7 +111,7 @@ public class EntityThrowable extends EntityMotion implements ActiveBoxCollider
 	@Override
 	public boolean canCollideWith(BoxCollider collider)
 	{
-		return collider instanceof Room;
+		return collider instanceof Room || (collider instanceof EntityThrowable && this.falling == ((EntityThrowable) collider).falling);
 	}
 
 	public boolean canBounceOff(BoxCollider collider)

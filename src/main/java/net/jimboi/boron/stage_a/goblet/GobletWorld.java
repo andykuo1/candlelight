@@ -5,6 +5,7 @@ import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxManager;
 import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
 import net.jimboi.boron.stage_a.goblet.entity.EntityPlayer;
 import net.jimboi.boron.stage_a.goblet.entity.EntityRat;
+import net.jimboi.boron.stage_a.goblet.entity.EntitySkeleton;
 
 import org.bstone.livingentity.LivingEntity;
 import org.bstone.render.RenderableBase;
@@ -50,20 +51,24 @@ public class GobletWorld
 		this.spawnEntity(this.player);
 		this.cameraController.setTarget(transform);
 
-		this.room = new Room(0, 0, 10, 10);
-		this.spawnEntity(new EntityRat(this, new Transform3().setPosition(5 + 0.5F, 5 + 0.5F, 0)));
-		/*
-		for(int i = 0; i < 10; ++i)
+		this.room = new Room(0, 0, 30, 30);
+		for(int i = 0; i < this.room.getWidth(); ++i)
 		{
-			for(int j = 0; j < 10; ++j)
+			for(int j = 0; j < this.room.getHeight(); ++j)
 			{
-				if (this.random.nextInt(4) == 0)
+				if (!this.room.isSolid(i, j))
 				{
-					this.spawnEntity(new EntityRat(this, new Transform3().setPosition(i + 0.5F, j + 0.5F, 0)));
+					if (this.random.nextInt(40) == 0)
+					{
+						this.spawnEntity(new EntityRat(this, new Transform3().setPosition(i + 0.5F, j + 0.5F, 0)));
+					}
+					else if (this.random.nextInt(50) == 0)
+					{
+						this.spawnEntity(new EntitySkeleton(this, new Transform3().setPosition(i + 0.5F, j + 0.5F, 0)));
+					}
 				}
 			}
 		}
-		*/
 		this.getBoundingManager().addCollider(this.room);
 
 		this.roomModelManager = new RoomModelManager(Asset.wrap(Goblet.getGoblet().getRender().texFont), Asset.wrap(Goblet.getGoblet().getRender().atsFont));
