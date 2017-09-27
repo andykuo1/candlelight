@@ -1,11 +1,11 @@
 package net.jimboi.apricot.stage_a.base;
 
+import net.jimboi.apricot.base.astar.AstarNavigator;
+import net.jimboi.apricot.base.astar.map.NavigatorCardinalMap;
 import net.jimboi.apricot.stage_b.glim.WorldGlim;
 import net.jimboi.apricot.stage_b.glim.bounding.BoundingManager;
 
 import org.joml.Vector3fc;
-import org.qsilver.astar.AstarNavigator;
-import org.qsilver.astar.map.NavigatorCardinalMap;
 import org.qsilver.poma.Poma;
 
 import java.util.Stack;
@@ -25,9 +25,9 @@ public class OldMainTest
 		Vector3fc end = worldGlim.getRandomTilePos(false);
 
 		System.out.println("WORLD MAP!");
-		for(int x = 0; x < worldGlim.getMap().width; ++x)
+		for(int x = 0; x < worldGlim.getMap().getWidth(); ++x)
 		{
-			for(int y = 0; y < worldGlim.getMap().height; ++y)
+			for(int y = 0; y < worldGlim.getMap().getHeight(); ++y)
 			{
 				if (x == (int)start.x() && y == (int)start.z())
 				{
@@ -55,16 +55,16 @@ public class OldMainTest
 		}
 
 		System.out.println("NAVIGATION MAP!");
-		NavigatorCardinalMap navigatorMap = new NavigatorCardinalMap(worldGlim.getSolids(), worldGlim.getMap().width, worldGlim.getMap().height);
+		NavigatorCardinalMap navigatorMap = new NavigatorCardinalMap(worldGlim.getSolids(), worldGlim.getMap().getWidth(), worldGlim.getMap().getHeight());
 		AstarNavigator<NavigatorCardinalMap.Cell> navigator = new AstarNavigator<>(navigatorMap);
 		NavigatorCardinalMap.Cell startcell = new NavigatorCardinalMap.Cell((int)start.x(), (int)start.z());
 		NavigatorCardinalMap.Cell endcell = new NavigatorCardinalMap.Cell((int)end.x(), (int)end.z());
 
 		Stack<NavigatorCardinalMap.Cell> stack = navigator.navigate(startcell, endcell);
 
-		for(int x = 0; x < worldGlim.getMap().width; ++x)
+		for(int x = 0; x < worldGlim.getMap().getWidth(); ++x)
 		{
-			for(int y = 0; y < worldGlim.getMap().height; ++y)
+			for(int y = 0; y < worldGlim.getMap().getHeight(); ++y)
 			{
 				boolean flag = false;
 

@@ -1,6 +1,6 @@
 package org.zilar.dungeon;
 
-import org.qsilver.util.map2d.IntMap;
+import org.bstone.util.gridmap.IntMap;
 
 import java.util.Random;
 
@@ -18,15 +18,15 @@ public class RoomDecorator
 	public RoomData decorate(RoomData roomData)
 	{
 		IntMap map = roomData.getTiles();
-		IntMap.fill(map, 0, 0, map.width, map.height, 1);
+		map.clear(1);
 
-		for (int x = 0; x < map.width; ++x)
+		for (int x = 0; x < map.getWidth(); ++x)
 		{
-			for (int y = 0; y < map.height; ++y)
+			for (int y = 0; y < map.getHeight(); ++y)
 			{
 				if (this.rand.nextFloat() < 0.3F)
 				{
-					map.set(x, y, 8);
+					map.put(x, y, 8);
 				}
 			}
 		}

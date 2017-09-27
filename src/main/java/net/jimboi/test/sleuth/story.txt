@@ -1,0 +1,32 @@
+
+		//WOAH!
+		//...
+		//Are you real?
+		//...
+		//Nod for yes.
+		//Shake for no.
+		//...
+		//(if answered) Huh. You can understand what I'm thinking.
+		//(if not) Figures. A giant head floating in space. Don't know what I was thinking.
+		//Weird. This must be a dream.
+		//Do you feel pain? Is it cold in there?
+		//Hm. That sucks. Wouldn't want to be you.
+		//Well, I'm going to wake up now.
+		//It's a big day tomorrow. It's my first case on the job.
+		//Gotta make a good impression this time. Heh heh.
+		//See you around.
+
+		//(He wakes up and finds you still staring at him.)
+		//(He goes through his morning routine and goes to work.)
+		//(Someone passes by and greets him.)
+		//(He replies, then points at the screen.)
+		//(The person looks, then shakes his head.)
+		//Strange...
+		//Are you my guardian angel? I imagined they would look a lot more... nevermind.
+		//(if the player clicks, he will stop and says:) Do that again.
+		//(he waits for a click.) That feels strange.
+		//(if the player clicks on him.) I felt that.
+		//(if the player clicks on something else.) I see that.
+		//(if the player does it multiple times.) Alright, knock it off. It's getting old.
+		//(if the player clicks on someone else.) That's rude.
+		//(later on, he will ask the player for help in the bathroom.)

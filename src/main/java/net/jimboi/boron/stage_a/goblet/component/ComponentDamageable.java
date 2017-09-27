@@ -1,41 +1,80 @@
 package net.jimboi.boron.stage_a.goblet.component;
 
+import net.jimboi.boron.stage_a.goblet.entity.IDamageSource;
 import net.jimboi.boron.stage_a.goblet.tick.TickCounter;
 
 import org.bstone.entity.Component;
+import org.bstone.util.Procedure;
+
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
 /**
  * Created by Andy on 8/13/17.
  */
 public class ComponentDamageable implements Component
 {
-	public int maxDamage;
-	public int damage;
-	public int prevDamage;
+	public Procedure onDamageTick = () -> {};
+	public BiConsumer<IDamageSource, Integer> onDamageTaken = (damageSource, amount) -> {};
+	public Procedure onHealthDepleted = () -> {};
+	public Predicate<IDamageSource> canTakeDamageFrom = (damageSource) -> true;
 
-	public boolean damaging;
+	protected int maxHealth;
+	protected int health;
 
-	public final TickCounter damageTicks = new TickCounter(100);
+	protected final TickCounter damageTicks = new TickCounter(30, true);
 
-	public ComponentDamageable(int maxDamage)
+	public ComponentDamageable setMaxHealth(int health)
 	{
-		this.maxDamage = maxDamage;
-		this.damage = 0;
-		this.prevDamage = 0;
+		this.maxHealth = health;
+		return this;
 	}
 
-	public void updateDamage()
+	public ComponentDamageable setHealth(int health)
 	{
-
+		this.health = health;
+		return this;
 	}
 
-	public void setDamage(int damage)
+	public void doDamageTick()
 	{
-		this.damage = damage;
+		this.damageTicks.tick();
+		this.onDamageTick.apply();
 	}
 
-	public int getDamage()
+	public void damage(IDamageSource damageSource, int amount)
 	{
-		return this.damage;
+		if (this.canTakeDamageFrom.test(damageSource))
+		{
+			this.health -= amount;
+			this.damageTicks.reset();
+
+			this.onDamageTaken.accept(damageSource, amount);
+
+			if (this.health <= 0)
+			{
+				this.onHealthDepleted.apply();
+			}
+		}
+	}
+
+	public int getMaxHealth()
+	{
+		return this.maxHealth;
+	}
+
+	public int getHealth()
+	{
+		return this.health;
+	}
+
+	public TickCounter getDamageTicks()
+	{
+		return this.damageTicks;
+	}
+
+	public boolean isBeingDamaged()
+	{
+		return !this.damageTicks.isComplete();
 	}
 }

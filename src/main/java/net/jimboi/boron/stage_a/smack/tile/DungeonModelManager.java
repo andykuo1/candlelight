@@ -5,11 +5,11 @@ import org.bstone.mogli.Texture;
 import org.bstone.render.material.Material;
 import org.bstone.render.material.PropertyTexture;
 import org.bstone.render.model.Model;
+import org.bstone.util.gridmap.IntMap;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.joml.Vector3f;
 import org.qsilver.asset.Asset;
-import org.qsilver.util.map2d.IntMap;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.MeshData;
 import org.zilar.meshbuilder.ModelUtil;
@@ -70,9 +70,9 @@ public class DungeonModelManager
 		Vector2f vec = new Vector2f();
 
 		Random rand = new Random();
-		for (int x = 0; x < map.width; ++x)
+		for (int x = 0; x < map.getWidth(); ++x)
 		{
-			for (int y = 0; y < map.height; ++y)
+			for (int y = 0; y < map.getHeight(); ++y)
 			{
 				Vector2fc wallPos = new Vector2f(x, y);
 
@@ -120,9 +120,9 @@ public class DungeonModelManager
 		Vector3f pos = new Vector3f();
 		Vector3f u = new Vector3f();
 		Vector3f v = new Vector3f();
-		for (int x = 0; x < map.width; ++x)
+		for (int x = 0; x < map.getWidth(); ++x)
 		{
-			for (int y = 0; y < map.height; ++y)
+			for (int y = 0; y < map.getHeight(); ++y)
 			{
 				pos.set(x, y, -1);
 				u.set(0);
@@ -190,7 +190,7 @@ public class DungeonModelManager
 
 	private static boolean isSolid(IntMap map, int x, int y)
 	{
-		if (x < 0 || x >= map.width || y < 0 || y >= map.height) return true;
+		if (!map.containsKey(x, y)) return true;
 		return map.get(x, y) == 0;
 	}
 }

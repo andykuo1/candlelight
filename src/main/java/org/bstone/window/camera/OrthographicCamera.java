@@ -19,10 +19,15 @@ public class OrthographicCamera extends Camera
 
 	private float aspectRatio;
 
+	public OrthographicCamera(float x, float y, float z, float width, float height)
+	{
+		super(new Transform3().setPosition(x, y, z));
+		this.aspectRatio = width / height;
+	}
+
 	public OrthographicCamera(float width, float height)
 	{
-		super(new Transform3());
-		this.aspectRatio = width / height;
+		this(0, 0, 0, width, height);
 	}
 
 	public void setClippingBound(float left, float right, float top, float bottom)

@@ -23,12 +23,28 @@ public class LivingManager<L extends ILiving>
 		void onLivingDestroy(L living);
 	}
 
+	public interface OnUpdateLivingsListener<L extends ILiving>
+	{
+		void onUpdateLivings(LivingManager<L> livingManager);
+	}
+
+	public interface OnLateUpdateLivingsListener<L extends ILiving>
+	{
+		void onLateUpdateLivings(LivingManager<L> livingManager);
+	}
+
 	@SuppressWarnings("unchecked")
 	public final Listenable<OnLivingCreateListener<L>> onLivingCreate
 			= new Listenable<>((listener, objects) -> listener.onLivingCreate((L) objects[0]));
 	@SuppressWarnings("unchecked")
 	public final Listenable<OnLivingDestroyListener<L>> onLivingDestroy
 			= new Listenable<>(((listener, objects) -> listener.onLivingDestroy((L) objects[0])));
+	@SuppressWarnings("unchecked")
+	public final Listenable<OnUpdateLivingsListener<L>> onUpdateLivings
+			= new Listenable<>(((listener, objects) -> listener.onUpdateLivings((LivingManager<L>) objects[0])));
+	@SuppressWarnings("unchecked")
+	public final Listenable<OnLateUpdateLivingsListener<L>> onLateUpdateLivings
+			= new Listenable<>(((listener, objects) -> listener.onLateUpdateLivings((LivingManager<L>) objects[0])));
 
 	private int NEXT_LIVING_ID = 0;
 
@@ -48,6 +64,7 @@ public class LivingManager<L extends ILiving>
 				living.onLivingUpdate();
 			}
 		}
+		this.onUpdateLivings.notifyListeners(this);
 
 		Iterator<L> livings = this.livings.values().iterator();
 		while(livings.hasNext())
@@ -69,6 +86,7 @@ public class LivingManager<L extends ILiving>
 				living.setLivingID(-1);
 			}
 		}
+		this.onLateUpdateLivings.notifyListeners(this);
 	}
 
 	public L addLiving(L living)

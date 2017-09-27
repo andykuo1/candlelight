@@ -1,9 +1,11 @@
 package net.jimboi.boron.stage_a.goblet.entity;
 
-import net.jimboi.boron.stage_a.base.collisionbox.collider.ActiveBoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionResponse;
 import net.jimboi.boron.stage_a.goblet.GobletWorld;
+import net.jimboi.boron.stage_a.goblet.component.ComponentDamageable;
+import net.jimboi.boron.stage_a.goblet.component.ComponentMotion;
+import net.jimboi.boron.stage_a.goblet.entity.base.EntitySolid;
 import net.jimboi.boron.stage_a.goblet.tick.TickCounter;
 
 import org.bstone.transform.Transform3;
@@ -12,7 +14,7 @@ import org.joml.Vector3f;
 /**
  * Created by Andy on 8/11/17.
  */
-public class EntitySlash extends EntitySolid implements ActiveBoxCollider, IDamageSource
+public class EntitySlash extends EntitySolid implements IDamageSource
 {
 	protected EntityPlayer owner;
 
@@ -49,13 +51,13 @@ public class EntitySlash extends EntitySolid implements ActiveBoxCollider, IDama
 				if (collider instanceof EntityHurtable)
 				{
 					EntityHurtable hurtable = (EntityHurtable) collider;
-					hurtable.damage(this, 0);
+					hurtable.getComponent(ComponentDamageable.class).damage(this, 0);
 					Vector3f vec = this.owner.getTransform().position.sub(hurtable.getTransform().position3(), new Vector3f()).normalize().mul(0.5F).negate();
 					hurtable.getTransform().translate(vec.x(), vec.y(), 0);
 				}
 				else if (collider instanceof EntityThrowable)
 				{
-					((EntityThrowable) collider).componentMotion.addMotionTowards(this.owner.getTransform(), ((EntityThrowable) collider).getTransform(), 0.2F);
+					((EntityThrowable) collider).getComponent(ComponentMotion.class).addMotionTowards(this.owner.getTransform(), ((EntityThrowable) collider).getTransform(), 0.2F);
 				}
 			}
 		}
@@ -89,5 +91,11 @@ public class EntitySlash extends EntitySolid implements ActiveBoxCollider, IDama
 	public boolean isSolid()
 	{
 		return false;
+	}
+
+	@Override
+	public boolean isColliderActive()
+	{
+		return true;
 	}
 }

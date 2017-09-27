@@ -1,6 +1,8 @@
 package org.zilar.dungeon.maze;
 
-import org.qsilver.util.map2d.IntMap;
+import net.jimboi.apricot.base.OldMapUtil;
+
+import org.bstone.util.gridmap.IntMap;
 import org.zilar.dungeon.DungeonData;
 
 import java.util.Random;
@@ -26,7 +28,7 @@ public class MazeGenMaze extends AbstractMazeGen
 		this.corridorBuilder = corridorBuilder;
 
 		this.src = tiles;
-		this.dst = new IntMap(this.src.width, this.src.height);
+		this.dst = new IntMap(this.src.getWidth(), this.src.getHeight());
 
 		this.twistPercent = twistPercent;
 		this.isCarveableTile = isCarveableTile;
@@ -34,9 +36,9 @@ public class MazeGenMaze extends AbstractMazeGen
 
 	public void generate(Random rand)
 	{
-		for (int x = 1; x < this.src.width; x += 2)
+		for (int x = 1; x < this.src.getWidth(); x += 2)
 		{
-			for (int y = 1; y < this.src.height; y += 2)
+			for (int y = 1; y < this.src.getHeight(); y += 2)
 			{
 				if (!this.isCarveableTile.test(this.src.get(x, y))) continue;
 
@@ -51,11 +53,11 @@ public class MazeGenMaze extends AbstractMazeGen
 		IntMap tiles = data.getTiles();
 		IntMap regions = data.getRegions();
 
-		IntMap.replace(this.dst, 0, 0, this.dst.width, this.dst.height, 1, (tile) -> tile == 1);
-		IntMap.overlay(tiles, 0, 0, this.dst);
+		OldMapUtil.replace(this.dst, 0, 0, this.dst.getWidth(), this.dst.getHeight(), 1, (tile) -> tile == 1);
+		OldMapUtil.overlay(tiles, 0, 0, this.dst);
 
-		IntMap.replace(this.dst, 0, 0, this.dst.width, this.dst.height, this.regionHandler.getNextAvailableRegion(), (tile) -> tile != 0);
-		IntMap.overlay(regions, 0, 0, this.dst);
+		OldMapUtil.replace(this.dst, 0, 0, this.dst.getWidth(), this.dst.getHeight(), this.regionHandler.getNextAvailableRegion(), (tile) -> tile != 0);
+		OldMapUtil.overlay(regions, 0, 0, this.dst);
 
 		this.clear();
 	}
@@ -63,6 +65,6 @@ public class MazeGenMaze extends AbstractMazeGen
 	@Override
 	public void clear()
 	{
-		IntMap.fill(this.dst, 0, 0, this.dst.width, this.dst.height, 0);
+		this.dst.clear(0);
 	}
 }

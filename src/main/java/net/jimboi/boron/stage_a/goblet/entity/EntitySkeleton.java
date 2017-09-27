@@ -1,19 +1,21 @@
 package net.jimboi.boron.stage_a.goblet.entity;
 
-import net.jimboi.boron.stage_a.base.collisionbox.collider.ActiveBoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionResponse;
 import net.jimboi.boron.stage_a.goblet.GobletWorld;
-import net.jimboi.boron.stage_a.goblet.Room;
+import net.jimboi.boron.stage_a.goblet.component.ComponentDamageable;
+import net.jimboi.boron.stage_a.goblet.component.ComponentMotion;
 import net.jimboi.boron.stage_a.goblet.tick.TickCounter;
+import net.jimboi.boron.stage_a.goblet.tile.TileMap;
 
+import org.bstone.entity.EntityManager;
 import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
 
 /**
  * Created by Andy on 8/13/17.
  */
-public class EntitySkeleton extends EntityAlertable implements ActiveBoxCollider
+public class EntitySkeleton extends EntityAlertable
 {
 	protected final TickCounter shootTicks = new TickCounter(100);
 
@@ -23,9 +25,16 @@ public class EntitySkeleton extends EntityAlertable implements ActiveBoxCollider
 				world.createBoundingBox(transform, 0.5F),
 				world.createRenderable2D(transform, 'S', 0xAAAAAA));
 
-		this.maxHealth = 10;
 		this.alertSpeed = 0.04F;
-		this.componentMotion.setFriction(0.3F);
+	}
+
+	@Override
+	public void onEntityCreate(EntityManager entityManager)
+	{
+		super.onEntityCreate(entityManager);
+
+		this.getComponent(ComponentMotion.class).setFriction(0.3F);
+		this.getComponent(ComponentDamageable.class).setMaxHealth(10);
 	}
 
 	@Override
@@ -65,6 +74,12 @@ public class EntitySkeleton extends EntityAlertable implements ActiveBoxCollider
 	@Override
 	public boolean canCollideWith(BoxCollider collider)
 	{
-		return collider instanceof Room;
+		return collider instanceof TileMap;
+	}
+
+	@Override
+	public boolean isColliderActive()
+	{
+		return true;
 	}
 }

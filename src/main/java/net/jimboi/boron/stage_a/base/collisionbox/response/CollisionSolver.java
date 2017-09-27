@@ -4,7 +4,6 @@ import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
 import net.jimboi.boron.stage_a.base.collisionbox.box.BoundingBox;
 import net.jimboi.boron.stage_a.base.collisionbox.box.GridAlignedBoundingBox;
 import net.jimboi.boron.stage_a.base.collisionbox.box.GridBasedBoundingBox;
-import net.jimboi.boron.stage_a.base.collisionbox.collider.ActiveBoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 
 import org.qsilver.util.MathUtil;
@@ -17,9 +16,10 @@ import java.util.function.Predicate;
  */
 public class CollisionSolver
 {
-	public static void checkCollision(ActiveBoxCollider collider, Iterable<BoxCollider> colliders, Predicate<BoxCollider> canCollideWith, Predicate<CollisionResponse> onCollision)
+	public static void checkCollision(BoxCollider collider, Iterable<BoxCollider> colliders, Predicate<BoxCollider> canCollideWith, Predicate<CollisionResponse> onCollision)
 	{
-		AxisAlignedBoundingBox boundingBox = collider.getBoundingBox();
+		//TODO: Only AABB are supported active colliders!
+		AxisAlignedBoundingBox boundingBox = (AxisAlignedBoundingBox) collider.getBoundingBox();
 		checkCollision(boundingBox, colliders, canCollideWith, onCollision);
 	}
 

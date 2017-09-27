@@ -1,13 +1,15 @@
 package net.jimboi.boron.stage_a.goblet.entity;
 
-import net.jimboi.boron.stage_a.base.collisionbox.collider.ActiveBoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionResponse;
 import net.jimboi.boron.stage_a.goblet.Goblet;
 import net.jimboi.boron.stage_a.goblet.GobletWorld;
-import net.jimboi.boron.stage_a.goblet.Room;
+import net.jimboi.boron.stage_a.goblet.component.ComponentDamageable;
+import net.jimboi.boron.stage_a.goblet.component.ComponentMotion;
 import net.jimboi.boron.stage_a.goblet.tick.TickCounter;
+import net.jimboi.boron.stage_a.goblet.tile.TileMap;
 
+import org.bstone.entity.EntityManager;
 import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
@@ -16,7 +18,7 @@ import org.qsilver.util.MathUtil;
 /**
  * Created by Andy on 8/9/17.
  */
-public class EntityPlayer extends EntityHurtable implements ActiveBoxCollider
+public class EntityPlayer extends EntityHurtable
 {
 	private Vector2f direction = new Vector2f();
 	private Vector2f mousePos = new Vector2f();
@@ -39,8 +41,19 @@ public class EntityPlayer extends EntityHurtable implements ActiveBoxCollider
 				world.createRenderable2D(transform, '@', 0xFF00FF));
 
 		this.speed = 0.03F;
-		this.componentMotion.setFriction(0.3F);
-		this.maxHealth = 100;
+	}
+
+	@Override
+	public void onEntityCreate(EntityManager entityManager)
+	{
+		super.onEntityCreate(entityManager);
+
+		ComponentMotion componentMotion = this.addComponent(new ComponentMotion());
+		componentMotion.setFriction(0.3F);
+
+		ComponentDamageable componentDamageable  = this.getComponent(ComponentDamageable.class);
+		componentDamageable.canTakeDamageFrom = (damageSource) -> !this.rolling;
+		componentDamageable.setMaxHealth(100);
 	}
 
 	@Override
@@ -50,19 +63,14 @@ public class EntityPlayer extends EntityHurtable implements ActiveBoxCollider
 		return super.canSetFire(x, y, strength);
 	}
 
-	@Override
-	public boolean canTakeDamageFrom(IDamageSource damageSource)
-	{
-		if (this.rolling) return false;
-		return super.canTakeDamageFrom(damageSource);
-	}
-
 	private void roll(float dx, float dy)
 	{
 		this.rolling = true;
 		this.rollingTicks.reset();
-		this.componentMotion.addMotion(dx * this.rollSpeed, dy * this.rollSpeed);
-		this.componentMotion.setOnGround(false);
+
+		final ComponentMotion componentMotion = this.getComponent(ComponentMotion.class);
+		componentMotion.addMotion(dx * this.rollSpeed, dy * this.rollSpeed);
+		componentMotion.setOnGround(false);
 	}
 
 	private void updateRollInput(float dx, float dy, int inputDir)
@@ -89,7 +97,7 @@ public class EntityPlayer extends EntityHurtable implements ActiveBoxCollider
 				this.rolling = false;
 				this.rollingInputTicks.resetWithBuffer(this.maxRollingCooldownTicks);
 				this.rollingInputDir = -1;
-				this.componentMotion.setOnGround(true);
+				this.getComponent(ComponentMotion.class).setOnGround(true);
 			}
 		}
 		else
@@ -142,24 +150,25 @@ public class EntityPlayer extends EntityHurtable implements ActiveBoxCollider
 
 		if (!this.rolling)
 		{
+			final ComponentMotion componentMotion = this.getComponent(ComponentMotion.class);
 			if (Goblet.getGoblet().getInput().isInputDown("left"))
 			{
-				this.componentMotion.addMotion(-this.speed, 0);
+				componentMotion.addMotion(-this.speed, 0);
 			}
 
 			if (Goblet.getGoblet().getInput().isInputDown("right"))
 			{
-				this.componentMotion.addMotion(this.speed, 0);
+				componentMotion.addMotion(this.speed, 0);
 			}
 
 			if (Goblet.getGoblet().getInput().isInputDown("up"))
 			{
-				this.componentMotion.addMotion(0, this.speed);
+				componentMotion.addMotion(0, this.speed);
 			}
 
 			if (Goblet.getGoblet().getInput().isInputDown("down"))
 			{
-				this.componentMotion.addMotion(0, -this.speed);
+				componentMotion.addMotion(0, -this.speed);
 			}
 
 			if (Goblet.getGoblet().getInput().isInputReleased("mouseright"))
@@ -188,6 +197,18 @@ public class EntityPlayer extends EntityHurtable implements ActiveBoxCollider
 					this.world.spawnEntity(new EntityGrenade(this.world, this.world.createTransform(this.transform), this.direction.x(), this.direction.y(), zSpeed, Explosions.getRandomExplosion(this.world.getRandom())));
 				}
 			}
+
+			if (Goblet.getGoblet().getInput().isInputReleased("action"))
+			{
+				EntityVillager villager = this.world.getNearestEntity(this.transform.posX(), this.transform.posY(), EntityVillager.class);
+				if (villager != null)
+				{
+					if (villager.getTransform().position.distanceSquared(this.transform.position3()) < 1F)
+					{
+						villager.onInteract(this);
+					}
+				}
+			}
 		}
 	}
 
@@ -213,6 +234,12 @@ public class EntityPlayer extends EntityHurtable implements ActiveBoxCollider
 	@Override
 	public boolean canCollideWith(BoxCollider collider)
 	{
-		return collider instanceof Room;
+		return collider instanceof TileMap;
+	}
+
+	@Override
+	public boolean isColliderActive()
+	{
+		return true;
 	}
 }

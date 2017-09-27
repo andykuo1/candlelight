@@ -14,10 +14,15 @@ public class PerspectiveCamera extends Camera
 	private float clippingFar = 100F;
 	private float aspectRatio;
 
+	public PerspectiveCamera(float x, float y, float z, float width, float height)
+	{
+		super(new InvertedTransform3().setPosition(x, y, z));
+		this.aspectRatio = width / height;
+	}
+
 	public PerspectiveCamera(float width, float height)
 	{
-		super(new InvertedTransform3());
-		this.aspectRatio = width / height;
+		this(0, 0, 0, width, height);
 	}
 
 	public void setFieldOfView(float fov)

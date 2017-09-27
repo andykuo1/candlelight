@@ -2,21 +2,27 @@ package net.jimboi.boron.stage_a.goblet.entity;
 
 import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
-import net.jimboi.boron.stage_a.base.collisionbox.collider.ActiveBoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionResponse;
 import net.jimboi.boron.stage_a.goblet.GobletWorld;
-import net.jimboi.boron.stage_a.goblet.Room;
+import net.jimboi.boron.stage_a.goblet.component.ComponentMotion;
+import net.jimboi.boron.stage_a.goblet.entity.base.EntitySolid;
+import net.jimboi.boron.stage_a.goblet.tile.TileMap;
 
+import org.bstone.entity.EntityManager;
 import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
 
 /**
  * Created by Andy on 8/9/17.
  */
-public class EntityThrowable extends EntityMotion implements ActiveBoxCollider
+public class EntityThrowable extends EntitySolid
 {
 	public static float GRAVITY = 0.02F;
+
+	float dx;
+	float dy;
+	float dz;
 
 	protected float restitution;
 
@@ -28,19 +34,31 @@ public class EntityThrowable extends EntityMotion implements ActiveBoxCollider
 	{
 		super(world, transform, boundingBox, renderable);
 
-		this.componentMotion.motion.set(dx, dy);
+		this.dx = dx;
+		this.dy = dy;
+		this.dz = dz;
+
 		this.fallMotion = dz;
 		this.fallOffset = 0;
 		this.falling = this.fallMotion > 0;
-		this.componentMotion.setFriction(0.05F);
 		this.restitution = 0.6F;
-
-		this.componentMotion.setOnGround(!this.falling);
 
 		if (!this.falling)
 		{
 			this.onFallToGround();
 		}
+	}
+
+	@Override
+	public void onEntityCreate(EntityManager entityManager)
+	{
+		super.onEntityCreate(entityManager);
+
+		ComponentMotion componentMotion = this.addComponent(new ComponentMotion());
+
+		componentMotion.motion.set(this.dx, this.dy);
+		componentMotion.setFriction(0.05F);
+		componentMotion.setOnGround(!this.falling);
 	}
 
 	@Override
@@ -58,7 +76,7 @@ public class EntityThrowable extends EntityMotion implements ActiveBoxCollider
 				this.fallOffset = 0;
 				this.falling = false;
 				this.onFallToGround();
-				this.componentMotion.setOnGround(true);
+				this.getComponent(ComponentMotion.class).setOnGround(true);
 			}
 			this.getRenderable().getRenderModel().transformation().identity().scale(1 + this.fallOffset / 2F, 1 + this.fallOffset / 2F, 0);
 		}
@@ -81,7 +99,7 @@ public class EntityThrowable extends EntityMotion implements ActiveBoxCollider
 		{
 			this.move(collision.getDelta().x(), collision.getDelta().y());
 
-			Vector2f motion = this.componentMotion.motion;
+			Vector2f motion = this.getComponent(ComponentMotion.class).motion;
 			float f = motion.dot(collision.getNormal()) * 2;
 			motion.sub(collision.getNormal().x() * f, collision.getNormal().y() * f);
 			motion.mul(this.restitution);
@@ -90,7 +108,7 @@ public class EntityThrowable extends EntityMotion implements ActiveBoxCollider
 		}
 		else
 		{
-			Vector2f motion = this.componentMotion.motion;
+			Vector2f motion = this.getComponent(ComponentMotion.class).motion;
 			motion.add(collision.getDelta().x() / 100F, collision.getDelta().y() / 100F);
 		}
 
@@ -111,18 +129,24 @@ public class EntityThrowable extends EntityMotion implements ActiveBoxCollider
 	@Override
 	public boolean canCollideWith(BoxCollider collider)
 	{
-		return collider instanceof Room || (collider instanceof EntityThrowable && this.falling == ((EntityThrowable) collider).falling);
+		return collider instanceof TileMap || (collider instanceof EntityThrowable && this.falling == ((EntityThrowable) collider).falling);
 	}
 
 	public boolean canBounceOff(BoxCollider collider)
 	{
-		return collider instanceof Room;
+		return collider instanceof TileMap;
 	}
 
 	@Override
 	public boolean isSolid()
 	{
 		return !this.falling;
+	}
+
+	@Override
+	public boolean isColliderActive()
+	{
+		return true;
 	}
 
 	public boolean isFalling()

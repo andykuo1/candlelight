@@ -1,6 +1,5 @@
 package net.jimboi.boron.stage_a.smack.entity;
 
-import net.jimboi.boron.stage_a.base.collisionbox.collider.ActiveBoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionResponse;
 import net.jimboi.boron.stage_a.smack.DamageSource;
@@ -14,7 +13,7 @@ import org.qsilver.util.ColorUtil;
 /**
  * Created by Andy on 8/5/17.
  */
-public class EntityBullet extends EntityMotion implements ActiveBoxCollider
+public class EntityBullet extends EntityMotion
 {
 	private float speed = 0.2F;
 	private int maxLife = 50;
@@ -139,5 +138,11 @@ public class EntityBullet extends EntityMotion implements ActiveBoxCollider
 	public boolean canCollideWith(BoxCollider collider)
 	{
 		return collider instanceof EntityBoulder || collider instanceof DungeonHandler;
+	}
+
+	@Override
+	public boolean isColliderActive()
+	{
+		return true;
 	}
 }

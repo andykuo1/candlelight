@@ -1,5 +1,7 @@
 package net.jimboi.boron.stage_a.goblet.component;
 
+import net.jimboi.boron.stage_a.goblet.entity.base.EntityBase;
+
 import org.bstone.entity.Component;
 import org.bstone.transform.Transform3;
 import org.bstone.transform.Transform3c;
@@ -65,5 +67,29 @@ public class ComponentMotion implements Component
 	public float getFriction()
 	{
 		return this.friction;
+	}
+
+	public static void onLivingLateUpdate(EntityBase entity)
+	{
+		ComponentMotion componentMotion = entity.getComponent(ComponentMotion.class);
+		componentMotion.updateMotion();
+		componentMotion.applyMotion(entity.getTransform());
+
+		ComponentBounding componentBounding = entity.getComponent(ComponentBounding.class);
+		if (componentBounding != null)
+		{
+			componentBounding.getBoundingBox().setCenter(entity.getTransform().posX(), entity.getTransform().posY());
+		}
+	}
+
+	public static void move(EntityBase entity, float dx, float dy)
+	{
+		entity.getTransform().translate(dx, dy, 0);
+
+		ComponentBounding componentBounding = entity.getComponent(ComponentBounding.class);
+		if (componentBounding != null)
+		{
+			componentBounding.getBoundingBox().offset(dx, dy);
+		}
 	}
 }

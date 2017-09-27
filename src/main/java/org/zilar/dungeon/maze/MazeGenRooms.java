@@ -1,6 +1,6 @@
 package org.zilar.dungeon.maze;
 
-import org.qsilver.util.map2d.IntMap;
+import org.bstone.util.gridmap.IntMap;
 import org.zilar.dungeon.DungeonData;
 import org.zilar.dungeon.RoomBuilder;
 import org.zilar.dungeon.RoomData;
@@ -59,8 +59,10 @@ public class MazeGenRooms extends AbstractMazeGen
 		IntMap regions = data.getRegions();
 		for (RoomData room : this.rooms)
 		{
-			IntMap.set(tiles, room.x, room.y, room.getTiles());
-			IntMap.fill(regions, room.x, room.y, room.width, room.height, room.getRegionID());
+			tiles.put(room.x, room.y, room.getTiles().get(room.x, room.y));
+			regions.forEach(room.x, room.y, room.width, room.height, (k, v) -> {
+				regions.put(k.x(), k.y(), room.getRegionID());
+			});
 		}
 
 		this.clear();

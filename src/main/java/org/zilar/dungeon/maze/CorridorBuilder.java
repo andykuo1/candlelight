@@ -1,9 +1,9 @@
 package org.zilar.dungeon.maze;
 
 import org.bstone.util.direction.Direction;
+import org.bstone.util.gridmap.IntMap;
 import org.joml.Vector2i;
 import org.joml.Vector2ic;
-import org.qsilver.util.map2d.IntMap;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class CorridorBuilder
 		Deque<Vector2i> cells = new ArrayDeque<>();
 		Direction prevDir = null;
 
-		dst.set(x, y, CORRIDOR_TILE);
+		dst.put(x, y, CORRIDOR_TILE);
 
 		cells.add(new Vector2i(x, y));
 		while (!cells.isEmpty())
@@ -37,7 +37,7 @@ public class CorridorBuilder
 			for (Direction dir : Direction.Cardinals.values())
 			{
 				dir.polari(dv);
-				if (src.contains(cell.x() + dv.x() * 3, cell.y() + dv.y() * 3))
+				if (src.containsKey(cell.x() + dv.x() * 3, cell.y() + dv.y() * 3))
 				{
 					int i = cell.x() + dv.x() * 2;
 					int j = cell.y() + dv.y() * 2;
@@ -64,10 +64,10 @@ public class CorridorBuilder
 				dir.polari(dv);
 				int xx = cell.x() + dv.x();
 				int yy = cell.y() + dv.y();
-				dst.set(xx, yy, CORRIDOR_TILE);
+				dst.put(xx, yy, CORRIDOR_TILE);
 				xx += dv.x();
 				yy += dv.y();
-				dst.set(xx, yy, CORRIDOR_TILE);
+				dst.put(xx, yy, CORRIDOR_TILE);
 
 				cells.add(new Vector2i(xx, yy));
 				prevDir = dir;

@@ -7,9 +7,9 @@ import net.jimboi.boron.stage_a.smack.entity.EntitySpawner;
 import net.jimboi.boron.stage_a.smack.entity.EntityZombie;
 
 import org.bstone.transform.Transform3;
+import org.bstone.util.gridmap.ByteMap;
+import org.bstone.util.gridmap.IntMap;
 import org.joml.Vector2f;
-import org.qsilver.util.map2d.ByteMap;
-import org.qsilver.util.map2d.IntMap;
 import org.zilar.dungeon.DungeonData;
 import org.zilar.dungeon.maze.MazeDungeonBuilder;
 
@@ -53,7 +53,7 @@ public class LevelGenerator
 		for(int i = 0; i < 3; ++i)
 		{
 			Transform3 transform = new Transform3();
-			transform.setPosition(rand.nextFloat() * level.getTileMap().width, rand.nextFloat() * level.getTileMap().height, 1);
+			transform.setPosition(rand.nextFloat() * level.getTileMap().getWidth(), rand.nextFloat() * level.getTileMap().getHeight(), 1);
 			level.getEntities().add(new EntityBoulder(world, transform, 1.5F));
 		}
 
@@ -64,8 +64,8 @@ public class LevelGenerator
 	{
 		for(int i = 0; i < 100; ++i)
 		{
-			int x = rand.nextInt(tilemap.width);
-			int y = rand.nextInt(tilemap.height);
+			int x = rand.nextInt(tilemap.getWidth());
+			int y = rand.nextInt(tilemap.getHeight());
 			int tile = tilemap.get(x, y);
 			if (tile != 0)
 			{

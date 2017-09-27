@@ -3,9 +3,16 @@ package net.jimboi.boron.stage_a.goblet;
 import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxManager;
 import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
+import net.jimboi.boron.stage_a.goblet.component.SystemDamageable;
+import net.jimboi.boron.stage_a.goblet.component.SystemMotion;
 import net.jimboi.boron.stage_a.goblet.entity.EntityPlayer;
 import net.jimboi.boron.stage_a.goblet.entity.EntityRat;
 import net.jimboi.boron.stage_a.goblet.entity.EntitySkeleton;
+import net.jimboi.boron.stage_a.goblet.entity.EntityVillager;
+import net.jimboi.boron.stage_a.goblet.tile.Tile;
+import net.jimboi.boron.stage_a.goblet.tile.TileMap;
+import net.jimboi.boron.stage_a.goblet.tile.TileMapModelManager;
+import net.jimboi.boron.stage_a.goblet.tile.Tiles;
 
 import org.bstone.livingentity.LivingEntity;
 import org.bstone.render.RenderableBase;
@@ -31,14 +38,22 @@ public class GobletWorld
 
 	private GobletCameraController cameraController;
 
+	private SystemMotion motionSystem;
+	private SystemDamageable damageableSystem;
+
 	private EntityPlayer player;
 
-	private RoomModelManager roomModelManager;
-	private Room room;
+	private TileMapModelManager tileMapModelManager;
+	private TileMap tilemap;
+
+	//private RoomModelManager roomModelManager;
+	//private Room room;
 
 	public GobletWorld()
 	{
 		this.entityManager = new GobletEntityManager();
+		this.motionSystem = new SystemMotion(this.entityManager);
+		this.damageableSystem = new SystemDamageable(this.entityManager);
 	}
 
 	public void start()
@@ -46,11 +61,15 @@ public class GobletWorld
 		this.cameraController = new GobletCameraController();
 		this.cameraController.start(Goblet.getGoblet().getRender().getCamera());
 
+		this.motionSystem.start();
+		this.damageableSystem.start();
+
 		Transform3 transform = new Transform3();
 		this.player = new EntityPlayer(this, transform);
 		this.spawnEntity(this.player);
 		this.cameraController.setTarget(transform);
 
+		/*
 		this.room = new Room(0, 0, 30, 30);
 		for(int i = 0; i < this.room.getWidth(); ++i)
 		{
@@ -74,11 +93,47 @@ public class GobletWorld
 		this.roomModelManager = new RoomModelManager(Asset.wrap(Goblet.getGoblet().getRender().texFont), Asset.wrap(Goblet.getGoblet().getRender().atsFont));
 		Model model = this.roomModelManager.createStaticRoom(this.room);
 		Goblet.getGoblet().getRender().renderables.add(new RenderableBase(model, new Matrix4f()));
+		*/
+
+		this.tilemap = new TileMap(0, 0, 30, 30);
+		for(int i = 0; i < this.tilemap.getWidth(); ++i)
+		{
+			for(int j = 0; j < this.tilemap.getHeight(); ++j)
+			{
+				Tile tile = Math.random() < 0.8F ? Tiles.dirt : Tiles.stone;
+				this.tilemap.setTileByMap(i, j, tile);
+
+				if (!tile.isSolid())
+				{
+					if (this.random.nextInt(40) == 0)
+					{
+						this.spawnEntity(new EntityRat(this, new Transform3().setPosition(i + 0.5F, j + 0.5F, 0)));
+					}
+					else if (this.random.nextInt(50) == 0)
+					{
+						this.spawnEntity(new EntitySkeleton(this, new Transform3().setPosition(i + 0.5F, j + 0.5F, 0)));
+					}
+					else if (this.random.nextInt(60) == 0)
+					{
+						this.spawnEntity(new EntityVillager(this, new Transform3().setPosition(i + 0.5F, j + 0.5F, 0)));
+					}
+				}
+			}
+		}
+		this.getBoundingManager().addCollider(this.tilemap);
+
+		this.tileMapModelManager = new TileMapModelManager(Asset.wrap(Goblet.getGoblet().getRender().texFont), Asset.wrap(Goblet.getGoblet().getRender().atsFont));
+		Model model = this.tileMapModelManager.createStaticModel(this.tilemap);
+		Goblet.getGoblet().getRender().renderables.add(new RenderableBase(model, new Matrix4f()));
 	}
 
 	public void stop()
 	{
-		this.roomModelManager.destroy();
+		//this.roomModelManager.destroy();
+		this.tileMapModelManager.destroy();
+
+		this.damageableSystem.stop();
+		this.motionSystem.stop();
 
 		this.cameraController.stop();
 
@@ -159,10 +214,17 @@ public class GobletWorld
 		return (T) nearest;
 	}
 
+	public TileMap getRoom(float x, float y)
+	{
+		return this.tilemap;
+	}
+
+	/*
 	public Room getRoom(float x, float y)
 	{
 		return this.room;
 	}
+	*/
 
 	public Random getRandom()
 	{

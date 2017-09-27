@@ -5,7 +5,7 @@ import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
 
 import org.bstone.livingentity.LivingEntity;
-import org.qsilver.util.map2d.IntMap;
+import org.bstone.util.gridmap.IntMap;
 
 import java.util.Random;
 
@@ -28,8 +28,8 @@ public class DungeonHandler implements BoxCollider
 	{
 		this.currentLevel = LevelGenerator.generate(world, seed);
 		IntMap tilemap = this.currentLevel.getTileMap();
-		this.boundingBox = new GridBasedBoundingBox(0, 0, tilemap.width, tilemap.height);
-		for (int i = 0; i < tilemap.size(); ++i)
+		this.boundingBox = new GridBasedBoundingBox(0, 0, tilemap.getWidth(), tilemap.getHeight());
+		for (int i = 0; i < tilemap.length(); ++i)
 		{
 			this.boundingBox.setSolid(i, tilemap.get(i) == 0);
 		}

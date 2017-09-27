@@ -31,14 +31,14 @@ public class MouseHandler extends InputHandler
 
 		GLFW.glfwSetCursorPosCallback(window.handle(), (handle, xpos, ypos) ->
 		{
-			if (this.inputPosX != null) this.inputPosX.update((float) xpos);
-			if (this.inputPosY != null) this.inputPosY.update((float) ypos);
+			if (this.inputPosX != null) this.inputPosX.update(POS_X, (float) xpos);
+			if (this.inputPosY != null) this.inputPosY.update(POS_Y, (float) ypos);
 		});
 
 		GLFW.glfwSetScrollCallback(window.handle(), (handle, xoffset, yoffset)->
 		{
-			if (this.inputScrollX != null) this.inputScrollX.update((float) xoffset);
-			if (this.inputScrollY != null) this.inputScrollY.update((float) yoffset);
+			if (this.inputScrollX != null) this.inputScrollX.update(SCROLL_X, (float) xoffset);
+			if (this.inputScrollY != null) this.inputScrollY.update(SCROLL_Y, (float) yoffset);
 		});
 	}
 
@@ -76,7 +76,7 @@ public class MouseHandler extends InputHandler
 		{
 			if (input.getID() == button)
 			{
-				input.update(action == GLFW.GLFW_RELEASE ? 0 : 1);
+				input.update(button, action == GLFW.GLFW_RELEASE ? 0 : 1);
 				break;
 			}
 		}

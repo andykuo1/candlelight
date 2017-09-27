@@ -9,9 +9,10 @@ public interface IEntity
 	void onEntityDestroy();
 
 	@SuppressWarnings("unchecked")
-	default void addComponent(Component component)
+	default <T extends Component> T addComponent(T component)
 	{
 		this.getEntityManager().addComponentToEntity(this, component);
+		return component;
 	}
 
 	@SuppressWarnings("unchecked")

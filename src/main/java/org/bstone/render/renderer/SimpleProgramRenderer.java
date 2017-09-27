@@ -103,9 +103,4 @@ public class SimpleProgramRenderer extends ProgramRenderer
 		}
 		mesh.unbind();
 	}
-
-	public Material getDefaultMaterial()
-	{
-		return this.material;
-	}
 }

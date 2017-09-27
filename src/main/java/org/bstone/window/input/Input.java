@@ -3,7 +3,7 @@ package org.bstone.window.input;
 /**
  * Created by Andy on 5/4/17.
  */
-public final class Input
+public class Input
 {
 	private float prevAmount;
 	private float amount;
@@ -16,7 +16,7 @@ public final class Input
 		this.id = id;
 	}
 
-	public void update(float amount)
+	public void update(int id, float amount)
 	{
 		this.nextAmount = amount;
 	}

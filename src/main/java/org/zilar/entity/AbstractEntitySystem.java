@@ -18,7 +18,7 @@ public abstract class AbstractEntitySystem
 
 	public final void start(Scene scene)
 	{
-		if (this.active) throw new IllegalStateException("Starting system already active!");
+		if (this.active) throw new IllegalStateException("Starting system already activeActors!");
 		this.active = true;
 
 		this.onStart(scene);
@@ -26,7 +26,7 @@ public abstract class AbstractEntitySystem
 
 	public final void stop(Scene scene)
 	{
-		if (!this.active) throw new IllegalStateException("Stopping system not yet active!");
+		if (!this.active) throw new IllegalStateException("Stopping system not yet activeActors!");
 		this.active = false;
 
 		this.onStop(scene);

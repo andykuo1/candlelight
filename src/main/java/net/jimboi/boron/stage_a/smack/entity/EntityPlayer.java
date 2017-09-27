@@ -1,6 +1,5 @@
 package net.jimboi.boron.stage_a.smack.entity;
 
-import net.jimboi.boron.stage_a.base.collisionbox.collider.ActiveBoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionResponse;
 import net.jimboi.boron.stage_a.smack.DamageSource;
@@ -19,7 +18,7 @@ import org.qsilver.util.MathUtil;
 /**
  * Created by Andy on 8/5/17.
  */
-public class EntityPlayer extends EntityMotion implements ActiveBoxCollider
+public class EntityPlayer extends EntityMotion
 {
 	private int ammo = 7;
 
@@ -161,5 +160,11 @@ public class EntityPlayer extends EntityMotion implements ActiveBoxCollider
 	public boolean canCollideWith(BoxCollider collider)
 	{
 		return (collider instanceof SmackEntity && !((SmackEntity) collider).isDead() && (collider instanceof EntityAmmo || collider instanceof EntityBoulder)) || collider instanceof DungeonHandler;
+	}
+
+	@Override
+	public boolean isColliderActive()
+	{
+		return true;
 	}
 }

@@ -35,4 +35,9 @@ public abstract class ProgramRenderer implements AutoCloseable
 	{
 		return this.material;
 	}
+
+	public Program getProgram()
+	{
+		return this.program;
+	}
 }

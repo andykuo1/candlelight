@@ -3,8 +3,11 @@ package net.jimboi.boron.stage_a.goblet.entity;
 import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
 import net.jimboi.boron.stage_a.goblet.GobletWorld;
+import net.jimboi.boron.stage_a.goblet.component.ComponentDamageable;
+import net.jimboi.boron.stage_a.goblet.entity.base.EntitySolid;
 import net.jimboi.boron.stage_a.goblet.tick.TickCounter;
 
+import org.bstone.entity.EntityManager;
 import org.bstone.living.LivingManager;
 import org.bstone.render.material.Material;
 import org.bstone.render.material.PropertyColor;
@@ -14,14 +17,9 @@ import org.qsilver.util.ColorUtil;
 /**
  * Created by Andy on 8/11/17.
  */
-public class EntityHurtable extends EntityMotion implements IBurnable
+public class EntityHurtable extends EntitySolid implements IBurnable
 {
 	protected final int hurtColor;
-
-	protected int maxHealth;
-	protected int health;
-
-	protected final TickCounter damageTicks = new TickCounter(30, true);
 
 	protected final TickCounter fireTicks = new TickCounter(180, true);
 
@@ -35,9 +33,28 @@ public class EntityHurtable extends EntityMotion implements IBurnable
 	}
 
 	@Override
+	public void onEntityCreate(EntityManager entityManager)
+	{
+		super.onEntityCreate(entityManager);
+
+		this.addComponent(new ComponentDamageable());
+	}
+
+	@Override
 	public void onLivingCreate(LivingManager livingManager)
 	{
-		this.health = this.maxHealth;
+		ComponentDamageable componentDamageable = this.getComponent(ComponentDamageable.class);
+		componentDamageable.onDamageTick = this::onDamageTick;
+		componentDamageable.setHealth(componentDamageable.getMaxHealth());
+	}
+
+	protected void onDamageTick()
+	{
+		ComponentDamageable componentDamageable = this.getComponent(ComponentDamageable.class);
+		Material material = this.getRenderable().getRenderModel().getMaterial();
+		PropertyColor.PROPERTY.bind(material)
+				.setColor(ColorUtil.getColorMix(this.mainColor, this.hurtColor, 1 - componentDamageable.getDamageTicks().getProgress()))
+				.unbind();
 	}
 
 	@Override
@@ -49,17 +66,8 @@ public class EntityHurtable extends EntityMotion implements IBurnable
 
 			if (this.fireTicks.getTicks() % this.burnRate == 0)
 			{
-				this.damage(null, 1);
+				this.getComponent(ComponentDamageable.class).damage(null, 1);
 			}
-		}
-
-		if (!this.damageTicks.isComplete())
-		{
-			this.damageTicks.tick();
-			Material material = this.getRenderable().getRenderModel().getMaterial();
-			PropertyColor.PROPERTY.bind(material)
-					.setColor(ColorUtil.getColorMix(this.mainColor, this.hurtColor, 1 - this.damageTicks.getProgress()))
-					.unbind();
 		}
 	}
 
@@ -74,7 +82,7 @@ public class EntityHurtable extends EntityMotion implements IBurnable
 	public void setOnFire(float strength)
 	{
 		this.fireTicks.reset();
-		this.damage(null, 2);
+		this.getComponent(ComponentDamageable.class).damage(null, 2);
 	}
 
 	@Override
@@ -87,45 +95,5 @@ public class EntityHurtable extends EntityMotion implements IBurnable
 	public boolean isOnFire()
 	{
 		return !this.fireTicks.isComplete();
-	}
-
-	public void onDamageTaken(IDamageSource damageSource, int amount)
-	{
-	}
-
-	public boolean canTakeDamageFrom(IDamageSource damageSource)
-	{
-		return true;
-	}
-
-	public void damage(IDamageSource damageSource, int amount)
-	{
-		if (this.canTakeDamageFrom(damageSource))
-		{
-			this.health -= amount;
-			this.damageTicks.reset();
-
-			this.onDamageTaken(damageSource, amount);
-
-			if (this.health <= 0)
-			{
-				this.setDead();
-			}
-		}
-	}
-
-	public int getMaxHealth()
-	{
-		return this.maxHealth;
-	}
-
-	public int getHealth()
-	{
-		return this.health;
-	}
-
-	public boolean isBeingDamaged()
-	{
-		return !this.damageTicks.isComplete();
 	}
 }

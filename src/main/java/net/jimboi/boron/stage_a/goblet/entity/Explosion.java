@@ -1,7 +1,7 @@
 package net.jimboi.boron.stage_a.goblet.entity;
 
 import net.jimboi.boron.stage_a.goblet.GobletWorld;
-import net.jimboi.boron.stage_a.goblet.Room;
+import net.jimboi.boron.stage_a.goblet.tile.TileMap;
 
 import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
@@ -80,13 +80,13 @@ public class Explosion
 
 	static void prepare(GobletWorld world, ExplosionUnit explosion)
 	{
-		Room room = world.getRoom(explosion.x, explosion.y);
+		TileMap tilemap = world.getRoom(explosion.x, explosion.y);
 
 		for(int direction = 0; direction < 4; ++direction)
 		{
 			int x = explosion.x + ExplosionUnit.getOffsetX(direction);
 			int y = explosion.y + ExplosionUnit.getOffsetY(direction);
-			if (room.isSolid(x, y))
+			if (tilemap.getTile(x, y).isSolid())
 			{
 				explosion.motion[direction] = false;
 			}
@@ -112,7 +112,7 @@ public class Explosion
 				int x = parent.x + ExplosionUnit.getOffsetX(direction);
 				int y = parent.y + ExplosionUnit.getOffsetY(direction);
 
-				if (world.getRoom(x, y).isSolid(x, y)) continue;
+				if (world.getRoom(x, y).getTile(x, y).isSolid()) continue;
 
 				directions[direction] = true;
 			}
@@ -186,8 +186,8 @@ public class Explosion
 
 	static void attemptFire(GobletWorld world, float x, float y, float strength)
 	{
-		Room room = world.getRoom(x, y);
-		if (!room.isSolid(x, y))
+		TileMap tilemap = world.getRoom(x, y);
+		if (!tilemap.getTile(x, y).isSolid())
 		{
 			world.spawnEntity(new EntityFire(world, new Transform3().setPosition(x, y, 0), strength));
 		}

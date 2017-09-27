@@ -5,9 +5,12 @@ import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
 import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionResponse;
 import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionSolver;
 import net.jimboi.boron.stage_a.goblet.GobletWorld;
-import net.jimboi.boron.stage_a.goblet.Room;
+import net.jimboi.boron.stage_a.goblet.component.ComponentMotion;
+import net.jimboi.boron.stage_a.goblet.entity.base.EntityBase;
 import net.jimboi.boron.stage_a.goblet.tick.TickCounter;
+import net.jimboi.boron.stage_a.goblet.tile.TileMap;
 
+import org.bstone.entity.EntityManager;
 import org.bstone.transform.Transform3;
 
 /**
@@ -24,6 +27,14 @@ public class EntityAlertable extends EntityHurtable
 	public EntityAlertable(GobletWorld world, Transform3 transform, AxisAlignedBoundingBox boundingBox, ComponentRenderable renderable)
 	{
 		super(world, transform, boundingBox, renderable);
+	}
+
+	@Override
+	public void onEntityCreate(EntityManager entityManager)
+	{
+		super.onEntityCreate(entityManager);
+
+		this.addComponent(new ComponentMotion());
 	}
 
 	public void onIdleTick()
@@ -52,10 +63,10 @@ public class EntityAlertable extends EntityHurtable
 		super.onLivingUpdate();
 
 		EntityPlayer entityPlayer = this.getWorld().getPlayer();
-		Room room = this.world.getRoom(this.transform.posX(), this.transform.posY());
+		TileMap tilemap = this.world.getRoom(this.transform.posX(), this.transform.posY());
 		float dx = (this.transform.posX() - entityPlayer.getTransform().posX());
 		float dy = (this.transform.posY() - entityPlayer.getTransform().posY());
-		CollisionResponse response = CollisionSolver.solve(this.transform.posX(), this.transform.posY(), dx, dy, 0.3F, 0.3F, room.getBoundingBox());
+		CollisionResponse response = CollisionSolver.solve(this.transform.posX(), this.transform.posY(), dx, dy, 0.3F, 0.3F, tilemap.getBoundingBox());
 		if (response == null)
 		{
 			this.target = entityPlayer;
@@ -69,7 +80,7 @@ public class EntityAlertable extends EntityHurtable
 		}
 		else
 		{
-			this.componentMotion.addMotionTowards(this.transform, this.target.getTransform(), this.alertSpeed);
+			this.getComponent(ComponentMotion.class).addMotionTowards(this.transform, this.target.getTransform(), this.alertSpeed);
 
 			this.onAlertTick();
 

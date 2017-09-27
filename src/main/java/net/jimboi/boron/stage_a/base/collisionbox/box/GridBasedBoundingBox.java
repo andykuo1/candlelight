@@ -14,7 +14,6 @@ public class GridBasedBoundingBox extends BoundingBox
 	protected int height;
 
 	protected boolean[] solids;
-	protected GridAlignedBoundingBox boundingBox;
 
 	public GridBasedBoundingBox(int offsetX, int offsetY, int width, int height)
 	{
@@ -24,7 +23,6 @@ public class GridBasedBoundingBox extends BoundingBox
 		this.height = height;
 
 		this.solids = new boolean[this.width * this.height];
-		this.boundingBox = new GridAlignedBoundingBox(this.offsetX, this.offsetY, 1, 1);
 	}
 
 	@Override

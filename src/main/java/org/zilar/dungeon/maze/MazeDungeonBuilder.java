@@ -1,6 +1,5 @@
 package org.zilar.dungeon.maze;
 
-import org.qsilver.util.map2d.IntMap;
 import org.zilar.dungeon.DungeonBuilder;
 import org.zilar.dungeon.DungeonData;
 import org.zilar.dungeon.RoomBuilder;
@@ -29,8 +28,8 @@ public class MazeDungeonBuilder extends DungeonBuilder
 	@Override
 	public DungeonData bake()
 	{
-		IntMap.fill(this.data.getTiles(), 0, 0, this.data.width, this.data.height, 0);
-		IntMap.fill(this.data.getRegions(), 0, 0, this.data.width, this.data.height, 0);
+		this.data.getTiles().clear(0);
+		this.data.getRegions().clear(0);
 
 		int i;
 		int centerX = this.data.width / 2;
@@ -56,7 +55,7 @@ public class MazeDungeonBuilder extends DungeonBuilder
 			{
 				RoomData spawnRoom = new RoomData(regionHandler.getNextAvailableRegion(), centerX - 3, centerY - 3, 7, 7);
 				spawnDecorator.decorate(spawnRoom);
-				spawnRoom.getTiles().set(3, 3, 2);
+				spawnRoom.getTiles().put(3, 3, 2);
 				genRooms.addRoom(spawnRoom);
 			}
 

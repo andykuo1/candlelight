@@ -1,16 +1,16 @@
 package net.jimboi.apricot.stage_b.glim;
 
+import net.jimboi.apricot.base.astar.AstarNavigator;
+import net.jimboi.apricot.base.astar.NavigatorMap;
+import net.jimboi.apricot.base.astar.map.NavigatorCardinalMap;
 import net.jimboi.apricot.stage_b.glim.bounding.BoundingManager;
 import net.jimboi.apricot.stage_b.glim.bounding.square.AABB;
 
+import org.bstone.util.gridmap.IntMap;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.qsilver.asset.Asset;
-import org.qsilver.astar.AstarNavigator;
-import org.qsilver.astar.NavigatorMap;
-import org.qsilver.astar.map.NavigatorCardinalMap;
-import org.qsilver.util.map2d.IntMap;
 import org.zilar.animation.AnimationManager;
 import org.zilar.dungeon.DungeonBuilder;
 import org.zilar.dungeon.DungeonData;
@@ -55,7 +55,7 @@ public class WorldGlim
 		}
 
 		this.solids = new boolean[this.data.width * this.data.height];
-		for(int i = 0; i < this.data.getTiles().size(); ++i)
+		for(int i = 0; i < this.data.getTiles().length(); ++i)
 		{
 			this.solids[i] = this.data.getTiles().get(i) == 0;
 		}
@@ -113,9 +113,9 @@ public class WorldGlim
 
 		Vector3f u = new Vector3f();
 		Vector3f v = new Vector3f();
-		for (int x = 0; x < map.width; ++x)
+		for (int x = 0; x < map.getWidth(); ++x)
 		{
-			for (int y = 0; y < map.height; ++y)
+			for (int y = 0; y < map.getHeight(); ++y)
 			{
 				Vector3fc wallPos = new Vector3f(x, 0, y);
 				u.set(0);
@@ -182,7 +182,7 @@ public class WorldGlim
 
 	private static boolean isSolid(IntMap map, int x, int y)
 	{
-		if (x < 0 || x >= map.width || y < 0 || y >= map.height) return true;
+		if (!map.containsKey(x, y)) return true;
 		return map.get(x, y) == 0;
 	}
 }

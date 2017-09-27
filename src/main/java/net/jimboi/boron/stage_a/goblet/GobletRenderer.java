@@ -1,5 +1,7 @@
 package net.jimboi.boron.stage_a.goblet;
 
+import net.jimboi.apricot.base.gui.base.Gui;
+import net.jimboi.apricot.base.gui.base.GuiManager;
 import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxRenderer;
 
@@ -52,6 +54,7 @@ public class GobletRenderer
 	public CollisionBoxRenderer collisionBoxRenderer;
 
 	private TextModelManager textModelManager;
+	private GuiManager guiManager;
 
 	public Set<Renderable> renderables;
 	public Set<ComponentRenderable> renderComponents;
@@ -60,6 +63,9 @@ public class GobletRenderer
 	{
 		this.renderables = new HashSet<>();
 		this.renderComponents = new HashSet<>();
+
+		//Gui
+		this.guiManager = new GuiManager(new OrthographicCamera(Goblet.getGoblet().getWindow().getWidth(), Goblet.getGoblet().getWindow().getHeight()), Goblet.getGoblet().getWindow().getCurrentViewPort());
 
 		//Camera
 		this.camera = new OrthographicCamera(Goblet.getGoblet().getWindow().getWidth(), Goblet.getGoblet().getWindow().getHeight());
@@ -76,6 +82,7 @@ public class GobletRenderer
 		input.registerKey("right", GLFW.GLFW_KEY_D, GLFW.GLFW_KEY_RIGHT);
 		input.registerKey("up", GLFW.GLFW_KEY_W, GLFW.GLFW_KEY_UP);
 		input.registerKey("down", GLFW.GLFW_KEY_S, GLFW.GLFW_KEY_DOWN);
+		input.registerKey("action", GLFW.GLFW_KEY_F);
 
 		//Mesh
 		MeshBuilder mb = new MeshBuilder();
@@ -116,6 +123,8 @@ public class GobletRenderer
 
 	public void update(RenderEngine renderEngine, double delta)
 	{
+		this.guiManager.update();
+
 		this.simpleRenderer.bind(this.camera.view(), this.camera.projection());
 		{
 			Matrix4f matrix = new Matrix4f();
@@ -137,6 +146,10 @@ public class GobletRenderer
 						renderable.getRenderModel().getMaterial(),
 						renderable.getRenderTransformation(matrix));
 			}
+
+			for(Gui gui : this.guiManager.elements)
+			{
+			}
 		}
 		this.simpleRenderer.unbind();
 
@@ -148,6 +161,11 @@ public class GobletRenderer
 			}
 			this.collisionBoxRenderer.unbind();
 		}
+	}
+
+	public GuiManager getGuiManager()
+	{
+		return this.guiManager;
 	}
 
 	public Camera getCamera()

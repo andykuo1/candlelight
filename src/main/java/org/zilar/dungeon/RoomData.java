@@ -1,6 +1,6 @@
 package org.zilar.dungeon;
 
-import org.qsilver.util.map2d.IntMap;
+import org.bstone.util.gridmap.IntMap;
 import org.zilar.dungeon.maze.Region;
 
 /**
