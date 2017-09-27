@@ -39,7 +39,8 @@ public class AStarGridCardinal<T> extends AStar<Integer, Integer>
 					if (y < w - 1 && solid.test(map.getValue(integer + w))) neighbors.add(integer + w);
 					if (y > 0 && solid.test(map.getValue(integer - w))) neighbors.add(integer - w);
 					return neighbors;
-				});
+				},
+				Integer::equals);
 
 		this.solid = solid;
 		this.map = map;

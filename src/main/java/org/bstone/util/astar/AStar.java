@@ -2,11 +2,13 @@ package org.bstone.util.astar;
 
 import org.bstone.util.small.SmallMap;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Stack;
 import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 
 /**
@@ -19,6 +21,8 @@ public class AStar<N, C extends Comparable<C>>
 	protected final BiFunction<N, N, C> hscore;
 	protected final Function<N, Iterable<N>> inext;
 
+	protected final BiPredicate<N, N> isend;
+
 	private final Queue<N> opened = new LinkedList<>();
 	private final Queue<N> closed = new LinkedList<>();
 
@@ -27,14 +31,16 @@ public class AStar<N, C extends Comparable<C>>
 	private final Map<N, C> fmap = new SmallMap<>();
 
 	public AStar(BiFunction<C, C, C> fscore,
-			BiFunction<N, N, C> gscore,
-			BiFunction<N, N, C> hscore,
-			Function<N, Iterable<N>> inext)
+	             BiFunction<N, N, C> gscore,
+	             BiFunction<N, N, C> hscore,
+	             Function<N, Iterable<N>> inext,
+	             BiPredicate<N, N> isend)
 	{
 		this.fscore = fscore;
 		this.gscore = gscore;
 		this.hscore = hscore;
 		this.inext = inext;
+		this.isend = isend;
 	}
 
 	public final Iterable<N> search(N start, N end)
@@ -56,6 +62,8 @@ public class AStar<N, C extends Comparable<C>>
 				C lowest = fmap.get(node);
 				for (N open : opened)
 				{
+					if (open == node) continue;
+
 					C c = fmap.get(open);
 					if (c.compareTo(lowest) < 0)
 					{
@@ -65,7 +73,8 @@ public class AStar<N, C extends Comparable<C>>
 				}
 
 				//If reached the end...
-				if (node.equals(end)) break;
+				if (isend.test(node, end))
+					break;
 
 				opened.remove(node);
 				closed.add(node);
@@ -98,19 +107,19 @@ public class AStar<N, C extends Comparable<C>>
 			}
 
 			//Could not find a path...
-			if (!end.equals(node))
+			if (node == null || !isend.test(node, end))
 			{
 				throw new IllegalArgumentException("cannot find path!");
 			}
 
 			//Convert parent pointers to a path...
-			Stack<N> nodes = new Stack<>();
+			List<N> nodes = new ArrayList<>();
 			while (!start.equals(node))
 			{
-				nodes.push(node);
+				nodes.add(0, node);
 				node = parents.get(node);
 			}
-			nodes.push(start);
+			nodes.add(0, start);
 
 			return nodes;
 		}

@@ -10,6 +10,11 @@ import java.util.Random;
  */
 public class CommSimulator extends Cluedo
 {
+	public static void main(String[] args)
+	{
+		CommSimulator simulator = new CommSimulator();
+		simulator.start(null, new Random());
+	}
 	/*
 
 	Effects:
@@ -107,23 +112,30 @@ public class CommSimulator extends Cluedo
 		final Random rand = new Random();
 
 		//Generate world
-		Environment world = new Environment();
-		Simon simon = new Simon("Alfred");
+		World world = new World();
+		Agent simon = new Agent();
 
 		boolean running = true;
 
 		//Run simulation
 		while(running)
 		{
+			System.out.println("...next step...");
 			//Update the users
-			simon.step(out, rand, world);
+			simon.step(world, rand);
 
+			System.out.println("...update world...");
 			//Update the world
-			world.update(out, rand);
+			world.update(rand);
 
-			running = false;
+			//Should exit?
+			if (world.contains("ExitGame", true))
+			{
+				running = false;
+			}
 		}
 
 		//When does the simulation end?
+		System.exit(0);
 	}
 }

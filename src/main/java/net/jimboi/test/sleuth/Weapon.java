@@ -1,6 +1,6 @@
 package net.jimboi.test.sleuth;
 
-import net.jimboi.test.sleuth.comm.Environment;
+import net.jimboi.test.sleuth.comm.environ.Environment;
 
 /**
  * Created by Andy on 9/23/17.

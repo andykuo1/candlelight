@@ -1,62 +1,52 @@
 package net.jimboi.test.sleuth.comm;
 
-import net.jimboi.test.console.Console;
+import net.jimboi.test.sleuth.comm.environ.Action;
+import net.jimboi.test.sleuth.comm.environ.ActionState;
+import net.jimboi.test.sleuth.comm.environ.Environment;
+import net.jimboi.test.sleuth.comm.environ.GoalState;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
- * Created by Andy on 9/25/17.
+ * Created by Andy on 9/27/17.
  */
 public class ThinkMachine
 {
-	protected final Simon user;
+	private final AStarPlanner planner;
+	private final Agent agent;
 
-	public ThinkMachine(Simon user)
+	public ThinkMachine(Agent agent)
 	{
-		this.user = user;
+		this.agent = agent;
+		this.planner = new AStarPlanner(this.agent);
 	}
 
-	public ActionEvent think(Console out)
+	public Iterable<Action> plan(Environment env, GoalState goal)
 	{
-		EvaluationSheet eval = this.getEvaluationSheet();
-		Queue<ActionEvent> events = new LinkedList<>();
-		Collections.addAll(events, eval.getEvents());
+		ActionState start = new ActionState(env, null);
+		List<Action> actions = new ArrayList<>();
+		Iterable<Environment> path = this.planner.search(start, goal);
+		if (path == null) return actions;
 
-		while(!events.isEmpty())
+		Iterator<Environment> iter = path.iterator();
+
+		//Skip the first node...
+		iter.next();
+
+		//Get all the rest!
+		for(Environment state : path)
 		{
-			ActionEvent event = events.poll();
-			boolean flag = event.evaluate(out, this.user, eval);
-			if (!flag) events.offer(event);
+			Action action = ((ActionState) state).getAction();
+			if (action == null) continue;
+			actions.add(action);
 		}
-
-		return eval.getResult();
+		return actions;
 	}
 
-	protected Collection<ActionEvent> getPossibleActionSet(Simon user, Collection<ActionEvent> dst)
+	public Agent getAgent()
 	{
-		//Get all actions possible based off of actor knowledge of environment
-
-		return dst;
-	}
-
-	protected EvaluationSheet getEvaluationSheet()
-	{
-		Set<ActionEvent> events = new HashSet<>();
-
-		//Update events with all possible actions
-		this.getPossibleActionSet(this.user, events);
-
-		int i = 0;
-		ActionEvent[] dst = new ActionEvent[events.size()];
-		for(ActionEvent event : events)
-		{
-			dst[i] = event;
-		}
-		return new EvaluationSheet(dst);
+		return this.agent;
 	}
 }
