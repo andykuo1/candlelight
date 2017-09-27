@@ -33,7 +33,7 @@ public class ActionBase extends Action
 	public ActionBase addEffect(String state, boolean enabled)
 	{
 		this.effects.put(state, enabled);
-		this.addRequirement(state, !enabled);
+		//this.addRequirement(state, !enabled);
 		return this;
 	}
 
@@ -41,7 +41,7 @@ public class ActionBase extends Action
 	{
 		this.effects.put(state, enabled);
 		this.probability.put(state, probability);
-		if (probability > 0.5F) this.addRequirement(state, !enabled);
+		//if (probability > 0.5F) this.addRequirement(state, !enabled);
 		return this;
 	}
 
@@ -87,12 +87,17 @@ public class ActionBase extends Action
 	@Override
 	public int evaluate(Agent user, Environment env)
 	{
+		Iterable<Bias> biases = user.getPossibleBiases(env);
 		int total = this.cost;
 		for(String state : this.effects.keySet())
 		{
-			//TODO: May need to round for negatives...
-			int ecost = (int) (user.getBiasedCost(env, state, this.effects.get(state)) * this.probability.getOrDefault(state, 1F));
-			total += ecost;
+			int cost = 0;
+			for(Bias bias : biases)
+			{
+				cost += bias.evaluate(env, state, this.effects.get(state));
+			}
+			cost *= this.probability.getOrDefault(state, 1F);
+			total += cost;
 		}
 		return total;
 	}

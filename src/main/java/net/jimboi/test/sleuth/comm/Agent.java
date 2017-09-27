@@ -2,6 +2,8 @@ package net.jimboi.test.sleuth.comm;
 
 import net.jimboi.test.sleuth.comm.environ.Action;
 import net.jimboi.test.sleuth.comm.environ.ActionBase;
+import net.jimboi.test.sleuth.comm.environ.Bias;
+import net.jimboi.test.sleuth.comm.environ.BiasBase;
 import net.jimboi.test.sleuth.comm.environ.Environment;
 import net.jimboi.test.sleuth.comm.environ.Goal;
 import net.jimboi.test.sleuth.comm.environ.GoalBase;
@@ -19,6 +21,7 @@ public class Agent
 	public final ThinkMachine thinker;
 	public List<Goal> goals;
 	public List<Action> actions;
+	public List<Bias> biases;
 
 	public Agent()
 	{
@@ -72,6 +75,12 @@ public class Agent
 				.addRequirement("MakeFirewood", true)
 				.addRequirement("HasFire", true)
 				.addEffect("MakeTorch", true));
+
+		//Generate biases
+		biases = new ArrayList<>();
+
+		biases.add(new BiasBase()
+				.addBias("CanMove", false, 2));
 	}
 
 	public boolean hasMetGoals(World world)
@@ -123,9 +132,9 @@ public class Agent
 		return this.thinker.plan(env, goals);
 	}
 
-	public int getBiasedCost(Environment env, String state, boolean enabled)
+	public Iterable<Bias> getPossibleBiases(Environment env)
 	{
-		return 0;//"CanMove".equals(state) && !enabled ? 8 : 0;
+		return this.biases;
 	}
 
 	public Iterable<Action> getPossibleActions(Environment env)

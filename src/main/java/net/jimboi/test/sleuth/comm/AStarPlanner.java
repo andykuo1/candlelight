@@ -35,7 +35,19 @@ public class AStarPlanner extends AStar<Environment, Integer>
 					{
 						if (action.hasRequiredState(agent, actionState))
 						{
-							states.add(new ActionState(actionState, action));
+							ActionState next = new ActionState(actionState, action);
+
+							//Make sure that we don't mindlessly add existing effects...
+							boolean flag = false;
+							for(String state : next.getStates())
+							{
+								if (!actionState.contains(state, next.getValue(state)))
+								{
+									flag = true;
+									break;
+								}
+							}
+							if (flag) states.add(next);
 						}
 					}
 					return states;
