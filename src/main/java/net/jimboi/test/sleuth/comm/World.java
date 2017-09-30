@@ -1,20 +1,13 @@
 package net.jimboi.test.sleuth.comm;
 
-import net.jimboi.test.sleuth.comm.environ.FiniteEnvironment;
+import net.jimboi.test.sleuth.comm.goap.MutableEnvironment;
 
 import java.util.Random;
 
 /**
  * Created by Andy on 9/27/17.
  */
-public class World extends FiniteEnvironment
+public abstract class World extends MutableEnvironment
 {
-	public World()
-	{
-		//Generate environments
-	}
-
-	public void update(Random rand)
-	{
-	}
+	public abstract void run(Random rand);
 }

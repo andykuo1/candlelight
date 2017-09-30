@@ -2,7 +2,7 @@ package net.jimboi.test.sleuth;
 
 import net.jimboi.test.sleuth.cluedo.MemoryBank;
 import net.jimboi.test.sleuth.cluedo.Room;
-import net.jimboi.test.sleuth.comm.environ.Environment;
+import net.jimboi.test.sleuth.comm.goap.Environment;
 import net.jimboi.test.sleuth.data.CriminalConviction;
 import net.jimboi.test.sleuth.data.EducationLevel;
 import net.jimboi.test.sleuth.data.Gender;

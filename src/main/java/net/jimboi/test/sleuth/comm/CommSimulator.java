@@ -2,6 +2,7 @@ package net.jimboi.test.sleuth.comm;
 
 import net.jimboi.test.console.Console;
 import net.jimboi.test.sleuth.cluedo.Cluedo;
+import net.jimboi.test.sleuth.comm.wood.WorldWood;
 
 import java.util.Random;
 
@@ -112,28 +113,8 @@ public class CommSimulator extends Cluedo
 		final Random rand = new Random();
 
 		//Generate world
-		World world = new World();
-		Agent simon = new Agent();
-
-		boolean running = true;
-
-		//Run simulation
-		while(running)
-		{
-			System.out.println("...next step...");
-			//Update the users
-			simon.step(world, rand);
-
-			System.out.println("...update world...");
-			//Update the world
-			world.update(rand);
-
-			//Should exit?
-			if (world.contains("ExitGame", true))
-			{
-				running = false;
-			}
-		}
+		WorldWood world = new WorldWood();
+		world.run(rand);
 
 		//When does the simulation end?
 		System.exit(0);
