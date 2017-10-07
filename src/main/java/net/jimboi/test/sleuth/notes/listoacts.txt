@@ -1,0 +1,63 @@
+
+Actions
+
+Methods of Death
+- Firearm
+- Knife
+- Blunt
+- Burning
+- Drowning
+- Suffocation
+- Strangulation
+- Poison
+
+
+GOAL: Victim (DEAD)
+
+Actions available:
+- Kill Victim
+- Stab Victim in the Head
+- Obtain Murder Weapon
+- Find Murder Weapon
+
+
+
+
+
+3 women
+1 Victim
+
+Stabbed to death.
+Then took her cellphone.
+And went to the other women.
+Called herself.
+Pretended to hear her death.
+Then planted the cellphone back in the commotion.
+
+Reason is revenge: she took her dream job.
+
+
+Every time someone leaves a group, they give a reason.
+How to construct an alibi.
+- Remove opportunity
+    - Time & Location
+        - Prove at somewhere else at same time of murder
+- Remove means
+- Remove motive
+
+Every action with someone there (if not hiding) will remember person.
+
+
+Arrange meeting with person as a group.             ACCESS
+Obtain Knife.                                       MEANS
+Can assume the person has a cellphone.              CLEANUP
+Get to the place.                                   ACCESS
+Excuse herself from the group.                      CLEANUP
+Sneak to the Victim's place.                        ACCESS
+Stab the Victim.                                    MURDER
+Grab the phone.                                     CLEANUP
+Put the phone in her pocket.                        CLEANUP
+Went to the other women.                            CLEANUP
+Used the phone to call her own phone.               CLEANUP
+Pretended to hear her death.                        CLEANUP
+Then planated the cellphone back in the commotion.  CLEANUP

@@ -5,15 +5,16 @@ import org.bstone.util.astar.AStar;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Created by Andy on 9/27/17.
  */
 public class GOAPPlanner extends AStar<Environment, Integer>
 {
-	protected final Iterable<Action> actions;
+	protected final Function<Environment, Iterable<Action>> actions;
 
-	public GOAPPlanner(Iterable<Action> actions)
+	public GOAPPlanner(Function<Environment, Iterable<Action>> actions)
 	{
 		super(
 				(integer, integer2) -> integer + integer2,
@@ -36,7 +37,7 @@ public class GOAPPlanner extends AStar<Environment, Integer>
 					List<Environment> states = new ArrayList<>();
 					ActionSnapshot snapshot = null;
 
-					for(Action action : actions)
+					for(Action action : actions.apply(state))
 					{
 						if (action.isSupportedConditions(state))
 						{

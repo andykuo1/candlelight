@@ -1,15 +1,89 @@
-package net.jimboi.test.sleuth.comm;
+package net.jimboi.test.sleuth.comm.item;
 
+import net.jimboi.test.sleuth.comm.World;
+import net.jimboi.test.sleuth.comm.goap.Action;
+import net.jimboi.test.sleuth.comm.goap.ActionBase;
+import net.jimboi.test.sleuth.comm.goap.Attribute;
+import net.jimboi.test.sleuth.comm.goap.Condition;
+import net.jimboi.test.sleuth.comm.goap.Effect;
+import net.jimboi.test.sleuth.comm.goap.Environment;
+import net.jimboi.test.sleuth.comm.goap.GOAPPlanner;
+import net.jimboi.test.sleuth.comm.goap.MutableEnvironment;
+
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Created by Andy on 9/27/17.
  */
 public class WorldMurder extends World
 {
+	public static final Attribute[] WEIGHT = Attribute.create("WEIGHT", "NONE", "LIGHT", "MEDIUM", "HEAVY");
+	public static final Attribute FLAMMABILITY = Attribute.create("FLAMMABILITY");
+	public static final Attribute[] HARDNESS = Attribute.create("HARDNESS", "SOFT", "STIFF", "HARD");
+	public static final Attribute TRANSPARENCY = Attribute.create("TRANSPARENCY");
+	public static final Attribute[] DURABILITY = Attribute.create("DURABILITY", "LOW", "MEDIUM", "HIGH");
+	public static final Attribute[] CONTAINER = Attribute.create("CONTAINER", "SMALL", "MEDIUM", "LARGE", "TALL");
+	public static final Attribute[] VALUABLE = Attribute.create("VALUABLE", "LOW", "MEDIUM", "HIGH");
+	public static final Attribute GOLD = Attribute.create("GOLD");
+	public static final Attribute[] SIZE = Attribute.create("SIZE", "TINY", "SMALL", "MEDIUM", "LARGE");
+	public static final Attribute FIREARM = Attribute.create("FIREARM");
+	public static final Attribute SHARP = Attribute.create("SHARP");
+	public static final Attribute ENTRANCE = Attribute.create("ENTRANCE");
+	public static final Attribute LOCKED = Attribute.create("LOCKED");
+
+	public static final ItemMaterial CLOTH = new ItemMaterial(FLAMMABILITY, HARDNESS[0]);
+	public static final ItemMaterial GLASS = new ItemMaterial(TRANSPARENCY, DURABILITY[0]);
+	public static final ItemMaterial PAPER = new ItemMaterial(FLAMMABILITY);
+	public static final ItemMaterial CERAMIC = new ItemMaterial(HARDNESS[2], DURABILITY[0]);
+	public static final ItemMaterial METAL = new ItemMaterial(HARDNESS[3], DURABILITY[3]);
+	public static final ItemMaterial WOOD = new ItemMaterial(FLAMMABILITY);
+
+	public static final Attribute CAN_SEE_ITEM = Attribute.create("CAN_SEE");
+
+	private static final Set<Action> ACTIONS = new HashSet<>();
+	private static Action register(Action action)
+	{
+		ACTIONS.add(action); return action;
+	}
+	static
+	{
+		register(new ActionBase("PICKUP_ITEM", 1)
+				.addRequirement(new Condition()
+				{
+					@Override
+					public boolean test(Environment env)
+					{
+						return false;
+					}
+				})
+				.addEffect(new Effect()
+				{
+					@Override
+					public boolean apply(MutableEnvironment env, Random rand)
+					{
+						return false;
+					}
+				}));
+	}
+	/*
+	public static final Action PICKUP_ITEM = new ActionBase("PICKUP_ITEM")
+			.addEffect();
+			- Pick Up ITEM
+				- REQ: can see ITEM
+				- REQ: position = ITEM position
+				- REQ: strength > weight class
+				- REQ: if too big: use both hands
+				- REQ: in hand = NONE
+			- EFF: in hand = ITEM
+/*/
 	@Override
 	public void run(Random rand)
 	{
+		//final Agent murderer = new Agent();
+		//murderer.actions.add(new ActionBase(""));
+
 		/*
 
 		All Objects have Properties and Actions change those Properties.
@@ -273,14 +347,41 @@ public class WorldMurder extends World
 				- DURABILITY_HIGH
 		*/
 
+		Environment goal;// = new MutableEnvironment().set(VICTIM_IS_DEAD,
+		// true);
+		GOAPPlanner planner;// = new GOAPPlanner(ACTIONS);
+
 		boolean running = true;
+
+		//Run simulation
 		while(running)
 		{
-			//if (this.containsAttribute("LEAVE"))
+			System.out.println("...next...");
+
+			//Update the users
+			/*
+			List<Action> actions = planner.plan(this, goal);
+			for (Action action : actions)
+			{
+				System.out.print("Try " + action + " . . . ");
+				if (action.isSupportedConditions(this))
+				{
+					System.out.println("DONE!");
+					action.applyEffects(this, rand);
+				}
+				else
+				{
+					System.out.println("FAILURE!");
+				}
+			}
+			//Should exit?
+			if (actions.isEmpty() || goal.isSatisfiedActionState(this))
 			{
 				running = false;
 			}
+			*/
 		}
+
 		System.exit(0);
 	}
 }

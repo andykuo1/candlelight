@@ -109,15 +109,25 @@ public abstract class GridMap<T>
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append('[');
+
+		boolean flag = false;
 		for(int y = 0; y < this.height; ++y)
 		{
+			if (y > 0)
+			{
+				sb.append('\n');
+			}
+
 			for(int x = 0; x < this.width; ++x)
 			{
 				sb.append(this.getValue(x, y));
-				sb.append(',');
-				sb.append(' ');
+
+				if (!(x == this.width - 1 && y == this.height - 1))
+				{
+					sb.append(',');
+					sb.append(' ');
+				}
 			}
-			sb.append('\n');
 		}
 		sb.append(']');
 		return sb.toString();

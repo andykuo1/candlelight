@@ -1,0 +1,166 @@
+1. Kidnapping - custodial
+2. Kidnapping - ransom
+3. Kidnapping - crazy person or abuser
+4. Hostage taking - surrounded by police
+5. Hostage taking - on the run
+6. Burglary - amateur, single incident
+7. Burglary - ongoing multiple victim
+8. Drug dealing
+9. Drug smuggling
+10. Fencing stolen goods
+11. Gambling - running an illegal establishment
+12. Gambling - cheating racket
+13. Gambling - debts
+14. Cheating - amateur or school sports
+15. Cheating - grades
+16. Cheating - other
+17. Clandestine love affair - married
+18. Clandestine affair - unacceptable partner (too young, gay)
+19. Philandering (lots of affairs)
+20. Dishonor (hiding a loss of status)
+21. Cheating - politics
+22. Political corruption - direct bribe taking
+23. Political corruption - misusing power
+24. Cheating a neighbor in a business deal (outside of profession -- real estate, sale of car, etc.)
+25. Cheating a partner in business
+26. Cheating a relative out of a family resource (inheritance, jointly owned property)
+27. Theft of affection (a lover, a mentor, other jealousy inducing situations.)
+28. Blackmail (as a business -- individual acts belong on the secondary crime list)
+29. Revenge for Humiliation, bullying, oppression
+30. Revenge for stealing a lover or position
+31. Revenge for false accusation
+32. Revenge for cheating
+33. Revenge for honest winning
+34. Act of blind rage
+35. Fault in a car accident
+36. Fault in a workplace accident
+37. Fault in a home liability situation
+38. Fault in an unintended misfortune (sports loss, job loss, humiliation in front of mentor, etc.)
+39. Blatant incompetence
+40. Workplace Corruption - misuse of power
+41. Workplace Corruption - self-aggrandizement (but doesn't rise to embezzlement)
+42. Workplace Corruption - embezzlement
+43. Workplace Corruption - Political games, ruin of enemies, etc.
+44. Workplace Corruption - stealing credit ditching blame.
+45. Workplace Corruption - Money laundering
+46. Workplace Corruption - Industrial espionage, or ruining the business intentionally (Includes internal product tampering)
+47. Vandalism - outsider product tampering
+48. Vandalism - general (graffiti, broken windows, random passive aggressive rage)
+49. Vandalism - harrassment
+50. Vandalism - Munchhausens - being a victim for sympathy or advantage
+51. Munchhausen's by Proxy
+52. Self-justified theft (something that you believe belongs to you)
+53. Sabotaging a rival
+54. Loved one Threatened. (Literal real danger)
+55. Loved one threatened (minor threats to reputation, dreams, etc.)
+56. Desperation to impress someone
+57. Codependency
+58. Reckless endangerment
+59. Withholding information to harm someone else
+60. Withholding information to help onesself
+61. Opportunistic theft (i.e. not planned)
+62. Frame an enemy for a crime
+63. Murder to rid someone of a bothersome person (wife husband relative, etc.)
+64. Murder from anger
+65. Murder from long held hatred
+66. Murder from jealousy
+67. Murder of rival
+68. Old Secret - false identity
+69. Old Secret - faked death
+70. Old Secret - falsified credentials
+71. Old Secret - falsified glory
+72. Old Secret - secret child or pregnancy
+73. Double life (work life or home life)
+74. Kiting personal loans (i.e. borrowing from peter to pay paul)
+75. Passive covering for someone else suddenly becomes active.
+76. Family, class or group honor/loyalty (i.e. covering when someone else loses honor as if it were you own)
+77. Inappropriate Obsession
+78. Political rage
+79. Road rage
+80. Spree killing
+81. Spree theft
+82. Theft hoarding (i.e. compulsion to acquire things)
+83. Serial killing
+84. Domestic Abuse
+85. Unacceptable Secret identity (jeckyll hyde)
+86. Secret Drinker (or other addiction)
+87. Secret prostitute or john
+88. Dealing in black market goods (expired food, questionable drugs)
+89. Distilling and selling booze
+90. Engaged in legal activities you can't let your family know about (growing medical marijuana, abortionist, writing porn)
+91. Political Corruption - running a crime ring
+92. Hijacking Cargo (trucks or boats)
+93. Carjacking
+94. Car Theft
+95. Forged Artwork
+96. Forged Documents
+97. Art Theft
+98. Art Theft for ransom
+99. Forged IDs
+100. Providing alcohol to minors
+101. Forged proof of libelous statements
+102. Libel or conspiracy theory that is coincidentally true
+103. Industrial or corporate mistake that threatens public health
+104. Upstanding sponsor of terrorist or criminal activities
+105. Political Dirty Tricks (Segretti, etc.)
+106. Libel (upcoming trial, as yet unproven?)
+107. Harassment lawsuit
+108. Legit Lawsuit that annoys powerful
+109. Unprosecuted crime (I.e. bully got away with it)
+110. Old Secret - Nazi collaborator, Soviet Spy, Irish Terrorist
+111. Ignoring Safety Violations (inspector or inspected)
+112. Plagiarism
+113. Creating/distributing pirated goods
+114. Computer Hacking
+115. Identity Theft (ring)
+117. Humiliation over a secret love/rejection
+118. Resentment over being pushed too hard (i.e. coach, mentor, boss, parent)
+119. Suveillance/bugging a rival
+120. Destroyed dream
+121. Loss of control over another (i.e. abuser)
+122. Old Secret - possession of something lost or stolen long ago
+123. Knobbling a court case (killing witness, judge, prosecutor)
+124. Murder as a warning to someone else
+123. Kidnapping (of person, pet or object) to prevent someone from testifying or taking office.)
+124. Home invasion hostages (i.e. someone behaving weirdly because someone is holding family hostage)
+125. Escaped criminal
+126. Desire to stop a loved one from doing something stupid (or that you con't approve of)
+127. Arson for profit
+128. Arson for fun
+129. Sabotage - Internal
+130. Sabotage of public service
+131. Sabotage of Rival
+132. Arson or other crime as warning (enforcement racket)
+133. Poaching
+134. Simple Malice
+135. Crack lab, or really big hidden illegal Marijuana greenhouse.
+136. Personal power Struggle between executives or elected officials
+137. Personal Power Struggle within a family
+138. Small theft with a much larger than expected MacGuffin value. (lottery ticket, survivalist's stash of gold
+139. Faking results to gain professionally (reporter, scientist, executive)
+140. Faking results to gain politically
+141. Unintended death in a careless driveby shooting
+142. Panic after hunting accident
+143. Overreaction to a break in
+144. Shot a burglar who wasn't a burglar
+145. Dispute over property gone wrong (i.e. shoot a burglar on someone else's property, becuase you feel it should be yours)
+146. Escalation in Divorce, Domestic or Business Partnership Break Up
+147. Panic after fatal mistake (runaway priest)
+148. Protecting someone else from knowing the consequences of what they did.
+149. Protecting the reputation of a "great person" - historical figure, star
+150. Bank Robbery
+151. Mugging (one incident)
+152. Mugging as an ongoing profession
+153. Professional Character Assassination (drugging, badger game, etc.)
+154. Individual Character Assassination (prisoner of Zenda)
+155. Con game to get someone to sign away rights or money
+156. Con game to trick a witness into swearing to a will or other legal thing.
+157. Murder for inheritance
+158. Murder for insurance
+159. Murder of previous spouse
+160. Murder of previous boss
+161. Murder of previous spouse of spouse
+162. Arson to destroy or murder a rival
+163. Murder to prevent from being fired.
+164. Accident Creates Opportunity to steal, fake death or otherwise change life.
+165. Blackmailer - fake an affair to set up blackmail, get victims trust by pretending to be blackmailed too.

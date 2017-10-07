@@ -34,7 +34,7 @@ public class AgentWood extends Agent
 
 	public AgentWood()
 	{
-		this.planner = new GOAPPlanner(this.actions);
+		this.planner = new GOAPPlanner(e -> this.actions);
 
 		//Generate goals
 		goals = new GoalSnapshot()

@@ -1,0 +1,153 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Murder For Insurance (GREED)
+House - Living Room
+
+Generate Venue
+Generate Victim
+Generate Murderer
+Generate Suspects
+
+Victim must have Insurance
+Murderer must want Life Insurance Payout
+Murderer must want NOT to be discovered
+Suspects are neighbors and related people of the Victim / Murderer
+
+Inciting Incident
+    - Victim gets Life Insurance
+        - OR: the Murderer convinces the Victim to do so
+        - OR: the Murderer discovers the Victim has Life Insurance
+Planning Phase
+    -
+Time of Crime
+    -
+Clean Up
+    -
+Investigation
+    - Player begins the game.
+
+
+
+
+Interrogation:
+
+Info
+Time (Relative or Absolute)
+Location (Relative or Absolute)
+Attributes
+Actions / Events
+Biography
+Object
+Source (Sensory, Second, Inference)
+
+
+Describe...
+- ATTRIBUTES of
+    - OBJECT / PERSON at...
+        - LOCATION
+        - TIME
+- EVENTS of...
+    - HISTORY of...
+        - OBJECT / PERSON
+    - ACTIONS at...
+        - LOCATION
+        - TIME
+Tell...
+- SOURCE of INFO
+- TIME of EVENT
+- LOCATION of EVENT
+
+
+
+Can you describe OBJ at LOCATION and or at TIME?
+    - Attributes
+What happened at LOCATION and or at TIME?
+    - Actions / Object
+What do you know about OBJ?
+    - Biography
+How did you know INFO?
+    - Source
+At what time and or at what location did ACTION / BIOGRAPHY?
+    - Time / Location
+
+Interrogation is basically the navigation of Memory.
+
+Memory:
+- Source
+- Time Created
+- Location Created
+- Is Lie?
+- What was remembered (Action, Biography, Attributes)
+    - Action and Attributes have Owner and Target objects
+    - Biography has implications
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+The Game:
+You arrive on the crime scene. There are 5 suspects and a victim. The Victim
+was stabbed to death. You've been told that Joe did it. His fingerprints are
+on the weapon. Why?
+
+
+So the game has 2 sections:
+
+Whodunit?
+- How did the victim die?
+- Who could have caused this?
+
+Whodunit can usually be solved by investigation. And usually involves
+connecting / converging evidence and realizing staged evidence. Here you find
+ the answer.
+
+To generate, the murderer needs to know requirements and effects, and plan
+the course of action.
+
+
+Whyjadoit? (Find side effects (or cause or inciting incident) of the MOTIVE in
+each element)
+- The character
+    - Traits (can change over time)
+- The history
+    - Weekly schedule
+        - Work
+        - Obligations
+        - Hobbies
+        - Random Activities
+    - Recent Milestones
+        - Bought a car
+        - Bought life insurance
+        - Threw a party
+        - Holidays
+- The relationships
+        - Each time the relationship with the person changes / degrades
+        - Frequent Activities between Suspects / Victim / Others
+        - Got Married
+        - Started dating someone
+        - Birthed child
+- The events up to this point
+
+Whyjadoit can usually be solved by interrogation. And usually involves removing
+lies and checking with other sources. Here you find the question.
+
+To generate, teh murderer needs to....?
+
+
+There must exist actions that allow the Victim to commit suicide, etc.
+This is so the murderer can know how to accurately replicate the scene for
+that, basically putting all the effects and making sure the requirements CAN
+be met.
+
+Woman
+- Who has been married before
+- Whose previous husband died of a heart attack
+    - She requested no autopsy
+- Her husband dies by accidentally drinking antifreeze
+- There is a dropper that has his DNA at the end.
+    - This is because she force fed more antifreeze
+- There is only her fingerprints on the cup.
+- She realizes that the police are examining her old husband's body.
+    - She gave her daughter the same antifreeze
+        - Her daughter is assumed to have attempted suicide
+        - She wrote a suicide letter
+- She reported to not have known
+- There is life insurance on the husbands.

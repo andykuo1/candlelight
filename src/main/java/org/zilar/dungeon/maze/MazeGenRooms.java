@@ -59,9 +59,15 @@ public class MazeGenRooms extends AbstractMazeGen
 		IntMap regions = data.getRegions();
 		for (RoomData room : this.rooms)
 		{
-			tiles.put(room.x, room.y, room.getTiles().get(room.x, room.y));
-			regions.forEach(room.x, room.y, room.width, room.height, (k, v) -> {
-				regions.put(k.x(), k.y(), room.getRegionID());
+			//tiles.put(room.x, room.y, room.getTiles().get(room.x, room.y));
+			room.getTiles().forEach(0, 0, room.width, room.height,
+					(vec, tile) -> {
+						tiles.put(room.x + vec.x(), room.y + vec.y(), tile);
+			});
+
+			regions.forEach(room.x, room.y, room.width, room.height,
+					(vec, tile) -> {
+						regions.put(vec.x(), vec.y(), room.getRegionID());
 			});
 		}
 

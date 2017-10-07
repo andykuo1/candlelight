@@ -1,0 +1,207 @@
+
+The Game is about figuring out Motive, Means, and Opportunity, then also finding Proof.
+
+Although it is randomly generated, it builds history each time it is encountered with the player.
+
+MEANS:
+- Weapons
+    Knife
+    Gun
+    Blunt
+    Poison
+    Burning
+    Drowning
+    Suffocation
+    Strangulation
+- Convoluted Ways?
+    Car Crash
+    Fall out of Window
+
+OPPORTUNITY:
+- Who
+    - Access to Victim / Death
+- What
+    - Access to Crime / Death
+- When
+    - Time of Crime / Death
+- Where
+    - Place of Crime / Death
+- Alibi?
+
+MOTIVES:
+- SECRET
+    - CAUSE: Someone discovers something.
+    - Prevent spreading of Secret
+- REVENGE
+    - CAUSE: Someone wrongs someone.
+    - Deliver Justice for previous history
+- GREED
+    - CAUSE: Someone has something of value.
+    - Take something of value from another
+- STATUS
+    - CAUSE: Threat of loss of status.
+    - Maintain / improve status quo
+- SUBSTITUTE
+    - CAUSE: Threat of harm to someone.
+    - Prevent harm to someone
+- LOVE
+    - CAUSE: Obstruction of Romantic Obsession
+    - ???
+- FURY
+- EMPATHY
+- OBSESSION
+- MENTAL
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Goals -> SubGoals -> Events -> Tasks -> Actions
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Possible Secrets:
+- Secret of Associativity
+- Secret of Crime
+- Secret of Affair
+- Secret of Greed
+
+- SECRET
+    - CAUSE: Someone discovers something and is likely to tell others.
+    - Prevent spreading of Secret
+        - Convince the Someone to NEVER share
+            - Intimidation
+                - Physical
+                - Emotional
+            - Bribery
+            - Blackmail
+            - Persuasion
+                - Friendship
+                - Convince otherwise
+            - If FOR SURE will share
+                - Make sure the Someone CANNOT share
+                    - Death!!!
+- REVENGE
+    - CAUSE: Someone wrongs someone.
+    - Deliver Justice for previous history
+        - Get the Someone to apologize
+            - Talk to the person
+            - Get the Someone to understand viewpoint
+                - Talk to the person
+                - Do similar against the Someone
+        - Get the Someone to suffer the consequences
+            - Do similar against the Someone
+            - Public Humiliation
+            - Torture!!!
+            - Death!!!
+- GREED
+    - CAUSE: Someone has something of value.
+    - Take something of value from another
+        - Steal the item
+            - Take item by force
+            - Take item by sneak
+        - Convince the person to give the item
+        - Death!!! (Life insurance)
+- STATUS
+    - CAUSE: Threat of loss of status.
+    - Maintain / improve status quo
+        - Talk
+        - Remove obstables
+- SUBSTITUTE
+    - CAUSE: Threat of harm to someone.
+    - Prevent harm to someone
+        - Remove threat
+
+
+
+Story 1:
+GOALS:
+- Murder
+    - Get Weapon
+    - Get to Victim
+    - Use Weapon on Victim
+- To Be Innocent
+SubGoals:
+
+
+SECRET
+- BLACKMAIL
+- WHISTLEBLOWING
+GREED
+- Inheritance
+- Theft
+REVENGE
+- Personal Vendetta
+- Resentment
+- Sibling Rivalry
+OBSESSION
+- To Further their Cause
+    - Class Conflict
+    - Narcotics
+    - Spies
+    - Political
+LOVE
+- JEALOUSY
+- Obstruction of Romantic Obsession
+FURY
+- Did not mean to kill
+- Frustration / Hate
+MENTAL
+- Sociopath
+STATUS
+- POWER PLAY
+- Property Dispute
+SUBSTITUTION
+- To Protect
+EMPATHY
+- Righteous Crime
+
+MISC:
+Frame someone
+Self-Defense
+
+
+
+
+Generating characters:
+- A circle or related
+- Then peripheral characters
+
+
+
+/*
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+THE STORY
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+WOAH!
+...
+Are you real?
+...
+Nod for yes.
+Shake for no.
+...
+(if answered) Huh. You can understand what I'm thinking.
+(if not) Figures. A giant head floating in space. Don't know what I was thinking.
+Weird. This must be a dream.
+Do you feel pain? Is it cold in there?
+Hm. That sucks. Wouldn't want to be you.
+Well, I'm going to wake up now.
+It's a big day tomorrow. It's my first case on the job.
+Gotta make a good impression this time. Heh heh.
+See you around.
+
+(He wakes up and finds you still staring at him.)
+(He goes through his morning routine and goes to work.)
+(Someone passes by and greets him.)
+(He replies, then points at the screen.)
+(The person looks, then shakes his head.)
+Strange...
+Are you my guardian angel? I imagined they would look a lot more... nevermind.
+(if the player clicks, he will stop and says:) Do that again.
+(he waits for a click.) That feels strange.
+(if the player clicks on him.) I felt that.
+(if the player clicks on something else.) I see that.
+(if the player does it multiple times.) Alright, knock it off. It's getting old.
+(if the player clicks on someone else.) That's rude.
+(later on, he will ask the player for help in the bathroom.)
+
+*/

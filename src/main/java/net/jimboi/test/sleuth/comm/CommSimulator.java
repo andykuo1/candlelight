@@ -2,7 +2,6 @@ package net.jimboi.test.sleuth.comm;
 
 import net.jimboi.test.console.Console;
 import net.jimboi.test.sleuth.cluedo.Cluedo;
-import net.jimboi.test.sleuth.comm.wood.WorldWood;
 
 import java.util.Random;
 
@@ -111,11 +110,11 @@ public class CommSimulator extends Cluedo
 	protected void play(Console out)
 	{
 		final Random rand = new Random();
-
+		/*
 		//Generate world
-		WorldWood world = new WorldWood();
+		World world = new Simdur();
 		world.run(rand);
-
+		*/
 		//When does the simulation end?
 		System.exit(0);
 	}

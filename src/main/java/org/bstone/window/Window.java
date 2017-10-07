@@ -210,6 +210,11 @@ public class Window
 		GLFW.glfwSetWindowSize(this.handle, width, height);
 	}
 
+	public void setWindowPosition(int x, int y)
+	{
+		GLFW.glfwSetWindowPos(this.handle, x, y);
+	}
+
 	public boolean shouldCloseWindow()
 	{
 		return GLFW.glfwWindowShouldClose(this.handle);
