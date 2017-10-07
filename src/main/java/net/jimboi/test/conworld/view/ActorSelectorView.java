@@ -1,7 +1,7 @@
 package net.jimboi.test.conworld.view;
 
 import net.jimboi.test.console.Console;
-import net.jimboi.test.console.ConsoleHelper;
+import net.jimboi.test.console.ConsoleUtil;
 import net.jimboi.test.conworld.acor.Actor;
 import net.jimboi.test.conworld.world.World;
 
@@ -29,13 +29,13 @@ public class ActorSelectorView extends View
 	@Override
 	protected void initialize(Console console)
 	{
-		ConsoleHelper.title(console, "Select Actor");
+		ConsoleUtil.title(console, "Select Actor");
 
 		for(Actor actor : this.world.actors)
 		{
 			if (this.filter.test(actor))
 			{
-				ConsoleHelper.button(console, actor.getName(), () ->
+				ConsoleUtil.button(console, actor.getName(), () ->
 				{
 					this.callback.accept(actor);
 					this.destroy();

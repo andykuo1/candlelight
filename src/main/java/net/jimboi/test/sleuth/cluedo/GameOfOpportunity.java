@@ -1,7 +1,7 @@
 package net.jimboi.test.sleuth.cluedo;
 
 import net.jimboi.test.console.Console;
-import net.jimboi.test.console.ConsoleHelper;
+import net.jimboi.test.console.ConsoleUtil;
 import net.jimboi.test.sleuth.Actor;
 import net.jimboi.test.sleuth.ActorFactory;
 import net.jimboi.test.sleuth.data.Time;
@@ -170,58 +170,58 @@ public class GameOfOpportunity extends Cluedo
 	private void main(Console console, Random rand)
 	{
 		console.clear();
-		ConsoleHelper.title(console, "Cluedo");
-		ConsoleHelper.message(console, "Welcome Detective. What would you like to do first?");
+		ConsoleUtil.title(console, "Cluedo");
+		ConsoleUtil.message(console, "Welcome Detective. What would you like to do first?");
 
-		ConsoleHelper.newline(console);
+		ConsoleUtil.newline(console);
 
-		console.print(" > ").beginAttributes().setActionLink(con -> lookAround(con, rand)).printlnEnd("Look Around");
-		console.print(" > ").beginAttributes().setActionLink(con -> quit(con, rand)).printlnEnd("Give Me the Answer");
+		console.print(" > ").beginAttributes().setActionLink(() -> lookAround(console, rand)).printlnEnd("Look Around");
+		console.print(" > ").beginAttributes().setActionLink(() -> quit(console, rand)).printlnEnd("Give Me the Answer");
 
-		ConsoleHelper.newline(console);
+		ConsoleUtil.newline(console);
 
-		ConsoleHelper.message(console, this.venue.rooms.toString());
+		ConsoleUtil.message(console, this.venue.rooms.toString());
 
-		ConsoleHelper.newline(console);
+		ConsoleUtil.newline(console);
 
-		ConsoleHelper.divider(console, true);
+		ConsoleUtil.divider(console, "- ");
 	}
 
 	private void lookAround(Console console, Random rand)
 	{
-		ConsoleHelper.message(console, "You look around the " + this.victim.location + ".");
-		ConsoleHelper.newline(console);
+		ConsoleUtil.message(console, "You look around the " + this.victim.location + ".");
+		ConsoleUtil.newline(console);
 
-		console.print("You see ").beginAttributes().setActionLink(con -> this.inspectBody(console, rand)).printEnd(this.victim.name).println(" is dead.");
+		console.print("You see ").beginAttributes().setActionLink(() -> this.inspectBody(console, rand)).printEnd(this.victim.name).println(" is dead.");
 		for(Actor actor : this.suspects)
 		{
-			console.print("You see ").beginAttributes().setActionLink(con -> this.talkTo(console, rand, actor)).printEnd(actor.name).println(".");
+			console.print("You see ").beginAttributes().setActionLink(() -> this.talkTo(console, rand, actor)).printEnd(actor.name).println(".");
 		}
 
-		ConsoleHelper.divider(console, true);
+		ConsoleUtil.divider(console, "- ");
 	}
 
 	private void quit(Console console, Random rand)
 	{
-		ConsoleHelper.message(console, "You decide to get the answer.");
-		ConsoleHelper.newline(console);
+		ConsoleUtil.message(console, "You decide to get the answer.");
+		ConsoleUtil.newline(console);
 
-		ConsoleHelper.message(console,  this.murderer.name + " was the murderer!");
+		ConsoleUtil.message(console,  this.murderer.name + " was the murderer!");
 
-		ConsoleHelper.divider(console, true);
-		console.print(" > ").beginAttributes().setActionLink(con -> main(con, rand)).printlnEnd("Back");
+		ConsoleUtil.divider(console, "- ");
+		console.print(" > ").beginAttributes().setActionLink(() -> main(console, rand)).printlnEnd("Back");
 	}
 
 	private void talkTo(Console console, Random rand, Actor actor)
 	{
-		ConsoleHelper.message(console, "You talk to " + actor.name + ".");
-		ConsoleHelper.newline(console);
+		ConsoleUtil.message(console, "You talk to " + actor.name + ".");
+		ConsoleUtil.newline(console);
 
-		ConsoleHelper.message(console, "Hello. What do you want?");
+		ConsoleUtil.message(console, "Hello. What do you want?");
 
-		console.print(" > ").beginAttributes().setActionLink(con -> this.showMemoryOf(console, rand, actor, this.victim)).printEnd("What can you tell me about the victim?").println();
-		console.print(" > ").beginAttributes().setActionLink(con -> this.showMemoryAt(console, rand, actor, this.timeOfDeath)).printEnd("What happened at " + this.timeOfDeath.getHour() + "?").println();
-		console.print(" > ").beginAttributes().setActionLink(con -> this.showMemory(console, rand, actor)).printEnd("What do you remember?").println();
+		console.print(" > ").beginAttributes().setActionLink(() -> this.showMemoryOf(console, rand, actor, this.victim)).printEnd("What can you tell me about the victim?").println();
+		console.print(" > ").beginAttributes().setActionLink(() -> this.showMemoryAt(console, rand, actor, this.timeOfDeath)).printEnd("What happened at " + this.timeOfDeath.getHour() + "?").println();
+		console.print(" > ").beginAttributes().setActionLink(() -> this.showMemory(console, rand, actor)).printEnd("What do you remember?").println();
 
 		//What do you want me to ask?
 		//(use evidence to ask.)
@@ -229,40 +229,40 @@ public class GameOfOpportunity extends Cluedo
 		//What happened at the crime?
 		//What do you know(think) about this person?
 
-		ConsoleHelper.divider(console, true);
+		ConsoleUtil.divider(console, "- ");
 	}
 
 	private void inspectBody(Console console, Random rand)
 	{
-		ConsoleHelper.message(console, "You inspect the body of " + this.victim.name + ".");
-		ConsoleHelper.newline(console);
+		ConsoleUtil.message(console, "You inspect the body of " + this.victim.name + ".");
+		ConsoleUtil.newline(console);
 
-		ConsoleHelper.message(console, "You find the victim's body in the " + this.victim.location + ".");
-		ConsoleHelper.message(console, "You find the murder weapon!");
-		ConsoleHelper.message(console, "Anyone could have used it...");
-		ConsoleHelper.message(console, "But you now know the time of death.");
-		ConsoleHelper.message(console, this.timeOfDeath.toString());
+		ConsoleUtil.message(console, "You find the victim's body in the " + this.victim.location + ".");
+		ConsoleUtil.message(console, "You find the murder weapon!");
+		ConsoleUtil.message(console, "Anyone could have used it...");
+		ConsoleUtil.message(console, "But you now know the time of death.");
+		ConsoleUtil.message(console, this.timeOfDeath.toString());
 
-		ConsoleHelper.divider(console, true);
-		console.print(" > ").beginAttributes().setActionLink(con -> main(con, rand)).printlnEnd("Back");
+		ConsoleUtil.divider(console, "- ");
+		console.print(" > ").beginAttributes().setActionLink(() -> main(console, rand)).printlnEnd("Back");
 	}
 
 	private void showMemory(Console console, Random rand, Actor actor)
 	{
-		ConsoleHelper.newline(console);
+		ConsoleUtil.newline(console);
 
 		for(Pair<Time, String> entry : actor.memories.data)
 		{
-			ConsoleHelper.message(console, entry.getSecond());
+			ConsoleUtil.message(console, entry.getSecond());
 		}
 
-		ConsoleHelper.divider(console, true);
-		console.print(" > ").beginAttributes().setActionLink(con -> main(con, rand)).printlnEnd("Back");
+		ConsoleUtil.divider(console, "- ");
+		console.print(" > ").beginAttributes().setActionLink(() -> main(console, rand)).printlnEnd("Back");
 	}
 
 	private void showMemoryOf(Console console,  Random rand, Actor actor, Actor target)
 	{
-		ConsoleHelper.newline(console);
+		ConsoleUtil.newline(console);
 
 		Set<Time> times = new TreeSet<>();
 		for(Pair<Time, String> entry : actor.memories.data)
@@ -275,28 +275,28 @@ public class GameOfOpportunity extends Cluedo
 
 		if (times.isEmpty())
 		{
-			ConsoleHelper.message(console, "Sorry, I don't think I ever saw that person.");
+			ConsoleUtil.message(console, "Sorry, I don't think I ever saw that person.");
 		}
 		else
 		{
-			ConsoleHelper.message(console, "Yeah, I remember.");
+			ConsoleUtil.message(console, "Yeah, I remember.");
 
 			for (Pair<Time, String> entry : actor.memories.data)
 			{
 				if (times.contains(entry.getFirst()))
 				{
-					ConsoleHelper.message(console, entry.getSecond());
+					ConsoleUtil.message(console, entry.getSecond());
 				}
 			}
 		}
 
-		ConsoleHelper.divider(console, true);
-		console.print(" > ").beginAttributes().setActionLink(con -> main(con, rand)).printlnEnd("Back");
+		ConsoleUtil.divider(console, "- ");
+		console.print(" > ").beginAttributes().setActionLink(() -> main(console, rand)).printlnEnd("Back");
 	}
 
 	private void showMemoryAt(Console console, Random rand, Actor actor, Time time)
 	{
-		ConsoleHelper.newline(console);
+		ConsoleUtil.newline(console);
 
 		boolean dirty = false;
 
@@ -307,20 +307,20 @@ public class GameOfOpportunity extends Cluedo
 				if (!dirty)
 				{
 					dirty = true;
-					ConsoleHelper.message(console, "Yeah, I remember.");
+					ConsoleUtil.message(console, "Yeah, I remember.");
 				}
 
 				String memory = entry.getSecond();
-				ConsoleHelper.message(console, memory);
+				ConsoleUtil.message(console, memory);
 			}
 		}
 
 		if (!dirty)
 		{
-			ConsoleHelper.message(console, "Sorry, I don't remember anything at " + time.getHour() + ".");
+			ConsoleUtil.message(console, "Sorry, I don't remember anything at " + time.getHour() + ".");
 		}
 
-		ConsoleHelper.divider(console, true);
-		console.print(" > ").beginAttributes().setActionLink(con -> main(con, rand)).printlnEnd("Back");
+		ConsoleUtil.divider(console, "- ");
+		console.print(" > ").beginAttributes().setActionLink(() -> main(console, rand)).printlnEnd("Back");
 	}
 }

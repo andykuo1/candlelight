@@ -1,7 +1,7 @@
 package net.jimboi.test.sleuth.cluedo;
 
 import net.jimboi.test.console.Console;
-import net.jimboi.test.console.ConsoleHelper;
+import net.jimboi.test.console.ConsoleUtil;
 import net.jimboi.test.sleuth.Actor;
 import net.jimboi.test.sleuth.ActorFactory;
 import net.jimboi.test.sleuth.Motive;
@@ -208,60 +208,60 @@ public class GameOfMotive extends Cluedo
 	private void main(Console out, Random rand)
 	{
 		out.clear();
-		ConsoleHelper.title(out, this.room.toString());
+		ConsoleUtil.title(out, this.room.toString());
 		{
-			out.beginAttributes().setActionLink(con -> this.evaluate(out, rand, this.victim)).setColor(Color.RED).printEnd(this.victim.name).println(" has been murdered! But why?");
+			out.beginAttributes().setActionLink(() -> this.evaluate(out, rand, this.victim)).setColor(Color.RED).printEnd(this.victim.name).println(" has been murdered! But why?");
 
-			ConsoleHelper.button(out, "Who did it?", () -> this.solveMystery(out));
+			ConsoleUtil.button(out, "Who did it?", () -> this.solveMystery(out));
 
-			ConsoleHelper.newline(out);
+			ConsoleUtil.newline(out);
 
-			ConsoleHelper.message(out, "Suspects:");
+			ConsoleUtil.message(out, "Suspects:");
 			for(Actor actor : this.suspects)
 			{
-				ConsoleHelper.button(out, actor.name, () -> this.talkTo(out, rand, actor));
+				ConsoleUtil.button(out, actor.name, () -> this.talkTo(out, rand, actor));
 			}
 		}
-		ConsoleHelper.newline(out);
-		ConsoleHelper.divider(out, true);
+		ConsoleUtil.newline(out);
+		ConsoleUtil.divider(out, "- ");
 	}
 
 	private void evaluate(Console out, Random rand, Actor target)
 	{
 		out.clear();
-		ConsoleHelper.message(out, target.name);
-		ConsoleHelper.newline(out);
+		ConsoleUtil.message(out, target.name);
+		ConsoleUtil.newline(out);
 		{
-			ConsoleHelper.message(out, target.toString());
+			ConsoleUtil.message(out, target.toString());
 		}
-		ConsoleHelper.newline(out);
-		ConsoleHelper.divider(out, true);
-		ConsoleHelper.button(out, "Back", () -> main(out, rand));
+		ConsoleUtil.newline(out);
+		ConsoleUtil.divider(out, "- ");
+		ConsoleUtil.button(out, "Back", () -> main(out, rand));
 	}
 
 	private void talkTo(Console out, Random rand, Actor target)
 	{
 		out.clear();
-		ConsoleHelper.message(out, target.name);
-		ConsoleHelper.newline(out);
+		ConsoleUtil.message(out, target.name);
+		ConsoleUtil.newline(out);
 		{
-			ConsoleHelper.message(out, "What do you want?");
-			ConsoleHelper.button(out, "Evaluate", () -> this.evaluate(out, rand, target));
+			ConsoleUtil.message(out, "What do you want?");
+			ConsoleUtil.button(out, "Evaluate", () -> this.evaluate(out, rand, target));
 		}
-		ConsoleHelper.newline(out);
-		ConsoleHelper.divider(out, true);
-		ConsoleHelper.button(out, "Back", () -> main(out, rand));
+		ConsoleUtil.newline(out);
+		ConsoleUtil.divider(out, "- ");
+		ConsoleUtil.button(out, "Back", () -> main(out, rand));
 	}
 
 	private void solveMystery(Console out)
 	{
-		ConsoleHelper.message(out, "The Solution");
-		ConsoleHelper.newline(out);
+		ConsoleUtil.message(out, "The Solution");
+		ConsoleUtil.newline(out);
 		{
-			ConsoleHelper.message(out, "The murderer is: " + this.murderer.name);
-			ConsoleHelper.message(out, "The motive is: " + this.motive);
+			ConsoleUtil.message(out, "The murderer is: " + this.murderer.name);
+			ConsoleUtil.message(out, "The motive is: " + this.motive);
 		}
-		ConsoleHelper.newline(out);
-		ConsoleHelper.divider(out, true);
+		ConsoleUtil.newline(out);
+		ConsoleUtil.divider(out, "- ");
 	}
 }

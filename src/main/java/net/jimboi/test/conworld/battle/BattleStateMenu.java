@@ -1,7 +1,7 @@
 package net.jimboi.test.conworld.battle;
 
 import net.jimboi.test.console.Console;
-import net.jimboi.test.console.ConsoleHelper;
+import net.jimboi.test.console.ConsoleUtil;
 import net.jimboi.test.conworld.BattleMain;
 import net.jimboi.test.conworld.view.ActorSelectorView;
 import net.jimboi.test.conworld.view.InventoryView;
@@ -31,9 +31,9 @@ public class BattleStateMenu extends BattleState
 	{
 		final Console console = BattleMain.getConsole();
 
-		ConsoleHelper.title(console, "Battle View");
+		ConsoleUtil.title(console, "Battle View");
 
-		ConsoleHelper.button(console, "View Stats", () -> {
+		ConsoleUtil.button(console, "View Stats", () -> {
 			new ActorSelectorView(this.world,
 					(actor) -> true,
 					(actor) -> {
@@ -52,7 +52,7 @@ public class BattleStateMenu extends BattleState
 					}).create();
 		});
 
-		ConsoleHelper.button(console, "View Inventory", () -> {
+		ConsoleUtil.button(console, "View Inventory", () -> {
 			new ActorSelectorView(this.world,
 					(actor) -> true,
 					(actor) -> {
@@ -71,8 +71,8 @@ public class BattleStateMenu extends BattleState
 					}).create();
 		});
 
-		ConsoleHelper.button(console, "Next Round", this.world::nextTurn);
+		ConsoleUtil.button(console, "Next Round", this.world::nextTurn);
 
-		ConsoleHelper.button(console, "End Battle", BattleMain::stop);
+		ConsoleUtil.button(console, "End Battle", BattleMain::stop);
 	}
 }

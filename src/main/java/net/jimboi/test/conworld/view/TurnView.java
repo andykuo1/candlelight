@@ -1,7 +1,7 @@
 package net.jimboi.test.conworld.view;
 
 import net.jimboi.test.console.Console;
-import net.jimboi.test.console.ConsoleHelper;
+import net.jimboi.test.console.ConsoleUtil;
 import net.jimboi.test.conworld.acor.Actor;
 import net.jimboi.test.conworld.action.Action;
 import net.jimboi.test.conworld.world.World;
@@ -32,27 +32,27 @@ public class TurnView extends View
 	{
 		this.actor.onTurnStart(this.world);
 
-		ConsoleHelper.title(console, "Turn: " + this.actor.getName());
+		ConsoleUtil.title(console, "Turn: " + this.actor.getName());
 
 		this.actor.getActions(this.actions);
 		for(Action action : this.actions)
 		{
-			ConsoleHelper.button(console, action.getName(), () -> {
+			ConsoleUtil.button(console, action.getName(), () -> {
 				if (this.actor.canUseAction(action))
 				{
 					action.execute(this.world, this.actor);
 				}
 				else
 				{
-					ConsoleHelper.message(console, "Not enough action points!");
+					ConsoleUtil.message(console, "Not enough action points!");
 				}
 			});
 		}
 		this.actions.clear();
 
-		ConsoleHelper.button(console,  "End Turn", this.world::nextTurn);
+		ConsoleUtil.button(console,  "End Turn", this.world::nextTurn);
 
-		ConsoleHelper.title(console, "Log");
+		ConsoleUtil.title(console, "Log");
 	}
 
 	@Override

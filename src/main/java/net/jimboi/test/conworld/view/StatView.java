@@ -1,7 +1,7 @@
 package net.jimboi.test.conworld.view;
 
 import net.jimboi.test.console.Console;
-import net.jimboi.test.console.ConsoleHelper;
+import net.jimboi.test.console.ConsoleUtil;
 import net.jimboi.test.conworld.acor.Actor;
 import net.jimboi.test.conworld.acor.Stats;
 
@@ -28,14 +28,14 @@ public class StatView extends View
 	@Override
 	protected void initialize(Console console)
 	{
-		ConsoleHelper.title(console, this.actor.getName());
+		ConsoleUtil.title(console, this.actor.getName());
 
-		ConsoleHelper.button(console, "Refresh", this::refresh);
+		ConsoleUtil.button(console, "Refresh", this::refresh);
 
 		final Stats stats = this.actor.getStats();
 		for(String stat : stats)
 		{
-			ConsoleHelper.message(console, stat + " = " + stats.get(stat));
+			ConsoleUtil.message(console, stat + " = " + stats.get(stat));
 		}
 	}
 

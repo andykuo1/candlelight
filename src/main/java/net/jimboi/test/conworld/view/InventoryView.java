@@ -1,7 +1,7 @@
 package net.jimboi.test.conworld.view;
 
 import net.jimboi.test.console.Console;
-import net.jimboi.test.console.ConsoleHelper;
+import net.jimboi.test.console.ConsoleUtil;
 import net.jimboi.test.conworld.acor.Actor;
 import net.jimboi.test.conworld.item.ItemStack;
 
@@ -28,13 +28,13 @@ public class InventoryView extends View
 	@Override
 	protected void initialize(Console console)
 	{
-		ConsoleHelper.title(console, this.actor.getName());
+		ConsoleUtil.title(console, this.actor.getName());
 
-		ConsoleHelper.button(console, "Refresh", this::refresh);
+		ConsoleUtil.button(console, "Refresh", this::refresh);
 
 		for(ItemStack itemstack : this.actor.getItems())
 		{
-			ConsoleHelper.message(console, itemstack.getStackSize() + "x " + itemstack.getItem().getName());
+			ConsoleUtil.message(console, itemstack.getStackSize() + "x " + itemstack.getItem().getName());
 		}
 	}
 

@@ -1,7 +1,7 @@
 package net.jimboi.test.conworld.action;
 
 import net.jimboi.test.console.Console;
-import net.jimboi.test.console.ConsoleHelper;
+import net.jimboi.test.console.ConsoleUtil;
 import net.jimboi.test.conworld.acor.Actor;
 import net.jimboi.test.conworld.acor.DamageSourceItem;
 import net.jimboi.test.conworld.item.ItemStack;
@@ -30,11 +30,11 @@ public class ActionAttack extends Action
 					final Console console = world.getCurrentConsole();
 					final ItemSword item = (ItemSword) this.itemstack.getItem();
 
-					ConsoleHelper.message(console,  "Attacked " + actor.getName() + " with a " + item.getName() + "!");
+					ConsoleUtil.message(console,  "Attacked " + actor.getName() + " with a " + item.getName() + "!");
 					int damage = item.getDamage();
 					actor.applyDamage(new DamageSourceItem(owner, this.itemstack), damage);
 
-					ConsoleHelper.message(console, "Dealt " + damage + " damage!");
+					ConsoleUtil.message(console, "Dealt " + damage + " damage!");
 
 					owner.onUseAction(this);
 				}).create();

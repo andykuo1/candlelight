@@ -1,7 +1,7 @@
 package net.jimboi.test.sleuth;
 
 import net.jimboi.test.console.Console;
-import net.jimboi.test.console.ConsoleHelper;
+import net.jimboi.test.console.ConsoleUtil;
 import net.jimboi.test.sleuth.data.MaritalStatus;
 import net.jimboi.test.sleuth.data.RelationshipStatus;
 import net.jimboi.test.sleuth.data.Season;
@@ -56,21 +56,21 @@ public class Case
 
 	public void print(Console console)
 	{
-		ConsoleHelper.title(console, "Case #" + this.caseNumber);
-		ConsoleHelper.message(console, "Motive: " + this.motive);
-		ConsoleHelper.message(console, " - " + motive.getDefinition());
-		ConsoleHelper.message(console, "Mean: " + mean);
-		ConsoleHelper.message(console, "Opportunity: " + "???");
-		ConsoleHelper.message(console, " - Place: " + place);
-		ConsoleHelper.message(console, " - Time: " + season + " " + day + " " + time);
+		ConsoleUtil.title(console, "Case #" + this.caseNumber);
+		ConsoleUtil.message(console, "Motive: " + this.motive);
+		ConsoleUtil.message(console, " - " + motive.getDefinition());
+		ConsoleUtil.message(console, "Mean: " + mean);
+		ConsoleUtil.message(console, "Opportunity: " + "???");
+		ConsoleUtil.message(console, " - Place: " + place);
+		ConsoleUtil.message(console, " - Time: " + season + " " + day + " " + time);
 
-		ConsoleHelper.newline(console);
-		ConsoleHelper.divider(console, true);
-		ConsoleHelper.newline(console);
+		ConsoleUtil.newline(console);
+		ConsoleUtil.divider(console, "- ");
+		ConsoleUtil.newline(console);
 
-		ConsoleHelper.message(console, "Preparation Level: " + preparation + " / 5");
-		ConsoleHelper.message(console, "Relationship With Victim: " + relationship);
-		ConsoleHelper.newline(console);
+		ConsoleUtil.message(console, "Preparation Level: " + preparation + " / 5");
+		ConsoleUtil.message(console, "Relationship With Victim: " + relationship);
+		ConsoleUtil.newline(console);
 
 		//What to do before the crime?
 		//Planning -> Preparation -> Action
@@ -108,18 +108,18 @@ public class Case
 
 	public void printMurderer(Console console)
 	{
-		ConsoleHelper.message(console, "=------------=");
-		ConsoleHelper.message(console, "=- Murderer -=");
-		ConsoleHelper.message(console, "=------------=");
-		ConsoleHelper.message(console, murderer.toString());
+		ConsoleUtil.message(console, "=------------=");
+		ConsoleUtil.message(console, "=- Murderer -=");
+		ConsoleUtil.message(console, "=------------=");
+		ConsoleUtil.message(console, murderer.toString());
 	}
 
 	public void printVictim(Console console)
 	{
-		ConsoleHelper.message(console, "=------------=");
-		ConsoleHelper.message(console, "=-  Victim  -=");
-		ConsoleHelper.message(console, "=------------=");
-		ConsoleHelper.message(console, victim.toString());
+		ConsoleUtil.message(console, "=------------=");
+		ConsoleUtil.message(console, "=-  Victim  -=");
+		ConsoleUtil.message(console, "=------------=");
+		ConsoleUtil.message(console, victim.toString());
 	}
 
 	public static final WeightedSet<Weapon> MEANS = new WeightedSet<>();
