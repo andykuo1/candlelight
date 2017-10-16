@@ -1,10 +1,11 @@
 package net.jimboi.test.conworld.world;
 
-import net.jimboi.test.console.Console;
 import net.jimboi.test.conworld.BattleMain;
 import net.jimboi.test.conworld.acor.Actor;
 import net.jimboi.test.conworld.battle.BattleStateMenu;
 import net.jimboi.test.conworld.view.TurnView;
+
+import org.bstone.console.Console;
 
 import java.util.HashSet;
 import java.util.Iterator;

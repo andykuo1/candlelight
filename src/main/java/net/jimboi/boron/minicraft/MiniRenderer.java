@@ -2,12 +2,12 @@ package net.jimboi.boron.minicraft;
 
 import com.mojang.ld22.Game;
 
+import org.bstone.camera.Camera;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
 import org.bstone.mogli.Texture;
-import org.bstone.window.camera.Camera;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector2f;

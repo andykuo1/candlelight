@@ -1,6 +1,6 @@
 package net.jimboi.test.sleuth.cluedo;
 
-import net.jimboi.test.console.Console;
+import org.bstone.console.Console;
 
 import java.util.Random;
 

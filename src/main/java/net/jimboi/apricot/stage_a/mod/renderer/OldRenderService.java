@@ -1,13 +1,14 @@
 package net.jimboi.apricot.stage_a.mod.renderer;
 
-import org.bstone.render.RenderEngine;
-import org.bstone.render.RenderService;
+import net.jimboi.boron.base.render.OldRenderEngine;
+import net.jimboi.boron.base.render.OldishRenderService;
+
 import org.bstone.util.listener.Listenable;
 
 /**
  * Created by Andy on 5/30/17.
  */
-public abstract class OldRenderService extends RenderService
+public abstract class OldRenderService extends OldishRenderService
 {
 	public interface OnRenderUpdateListener
 	{
@@ -16,31 +17,31 @@ public abstract class OldRenderService extends RenderService
 
 	public final Listenable<OnRenderUpdateListener> onRender = new Listenable<>((listener, objects) -> listener.onRender());
 
-	public OldRenderService(RenderEngine renderEngine)
+	public OldRenderService(OldRenderEngine renderEngine)
 	{
 		super(renderEngine);
 	}
 
 	@Override
-	protected void onServiceStart(RenderEngine handler)
+	protected void onServiceStart(OldRenderEngine handler)
 	{
 		this.onRenderLoad(handler);
 	}
 
 	@Override
-	protected void onServiceStop(RenderEngine handler)
+	protected void onServiceStop(OldRenderEngine handler)
 	{
 		this.onRenderUnload(handler);
 	}
 
 	@Override
-	protected void onRenderUpdate(RenderEngine renderEngine, double delta)
+	protected void onRenderUpdate(OldRenderEngine renderEngine, double delta)
 	{
 		this.onRender(renderEngine);
 		this.onRender.notifyListeners();
 	}
 
-	public abstract void onRenderLoad(RenderEngine renderEngine);
-	public abstract void onRender(RenderEngine renderEngine);
-	public abstract void onRenderUnload(RenderEngine renderEngine);
+	public abstract void onRenderLoad(OldRenderEngine renderEngine);
+	public abstract void onRender(OldRenderEngine renderEngine);
+	public abstract void onRenderUnload(OldRenderEngine renderEngine);
 }

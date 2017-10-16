@@ -1,12 +1,13 @@
 package net.jimboi.test.sleuth;
 
-import net.jimboi.test.console.Console;
-import net.jimboi.test.console.ConsoleUtil;
 import net.jimboi.test.sleuth.data.MaritalStatus;
 import net.jimboi.test.sleuth.data.RelationshipStatus;
 import net.jimboi.test.sleuth.data.Season;
 import net.jimboi.test.sleuth.data.WeekDay;
 import net.jimboi.test.sleuth.util.WeightedSet;
+
+import org.bstone.console.Console;
+import org.bstone.console.ConsoleUtil;
 
 import java.util.Random;
 

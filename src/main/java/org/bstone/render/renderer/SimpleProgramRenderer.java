@@ -81,7 +81,14 @@ public class SimpleProgramRenderer extends ProgramRenderer
 		program.setUniform("u_model_view_projection", this.viewProjection.mul(transformation, this.modelViewProjection));
 		mesh.bind();
 		{
-			program.setUniform("u_color", this.color.set(color.x(), color.y(), color.z(), 1));
+			if (color != null)
+			{
+				program.setUniform("u_color", this.color.set(color.x(), color.y(), color.z(), 1));
+			}
+			else
+			{
+				program.setUniform("u_color", this.color.set(0, 0, 0, 0));
+			}
 
 			if (texture != null)
 			{

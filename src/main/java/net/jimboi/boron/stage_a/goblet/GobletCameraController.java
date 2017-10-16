@@ -1,8 +1,8 @@
 package net.jimboi.boron.stage_a.goblet;
 
+import org.bstone.camera.Camera;
+import org.bstone.camera.CameraController;
 import org.bstone.transform.Transform3;
-import org.bstone.window.camera.Camera;
-import org.bstone.window.camera.CameraController;
 
 /**
  * Created by Andy on 8/9/17.

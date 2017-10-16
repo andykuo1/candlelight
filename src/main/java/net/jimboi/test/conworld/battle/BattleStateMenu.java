@@ -1,12 +1,13 @@
 package net.jimboi.test.conworld.battle;
 
-import net.jimboi.test.console.Console;
-import net.jimboi.test.console.ConsoleUtil;
 import net.jimboi.test.conworld.BattleMain;
 import net.jimboi.test.conworld.view.ActorSelectorView;
 import net.jimboi.test.conworld.view.InventoryView;
 import net.jimboi.test.conworld.view.StatView;
 import net.jimboi.test.conworld.world.World;
+
+import org.bstone.console.Console;
+import org.bstone.console.ConsoleUtil;
 
 import java.util.HashSet;
 import java.util.Set;

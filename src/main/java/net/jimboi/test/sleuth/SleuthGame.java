@@ -1,13 +1,14 @@
 package net.jimboi.test.sleuth;
 
-import net.jimboi.test.console.Console;
-import net.jimboi.test.console.ConsoleUtil;
 import net.jimboi.test.sleuth.cluedo.GameOfMotive;
 import net.jimboi.test.sleuth.cluedo.GameOfOpportunity;
 import net.jimboi.test.sleuth.cluedo.Room;
 import net.jimboi.test.sleuth.cluedo.Venue;
 import net.jimboi.test.sleuth.cluedo.VenueFactory;
 import net.jimboi.test.sleuth.data.BodyPart;
+
+import org.bstone.console.Console;
+import org.bstone.console.ConsoleUtil;
 
 import java.util.Random;
 

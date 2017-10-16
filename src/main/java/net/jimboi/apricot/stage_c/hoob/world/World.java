@@ -9,11 +9,11 @@ import net.jimboi.apricot.stage_c.hoob.world.agents.MoveAgent;
 import net.jimboi.apricot.stage_c.hoob.world.agents.Town;
 import net.jimboi.apricot.stage_c.hoob.world.agents.Traveller;
 import net.jimboi.apricot.stage_c.hoob.world.agents.WorldAgent;
+import net.jimboi.boron.base.window.input.InputEngine;
+import net.jimboi.boron.base.window.input.InputLayer;
 
 import org.bstone.transform.Transform3;
 import org.bstone.util.direction.Direction;
-import org.bstone.window.input.InputEngine;
-import org.bstone.window.input.InputLayer;
 import org.bstone.window.view.ScreenSpace;
 import org.joml.Vector3f;
 import org.zilar.collision.Shape;

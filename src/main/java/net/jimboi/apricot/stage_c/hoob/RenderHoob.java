@@ -16,14 +16,14 @@ import net.jimboi.apricot.base.render.OldRenderable;
 import net.jimboi.apricot.base.renderer.SimpleRenderer;
 import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderable;
+import net.jimboi.boron.base.render.OldRenderEngine;
 
+import org.bstone.camera.OrthographicCamera;
+import org.bstone.camera.PerspectiveCamera;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Texture;
-import org.bstone.render.RenderEngine;
 import org.bstone.util.SemanticVersion;
-import org.bstone.window.camera.OrthographicCamera;
-import org.bstone.window.camera.PerspectiveCamera;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
@@ -56,7 +56,7 @@ public class RenderHoob extends OldRenderBase
 
 	private final Assets assets;
 
-	public RenderHoob(RenderEngine renderEngine)
+	public RenderHoob(OldRenderEngine renderEngine)
 	{
 		super(renderEngine, new PerspectiveCamera(640, 480));
 
@@ -64,7 +64,7 @@ public class RenderHoob extends OldRenderBase
 	}
 
 	@Override
-	public void onRenderLoad(RenderEngine renderEngine)
+	public void onRenderLoad(OldRenderEngine renderEngine)
 	{
 		this.assets.load();
 
@@ -185,7 +185,7 @@ public class RenderHoob extends OldRenderBase
 	}
 
 	@Override
-	public void onRender(RenderEngine renderEngine)
+	public void onRender(OldRenderEngine renderEngine)
 	{
 		this.guiManager.update();
 
@@ -200,7 +200,7 @@ public class RenderHoob extends OldRenderBase
 	}
 
 	@Override
-	public void onRenderUnload(RenderEngine renderEngine)
+	public void onRenderUnload(OldRenderEngine renderEngine)
 	{
 		this.guiManager.destroy();
 		OldGameEngine.INPUTENGINE.removeInputLayer(this.guiManager);

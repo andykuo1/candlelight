@@ -1,22 +1,18 @@
 package net.jimboi.boron.stage_a.gordo;
 
+import net.jimboi.boron.base.render.OldRenderEngine;
+
+import org.bstone.camera.PerspectiveCamera;
 import org.bstone.game.GameEngine;
 import org.bstone.game.GameHandler;
 import org.bstone.mogli.Bitmap;
-import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
-import org.bstone.render.RenderEngine;
-import org.bstone.render.renderer.SimpleProgramRenderer;
 import org.bstone.transform.Transform3;
 import org.bstone.util.direction.Direction;
-import org.bstone.window.camera.PerspectiveCamera;
 import org.bstone.window.view.ScreenSpace;
-import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.qsilver.asset.Asset;
-import org.zilar.meshbuilder.MeshBuilder;
-import org.zilar.meshbuilder.ModelUtil;
 import org.zilar.resource.ResourceLocation;
 import org.zilar.sprite.SpriteUtil;
 import org.zilar.sprite.TextureAtlas;
@@ -72,19 +68,18 @@ public class GordoTest implements GameHandler
 	}
 
 	public PerspectiveCamera camera;
-	public SimpleProgramRenderer renderer;
+	public GordoProgramRenderer renderer;
 
 	public Bitmap bitmap;
 	public Texture texture;
 	public TextureAtlas textureAtlas;
-	public Mesh mesh;
 
 	public ScreenSpace screenSpace;
 
 	public Gordo gordo;
 
 	@Override
-	public void onLoad(RenderEngine renderEngine)
+	public void onLoad(OldRenderEngine renderEngine)
 	{
 		final int width = 24;
 		final int height = 16;
@@ -98,24 +93,20 @@ public class GordoTest implements GameHandler
 		ENGINE.getInput().registerMousePosX("mousex");
 		ENGINE.getInput().registerMousePosY("mousey");
 
-		this.renderer = new SimpleProgramRenderer();
+		this.renderer = new GordoProgramRenderer();
 
-		this.bitmap = new Bitmap(new ResourceLocation("base:font.png"));
+		this.bitmap = new Bitmap(new ResourceLocation("gordo:font.png"));
 		this.texture = new Texture(this.bitmap, GL11.GL_NEAREST, GL12.GL_CLAMP_TO_EDGE);
 
 		TextureAtlasBuilder tab = new TextureAtlasBuilder(Asset.wrap(this.texture), this.texture.width(), this.texture.height());
 		tab.addTileSheet(0, 0, 16, 16, 0, 0, 16, 16);
 		this.textureAtlas = SpriteUtil.createTextureAtlas(tab.bake());
 
-		MeshBuilder mb = new MeshBuilder();
-		mb.addPlane(new Vector2f(0, 0), new Vector2f(1, 1), 0, new Vector2f(0, 0), new Vector2f(1, 1));
-		this.mesh = ModelUtil.createStaticMesh(mb.bake(false, false));
-
-		this.gordo = new Gordo(new Transform3(), Asset.wrap(this.mesh), Asset.wrap(this.textureAtlas), width, height);
+		this.gordo = new Gordo(new Transform3(), Asset.wrap(this.textureAtlas), width, height);
 	}
 
 	@Override
-	public void onRender(RenderEngine renderEngine, double delta)
+	public void onRender(OldRenderEngine renderEngine, double delta)
 	{
 		this.gordo.update();
 
@@ -127,9 +118,9 @@ public class GordoTest implements GameHandler
 	}
 
 	@Override
-	public void onUnload(RenderEngine renderEngine)
+	public void onUnload(OldRenderEngine renderEngine)
 	{
-		this.mesh.close();
+		this.gordo.terminate();
 		this.texture.close();
 		this.bitmap.close();
 		this.renderer.close();

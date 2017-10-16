@@ -1,9 +1,10 @@
 package net.jimboi.test.message;
 
 /**
- * Created by Andy on 10/3/17.
+ * Created by Andy on 10/11/17.
  */
+@FunctionalInterface
 public interface MessageHandler
 {
-	void onMessageProcess(Message message);
+	boolean onProcessMessageEvent(Message message);
 }

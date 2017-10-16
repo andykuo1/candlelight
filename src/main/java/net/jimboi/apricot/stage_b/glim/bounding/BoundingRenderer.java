@@ -3,12 +3,12 @@ package net.jimboi.apricot.stage_b.glim.bounding;
 import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.stage_b.glim.bounding.square.AABB;
 import net.jimboi.apricot.stage_b.glim.bounding.square.Circle;
+import net.jimboi.boron.base.render.OldRenderEngine;
+import net.jimboi.boron.base.render.OldishRenderService;
 
+import org.bstone.camera.Camera;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
-import org.bstone.render.RenderEngine;
-import org.bstone.render.RenderService;
-import org.bstone.window.camera.Camera;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector2fc;
@@ -26,7 +26,7 @@ import java.util.Iterator;
 /**
  * Created by Andy on 6/11/17.
  */
-public class BoundingRenderer extends RenderService
+public class BoundingRenderer extends OldishRenderService
 {
 	private final Asset<Program> program;
 
@@ -39,14 +39,14 @@ public class BoundingRenderer extends RenderService
 	private Asset<Mesh> cylinder;
 	private Vector3f color = new Vector3f(1, 1, 1);
 
-	public BoundingRenderer(RenderEngine renderEngine, Asset<Program> program)
+	public BoundingRenderer(OldRenderEngine renderEngine, Asset<Program> program)
 	{
 		super(renderEngine);
 		this.program = program;
 	}
 
 	@Override
-	protected void onServiceStart(RenderEngine handler)
+	protected void onServiceStart(OldRenderEngine handler)
 	{
 		AssetManager assetManager = OldGameEngine.ASSETMANAGER;
 
@@ -64,13 +64,13 @@ public class BoundingRenderer extends RenderService
 	}
 
 	@Override
-	protected void onServiceStop(RenderEngine handler)
+	protected void onServiceStop(OldRenderEngine handler)
 	{
 
 	}
 
 	@Override
-	protected void onRenderUpdate(RenderEngine renderEngine, double delta)
+	protected void onRenderUpdate(OldRenderEngine renderEngine, double delta)
 	{
 
 	}

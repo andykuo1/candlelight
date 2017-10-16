@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * Created by Andy on 9/23/17.
  */
-public class Actor extends SleuthStruct
+public class Actor extends PrintableStruct
 {
 	public String name;
 	public Gender gender;

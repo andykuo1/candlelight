@@ -1,14 +1,17 @@
 package net.jimboi.boron.stage_a.gordo;
 
 import org.bstone.mogli.Mesh;
-import org.bstone.render.renderer.SimpleProgramRenderer;
+import org.bstone.transform.Transform2;
 import org.bstone.util.gridmap.ByteMap;
 import org.bstone.util.gridmap.IntMap;
-import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.qsilver.asset.Asset;
 import org.qsilver.util.ColorUtil;
+import org.zilar.meshbuilder.MeshBuilder;
+import org.zilar.meshbuilder.MeshData;
+import org.zilar.meshbuilder.ModelUtil;
 import org.zilar.sprite.Sprite;
 import org.zilar.sprite.TextureAtlas;
 
@@ -17,16 +20,18 @@ import org.zilar.sprite.TextureAtlas;
  */
 public class RasterView
 {
+	private final Mesh mesh;
+
 	private final int width;
 	private final int height;
 
 	private final IntMap colors;
 	private final ByteMap types;
+	private boolean dirty;
 
-	private final Asset<Mesh> mesh;
 	private final Asset<TextureAtlas> textureAtlas;
 
-	public RasterView(int width, int height, Asset<Mesh> mesh, Asset<TextureAtlas> textureAtlas)
+	public RasterView(int width, int height, Asset<TextureAtlas> textureAtlas)
 	{
 		this.width = width;
 		this.height = height;
@@ -34,42 +39,93 @@ public class RasterView
 		this.colors = new IntMap(this.width, this.height);
 		this.types = new ByteMap(this.width, this.height);
 
-		this.mesh = mesh;
 		this.textureAtlas = textureAtlas;
+		this.mesh = ModelUtil.createDynamicMesh(this.generateMeshData());
 	}
 
-	public void doRender(Matrix4fc transformation, SimpleProgramRenderer renderer)
+	public void close()
 	{
-		final Matrix4f mat = new Matrix4f();
-		final Vector3f vec = new Vector3f();
-		final Mesh mesh = this.mesh.getSource();
-		for(int x = 0; x < this.width; ++x)
-		{
-			for(int y = 0; y < this.height; ++y)
-			{
-				mat.set(transformation).translate(x, y, 0);
-				ColorUtil.getNormalizedRGB(this.colors.get(x, y), vec);
+		this.mesh.close();
+	}
 
-				final Sprite sprite = this.textureAtlas.getSource().getSprite(this.types.get(x, y));
-				renderer.draw(mesh, sprite, true, vec, mat);
+	private MeshData generateMeshData()
+	{
+		Vector2f from = new Vector2f();
+		Vector2f to = new Vector2f();
+		Vector2f textl = new Vector2f();
+		Vector2f texbr = new Vector2f();
+		Vector3f color = new Vector3f();
+
+		MeshBuilder mb = new MeshBuilder();
+		for(int i = 0; i < this.width; ++i)
+		{
+			for(int j = 0; j < this.height; ++j)
+			{
+				final Sprite sprite = this.textureAtlas.getSource().getSprite(this.types.get(i, j));
+				ColorUtil.getNormalizedRGB(this.colors.get(i, j), color);
+				from.set(i, j);
+				to.set(i + 1, j + 1);
+				textl.set(sprite.getU(), sprite.getV());
+				texbr.set(sprite.getU() + sprite.getWidth(), sprite.getV() + sprite.getHeight());
+
+				int count = mb.getVertexCount();
+				mb.addVertex(from.x(), from.y(), 0, texbr.x(), textl.y(), color.x(), color.y(), color.z());
+				mb.addVertex(to.x(), from.y(), 0, textl.x(), textl.y(), color.x(), color.y(), color.z());
+				mb.addVertex(from.x(), to.y(), 0, texbr.x(), texbr.y(), color.x(), color.y(), color.z());
+				mb.addVertex(to.x(), from.y(), 0, textl.x(), textl.y(), color.x(), color.y(), color.z());
+				mb.addVertex(to.x(), to.y(), 0, textl.x(), texbr.y(), color.x(), color.y(), color.z());
+				mb.addVertex(from.x(), to.y(), 0, texbr.x(), texbr.y(), color.x(), color.y(), color.z());
+
+				mb.addVertexIndex(count++, count++, count++);
+				mb.addVertexIndex(count++, count++, count++);
 			}
 		}
+		return mb.bake(false, false);
+	}
+
+	public void update()
+	{
+		if (this.dirty)
+		{
+			ModelUtil.updateMesh(this.mesh, this.generateMeshData());
+			this.dirty = false;
+		}
+	}
+
+	public void doRender(Matrix4fc transformation, GordoProgramRenderer renderer)
+	{
+		final Mesh mesh = this.mesh;
+		this.update();
+		renderer.draw(mesh,
+				this.textureAtlas.getSource().getSprite(0).getTexture(),
+				Transform2.ZERO, Transform2.IDENTITY, true,
+				null, transformation);
+	}
+
+	public void clear(byte type, int color)
+	{
+		this.colors.clear(color);
+		this.types.clear(type);
+		this.dirty = true;
 	}
 
 	public void setPixels(RasterView view)
 	{
 		this.colors.putAll(view.colors);
 		this.types.putAll(view.types);
+		this.dirty = true;
 	}
 
 	public void setPixelTypes(RasterView view)
 	{
 		this.types.putAll(view.types);
+		this.dirty = true;
 	}
 
 	public void setPixelColors(RasterView view)
 	{
 		this.colors.putAll(view.colors);
+		this.dirty = true;
 	}
 
 	public void setPixel(int x, int y, int color, byte type)
@@ -78,6 +134,7 @@ public class RasterView
 
 		this.colors.put(x, y, color);
 		this.types.put(x, y, type);
+		this.dirty = true;
 	}
 
 	public void setPixelType(int x, int y, byte type)
@@ -85,6 +142,7 @@ public class RasterView
 		if (!this.types.containsKey(x, y)) return;
 
 		this.types.put(x, y, type);
+		this.dirty = true;
 	}
 
 	public void setPixelColor(int x, int y, int color)
@@ -92,6 +150,7 @@ public class RasterView
 		if (!this.colors.containsKey(x, y)) return;
 
 		this.colors.put(x, y, color);
+		this.dirty = true;
 	}
 
 	public byte getPixelType(int x, int y)
@@ -106,21 +165,6 @@ public class RasterView
 		if (!this.colors.containsKey(x, y)) return 0;
 
 		return this.colors.get(x, y);
-	}
-
-	public IntMap getPixelColors()
-	{
-		return this.colors;
-	}
-
-	public ByteMap getPixelTypes()
-	{
-		return this.types;
-	}
-
-	public Asset<Mesh> getMesh()
-	{
-		return this.mesh;
 	}
 
 	public Asset<TextureAtlas> getTextureAtlas()

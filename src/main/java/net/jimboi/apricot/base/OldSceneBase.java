@@ -1,9 +1,9 @@
 package net.jimboi.apricot.base;
 
 import net.jimboi.apricot.base.material.OldMaterialManager;
+import net.jimboi.boron.base.render.OldRenderEngine;
 
-import org.bstone.render.RenderEngine;
-import org.bstone.window.camera.CameraController;
+import org.bstone.camera.CameraController;
 import org.qsilver.scene.Scene;
 import org.zilar.animation.AnimationManager;
 import org.zilar.entity.EntityManager;
@@ -37,7 +37,7 @@ public abstract class OldSceneBase extends Scene
 	}
 
 	@Override
-	protected void onSceneLoad(RenderEngine renderEngine)
+	protected void onSceneLoad(OldRenderEngine renderEngine)
 	{
 		this.renderer.start();
 		this.cameraController.start(this.renderer.getCamera());
@@ -61,7 +61,7 @@ public abstract class OldSceneBase extends Scene
 	}
 
 	@Override
-	protected void onSceneUnload(RenderEngine renderEngine)
+	protected void onSceneUnload(OldRenderEngine renderEngine)
 	{
 		this.renderer.stop();
 		this.cameraController.stop();

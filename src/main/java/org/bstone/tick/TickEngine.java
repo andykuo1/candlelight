@@ -1,12 +1,13 @@
 package org.bstone.tick;
 
-/**
- * Created by Andy on 3/1/17.
- */
-public class TickEngine implements Runnable
-{
-	private volatile boolean running = false;
+import org.bstone.application.Application;
+import org.bstone.application.Engine;
 
+/**
+ * Created by Andy on 10/12/17.
+ */
+public class TickEngine extends Engine
+{
 	private boolean dirty = true;
 
 	private final boolean limitFrameRate;
@@ -15,9 +16,9 @@ public class TickEngine implements Runnable
 	private double timePrevious;
 	private double timeLatency;
 
-	private double timeCounter;
 	private TickCounter updateCounter;
-	private TickCounter frameCounter;
+
+	private double timeDelta;
 
 	private final TickHandler handler;
 
@@ -28,42 +29,22 @@ public class TickEngine implements Runnable
 		this.handler = handler;
 
 		this.updateCounter = new TickCounter();
-		this.frameCounter = new TickCounter();
-	}
-
-	public TickEngine setUpdateCounter(TickCounter tickCounter)
-	{
-		this.updateCounter = tickCounter;
-		return this;
-	}
-
-	public TickEngine setFrameCounter(TickCounter tickCounter)
-	{
-		this.frameCounter = tickCounter;
-		return this;
 	}
 
 	@Override
-	public void run()
+	protected boolean onStart(Application app)
 	{
-		this.timeCounter = System.currentTimeMillis();
 		this.updateCounter.reset();
-		this.frameCounter.reset();
 
 		this.timePrevious = System.nanoTime();
 		this.timeLatency = 0;
 
-		this.running = true;
-		this.handler.onFirstUpdate(this);
-		while(this.running)
-		{
-			this.update();
-		}
-		this.handler.onLastUpdate(this);
-		this.running = false;
+		this.handler.onFirstUpdate();
+		return true;
 	}
 
-	protected void update()
+	@Override
+	protected void onUpdate(Application app)
 	{
 		final double current = System.nanoTime();
 		final double elapsed = current - this.timePrevious;
@@ -71,7 +52,7 @@ public class TickEngine implements Runnable
 		this.timePrevious = current;
 		this.timeLatency += elapsed;
 
-		this.handler.onPreUpdate();
+		this.handler.onEarlyUpdate();
 
 		while(this.timeLatency >= this.timeStep)
 		{
@@ -81,28 +62,34 @@ public class TickEngine implements Runnable
 			this.dirty = true;
 		}
 
-		if (this.dirty || !this.limitFrameRate)
-		{
-			this.handler.onUpdate(this.timeLatency / this.timeStep);
-			this.frameCounter.tick();
-			this.dirty = false;
-		}
+		this.handler.onLateUpdate();
 
-		if (System.currentTimeMillis() - this.timeCounter > 1000)
-		{
-			this.timeCounter += 1000;
-
-			System.out.println("[UPS: " + this.updateCounter.get() + " || FPS: " + this.frameCounter.get() + "]");
-		}
+		this.timeDelta = this.timeLatency / this.timeStep;
 	}
 
-	public void stop()
+	@Override
+	protected void onStop(Application app)
 	{
-		this.running = false;
+		this.handler.onLastUpdate();
 	}
 
-	public boolean isRunning()
+	public TickCounter getUpdateCounter()
 	{
-		return this.running;
+		return this.updateCounter;
+	}
+
+	public void setFrameUpdated()
+	{
+		this.dirty = false;
+	}
+
+	public boolean shouldRenderFrame()
+	{
+		return this.dirty || !this.limitFrameRate;
+	}
+
+	public double getElapsedFrameTime()
+	{
+		return this.timeDelta;
 	}
 }

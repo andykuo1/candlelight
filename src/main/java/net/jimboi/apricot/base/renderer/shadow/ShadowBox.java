@@ -1,7 +1,8 @@
 package net.jimboi.apricot.base.renderer.shadow;
 
-import org.bstone.window.Window;
-import org.bstone.window.camera.PerspectiveCamera;
+import net.jimboi.boron.base.window.OldWindow;
+
+import org.bstone.camera.PerspectiveCamera;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -29,7 +30,7 @@ public class ShadowBox
 	private float minZ, maxZ;
 	private Matrix4f lightViewMatrix;
 	private PerspectiveCamera cam;
-	private Window window;
+	private OldWindow window;
 
 	private float farHeight, farWidth, nearHeight, nearWidth;
 
@@ -44,7 +45,7 @@ public class ShadowBox
 	 *                        terms of the light's local axis).
 	 * @param camera          - the in-game camera.
 	 */
-	protected ShadowBox(Matrix4f lightViewMatrix, PerspectiveCamera camera, Window window)
+	protected ShadowBox(Matrix4f lightViewMatrix, PerspectiveCamera camera, OldWindow window)
 	{
 		this.lightViewMatrix = lightViewMatrix;
 		this.cam = camera;

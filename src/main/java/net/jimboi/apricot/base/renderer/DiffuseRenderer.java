@@ -10,15 +10,15 @@ import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
 import net.jimboi.apricot.base.renderer.shadow.DynamicLight;
 import net.jimboi.apricot.base.renderer.shadow.ShadowBox;
 import net.jimboi.apricot.base.renderer.shadow.ShadowRenderer;
+import net.jimboi.boron.base.render.OldRenderEngine;
+import net.jimboi.boron.base.render.OldishRenderService;
+import net.jimboi.boron.base.window.OldWindow;
 
+import org.bstone.camera.Camera;
+import org.bstone.camera.PerspectiveCamera;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Texture;
-import org.bstone.render.RenderEngine;
-import org.bstone.render.RenderService;
-import org.bstone.window.Window;
-import org.bstone.window.camera.Camera;
-import org.bstone.window.camera.PerspectiveCamera;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector2f;
@@ -36,7 +36,7 @@ import java.util.List;
 /**
  * Created by Andy on 6/7/17.
  */
-public class DiffuseRenderer extends RenderService
+public class DiffuseRenderer extends OldishRenderService
 {
 	private final Asset<Program> program;
 
@@ -48,11 +48,11 @@ public class DiffuseRenderer extends RenderService
 	private ShadowRenderer shadowRenderer;
 
 	private AssetManager assetManager;
-	private Window window;
+	private OldWindow window;
 	private List<DynamicLight> lights;
 	private PerspectiveCamera camera;
 
-	public DiffuseRenderer(RenderEngine renderEngine, AssetManager assetManager, Window window, PerspectiveCamera camera, List<DynamicLight> lights, Asset<Program> program)
+	public DiffuseRenderer(OldRenderEngine renderEngine, AssetManager assetManager, OldWindow window, PerspectiveCamera camera, List<DynamicLight> lights, Asset<Program> program)
 	{
 		super(renderEngine);
 
@@ -66,19 +66,19 @@ public class DiffuseRenderer extends RenderService
 	}
 
 	@Override
-	protected void onServiceStart(RenderEngine handler)
+	protected void onServiceStart(OldRenderEngine handler)
 	{
 		this.shadowRenderer.load(this.camera, this.assetManager);
 	}
 
 	@Override
-	protected void onServiceStop(RenderEngine handler)
+	protected void onServiceStop(OldRenderEngine handler)
 	{
 		this.shadowRenderer.unload();
 	}
 
 	@Override
-	protected void onRenderUpdate(RenderEngine renderEngine, double delta)
+	protected void onRenderUpdate(OldRenderEngine renderEngine, double delta)
 	{
 
 	}

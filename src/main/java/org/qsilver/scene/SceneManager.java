@@ -1,6 +1,7 @@
 package org.qsilver.scene;
 
-import org.bstone.render.RenderEngine;
+import net.jimboi.boron.base.render.OldRenderEngine;
+
 import org.bstone.util.listener.Listenable;
 
 /**
@@ -83,7 +84,7 @@ public class SceneManager
 		}
 	}
 
-	public void renderUpdate(RenderEngine renderEngine)
+	public void renderUpdate(OldRenderEngine renderEngine)
 	{
 		if (this.isSetupMode())
 		{
@@ -157,7 +158,7 @@ public class SceneManager
 		}
 
 		public abstract void onUpdate(double delta);
-		public abstract void onRenderUpdate(RenderEngine renderEngine);
+		public abstract void onRenderUpdate(OldRenderEngine renderEngine);
 
 		protected synchronized void markComplete()
 		{
@@ -206,7 +207,7 @@ public class SceneManager
 		}
 
 		@Override
-		public void onRenderUpdate(RenderEngine renderEngine)
+		public void onRenderUpdate(OldRenderEngine renderEngine)
 		{
 			if (this.scene == null) return;
 
@@ -257,7 +258,7 @@ public class SceneManager
 		}
 
 		@Override
-		public void onRenderUpdate(RenderEngine renderEngine)
+		public void onRenderUpdate(OldRenderEngine renderEngine)
 		{
 			if (this.scene == null) return;
 

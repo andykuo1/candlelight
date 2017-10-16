@@ -1,11 +1,12 @@
 package org.zilar.collision;
 
+import net.jimboi.boron.base.render.OldRenderEngine;
+import net.jimboi.boron.base.render.OldishRenderService;
+
+import org.bstone.camera.Camera;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
-import org.bstone.render.RenderEngine;
-import org.bstone.render.RenderService;
 import org.bstone.transform.Transform2;
-import org.bstone.window.camera.Camera;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector2f;
@@ -22,7 +23,7 @@ import java.util.Iterator;
 /**
  * Created by Andy on 7/20/17.
  */
-public class CollisionRenderer extends RenderService
+public class CollisionRenderer extends OldishRenderService
 {
 	private final CollisionManager collisionManager;
 	private final Asset<Program> program;
@@ -37,7 +38,7 @@ public class CollisionRenderer extends RenderService
 	private Mesh SEGMENT;
 	private Mesh POINT;
 
-	public CollisionRenderer(RenderEngine renderEngine, CollisionManager collisionManager, Asset<Program> program)
+	public CollisionRenderer(OldRenderEngine renderEngine, CollisionManager collisionManager, Asset<Program> program)
 	{
 		super(renderEngine);
 		this.collisionManager = collisionManager;
@@ -51,7 +52,7 @@ public class CollisionRenderer extends RenderService
 	}
 
 	@Override
-	protected void onServiceStart(RenderEngine handler)
+	protected void onServiceStart(OldRenderEngine handler)
 	{
 		MeshBuilder mb = new MeshBuilder();
 
@@ -73,7 +74,7 @@ public class CollisionRenderer extends RenderService
 	}
 
 	@Override
-	protected void onServiceStop(RenderEngine handler)
+	protected void onServiceStop(OldRenderEngine handler)
 	{
 		CIRCLE.close();
 		QUAD.close();
@@ -82,7 +83,7 @@ public class CollisionRenderer extends RenderService
 	}
 
 	@Override
-	protected void onRenderUpdate(RenderEngine renderEngine, double delta)
+	protected void onRenderUpdate(OldRenderEngine renderEngine, double delta)
 	{
 
 	}

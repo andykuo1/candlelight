@@ -1,10 +1,11 @@
 package org.bstone.window;
 
 import org.bstone.util.listener.Listenable;
-import org.bstone.window.input.InputEngine;
 import org.bstone.window.view.ViewPort;
+import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
@@ -38,7 +39,31 @@ public class Window
 		GLFW.glfwMakeContextCurrent(window.handle);
 	}
 
-	private final InputEngine inputEngine;
+	public static void initializeGLFW()
+	{
+		System.out.println("OS " + System.getProperty("os.name"));
+		System.out.println("JAVA " + System.getProperty("java.version"));
+		System.out.println("LWJGL " + Version.getVersion());
+		System.out.println("GLFW " + GLFW.glfwGetVersionString());
+		System.out.println("JOML 1.9.2");
+
+		// Setup an error callback. The default implementation
+		// will print the error message in System.err.
+		GLFWErrorCallback.createPrint(System.err).set();
+
+		// Initialize GLFW. Most GLFW functions will not work before doing this.
+		if (!GLFW.glfwInit())
+		{
+			throw new IllegalStateException("Unable to initialize GLFW");
+		}
+	}
+
+	public static void terminateGLFW()
+	{
+		// Terminate GLFW and free the error callback
+		GLFW.glfwTerminate();
+		GLFW.glfwSetErrorCallback(null).free();
+	}
 
 	private final Stack<ViewPort> viewports = new Stack<>();
 	private final ViewPort defaultViewPort = new ViewPort(0, 0, this.width, this.height){
@@ -107,7 +132,7 @@ public class Window
 		}
 
 		//Create the input context
-		this.inputEngine = new InputEngine(this);
+		//this.inputEngine = new InputEngine(this);
 
 		//Setup a size callback.
 		GLFW.glfwSetWindowSizeCallback(this.handle, (window, w, h) ->
@@ -183,11 +208,6 @@ public class Window
 		GLFW.glfwSwapBuffers(this.handle);
 	}
 
-	public void updateInput()
-	{
-		this.inputEngine.update();
-	}
-
 	public void poll()
 	{
 		GLFW.glfwPollEvents();
@@ -218,11 +238,6 @@ public class Window
 	public boolean shouldCloseWindow()
 	{
 		return GLFW.glfwWindowShouldClose(this.handle);
-	}
-
-	public InputEngine getInputEngine()
-	{
-		return this.inputEngine;
 	}
 
 	public ViewPort getCurrentViewPort()

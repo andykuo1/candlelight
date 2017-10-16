@@ -1,71 +1,97 @@
 package org.bstone.render;
 
+import org.bstone.application.Application;
+import org.bstone.application.Engine;
 import org.bstone.service.ServiceManager;
-import org.lwjgl.Version;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWErrorCallback;
+import org.bstone.tick.TickCounter;
+import org.bstone.tick.TickEngine;
+import org.bstone.window.Window;
 
 /**
- * Created by Andy on 8/4/17.
+ * Created by Andy on 10/12/17.
  */
-public class RenderEngine
+public class RenderEngine extends Engine
 {
+	private Window window;
+	private TickEngine tickEngine;
+
+	private TickCounter frameCounter;
+	private RenderHandler renderHandler;
 	private final ServiceManager<RenderService, RenderEngine> serviceManager;
 
-	private final RenderHandler handler;
+	private double timeCounter;
 
-	public RenderEngine(RenderHandler handler)
+	public RenderEngine(RenderHandler renderHandler)
 	{
-		this.handler = handler;
-
+		this.renderHandler = renderHandler;
 		this.serviceManager = new ServiceManager<>(this);
 
-		System.out.println("OS " + System.getProperty("os.name"));
-		System.out.println("JAVA " + System.getProperty("java.version"));
-		System.out.println("LWJGL " + Version.getVersion());
-		System.out.println("GLFW " + GLFW.glfwGetVersionString());
-		System.out.println("JOML 1.9.2");
+		this.frameCounter = new TickCounter();
+	}
 
-		// Setup an error callback. The default implementation
-		// will print the error message in System.err.
-		GLFWErrorCallback.createPrint(System.err).set();
+	@Override
+	protected boolean onStart(Application app)
+	{
+		this.window = app.getWindow();
+		this.tickEngine = app.getEngineByClass(TickEngine.class);
 
-		// Initialize GLFW. Most GLFW functions will not work before doing this.
-		if (!GLFW.glfwInit())
+		this.frameCounter.reset();
+		this.timeCounter = System.currentTimeMillis();
+
+		this.renderHandler.onRenderLoad();
+		return true;
+	}
+
+	@Override
+	protected void onUpdate(Application app)
+	{
+		if (this.tickEngine.shouldRenderFrame())
 		{
-			throw new IllegalStateException("Unable to initialize GLFW");
+			this.window.updateScreenBuffer();
+			{
+				double delta = this.tickEngine.getElapsedFrameTime();
+
+				this.serviceManager.beginServiceBlock();
+				{
+					this.renderHandler.onRenderUpdate(delta);
+					this.serviceManager.forEach(service->service.onRenderUpdate(this, delta));
+				}
+				this.serviceManager.endServiceBlock();
+			}
+			this.window.clearScreenBuffer();
+
+			this.tickEngine.setFrameUpdated();
+			this.frameCounter.tick();
+		}
+
+		this.window.poll();
+
+		if (this.window.shouldCloseWindow())
+		{
+			app.stop();
+		}
+
+		if (System.currentTimeMillis() - this.timeCounter > 1000)
+		{
+			this.timeCounter += 1000;
+
+			System.out.println("[UPS: " + this.tickEngine.getUpdateCounter().get() + " || FPS: " + this.frameCounter.get() + "]");
 		}
 	}
 
-	public void destroy()
+	@Override
+	protected void onStop(Application app)
 	{
-		// Terminate GLFW and free the error callback
-		GLFW.glfwTerminate();
-		GLFW.glfwSetErrorCallback(null).free();
-	}
-
-	public void load()
-	{
-		this.handler.onRenderLoad(this);
-	}
-
-	public void unload()
-	{
-		this.handler.onRenderUnload(this);
+		this.renderHandler.onRenderUnload();
 		this.serviceManager.clearServices();
 	}
 
-	public void update(double delta)
+	public TickCounter getFrameCounter()
 	{
-		this.serviceManager.beginServiceBlock();
-		{
-			this.handler.onRenderUpdate(this, delta);
-			this.serviceManager.forEach(service->service.onRenderUpdate(this, delta));
-		}
-		this.serviceManager.endServiceBlock();
+		return this.frameCounter;
 	}
 
-	public final ServiceManager<RenderService, org.bstone.render.RenderEngine> getRenderServices()
+	public final ServiceManager<RenderService, RenderEngine> getRenderServices()
 	{
 		return this.serviceManager;
 	}

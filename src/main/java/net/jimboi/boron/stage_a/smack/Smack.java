@@ -1,14 +1,18 @@
 package net.jimboi.boron.stage_a.smack;
 
+import net.jimboi.boron.base.render.OldRenderEngine;
+import net.jimboi.boron.base.window.OldWindow;
+import net.jimboi.boron.base.window.input.InputManager;
 import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxRenderer;
 
+import org.bstone.camera.Camera;
+import org.bstone.camera.PerspectiveCamera;
 import org.bstone.game.GameEngine;
 import org.bstone.game.GameHandler;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
-import org.bstone.render.RenderEngine;
 import org.bstone.render.Renderable;
 import org.bstone.render.material.Material;
 import org.bstone.render.material.PropertyColor;
@@ -18,10 +22,6 @@ import org.bstone.render.model.TextModel;
 import org.bstone.render.model.TextModelManager;
 import org.bstone.render.renderer.SimpleProgramRenderer;
 import org.bstone.util.direction.Direction;
-import org.bstone.window.Window;
-import org.bstone.window.camera.Camera;
-import org.bstone.window.camera.PerspectiveCamera;
-import org.bstone.window.input.InputManager;
 import org.bstone.window.view.ScreenSpace;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -118,7 +118,7 @@ public class Smack implements GameHandler
 	private Set<ComponentRenderable> renderables2 = new HashSet<>();
 
 	@Override
-	public void onLoad(RenderEngine renderEngine)
+	public void onLoad(OldRenderEngine renderEngine)
 	{
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glCullFace(GL11.GL_BACK);
@@ -204,7 +204,7 @@ public class Smack implements GameHandler
 	private int prevAmmo;
 
 	@Override
-	public void onRender(RenderEngine renderEngine, double delta)
+	public void onRender(OldRenderEngine renderEngine, double delta)
 	{
 		if (this.prevAmmo != this.getWorld().getPlayer().getAmmo())
 		{
@@ -251,7 +251,7 @@ public class Smack implements GameHandler
 	}
 
 	@Override
-	public void onUnload(RenderEngine renderEngine)
+	public void onUnload(OldRenderEngine renderEngine)
 	{
 		this.simpleRenderer.close();
 		this.collisionBoxRenderer.close();
@@ -266,7 +266,7 @@ public class Smack implements GameHandler
 		return GAMEENGINE.getInput();
 	}
 
-	public Window getWindow()
+	public OldWindow getWindow()
 	{
 		return GAMEENGINE.getWindow();
 	}

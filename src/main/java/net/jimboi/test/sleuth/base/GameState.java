@@ -1,24 +1,17 @@
 package net.jimboi.test.sleuth.base;
 
-import net.jimboi.test.console.Console;
+import net.jimboi.test.sleuth.example.Blackboard;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.bstone.console.Console;
 
 /**
  * Created by Andy on 10/7/17.
  */
 public abstract class GameState
 {
-	protected static final Map<String, Object> DATA = new HashMap<>();
+	public static final Blackboard DATA = new Blackboard();
 
-	protected final Game game;
 	private GameState prev;
-
-	public GameState(Game game)
-	{
-		this.game = game;
-	}
 
 	protected abstract void onScreenStart(Console con);
 
@@ -62,10 +55,5 @@ public abstract class GameState
 			con.quit();
 		}
 		this.prev = null;
-	}
-
-	public Game getGame()
-	{
-		return this.game;
 	}
 }

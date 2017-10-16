@@ -1,6 +1,6 @@
 package net.jimboi.test.conworld.view;
 
-import net.jimboi.test.console.Console;
+import org.bstone.console.Console;
 
 /**
  * Created by Andy on 8/30/17.

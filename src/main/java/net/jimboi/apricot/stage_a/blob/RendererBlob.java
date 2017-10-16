@@ -15,10 +15,10 @@ import net.jimboi.apricot.stage_a.mod.model.Model;
 import net.jimboi.apricot.stage_a.mod.render.Render;
 import net.jimboi.apricot.stage_a.mod.renderer.OldRenderService;
 import net.jimboi.apricot.stage_a.mod.resource.ModResourceLocation;
+import net.jimboi.boron.base.render.OldRenderEngine;
 
+import org.bstone.camera.PerspectiveCamera;
 import org.bstone.mogli.Texture;
-import org.bstone.render.RenderEngine;
-import org.bstone.window.camera.PerspectiveCamera;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.zilar.meshbuilder.MeshBuilder;
@@ -42,7 +42,7 @@ public class RendererBlob extends OldRenderService implements InstanceManager.On
 
 	private MazeWorld world;
 
-	public RendererBlob(RenderEngine renderEngine)
+	public RendererBlob(OldRenderEngine renderEngine)
 	{
 		super(renderEngine);
 
@@ -63,7 +63,7 @@ public class RendererBlob extends OldRenderService implements InstanceManager.On
 	}
 
 	@Override
-	public void onRenderLoad(RenderEngine renderEngine)
+	public void onRenderLoad(OldRenderEngine renderEngine)
 	{
 		RendererBlob.lights.add(ModLight.createPointLight(0, 0, 0, 0xFFFFFF, 1F, 1F, 0));
 		RendererBlob.lights.add(ModLight.createDirectionLight(1, 1F, 1F, 0xFFFFFF, 0.1F, 0.06F));
@@ -127,13 +127,13 @@ public class RendererBlob extends OldRenderService implements InstanceManager.On
 	}
 
 	@Override
-	public void onRender(RenderEngine renderEngine)
+	public void onRender(OldRenderEngine renderEngine)
 	{
 		this.instanceManager.update();
 	}
 
 	@Override
-	public void onRenderUnload(RenderEngine renderEngine)
+	public void onRenderUnload(OldRenderEngine renderEngine)
 	{
 		this.instanceManager.destroyAll();
 	}

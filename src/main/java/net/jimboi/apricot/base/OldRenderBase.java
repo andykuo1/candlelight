@@ -1,9 +1,9 @@
 package net.jimboi.apricot.base;
 
 import net.jimboi.apricot.stage_a.mod.renderer.OldRenderService;
+import net.jimboi.boron.base.render.OldRenderEngine;
 
-import org.bstone.render.RenderEngine;
-import org.bstone.window.camera.Camera;
+import org.bstone.camera.Camera;
 
 /**
  * Created by Andy on 7/5/17.
@@ -14,24 +14,24 @@ public abstract class OldRenderBase extends OldRenderService
 
 	private final Camera camera;
 
-	public OldRenderBase(RenderEngine renderEngine, Camera camera)
+	public OldRenderBase(OldRenderEngine renderEngine, Camera camera)
 	{
 		super(renderEngine);
 		this.camera = camera;
 	}
 
 	@Override
-	public void onRenderLoad(RenderEngine renderEngine)
+	public void onRenderLoad(OldRenderEngine renderEngine)
 	{
 	}
 
 	@Override
-	public void onRender(RenderEngine renderEngine)
+	public void onRender(OldRenderEngine renderEngine)
 	{
 	}
 
 	@Override
-	public void onRenderUnload(RenderEngine renderEngine)
+	public void onRenderUnload(OldRenderEngine renderEngine)
 	{
 	}
 

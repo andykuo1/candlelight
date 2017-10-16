@@ -1,21 +1,21 @@
 package org.bstone.game;
 
-import org.bstone.render.RenderEngine;
-import org.bstone.render.RenderHandler;
-import org.bstone.tick.TickEngine;
-import org.bstone.tick.TickHandler;
-import org.bstone.window.Window;
-import org.bstone.window.input.InputManager;
+import net.jimboi.boron.base.render.OldRenderEngine;
+import net.jimboi.boron.base.render.OldRenderHandler;
+import net.jimboi.boron.base.tick.OldTickEngine;
+import net.jimboi.boron.base.tick.OldTickHandler;
+import net.jimboi.boron.base.window.OldWindow;
+import net.jimboi.boron.base.window.input.InputManager;
 
 /**
  * Created by Andy on 8/5/17.
  */
-public class GameEngine implements TickHandler, RenderHandler
+public class GameEngine implements OldTickHandler, OldRenderHandler
 {
-	private final TickEngine tickEngine;
-	private final RenderEngine renderEngine;
+	private final OldTickEngine tickEngine;
+	private final OldRenderEngine renderEngine;
 
-	private Window window;
+	private OldWindow window;
 	private InputManager inputManager;
 
 	private final GameHandler handler;
@@ -23,8 +23,8 @@ public class GameEngine implements TickHandler, RenderHandler
 	public GameEngine(GameHandler handler)
 	{
 		this.handler = handler;
-		this.tickEngine = new TickEngine(60, true, this);
-		this.renderEngine = new RenderEngine(this);
+		this.tickEngine = new OldTickEngine(60, true, this);
+		this.renderEngine = new OldRenderEngine(this);
 	}
 
 	public void start()
@@ -38,9 +38,9 @@ public class GameEngine implements TickHandler, RenderHandler
 	}
 
 	@Override
-	public void onFirstUpdate(TickEngine tickEngine)
+	public void onFirstUpdate(OldTickEngine tickEngine)
 	{
-		this.window = new Window(this.handler.getClass().getSimpleName(), 640, 480);
+		this.window = new OldWindow(this.handler.getClass().getSimpleName(), 640, 480);
 		this.inputManager = new InputManager(this.window.getInputEngine());
 
 		this.renderEngine.load();
@@ -78,7 +78,7 @@ public class GameEngine implements TickHandler, RenderHandler
 	}
 
 	@Override
-	public void onLastUpdate(TickEngine tickEngine)
+	public void onLastUpdate(OldTickEngine tickEngine)
 	{
 		this.handler.onLastUpdate();
 
@@ -91,34 +91,34 @@ public class GameEngine implements TickHandler, RenderHandler
 	}
 
 	@Override
-	public void onRenderLoad(RenderEngine renderEngine)
+	public void onRenderLoad(OldRenderEngine renderEngine)
 	{
 		this.handler.onLoad(renderEngine);
 	}
 
 	@Override
-	public void onRenderUpdate(RenderEngine renderEngine, double delta)
+	public void onRenderUpdate(OldRenderEngine renderEngine, double delta)
 	{
 		this.handler.onRender(renderEngine, delta);
 	}
 
 	@Override
-	public void onRenderUnload(RenderEngine renderEngine)
+	public void onRenderUnload(OldRenderEngine renderEngine)
 	{
 		this.handler.onUnload(renderEngine);
 	}
 
-	public TickEngine getTickEngine()
+	public OldTickEngine getTickEngine()
 	{
 		return this.tickEngine;
 	}
 
-	public RenderEngine getRenderEngine()
+	public OldRenderEngine getRenderEngine()
 	{
 		return this.renderEngine;
 	}
 
-	public Window getWindow()
+	public OldWindow getWindow()
 	{
 		return this.window;
 	}

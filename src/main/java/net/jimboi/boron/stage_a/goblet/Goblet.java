@@ -1,11 +1,12 @@
 package net.jimboi.boron.stage_a.goblet;
 
-import org.bstone.render.RenderEngine;
-import org.bstone.render.RenderHandler;
-import org.bstone.tick.TickEngine;
-import org.bstone.tick.TickHandler;
-import org.bstone.window.Window;
-import org.bstone.window.input.InputManager;
+import net.jimboi.boron.base.render.OldRenderEngine;
+import net.jimboi.boron.base.render.OldRenderHandler;
+import net.jimboi.boron.base.tick.OldTickEngine;
+import net.jimboi.boron.base.tick.OldTickHandler;
+import net.jimboi.boron.base.window.OldWindow;
+import net.jimboi.boron.base.window.input.InputManager;
+
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.qsilver.poma.Poma;
@@ -13,19 +14,19 @@ import org.qsilver.poma.Poma;
 /**
  * Created by Andy on 8/9/17.
  */
-public final class Goblet implements TickHandler, RenderHandler
+public final class Goblet implements OldTickHandler, OldRenderHandler
 {
 	public static Goblet getGoblet()
 	{
 		return INSTANCE;
 	}
 
-	public static TickEngine getTickEngine()
+	public static OldTickEngine getTickEngine()
 	{
 		return TICKENGINE;
 	}
 
-	public static RenderEngine getRenderEngine()
+	public static OldRenderEngine getRenderEngine()
 	{
 		return RENDERENGINE;
 	}
@@ -38,8 +39,8 @@ public final class Goblet implements TickHandler, RenderHandler
 	private static Goblet INSTANCE;
 	private Goblet() {}
 
-	private static TickEngine TICKENGINE;
-	private static RenderEngine RENDERENGINE;
+	private static OldTickEngine TICKENGINE;
+	private static OldRenderEngine RENDERENGINE;
 
 	private static boolean DEBUG;
 
@@ -49,21 +50,21 @@ public final class Goblet implements TickHandler, RenderHandler
 
 		INSTANCE = new Goblet();
 
-		TICKENGINE = new TickEngine(60, true, INSTANCE);
-		RENDERENGINE = new RenderEngine(INSTANCE);
+		TICKENGINE = new OldTickEngine(60, true, INSTANCE);
+		RENDERENGINE = new OldRenderEngine(INSTANCE);
 
 		TICKENGINE.run();
 	}
 
-	private Window window;
+	private OldWindow window;
 	private InputManager input;
 
 	private GobletWorld world;
 
 	@Override
-	public void onFirstUpdate(TickEngine tickEngine)
+	public void onFirstUpdate(OldTickEngine tickEngine)
 	{
-		this.window = new Window("Goblet", 640, 480);
+		this.window = new OldWindow("Goblet", 640, 480);
 		this.input = new InputManager(this.window.getInputEngine());
 
 		this.input.registerKey("_debug", GLFW.GLFW_KEY_P);
@@ -109,7 +110,7 @@ public final class Goblet implements TickHandler, RenderHandler
 	}
 
 	@Override
-	public void onLastUpdate(TickEngine tickEngine)
+	public void onLastUpdate(OldTickEngine tickEngine)
 	{
 		this.world.stop();
 
@@ -124,7 +125,7 @@ public final class Goblet implements TickHandler, RenderHandler
 	private GobletRenderer renderer;
 
 	@Override
-	public void onRenderLoad(RenderEngine renderEngine)
+	public void onRenderLoad(OldRenderEngine renderEngine)
 	{
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glCullFace(GL11.GL_BACK);
@@ -134,13 +135,13 @@ public final class Goblet implements TickHandler, RenderHandler
 	}
 
 	@Override
-	public void onRenderUnload(RenderEngine renderEngine)
+	public void onRenderUnload(OldRenderEngine renderEngine)
 	{
 		this.renderer.unload(renderEngine);
 	}
 
 	@Override
-	public void onRenderUpdate(RenderEngine renderEngine, double delta)
+	public void onRenderUpdate(OldRenderEngine renderEngine, double delta)
 	{
 		this.renderer.update(renderEngine, delta);
 	}
@@ -160,7 +161,7 @@ public final class Goblet implements TickHandler, RenderHandler
 		return this.input;
 	}
 
-	public Window getWindow()
+	public OldWindow getWindow()
 	{
 		return this.window;
 	}

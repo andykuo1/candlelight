@@ -4,13 +4,13 @@ import net.jimboi.apricot.base.gui.base.Gui;
 import net.jimboi.apricot.base.gui.base.GuiManager;
 import net.jimboi.apricot.base.material.OldMaterial;
 import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
+import net.jimboi.boron.base.render.OldRenderEngine;
+import net.jimboi.boron.base.render.OldishRenderService;
 
+import org.bstone.camera.Camera;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Texture;
-import org.bstone.render.RenderEngine;
-import org.bstone.render.RenderService;
-import org.bstone.window.camera.Camera;
 import org.bstone.window.view.ScreenSpace;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
@@ -31,7 +31,7 @@ import java.util.Iterator;
 /**
  * Created by Andy on 7/15/17.
  */
-public class GuiRenderer extends RenderService
+public class GuiRenderer extends OldishRenderService
 {
 	private final GuiManager guiManager;
 	private final Asset<Program> program;
@@ -45,7 +45,7 @@ public class GuiRenderer extends RenderService
 
 	private Mesh QUAD;
 
-	public GuiRenderer(RenderEngine renderEngine, GuiManager guiManager, Asset<Program> program)
+	public GuiRenderer(OldRenderEngine renderEngine, GuiManager guiManager, Asset<Program> program)
 	{
 		super(renderEngine);
 		this.guiManager = guiManager;
@@ -55,7 +55,7 @@ public class GuiRenderer extends RenderService
 	}
 
 	@Override
-	protected void onServiceStart(RenderEngine handler)
+	protected void onServiceStart(OldRenderEngine handler)
 	{
 		MeshBuilder mb = new MeshBuilder();
 		mb.addPlane(new Vector2f(0, 0), new Vector2f(1, 1), 0, new Vector2f(0, 0), new Vector2f(1, 1));
@@ -63,13 +63,13 @@ public class GuiRenderer extends RenderService
 	}
 
 	@Override
-	protected void onServiceStop(RenderEngine handler)
+	protected void onServiceStop(OldRenderEngine handler)
 	{
 		QUAD.close();
 	}
 
 	@Override
-	protected void onRenderUpdate(RenderEngine renderEngine, double delta)
+	protected void onRenderUpdate(OldRenderEngine renderEngine, double delta)
 	{
 
 	}

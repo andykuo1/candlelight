@@ -4,13 +4,13 @@ import net.jimboi.apricot.base.material.OldMaterial;
 import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.render.OldRenderable;
 import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
+import net.jimboi.boron.base.render.OldRenderEngine;
+import net.jimboi.boron.base.render.OldishRenderService;
 
+import org.bstone.camera.Camera;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Texture;
-import org.bstone.render.RenderEngine;
-import org.bstone.render.RenderService;
-import org.bstone.window.camera.Camera;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector2f;
@@ -24,7 +24,7 @@ import java.util.Iterator;
 /**
  * Created by Andy on 6/7/17.
  */
-public class BillboardRenderer extends RenderService
+public class BillboardRenderer extends OldishRenderService
 {
 	public enum Type
 	{
@@ -39,7 +39,7 @@ public class BillboardRenderer extends RenderService
 	private final Matrix4f modelViewMatrix = new Matrix4f();
 	private final Matrix4f modelMatrix = new Matrix4f();
 
-	public BillboardRenderer(RenderEngine renderEngine, Asset<Program> program, Type type)
+	public BillboardRenderer(OldRenderEngine renderEngine, Asset<Program> program, Type type)
 	{
 		super(renderEngine);
 
@@ -48,17 +48,17 @@ public class BillboardRenderer extends RenderService
 	}
 
 	@Override
-	protected void onServiceStart(RenderEngine handler)
+	protected void onServiceStart(OldRenderEngine handler)
 	{
 	}
 
 	@Override
-	protected void onServiceStop(RenderEngine handler)
+	protected void onServiceStop(OldRenderEngine handler)
 	{
 	}
 
 	@Override
-	protected void onRenderUpdate(RenderEngine renderEngine, double delta)
+	protected void onRenderUpdate(OldRenderEngine renderEngine, double delta)
 	{
 
 	}

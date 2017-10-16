@@ -2,12 +2,13 @@ package net.jimboi.boron.minicraft;
 
 import com.mojang.ld22.Game;
 
-import org.bstone.tick.TickEngine;
-import org.bstone.tick.TickHandler;
-import org.bstone.window.Window;
-import org.bstone.window.camera.Camera;
-import org.bstone.window.camera.OrthographicCamera;
-import org.bstone.window.input.InputManager;
+import net.jimboi.boron.base.tick.OldTickEngine;
+import net.jimboi.boron.base.tick.OldTickHandler;
+import net.jimboi.boron.base.window.OldWindow;
+import net.jimboi.boron.base.window.input.InputManager;
+
+import org.bstone.camera.Camera;
+import org.bstone.camera.OrthographicCamera;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -15,7 +16,7 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 /**
  * Created by Andy on 8/3/17.
  */
-public class MiniCraft implements TickHandler
+public class MiniCraft implements OldTickHandler
 {
 	private static final MiniCraft INSTANCE = new MiniCraft();
 	private MiniCraft(){}
@@ -27,13 +28,13 @@ public class MiniCraft implements TickHandler
 
 	public static void main(String[] args)
 	{
-		INSTANCE.tickEngine = new TickEngine(60, true, INSTANCE);
+		INSTANCE.tickEngine = new OldTickEngine(60, true, INSTANCE);
 		INSTANCE.tickEngine.run();
 	}
 
-	public TickEngine tickEngine;
+	public OldTickEngine tickEngine;
 
-	public Window window;
+	public OldWindow window;
 	public InputManager inputManager;
 
 	public Camera camera;
@@ -42,7 +43,7 @@ public class MiniCraft implements TickHandler
 	public Game world;
 
 	@Override
-	public void onFirstUpdate(TickEngine tickEngine)
+	public void onFirstUpdate(OldTickEngine tickEngine)
 	{
 		System.out.println("LWJGL " + Version.getVersion());
 		System.out.println("JOML 1.9.2");
@@ -57,7 +58,7 @@ public class MiniCraft implements TickHandler
 			throw new IllegalStateException("Unable to initialize GLFW");
 		}
 
-		this.window = new Window("MiniCraft", 640, 480);
+		this.window = new OldWindow("MiniCraft", 640, 480);
 		this.inputManager = new InputManager(this.window.getInputEngine());
 
 		this.inputManager.registerKey("up", GLFW.GLFW_KEY_UP, GLFW.GLFW_KEY_W);
@@ -109,7 +110,7 @@ public class MiniCraft implements TickHandler
 	}
 
 	@Override
-	public void onLastUpdate(TickEngine tickEngine)
+	public void onLastUpdate(OldTickEngine tickEngine)
 	{
 		this.renderer.unload();
 

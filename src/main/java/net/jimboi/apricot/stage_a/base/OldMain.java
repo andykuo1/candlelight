@@ -2,11 +2,11 @@ package net.jimboi.apricot.stage_a.base;
 
 import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.stage_a.dood.SceneDood;
+import net.jimboi.boron.base.render.OldRenderEngine;
+import net.jimboi.boron.base.tick.OldTickEngine;
+import net.jimboi.boron.base.window.OldWindow;
+import net.jimboi.boron.base.window.input.InputEngine;
 
-import org.bstone.render.RenderEngine;
-import org.bstone.tick.TickEngine;
-import org.bstone.window.Window;
-import org.bstone.window.input.InputEngine;
 import org.qsilver.scene.Scene;
 import org.qsilver.scene.SceneManager;
 
@@ -17,10 +17,10 @@ public class OldMain
 {
 	public static Scene SCENE;
 
-	public static TickEngine TICKENGINE;
-	public static Window WINDOW;
+	public static OldTickEngine TICKENGINE;
+	public static OldWindow WINDOW;
 	public static InputEngine INPUTENGINE;
-	public static RenderEngine RENDERENGINE;
+	public static OldRenderEngine RENDERENGINE;
 
 	public static SceneManager SCENEMANAGER;
 

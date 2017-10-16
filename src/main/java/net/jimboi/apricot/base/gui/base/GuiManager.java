@@ -1,12 +1,12 @@
 package net.jimboi.apricot.base.gui.base;
 
 import net.jimboi.apricot.base.input.OldInputManager;
+import net.jimboi.boron.base.window.input.InputEngine;
+import net.jimboi.boron.base.window.input.InputLayer;
 
+import org.bstone.camera.Camera;
+import org.bstone.camera.OrthographicCamera;
 import org.bstone.util.direction.Direction;
-import org.bstone.window.camera.Camera;
-import org.bstone.window.camera.OrthographicCamera;
-import org.bstone.window.input.InputEngine;
-import org.bstone.window.input.InputLayer;
 import org.bstone.window.view.ScreenSpace;
 import org.bstone.window.view.ViewPort;
 import org.joml.Vector3f;

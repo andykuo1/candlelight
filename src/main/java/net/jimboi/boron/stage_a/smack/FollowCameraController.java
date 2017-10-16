@@ -1,8 +1,8 @@
 package net.jimboi.boron.stage_a.smack;
 
+import org.bstone.camera.Camera;
+import org.bstone.camera.CameraController;
 import org.bstone.transform.Transform3;
-import org.bstone.window.camera.Camera;
-import org.bstone.window.camera.CameraController;
 import org.qsilver.util.MathUtil;
 
 /**

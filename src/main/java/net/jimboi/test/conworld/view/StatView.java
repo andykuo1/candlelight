@@ -1,9 +1,10 @@
 package net.jimboi.test.conworld.view;
 
-import net.jimboi.test.console.Console;
-import net.jimboi.test.console.ConsoleUtil;
 import net.jimboi.test.conworld.acor.Actor;
 import net.jimboi.test.conworld.acor.Stats;
+
+import org.bstone.console.Console;
+import org.bstone.console.ConsoleUtil;
 
 /**
  * Created by Andy on 8/30/17.

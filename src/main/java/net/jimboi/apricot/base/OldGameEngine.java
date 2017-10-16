@@ -1,13 +1,13 @@
 package net.jimboi.apricot.base;
 
 import net.jimboi.apricot.base.input.OldInputManager;
+import net.jimboi.boron.base.render.OldRenderEngine;
+import net.jimboi.boron.base.render.OldRenderHandler;
+import net.jimboi.boron.base.tick.OldTickEngine;
+import net.jimboi.boron.base.tick.OldTickHandler;
+import net.jimboi.boron.base.window.OldWindow;
+import net.jimboi.boron.base.window.input.InputEngine;
 
-import org.bstone.render.RenderEngine;
-import org.bstone.render.RenderHandler;
-import org.bstone.tick.TickEngine;
-import org.bstone.tick.TickHandler;
-import org.bstone.window.Window;
-import org.bstone.window.input.InputEngine;
 import org.qsilver.asset.AssetManager;
 import org.qsilver.poma.Poma;
 import org.qsilver.scene.Scene;
@@ -20,10 +20,10 @@ import java.util.Arrays;
  */
 public final class OldGameEngine
 {
-	public static TickEngine TICKENGINE;
-	public static Window WINDOW;
+	public static OldTickEngine TICKENGINE;
+	public static OldWindow WINDOW;
 	public static InputEngine INPUTENGINE;
-	public static RenderEngine RENDERENGINE;
+	public static OldRenderEngine RENDERENGINE;
 
 	public static AssetManager ASSETMANAGER;
 	public static SceneManager SCENEMANAGER;
@@ -64,10 +64,10 @@ public final class OldGameEngine
 		Poma.info("Running program with args: " + Arrays.asList(args));
 		Poma.div();
 
-		TICKENGINE = new TickEngine(60, true, new TickHandler()
+		TICKENGINE = new OldTickEngine(60, true, new OldTickHandler()
 		{
 			@Override
-			public void onFirstUpdate(TickEngine tickEngine)
+			public void onFirstUpdate(OldTickEngine tickEngine)
 			{
 				RENDERENGINE.load();
 			}
@@ -117,7 +117,7 @@ public final class OldGameEngine
 			}
 
 			@Override
-			public void onLastUpdate(TickEngine tickEngine)
+			public void onLastUpdate(OldTickEngine tickEngine)
 			{
 				ASSETMANAGER.destroy();
 				RENDERENGINE.unload();
@@ -126,28 +126,28 @@ public final class OldGameEngine
 			}
 		});
 
-		RENDERENGINE = new RenderEngine(new RenderHandler()
+		RENDERENGINE = new OldRenderEngine(new OldRenderHandler()
 		{
 			@Override
-			public void onRenderLoad(RenderEngine renderEngine)
+			public void onRenderLoad(OldRenderEngine renderEngine)
 			{
 			}
 
 			@Override
-			public void onRenderUnload(RenderEngine renderEngine)
+			public void onRenderUnload(OldRenderEngine renderEngine)
 			{
 
 			}
 
 			@Override
-			public void onRenderUpdate(RenderEngine renderEngine, double delta)
+			public void onRenderUpdate(OldRenderEngine renderEngine, double delta)
 			{
 				SCENEMANAGER.renderUpdate(renderEngine);
 				ASSETMANAGER.update(renderEngine);
 			}
 		});
 
-		WINDOW = new Window("Application", 640, 480);
+		WINDOW = new OldWindow("Application", 640, 480);
 		INPUTENGINE = WINDOW.getInputEngine();
 		OldInputManager.init(INPUTENGINE);
 

@@ -1,12 +1,12 @@
 package net.jimboi.boron.stage_a.goblet.gui.base;
 
+import net.jimboi.boron.base.window.input.InputEngine;
+import net.jimboi.boron.base.window.input.InputLayer;
 import net.jimboi.boron.stage_a.goblet.Goblet;
 
+import org.bstone.camera.Camera;
+import org.bstone.camera.OrthographicCamera;
 import org.bstone.util.direction.Direction;
-import org.bstone.window.camera.Camera;
-import org.bstone.window.camera.OrthographicCamera;
-import org.bstone.window.input.InputEngine;
-import org.bstone.window.input.InputLayer;
 import org.bstone.window.view.ScreenSpace;
 import org.bstone.window.view.ViewPort;
 import org.joml.Vector3f;

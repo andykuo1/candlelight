@@ -1,13 +1,14 @@
 package net.jimboi.test.conworld.action;
 
-import net.jimboi.test.console.Console;
-import net.jimboi.test.console.ConsoleUtil;
 import net.jimboi.test.conworld.acor.Actor;
 import net.jimboi.test.conworld.acor.DamageSourceItem;
 import net.jimboi.test.conworld.item.ItemStack;
 import net.jimboi.test.conworld.item.ItemSword;
 import net.jimboi.test.conworld.view.ActorSelectorView;
 import net.jimboi.test.conworld.world.World;
+
+import org.bstone.console.Console;
+import org.bstone.console.ConsoleUtil;
 
 /**
  * Created by Andy on 8/30/17.

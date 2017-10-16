@@ -13,12 +13,12 @@ import net.jimboi.apricot.base.renderer.shadow.DynamicLight;
 import net.jimboi.apricot.stage_b.glim.bounding.BoundingManager;
 import net.jimboi.apricot.stage_b.glim.bounding.BoundingRenderer;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderable;
+import net.jimboi.boron.base.render.OldRenderEngine;
 
+import org.bstone.camera.PerspectiveCamera;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
-import org.bstone.render.RenderEngine;
 import org.bstone.util.SemanticVersion;
-import org.bstone.window.camera.PerspectiveCamera;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
@@ -56,7 +56,7 @@ public class RenderGlim extends OldRenderBase
 
 	protected final Assets assets;
 
-	public RenderGlim(RenderEngine renderEngine)
+	public RenderGlim(OldRenderEngine renderEngine)
 	{
 		super(renderEngine, new PerspectiveCamera(640, 480));
 
@@ -70,7 +70,7 @@ public class RenderGlim extends OldRenderBase
 	}
 
 	@Override
-	public void onRenderLoad(RenderEngine renderEngine)
+	public void onRenderLoad(OldRenderEngine renderEngine)
 	{
 		this.assets.load();
 
@@ -130,7 +130,7 @@ public class RenderGlim extends OldRenderBase
 	}
 
 	@Override
-	public void onRender(RenderEngine renderEngine)
+	public void onRender(OldRenderEngine renderEngine)
 	{
 		OldSceneBase scene = (OldSceneBase) OldGameEngine.SCENEMANAGER.getCurrentScene();
 		if (scene == null) return;
@@ -161,7 +161,7 @@ public class RenderGlim extends OldRenderBase
 	}
 
 	@Override
-	public void onRenderUnload(RenderEngine renderEngine)
+	public void onRenderUnload(OldRenderEngine renderEngine)
 	{
 		this.assets.unload();
 

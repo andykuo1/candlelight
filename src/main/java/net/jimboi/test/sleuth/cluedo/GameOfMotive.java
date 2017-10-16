@@ -1,10 +1,11 @@
 package net.jimboi.test.sleuth.cluedo;
 
-import net.jimboi.test.console.Console;
-import net.jimboi.test.console.ConsoleUtil;
 import net.jimboi.test.sleuth.Actor;
 import net.jimboi.test.sleuth.ActorFactory;
 import net.jimboi.test.sleuth.Motive;
+
+import org.bstone.console.Console;
+import org.bstone.console.ConsoleUtil;
 
 import java.awt.Color;
 import java.util.HashSet;

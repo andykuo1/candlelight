@@ -3,12 +3,12 @@ package net.jimboi.apricot.stage_a.blob.livings;
 import net.jimboi.apricot.base.input.OldInputManager;
 import net.jimboi.apricot.stage_a.base.OldMain;
 import net.jimboi.apricot.stage_a.blob.RendererBlob;
+import net.jimboi.boron.base.window.input.InputEngine;
+import net.jimboi.boron.base.window.input.InputLayer;
 
+import org.bstone.camera.Camera;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
-import org.bstone.window.camera.Camera;
-import org.bstone.window.input.InputEngine;
-import org.bstone.window.input.InputLayer;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.joml.Vector3f;

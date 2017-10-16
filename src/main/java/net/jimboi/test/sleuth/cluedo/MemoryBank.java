@@ -1,6 +1,6 @@
 package net.jimboi.test.sleuth.cluedo;
 
-import net.jimboi.test.sleuth.SleuthStruct;
+import net.jimboi.test.sleuth.PrintableStruct;
 import net.jimboi.test.sleuth.data.Time;
 
 import org.bstone.util.Pair;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Andy on 9/23/17.
  */
-public class MemoryBank extends SleuthStruct
+public class MemoryBank extends PrintableStruct
 {
 	public final List<Memory> data = new LinkedList<>();
 

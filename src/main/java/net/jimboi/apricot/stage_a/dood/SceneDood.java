@@ -12,10 +12,10 @@ import net.jimboi.apricot.stage_a.dood.system.SystemBox2D;
 import net.jimboi.apricot.stage_a.dood.system.SystemInstance;
 import net.jimboi.apricot.stage_a.dood.system.SystemMotion;
 import net.jimboi.apricot.stage_a.mod.ModLight;
+import net.jimboi.boron.base.window.input.InputEngine;
+import net.jimboi.boron.base.window.input.InputLayer;
 
-import org.bstone.window.camera.CameraController;
-import org.bstone.window.input.InputEngine;
-import org.bstone.window.input.InputLayer;
+import org.bstone.camera.CameraController;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.joints.Joint;

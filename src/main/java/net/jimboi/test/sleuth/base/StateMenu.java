@@ -1,18 +1,13 @@
 package net.jimboi.test.sleuth.base;
 
-import net.jimboi.test.console.Console;
-import net.jimboi.test.console.ConsoleUtil;
+import org.bstone.console.Console;
+import org.bstone.console.ConsoleUtil;
 
 /**
  * Created by Andy on 10/7/17.
  */
 public class StateMenu extends GameState
 {
-	public StateMenu(Game game)
-	{
-		super(game);
-	}
-
 	@Override
 	protected void onScreenStart(Console con)
 	{
@@ -25,16 +20,16 @@ public class StateMenu extends GameState
 		ConsoleUtil.newline(con);
 
 		ConsoleUtil.button(con, "New Case", () -> {
-			this.game.clear();
-			this.next(con, new StateCase(this.game));
+			DATA.clear();
+			this.next(con, new StateCase());
 		});
 		ConsoleUtil.newline(con);
 
-		if (!this.game.isEmpty())
+		if (!DATA.isEmpty())
 		{
 			ConsoleUtil.button(con, "Continue Case", () ->
 			{
-				this.next(con, new StateCase(this.game));
+				this.next(con, new StateCase());
 			});
 			ConsoleUtil.newline(con);
 		}

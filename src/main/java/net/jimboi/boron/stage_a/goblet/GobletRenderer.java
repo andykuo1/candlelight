@@ -2,20 +2,20 @@ package net.jimboi.boron.stage_a.goblet;
 
 import net.jimboi.apricot.base.gui.base.Gui;
 import net.jimboi.apricot.base.gui.base.GuiManager;
+import net.jimboi.boron.base.render.OldRenderEngine;
+import net.jimboi.boron.base.window.input.InputManager;
 import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxRenderer;
 
+import org.bstone.camera.Camera;
+import org.bstone.camera.OrthographicCamera;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
-import org.bstone.render.RenderEngine;
 import org.bstone.render.Renderable;
 import org.bstone.render.model.TextModelManager;
 import org.bstone.render.renderer.SimpleProgramRenderer;
 import org.bstone.util.direction.Direction;
-import org.bstone.window.camera.Camera;
-import org.bstone.window.camera.OrthographicCamera;
-import org.bstone.window.input.InputManager;
 import org.bstone.window.view.ScreenSpace;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -59,7 +59,7 @@ public class GobletRenderer
 	public Set<Renderable> renderables;
 	public Set<ComponentRenderable> renderComponents;
 
-	public void load(RenderEngine renderEngine)
+	public void load(OldRenderEngine renderEngine)
 	{
 		this.renderables = new HashSet<>();
 		this.renderComponents = new HashSet<>();
@@ -109,7 +109,7 @@ public class GobletRenderer
 		this.collisionBoxRenderer = new CollisionBoxRenderer();
 	}
 
-	public void unload(RenderEngine renderEngine)
+	public void unload(OldRenderEngine renderEngine)
 	{
 		this.simpleRenderer.close();
 		this.collisionBoxRenderer.close();
@@ -121,7 +121,7 @@ public class GobletRenderer
 		this.mshQuad.close();
 	}
 
-	public void update(RenderEngine renderEngine, double delta)
+	public void update(OldRenderEngine renderEngine, double delta)
 	{
 		this.guiManager.update();
 

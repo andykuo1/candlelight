@@ -1,5 +1,6 @@
 package net.jimboi.boron.stage_a.smack.entity;
 
+import net.jimboi.boron.base.window.input.InputManager;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionResponse;
 import net.jimboi.boron.stage_a.smack.DamageSource;
@@ -11,7 +12,6 @@ import net.jimboi.boron.stage_a.smack.tile.DungeonHandler;
 
 import org.bstone.livingentity.LivingEntity;
 import org.bstone.transform.Transform3;
-import org.bstone.window.input.InputManager;
 import org.joml.Vector2f;
 import org.qsilver.util.MathUtil;
 

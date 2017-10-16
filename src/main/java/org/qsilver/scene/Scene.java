@@ -1,6 +1,7 @@
 package org.qsilver.scene;
 
-import org.bstone.render.RenderEngine;
+import net.jimboi.boron.base.render.OldRenderEngine;
+
 import org.bstone.service.ServiceManager;
 import org.bstone.util.listener.Listenable;
 import org.qsilver.poma.Poma;
@@ -70,7 +71,7 @@ public abstract class Scene
 		this.onSceneCreate.notifyListeners();
 	}
 
-	void load(RenderEngine renderEngine)
+	void load(OldRenderEngine renderEngine)
 	{
 		Poma.div();
 		System.out.println("Loading Scene. . .");
@@ -117,7 +118,7 @@ public abstract class Scene
 		this.serviceManager.endServiceBlock();
 	}
 
-	void unload(RenderEngine renderEngine)
+	void unload(OldRenderEngine renderEngine)
 	{
 		Poma.div();
 		System.out.println("Unloading Scene. . .");
@@ -137,7 +138,7 @@ public abstract class Scene
 
 	protected abstract void onSceneCreate();
 
-	protected abstract void onSceneLoad(RenderEngine renderEngine);
+	protected abstract void onSceneLoad(OldRenderEngine renderEngine);
 
 	protected abstract void onSceneStart();
 
@@ -145,7 +146,7 @@ public abstract class Scene
 
 	protected abstract void onSceneStop();
 
-	protected abstract void onSceneUnload(RenderEngine renderEngine);
+	protected abstract void onSceneUnload(OldRenderEngine renderEngine);
 
 	protected abstract void onSceneDestroy();
 

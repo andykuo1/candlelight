@@ -43,7 +43,7 @@ public class AStar<N, C extends Comparable<C>>
 		this.isend = isend;
 	}
 
-	public final Iterable<N> search(N start, N end)
+	public final List<N> search(N start, N end)
 	{
 		try
 		{

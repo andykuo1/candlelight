@@ -1,9 +1,10 @@
 package net.jimboi.test.conworld.view;
 
-import net.jimboi.test.console.Console;
-import net.jimboi.test.console.ConsoleUtil;
 import net.jimboi.test.conworld.acor.Actor;
 import net.jimboi.test.conworld.world.World;
+
+import org.bstone.console.Console;
+import org.bstone.console.ConsoleUtil;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;

@@ -5,15 +5,15 @@ import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.render.OldRenderable;
 import net.jimboi.apricot.base.renderer.property.OldPropertyShadow;
 import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
+import net.jimboi.boron.base.window.OldWindow;
 
+import org.bstone.camera.PerspectiveCamera;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.FBO;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
 import org.bstone.mogli.Texture;
-import org.bstone.window.Window;
-import org.bstone.window.camera.PerspectiveCamera;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector2f;
@@ -54,9 +54,9 @@ public class ShadowRenderer
 	private Asset<Texture> shadowMap;
 	private Asset<Program> shadowProgram;
 
-	private Window window;
+	private OldWindow window;
 
-	public ShadowRenderer(Window window)
+	public ShadowRenderer(OldWindow window)
 	{
 		this.window = window;
 	}

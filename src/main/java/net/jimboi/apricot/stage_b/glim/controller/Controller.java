@@ -1,7 +1,8 @@
 package net.jimboi.apricot.stage_b.glim.controller;
 
-import org.bstone.window.camera.Camera;
-import org.bstone.window.input.InputEngine;
+import net.jimboi.boron.base.window.input.InputEngine;
+
+import org.bstone.camera.Camera;
 
 /**
  * Created by Andy on 6/4/17.
