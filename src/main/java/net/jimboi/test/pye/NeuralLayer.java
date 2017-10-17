@@ -12,7 +12,7 @@ public class NeuralLayer
 		this.data = new float[size];
 	}
 
-	public NeuralLayer process(WeightedLayer weights, NeuralLayer dst)
+	public NeuralLayer process(NeuralWeightLayer weights, NeuralLayer dst)
 	{
 		if (!weights.isSource(this)) throw new IllegalArgumentException("invalid weighted layer");
 		if (!weights.isDestination(dst)) throw new IllegalArgumentException("invalid destination neural layer");

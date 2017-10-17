@@ -8,6 +8,7 @@ import org.bstone.render.RenderEngine;
 import org.bstone.render.RenderHandler;
 import org.bstone.tick.TickEngine;
 import org.bstone.tick.TickHandler;
+import org.bstone.window.Window;
 import org.lwjgl.glfw.GLFW;
 
 /**
@@ -15,6 +16,8 @@ import org.lwjgl.glfw.GLFW;
  */
 public class BasicFramework implements Framework, TickHandler, RenderHandler
 {
+	private Window window;
+
 	private TickEngine tickEngine;
 	private RenderEngine renderEngine;
 	private InputEngine inputEngine;
@@ -27,11 +30,18 @@ public class BasicFramework implements Framework, TickHandler, RenderHandler
 	}
 
 	@Override
+	public void onApplicationCreate(Application app) throws Exception
+	{
+		Window.initializeGLFW();
+	}
+
+	@Override
 	public void onApplicationStart(Application app)
 	{
+		this.window = new Window("Application", 640, 480);
 		this.tickEngine = new TickEngine(60, true, this);
-		this.renderEngine = new RenderEngine(this);
-		this.inputEngine = new InputEngine(app.getWindow());
+		this.renderEngine = new RenderEngine(this.window, this);
+		this.inputEngine = new InputEngine(this.window);
 
 		app.startEngine(this.tickEngine);
 		app.startEngine(this.renderEngine);
@@ -53,6 +63,13 @@ public class BasicFramework implements Framework, TickHandler, RenderHandler
 	@Override
 	public void onApplicationStop(Application app)
 	{
+		this.window.destroy();
+	}
+
+	@Override
+	public void onApplicationDestroy(Application app)
+	{
+		Window.terminateGLFW();
 	}
 
 	@Override
@@ -100,5 +117,10 @@ public class BasicFramework implements Framework, TickHandler, RenderHandler
 	public void onRenderUnload()
 	{
 		this.game.onUnload(this.renderEngine);
+	}
+
+	public Window getWindow()
+	{
+		return this.window;
 	}
 }

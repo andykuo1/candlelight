@@ -6,14 +6,14 @@ package net.jimboi.test.pye;
 public class NeuralNetwork
 {
 	private NeuralLayer inputs;
-	private WeightedLayer weightedInOut;
+	private NeuralWeightLayer weightedInOut;
 	private NeuralLayer outputs;
 
 	public NeuralNetwork(int inputs, int outputs)
 	{
 		this.inputs = new NeuralLayer(inputs);
 		this.outputs = new NeuralLayer(outputs);
-		this.weightedInOut = new WeightedLayer(this.inputs, this.outputs);
+		this.weightedInOut = new NeuralWeightLayer(this.inputs, this.outputs);
 	}
 
 	public NeuralLayer solve()

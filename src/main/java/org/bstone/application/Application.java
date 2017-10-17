@@ -1,7 +1,5 @@
 package org.bstone.application;
 
-import org.bstone.window.Window;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -13,7 +11,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class Application implements Runnable
 {
 	private final Framework framework;
-	private Window window;
 	private Thread thread;
 
 	private List<Engine> engines = new LinkedList<>();
@@ -98,7 +95,6 @@ public class Application implements Runnable
 		//Create application
 		try
 		{
-			Window.initializeGLFW();
 			this.framework.onApplicationCreate(this);
 		}
 		catch(Exception e)
@@ -110,7 +106,6 @@ public class Application implements Runnable
 		//Start application
 		try
 		{
-			this.window = new Window("Application", 640, 480);
 			this.framework.onApplicationStart(this);
 
 			//Main loop
@@ -152,13 +147,11 @@ public class Application implements Runnable
 			this.engines.clear();
 
 			this.framework.onApplicationStop(this);
-			this.window.destroy();
 		}
 		finally
 		{
 			//Destroy application
 			this.framework.onApplicationDestroy(this);
-			Window.terminateGLFW();
 		}
 	}
 
@@ -202,10 +195,5 @@ public class Application implements Runnable
 	public Framework getFramework()
 	{
 		return this.framework;
-	}
-
-	public Window getWindow()
-	{
-		return this.window;
 	}
 }

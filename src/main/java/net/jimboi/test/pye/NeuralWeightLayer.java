@@ -3,14 +3,14 @@ package net.jimboi.test.pye;
 /**
  * Created by Andy on 10/15/17.
  */
-public class WeightedLayer
+public class NeuralWeightLayer
 {
 	private final NeuralLayer src;
 	private final NeuralLayer dst;
 
 	private final float[][] data;
 
-	public WeightedLayer(NeuralLayer src, NeuralLayer dst)
+	public NeuralWeightLayer(NeuralLayer src, NeuralLayer dst)
 	{
 		this.src = src;
 		this.dst = dst;

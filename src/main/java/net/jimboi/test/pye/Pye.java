@@ -1,85 +1,85 @@
 package net.jimboi.test.pye;
 
+import org.joml.Vector2f;
+
+import java.util.Arrays;
+
 /**
- * Created by Andy on 10/15/17.
+ * Created by Andy on 10/16/17.
  */
-public class Pye extends GameEntity
+public class Pye extends Matter
 {
-	public Pye(float x, float y)
+	protected final Appendage[] appendages;
+
+	protected float maxEnergy = 5;
+	protected float energy = 3;
+
+	public Pye(Appendage... appendages)
 	{
-		super(x, y);
-
-		this.vspeed = 5 - (float) (Math.random() * 10);
-		this.hspeed = 5 - (float) (Math.random() * 10);
-		this.dir = (float) Math.random();
-		this.rotspeed = 1 - (float) (Math.random() * 2);
+		super(0, 0, 0);
+		this.appendages = appendages;
 	}
-	/*
 
-	Every Pye is a collection of stats that is the result of a neural network.
+	@Override
+	public void onUpdate(PetriDish dish)
+	{
+		for(int i = 0; i < this.appendages.length; ++i)
+		{
+			Appendage appendage = this.appendages[i];
+			if (appendage != null)
+			{
+				appendage.execute(dish, this, i, 0.01F);
+			}
+		}
 
-	Since a neural network solves systems, the system must be complex enough and allow
-	for random variation to be interesting.
+		/*
+		for (Appendage appendage : this.appendages)
+		{
+			if (appendage == null) continue;
 
-	Pye should grow.
+			float f = appendage.poll(this);
+			this.neurals.getInput().set(appendage.getID(), f);
+		}
+		NeuralLayer output = this.neurals.solve();
+		for (int i = 0; i < output.size(); ++i)
+		{
+			float f = output.get(i);
+			this.appendages[i].execute(this, f);
+		}
+		*/
+	}
 
-	Pye can gain more abilities.
-	Must enforce different play styles:
-		- Tank
-		- Scout
-		- Sneaky
-		- Range
+	public Vector2f getPosition(int index, Vector2f dst)
+	{
+		float dir = this.getDirection(index);
+		return dst.set(this.posX, this.posY).add((float) Math.cos(dir) * this.radius, (float) Math.sin(dir) * this.radius);
+	}
 
-	You are given a list of inputs and outputs.
-	You are only allowed a certain number of inputs/outputs on a match.
+	public float getDirection(int index)
+	{
+		float f = index / (float) this.appendages.length;
+		return f * PI2 + this.rotation;
+	}
 
-	INPUTS:
-	- SIGHT: SOLID
-	- SIGHT: COLOR
-	- SIGHT: DISTANCE
-	- SIGHT: SPATIAL AWARENESS (HOW MUCH SPACE)
-	- MOTION: SPEED
-	- MOTION: ROTATION
-	- BODY: ENERGY AMT
-	- BODY: LIFE AMT
-	- BODY: SIZE
-	- BODY: COLOR
-	- SMELL: TYPE
-	- SMELL: DISTANCE
-	- SMELL: DIRECTION
-	- TOUCH: SOLID
-	- TOUCH: TYPE
-	- TOUCH: COLOR
+	public int indexOf(Appendage appendage)
+	{
+		for(int i = 0; i < this.appendages.length; ++i)
+		{
+			if (appendage.equals(this.appendages[i]))
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
 
-	OUTPUTS:
-	- MOVE
-	- ROTATE
-	- DO ACTION
-		- Poison spit
-		- Punch
-		- Split
-	- Targeting System:
-		- Move Towards / Away
-		- Sidestep
+	public Iterable<Appendage> getAppendages()
+	{
+		return Arrays.asList(this.appendages);
+	}
 
-
-	OUTPUTS:
-
-
-
-	Genetic Tamagachi meets MOBAs
-
-	Every Pye starts with some inputs and some outputs.
-
-	Outputs would be like motor functions. OR abstract memory slots.
-
-	Basically teaching data science through designing the neural network.
-
-	FIRST: Feed-Forward Networks or Recurrent
-		Does not contain loops or cycles
-	SECOND: Hidden Layers?
-		Hidden layers to solve.
-
-
-	 */
+	public float getEnergyPercent()
+	{
+		return this.energy / this.maxEnergy;
+	}
 }

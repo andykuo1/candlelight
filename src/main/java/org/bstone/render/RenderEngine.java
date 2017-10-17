@@ -12,7 +12,7 @@ import org.bstone.window.Window;
  */
 public class RenderEngine extends Engine
 {
-	private Window window;
+	private final Window window;
 	private TickEngine tickEngine;
 
 	private TickCounter frameCounter;
@@ -21,8 +21,9 @@ public class RenderEngine extends Engine
 
 	private double timeCounter;
 
-	public RenderEngine(RenderHandler renderHandler)
+	public RenderEngine(Window window, RenderHandler renderHandler)
 	{
+		this.window = window;
 		this.renderHandler = renderHandler;
 		this.serviceManager = new ServiceManager<>(this);
 
@@ -32,7 +33,6 @@ public class RenderEngine extends Engine
 	@Override
 	protected boolean onStart(Application app)
 	{
-		this.window = app.getWindow();
 		this.tickEngine = app.getEngineByClass(TickEngine.class);
 
 		this.frameCounter.reset();
