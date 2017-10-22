@@ -1,4 +1,4 @@
-package net.jimboi.boron.stage_c.owle;
+package net.jimboi.canary.stage_a.owle;
 
 import org.bstone.input.TextHandler;
 import org.bstone.transform.Transform;

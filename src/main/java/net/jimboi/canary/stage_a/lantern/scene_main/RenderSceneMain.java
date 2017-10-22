@@ -1,4 +1,4 @@
-package net.jimboi.boron.stage_c.lantern.scene_main;
+package net.jimboi.canary.stage_a.lantern.scene_main;
 
 import org.bstone.application.scene.render.RenderScene;
 import org.bstone.livingentity.LivingEntity;

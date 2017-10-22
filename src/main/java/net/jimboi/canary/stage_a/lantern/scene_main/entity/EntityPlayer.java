@@ -1,6 +1,6 @@
-package net.jimboi.boron.stage_c.lantern.scene_main.entity;
+package net.jimboi.canary.stage_a.lantern.scene_main.entity;
 
-import net.jimboi.boron.stage_c.lantern.scene_main.EntityBase;
+import net.jimboi.canary.stage_a.lantern.scene_main.EntityBase;
 
 import org.bstone.transform.Transform3;
 

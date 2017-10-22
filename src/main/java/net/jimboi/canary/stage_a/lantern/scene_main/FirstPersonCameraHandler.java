@@ -1,6 +1,6 @@
-package net.jimboi.boron.stage_c.lantern.scene_main;
+package net.jimboi.canary.stage_a.lantern.scene_main;
 
-import net.jimboi.boron.stage_c.lantern.Lantern;
+import net.jimboi.canary.stage_a.lantern.Lantern;
 
 import org.bstone.camera.Camera;
 import org.bstone.input.InputListener;

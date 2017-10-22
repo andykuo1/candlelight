@@ -1,4 +1,4 @@
-package net.jimboi.boron.stage_c.resource;
+package net.jimboi.canary.stage_a.resource;
 
 /**
  * Created by Andy on 10/22/17.

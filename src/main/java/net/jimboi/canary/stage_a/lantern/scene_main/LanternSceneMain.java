@@ -1,9 +1,9 @@
-package net.jimboi.boron.stage_c.lantern.scene_main;
+package net.jimboi.canary.stage_a.lantern.scene_main;
 
 import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxManager;
-import net.jimboi.boron.stage_c.lantern.Lantern;
-import net.jimboi.boron.stage_c.lantern.scene_main.entity.EntityCrate;
-import net.jimboi.boron.stage_c.lantern.scene_main.entity.EntityPlayer;
+import net.jimboi.canary.stage_a.lantern.Lantern;
+import net.jimboi.canary.stage_a.lantern.scene_main.entity.EntityCrate;
+import net.jimboi.canary.stage_a.lantern.scene_main.entity.EntityPlayer;
 
 import org.bstone.application.scene.Scene;
 import org.bstone.application.scene.SceneManager;

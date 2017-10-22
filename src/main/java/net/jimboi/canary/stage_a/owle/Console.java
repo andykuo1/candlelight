@@ -1,6 +1,6 @@
-package net.jimboi.boron.stage_c.owle;
+package net.jimboi.canary.stage_a.owle;
 
-import net.jimboi.boron.stage_c.lantern.Lantern;
+import net.jimboi.canary.stage_a.lantern.Lantern;
 
 import org.bstone.application.Application;
 import org.bstone.application.game.Game;

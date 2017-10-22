@@ -1,7 +1,7 @@
-package net.jimboi.boron.stage_c.lantern;
+package net.jimboi.canary.stage_a.lantern;
 
-import net.jimboi.boron.stage_c.lantern.scene_main.LanternSceneMain;
-import net.jimboi.boron.stage_c.lantern.scene_main.RenderSceneMain;
+import net.jimboi.canary.stage_a.lantern.scene_main.LanternSceneMain;
+import net.jimboi.canary.stage_a.lantern.scene_main.RenderSceneMain;
 
 import org.bstone.application.Application;
 import org.bstone.application.game.Game;
