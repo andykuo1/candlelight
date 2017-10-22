@@ -1,6 +1,6 @@
 package org.bstone.mogli;
 
-import net.jimboi.boron.base.window.OldWindow;
+import net.jimboi.boron.base_ab.window.OldWindow;
 
 import org.bstone.RefCountSet;
 import org.bstone.window.view.ViewPort;

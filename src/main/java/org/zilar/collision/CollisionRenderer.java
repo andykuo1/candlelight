@@ -1,7 +1,7 @@
 package org.zilar.collision;
 
-import net.jimboi.boron.base.render.OldRenderEngine;
-import net.jimboi.boron.base.render.OldishRenderService;
+import net.jimboi.boron.base_ab.render.OldRenderEngine;
+import net.jimboi.boron.base_ab.render.OldishRenderService;
 
 import org.bstone.camera.Camera;
 import org.bstone.mogli.Mesh;

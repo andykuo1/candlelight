@@ -1,8 +1,8 @@
 package net.jimboi.apricot.base.gui.base;
 
 import net.jimboi.apricot.base.input.OldInputManager;
-import net.jimboi.boron.base.window.input.InputEngine;
-import net.jimboi.boron.base.window.input.InputLayer;
+import net.jimboi.boron.base_ab.window.input.InputEngine;
+import net.jimboi.boron.base_ab.window.input.InputLayer;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.OrthographicCamera;
@@ -106,6 +106,7 @@ public class GuiManager implements InputLayer
 	public void onInputUpdate(InputEngine inputEngine)
 	{
 		this.inputSelect = OldInputManager.isInputDown("mouseleft");
+		System.out.println(this.inputSelect);
 
 		float mouseX = OldInputManager.getInputAmount("mousex");
 		float mouseY = OldInputManager.getInputAmount("mousey");

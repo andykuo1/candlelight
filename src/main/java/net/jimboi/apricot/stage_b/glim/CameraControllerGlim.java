@@ -5,8 +5,8 @@ import net.jimboi.apricot.stage_b.glim.controller.FirstPersonLookController;
 import net.jimboi.apricot.stage_b.glim.controller.FirstPersonMoveController;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentBounding;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform;
-import net.jimboi.boron.base.window.input.InputEngine;
-import net.jimboi.boron.base.window.input.InputLayer;
+import net.jimboi.boron.base_ab.window.input.InputEngine;
+import net.jimboi.boron.base_ab.window.input.InputLayer;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;

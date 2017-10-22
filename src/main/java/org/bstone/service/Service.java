@@ -5,7 +5,7 @@ package org.bstone.service;
  */
 public abstract class Service<H> implements Comparable<Service<H>>
 {
-	private final ServiceManager serviceManager;
+	ServiceManager serviceManager;
 
 	private boolean active = false;
 	private int priority;

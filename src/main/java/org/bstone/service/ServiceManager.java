@@ -141,13 +141,15 @@ public final class ServiceManager<S extends Service<H>, H>
 	private void doStartService(S service)
 	{
 		this.services.add(service);
+		service.serviceManager = this;
 		service.doStart(this.handler);
 	}
 
 	private void doStopService(S service)
 	{
-		this.services.remove(service);
 		service.doStop(this.handler);
+		service.serviceManager = null;
+		this.services.remove(service);
 	}
 
 	public H getServiceHandler()

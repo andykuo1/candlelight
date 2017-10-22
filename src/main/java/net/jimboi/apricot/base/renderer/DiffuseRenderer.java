@@ -10,9 +10,9 @@ import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
 import net.jimboi.apricot.base.renderer.shadow.DynamicLight;
 import net.jimboi.apricot.base.renderer.shadow.ShadowBox;
 import net.jimboi.apricot.base.renderer.shadow.ShadowRenderer;
-import net.jimboi.boron.base.render.OldRenderEngine;
-import net.jimboi.boron.base.render.OldishRenderService;
-import net.jimboi.boron.base.window.OldWindow;
+import net.jimboi.boron.base_ab.render.OldRenderEngine;
+import net.jimboi.boron.base_ab.render.OldishRenderService;
+import net.jimboi.boron.base_ab.window.OldWindow;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.PerspectiveCamera;

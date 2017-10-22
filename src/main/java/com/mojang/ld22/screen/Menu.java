@@ -5,7 +5,7 @@ import com.mojang.ld22.gfx.Color;
 import com.mojang.ld22.gfx.Font;
 import com.mojang.ld22.gfx.Screen;
 
-import net.jimboi.boron.base.window.input.InputManager;
+import net.jimboi.boron.base_ab.window.input.InputManager;
 
 import java.util.List;
 

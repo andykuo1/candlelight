@@ -1,10 +1,10 @@
 package org.bstone.input;
 
-import org.bstone.input.context.AxisInput;
-import org.bstone.input.context.ButtonInput;
-import org.bstone.input.context.IVirtual;
-import org.bstone.input.context.Input;
-import org.bstone.input.context.VirtualAxis;
+import org.bstone.input.mapping.AxisInput;
+import org.bstone.input.mapping.ButtonInput;
+import org.bstone.input.mapping.Input;
+import org.bstone.input.mapping.VirtualAxis;
+import org.bstone.input.mapping.VirtualInput;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,11 +19,11 @@ public abstract class InputHandler
 {
 	private final Map<Integer, AxisInput> axes = new HashMap<>();
 	private final Map<Integer, ButtonInput> buttons = new HashMap<>();
-	private final Set<IVirtual> virtuals = new HashSet<>();
+	private final Set<VirtualInput> virtuals = new HashSet<>();
 
 	public void update()
 	{
-		for(IVirtual virtual : this.virtuals)
+		for(VirtualInput virtual : this.virtuals)
 		{
 			virtual.update();
 		}
@@ -60,7 +60,7 @@ public abstract class InputHandler
 	public final AxisInput destroyAxis(int id)
 	{
 		AxisInput axis = this.axes.remove(id);
-		if (axis instanceof IVirtual)
+		if (axis instanceof VirtualInput)
 		{
 			this.virtuals.remove(axis);
 		}
@@ -70,7 +70,7 @@ public abstract class InputHandler
 	public final ButtonInput destroyButton(int id)
 	{
 		ButtonInput button = this.buttons.remove(id);
-		if (button instanceof IVirtual)
+		if (button instanceof VirtualInput)
 		{
 			this.virtuals.remove(button);
 		}

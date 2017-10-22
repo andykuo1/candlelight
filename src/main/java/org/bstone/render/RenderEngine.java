@@ -2,9 +2,10 @@ package org.bstone.render;
 
 import org.bstone.application.Application;
 import org.bstone.application.Engine;
+import org.bstone.application.handler.FrameHandler;
+import org.bstone.application.handler.RenderHandler;
 import org.bstone.service.ServiceManager;
 import org.bstone.tick.TickCounter;
-import org.bstone.tick.TickEngine;
 import org.bstone.window.Window;
 
 /**
@@ -13,19 +14,20 @@ import org.bstone.window.Window;
 public class RenderEngine extends Engine
 {
 	private final Window window;
-	private TickEngine tickEngine;
 
-	private TickCounter frameCounter;
-	private RenderHandler renderHandler;
 	private final ServiceManager<RenderService, RenderEngine> serviceManager;
 
-	private double timeCounter;
+	private final TickCounter frameCounter;
+	private final FrameHandler frameHandler;
+	private final RenderHandler renderHandler;
 
-	public RenderEngine(Window window, RenderHandler renderHandler)
+	public RenderEngine(Window window, FrameHandler frameHandler, RenderHandler renderHandler)
 	{
 		this.window = window;
-		this.renderHandler = renderHandler;
 		this.serviceManager = new ServiceManager<>(this);
+
+		this.frameHandler = frameHandler;
+		this.renderHandler = renderHandler;
 
 		this.frameCounter = new TickCounter();
 	}
@@ -33,10 +35,7 @@ public class RenderEngine extends Engine
 	@Override
 	protected boolean onStart(Application app)
 	{
-		this.tickEngine = app.getEngineByClass(TickEngine.class);
-
 		this.frameCounter.reset();
-		this.timeCounter = System.currentTimeMillis();
 
 		this.renderHandler.onRenderLoad();
 		return true;
@@ -45,11 +44,11 @@ public class RenderEngine extends Engine
 	@Override
 	protected void onUpdate(Application app)
 	{
-		if (this.tickEngine.shouldRenderFrame())
+		if (this.frameHandler.shouldRenderCurrentFrame())
 		{
-			this.window.updateScreenBuffer();
+			this.window.clearScreenBuffer();
 			{
-				double delta = this.tickEngine.getElapsedFrameTime();
+				double delta = this.frameHandler.getElapsedFrameTime();
 
 				this.serviceManager.beginServiceBlock();
 				{
@@ -58,9 +57,10 @@ public class RenderEngine extends Engine
 				}
 				this.serviceManager.endServiceBlock();
 			}
-			this.window.clearScreenBuffer();
+			this.window.updateScreenBuffer();
 
-			this.tickEngine.setFrameUpdated();
+			this.frameHandler.onFrameRendered();
+
 			this.frameCounter.tick();
 		}
 
@@ -69,13 +69,6 @@ public class RenderEngine extends Engine
 		if (this.window.shouldCloseWindow())
 		{
 			app.stop();
-		}
-
-		if (System.currentTimeMillis() - this.timeCounter > 1000)
-		{
-			this.timeCounter += 1000;
-
-			System.out.println("[UPS: " + this.tickEngine.getUpdateCounter().get() + " || FPS: " + this.frameCounter.get() + "]");
 		}
 	}
 
@@ -86,7 +79,7 @@ public class RenderEngine extends Engine
 		this.serviceManager.clearServices();
 	}
 
-	public TickCounter getFrameCounter()
+	public final TickCounter getFrameCounter()
 	{
 		return this.frameCounter;
 	}

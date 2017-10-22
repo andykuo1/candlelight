@@ -2,11 +2,13 @@ package org.bstone.tick;
 
 import org.bstone.application.Application;
 import org.bstone.application.Engine;
+import org.bstone.application.handler.FrameHandler;
+import org.bstone.application.handler.TickHandler;
 
 /**
  * Created by Andy on 10/12/17.
  */
-public class TickEngine extends Engine
+public class TickEngine extends Engine implements FrameHandler
 {
 	private boolean dirty = true;
 
@@ -16,10 +18,9 @@ public class TickEngine extends Engine
 	private double timePrevious;
 	private double timeLatency;
 
-	private TickCounter updateCounter;
-
 	private double timeDelta;
 
+	private final TickCounter updateCounter;
 	private final TickHandler handler;
 
 	public TickEngine(int ticksPerSecond, boolean limitFrameRate, TickHandler handler)
@@ -73,23 +74,27 @@ public class TickEngine extends Engine
 		this.handler.onLastUpdate();
 	}
 
-	public TickCounter getUpdateCounter()
+	public final TickCounter getUpdateCounter()
 	{
 		return this.updateCounter;
 	}
 
-	public void setFrameUpdated()
-	{
-		this.dirty = false;
-	}
-
-	public boolean shouldRenderFrame()
+	@Override
+	public boolean shouldRenderCurrentFrame()
 	{
 		return this.dirty || !this.limitFrameRate;
 	}
 
+	@Override
 	public double getElapsedFrameTime()
 	{
 		return this.timeDelta;
 	}
+
+	@Override
+	public void onFrameRendered()
+	{
+		this.dirty = false;
+	}
+
 }

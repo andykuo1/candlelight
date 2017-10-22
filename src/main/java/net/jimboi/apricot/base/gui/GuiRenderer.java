@@ -4,8 +4,8 @@ import net.jimboi.apricot.base.gui.base.Gui;
 import net.jimboi.apricot.base.gui.base.GuiManager;
 import net.jimboi.apricot.base.material.OldMaterial;
 import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
-import net.jimboi.boron.base.render.OldRenderEngine;
-import net.jimboi.boron.base.render.OldishRenderService;
+import net.jimboi.boron.base_ab.render.OldRenderEngine;
+import net.jimboi.boron.base_ab.render.OldishRenderService;
 
 import org.bstone.camera.Camera;
 import org.bstone.mogli.Mesh;

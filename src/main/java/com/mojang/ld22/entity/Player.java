@@ -12,7 +12,7 @@ import com.mojang.ld22.level.tile.Tile;
 import com.mojang.ld22.screen.InventoryMenu;
 import com.mojang.ld22.sound.Sound;
 
-import net.jimboi.boron.base.window.input.InputManager;
+import net.jimboi.boron.base_ab.window.input.InputManager;
 
 import java.util.List;
 

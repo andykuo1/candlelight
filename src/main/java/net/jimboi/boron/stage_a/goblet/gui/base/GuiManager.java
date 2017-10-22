@@ -1,7 +1,7 @@
 package net.jimboi.boron.stage_a.goblet.gui.base;
 
-import net.jimboi.boron.base.window.input.InputEngine;
-import net.jimboi.boron.base.window.input.InputLayer;
+import net.jimboi.boron.base_ab.window.input.InputEngine;
+import net.jimboi.boron.base_ab.window.input.InputLayer;
 import net.jimboi.boron.stage_a.goblet.Goblet;
 
 import org.bstone.camera.Camera;

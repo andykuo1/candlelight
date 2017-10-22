@@ -5,7 +5,7 @@ import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.render.OldRenderable;
 import net.jimboi.apricot.base.renderer.property.OldPropertyShadow;
 import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
-import net.jimboi.boron.base.window.OldWindow;
+import net.jimboi.boron.base_ab.window.OldWindow;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.mogli.Bitmap;

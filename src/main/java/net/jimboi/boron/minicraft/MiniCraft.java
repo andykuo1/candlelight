@@ -2,10 +2,10 @@ package net.jimboi.boron.minicraft;
 
 import com.mojang.ld22.Game;
 
-import net.jimboi.boron.base.tick.OldTickEngine;
-import net.jimboi.boron.base.tick.OldTickHandler;
-import net.jimboi.boron.base.window.OldWindow;
-import net.jimboi.boron.base.window.input.InputManager;
+import net.jimboi.boron.base_ab.tick.OldTickEngine;
+import net.jimboi.boron.base_ab.tick.OldTickHandler;
+import net.jimboi.boron.base_ab.window.OldWindow;
+import net.jimboi.boron.base_ab.window.input.InputManager;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.OrthographicCamera;

@@ -39,8 +39,19 @@ public class Window
 		GLFW.glfwMakeContextCurrent(window.handle);
 	}
 
+	private static boolean initGLFW = false;
+
 	public static void initializeGLFW()
 	{
+		if (initGLFW)
+		{
+			return;
+		}
+		else
+		{
+			initGLFW = true;
+		}
+
 		System.out.println("OS " + System.getProperty("os.name"));
 		System.out.println("JAVA " + System.getProperty("java.version"));
 		System.out.println("LWJGL " + Version.getVersion());
@@ -60,6 +71,15 @@ public class Window
 
 	public static void terminateGLFW()
 	{
+		if (!initGLFW)
+		{
+			return;
+		}
+		else
+		{
+			initGLFW = false;
+		}
+
 		// Terminate GLFW and free the error callback
 		GLFW.glfwTerminate();
 		GLFW.glfwSetErrorCallback(null).free();
@@ -109,7 +129,7 @@ public class Window
 
 	private long handle;
 
-	public Window(String title, int width, int height)
+	public void create(String title, int width, int height)
 	{
 		this.width = width;
 		this.height = height;

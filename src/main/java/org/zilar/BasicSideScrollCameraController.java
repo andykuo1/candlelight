@@ -1,8 +1,8 @@
 package org.zilar;
 
 import net.jimboi.apricot.base.input.OldInputManager;
-import net.jimboi.boron.base.window.input.InputEngine;
-import net.jimboi.boron.base.window.input.InputLayer;
+import net.jimboi.boron.base_ab.window.input.InputEngine;
+import net.jimboi.boron.base_ab.window.input.InputLayer;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;

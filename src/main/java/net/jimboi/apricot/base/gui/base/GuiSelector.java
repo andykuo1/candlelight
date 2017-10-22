@@ -107,7 +107,7 @@ public class GuiSelector
 			}
 			else
 			{
-				//Begin activeActors state
+				//Begin active state
 				this.guiSelect.setGuiState(2);
 			}
 		}

@@ -1,12 +1,12 @@
 package net.jimboi.apricot.base;
 
 import net.jimboi.apricot.base.input.OldInputManager;
-import net.jimboi.boron.base.render.OldRenderEngine;
-import net.jimboi.boron.base.render.OldRenderHandler;
-import net.jimboi.boron.base.tick.OldTickEngine;
-import net.jimboi.boron.base.tick.OldTickHandler;
-import net.jimboi.boron.base.window.OldWindow;
-import net.jimboi.boron.base.window.input.InputEngine;
+import net.jimboi.boron.base_ab.render.OldRenderEngine;
+import net.jimboi.boron.base_ab.render.OldRenderHandler;
+import net.jimboi.boron.base_ab.tick.OldTickEngine;
+import net.jimboi.boron.base_ab.tick.OldTickHandler;
+import net.jimboi.boron.base_ab.window.OldWindow;
+import net.jimboi.boron.base_ab.window.input.InputEngine;
 
 import org.qsilver.asset.AssetManager;
 import org.qsilver.poma.Poma;
@@ -69,6 +69,7 @@ public final class OldGameEngine
 			@Override
 			public void onFirstUpdate(OldTickEngine tickEngine)
 			{
+				System.out.println("BAMW!");
 				RENDERENGINE.load();
 			}
 
@@ -90,7 +91,10 @@ public final class OldGameEngine
 			@Override
 			public void onFixedUpdate()
 			{
-				WINDOW.updateInput();
+				if (!SCENEMANAGER.isSetupMode())
+				{
+					WINDOW.updateInput();
+				}
 				SCENEMANAGER.update(0.02D);
 			}
 
@@ -136,7 +140,6 @@ public final class OldGameEngine
 			@Override
 			public void onRenderUnload(OldRenderEngine renderEngine)
 			{
-
 			}
 
 			@Override

@@ -1,15 +1,15 @@
 package net.jimboi.boron.stage_a.smack;
 
-import net.jimboi.boron.base.render.OldRenderEngine;
-import net.jimboi.boron.base.window.OldWindow;
-import net.jimboi.boron.base.window.input.InputManager;
+import net.jimboi.boron.base_ab.game.OldishGameEngine;
+import net.jimboi.boron.base_ab.game.OldishGameHandler;
+import net.jimboi.boron.base_ab.render.OldRenderEngine;
+import net.jimboi.boron.base_ab.window.OldWindow;
+import net.jimboi.boron.base_ab.window.input.InputManager;
 import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxRenderer;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.PerspectiveCamera;
-import org.bstone.game.GameEngine;
-import org.bstone.game.GameHandler;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
@@ -43,7 +43,7 @@ import java.util.Set;
 /**
  * Created by Andy on 8/4/17.
  */
-public class Smack implements GameHandler
+public class Smack implements OldishGameHandler
 {
 	public static Smack getSmack()
 	{
@@ -51,14 +51,14 @@ public class Smack implements GameHandler
 	}
 
 	private static Smack INSTANCE;
-	private static GameEngine GAMEENGINE;
+	private static OldishGameEngine GAMEENGINE;
 
 	private Smack() {}
 
 	public static void main(String[] args)
 	{
 		INSTANCE = new Smack();
-		GAMEENGINE = new GameEngine(INSTANCE);
+		GAMEENGINE = new OldishGameEngine(INSTANCE);
 		GAMEENGINE.start();
 	}
 

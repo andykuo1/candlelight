@@ -3,6 +3,7 @@ package org.bstone.input;
 import org.bstone.application.Application;
 import org.bstone.application.Engine;
 import org.bstone.input.context.InputContext;
+import org.bstone.input.context.InputMapping;
 import org.bstone.util.Pair;
 import org.bstone.window.Window;
 
@@ -20,6 +21,8 @@ public class InputEngine extends Engine
 	private Queue<Pair<Integer, InputContext>> contexts = new PriorityQueue<>(11,
 			Comparator.comparingInt(Pair::getFirst));
 
+	private InputMapping mapping;
+
 	private KeyboardHandler keyboard;
 	private MouseHandler mouse;
 	private TextHandler text;
@@ -27,7 +30,7 @@ public class InputEngine extends Engine
 	public InputEngine(Window window)
 	{
 		this.window = window;
-		this.createContext(-1);
+		this.mapping = new InputMapping(this);
 	}
 
 	@Override
@@ -47,6 +50,7 @@ public class InputEngine extends Engine
 		this.keyboard.update();
 		this.mouse.update();
 
+		//TODO: this does not work, cause it will only poll the first one...
 		for(Pair<Integer, InputContext> ctx : this.contexts)
 		{
 			ctx.getSecond().poll();
@@ -56,7 +60,11 @@ public class InputEngine extends Engine
 	@Override
 	protected void onStop(Application app)
 	{
+		this.contexts.clear();
 
+		this.keyboard.clear();
+		this.mouse.clear();
+		this.text.clear();
 	}
 
 	public KeyboardHandler getKeyboard()
@@ -76,7 +84,7 @@ public class InputEngine extends Engine
 
 	public InputContext createContext(int id)
 	{
-		InputContext ctx = new InputContext(this);
+		InputContext ctx = new InputContext(this.mapping);
 		this.contexts.add(new Pair<>(id, ctx));
 		return ctx;
 	}
@@ -86,8 +94,8 @@ public class InputEngine extends Engine
 		this.contexts.removeIf(integerContextPair -> integerContextPair.getSecond().equals(ctx));
 	}
 
-	public InputContext getCurrentContext()
+	public InputMapping getInput()
 	{
-		return this.contexts.peek().getSecond();
+		return this.mapping;
 	}
 }

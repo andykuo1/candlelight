@@ -1,6 +1,6 @@
 package net.jimboi.boron.stage_a.smack.entity;
 
-import net.jimboi.boron.base.window.input.InputManager;
+import net.jimboi.boron.base_ab.window.input.InputManager;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionResponse;
 import net.jimboi.boron.stage_a.smack.DamageSource;

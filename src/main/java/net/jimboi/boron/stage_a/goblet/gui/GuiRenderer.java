@@ -2,8 +2,8 @@ package net.jimboi.boron.stage_a.goblet.gui;
 
 import net.jimboi.apricot.base.material.OldMaterial;
 import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
-import net.jimboi.boron.base.render.OldRenderEngine;
-import net.jimboi.boron.base.render.OldishRenderService;
+import net.jimboi.boron.base_ab.render.OldRenderEngine;
+import net.jimboi.boron.base_ab.render.OldishRenderService;
 import net.jimboi.boron.stage_a.goblet.gui.base.Gui;
 import net.jimboi.boron.stage_a.goblet.gui.base.GuiManager;
 

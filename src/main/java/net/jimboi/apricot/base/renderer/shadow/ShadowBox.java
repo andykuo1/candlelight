@@ -1,6 +1,6 @@
 package net.jimboi.apricot.base.renderer.shadow;
 
-import net.jimboi.boron.base.window.OldWindow;
+import net.jimboi.boron.base_ab.window.OldWindow;
 
 import org.bstone.camera.PerspectiveCamera;
 import org.joml.Matrix4f;

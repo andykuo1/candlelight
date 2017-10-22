@@ -1,7 +1,7 @@
 package org.bstone.input;
 
-import org.bstone.input.context.AxisInput;
-import org.bstone.input.context.ButtonInput;
+import org.bstone.input.mapping.AxisInput;
+import org.bstone.input.mapping.ButtonInput;
 import org.bstone.window.Window;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
@@ -19,6 +19,8 @@ public class MouseHandler extends InputHandler
 	public static final int AXIS_SCROLL_Y = 3;
 
 	protected final Window window;
+
+	private boolean locked;
 
 	MouseHandler(Window window)
 	{
@@ -128,6 +130,21 @@ public class MouseHandler extends InputHandler
 	public final AxisInput getScrollY()
 	{
 		return this.getAxis(AXIS_SCROLL_Y);
+	}
+
+	public void setCursorMode(boolean locked)
+	{
+		//TODO: this needs to be called on the input thread, NOT THE MAIN!
+		if (this.locked == locked) return;
+
+		this.locked = locked;
+
+		GLFW.glfwSetInputMode(this.window.handle(), GLFW.GLFW_CURSOR, this.locked ? GLFW.GLFW_CURSOR_DISABLED : GLFW.GLFW_CURSOR_NORMAL);
+	}
+
+	public boolean getCursorMode()
+	{
+		return this.locked;
 	}
 
 	@Override

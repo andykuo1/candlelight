@@ -1,11 +1,11 @@
 package net.jimboi.boron.stage_a.goblet;
 
-import net.jimboi.boron.base.render.OldRenderEngine;
-import net.jimboi.boron.base.render.OldRenderHandler;
-import net.jimboi.boron.base.tick.OldTickEngine;
-import net.jimboi.boron.base.tick.OldTickHandler;
-import net.jimboi.boron.base.window.OldWindow;
-import net.jimboi.boron.base.window.input.InputManager;
+import net.jimboi.boron.base_ab.render.OldRenderEngine;
+import net.jimboi.boron.base_ab.render.OldRenderHandler;
+import net.jimboi.boron.base_ab.tick.OldTickEngine;
+import net.jimboi.boron.base_ab.tick.OldTickHandler;
+import net.jimboi.boron.base_ab.window.OldWindow;
+import net.jimboi.boron.base_ab.window.input.InputManager;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;

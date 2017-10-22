@@ -12,8 +12,8 @@ import net.jimboi.apricot.stage_a.dood.system.SystemBox2D;
 import net.jimboi.apricot.stage_a.dood.system.SystemInstance;
 import net.jimboi.apricot.stage_a.dood.system.SystemMotion;
 import net.jimboi.apricot.stage_a.mod.ModLight;
-import net.jimboi.boron.base.window.input.InputEngine;
-import net.jimboi.boron.base.window.input.InputLayer;
+import net.jimboi.boron.base_ab.window.input.InputEngine;
+import net.jimboi.boron.base_ab.window.input.InputLayer;
 
 import org.bstone.camera.CameraController;
 import org.jbox2d.dynamics.Body;

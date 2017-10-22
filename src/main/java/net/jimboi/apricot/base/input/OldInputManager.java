@@ -1,9 +1,9 @@
 package net.jimboi.apricot.base.input;
 
-import net.jimboi.boron.base.window.input.Input;
-import net.jimboi.boron.base.window.input.InputEngine;
-import net.jimboi.boron.base.window.input.InputHandler;
-import net.jimboi.boron.base.window.input.MouseHandler;
+import net.jimboi.boron.base_ab.window.input.Input;
+import net.jimboi.boron.base_ab.window.input.InputEngine;
+import net.jimboi.boron.base_ab.window.input.InputHandler;
+import net.jimboi.boron.base_ab.window.input.MouseHandler;
 
 import java.util.Arrays;
 import java.util.HashMap;

@@ -1,14 +1,12 @@
 package org.bstone.input.context;
 
-import org.bstone.input.InputEngine;
 import org.bstone.input.InputListener;
+import org.bstone.input.mapping.Input;
 import org.bstone.util.Pair;
 
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
@@ -18,36 +16,44 @@ import java.util.Set;
  */
 public class InputContext
 {
-	private final InputEngine inputEngine;
+	private final InputMapping mapping;
 
-	private final Map<String, Input> inputs = new HashMap<>();
-	private final Set<String> currents = new HashSet<>();
+	private final Set<String> events = new HashSet<>();
 
 	private final Queue<Pair<Integer, InputListener>> listeners = new PriorityQueue<>(
 			Comparator.comparingInt(Pair::getFirst));
 
-	public InputContext(InputEngine inputEngine)
+	public InputContext(InputMapping mapping)
 	{
-		this.inputEngine = inputEngine;
+		this.mapping = mapping;
 	}
 
 	public void poll()
 	{
-		for(Input input : this.inputs.values())
+		for(Input input : this.mapping.getInputs())
 		{
 			if (input.isDirty())
 			{
 				this.fireInput(input);
-				input.clean();
 			}
 		}
 
-		Iterator<Pair<Integer, InputListener>> iter = this.listeners.iterator();
-		while(iter.hasNext())
+		if (!this.events.isEmpty())
 		{
-			Pair<Integer, InputListener> pair = iter.next();
-			pair.getSecond().onInputUpdate(this);
+			Iterator<Pair<Integer, InputListener>> iter = this.listeners.iterator();
+			while (iter.hasNext())
+			{
+				Pair<Integer, InputListener> pair = iter.next();
+				pair.getSecond().onInputUpdate(this);
+			}
 		}
+
+		for(String event : this.events)
+		{
+			this.mapping.getInputMapping(event).clean();
+		}
+
+		this.events.clear();
 	}
 
 	public InputListener addListener(int priority, InputListener listener)
@@ -61,93 +67,57 @@ public class InputContext
 		this.listeners.removeIf(integerInputListenerPair -> integerInputListenerPair.getSecond().equals(listener));
 	}
 
-	public void clearListeners()
+	public void removeListeners()
 	{
 		this.listeners.clear();
 	}
 
-	public void registerInputMapping(String name, Input input)
-	{
-		this.inputs.put(name, input);
-	}
-
-	public void deleteInputMapping(String name)
-	{
-		this.inputs.remove(name);
-	}
-
-	public Input getInputMapping(String name)
-	{
-		return this.inputs.get(name);
-	}
-
-	public void clearInputMappings()
-	{
-		this.consumeAll();
-		this.inputs.clear();
-	}
-
 	public void fireInput(Input input)
 	{
-		for(Map.Entry<String, Input> entry : this.inputs.entrySet())
+		for(String name : this.mapping.getInputNames())
 		{
-			String name = entry.getKey();
-			Input value = entry.getValue();
+			Input value = this.mapping.getInputMapping(name);
 			if (value.equals(input))
 			{
-				this.currents.add(name);
+				this.events.add(name);
 			}
 		}
 	}
 
 	public void consumeInput(String name)
 	{
-		this.currents.remove(name);
+		this.events.remove(name);
 	}
 
-	public void consumeAll()
+	public void consumeInputs()
 	{
-		this.currents.clear();
+		this.events.clear();
 	}
 
-	public IAction getInputAction(String name)
+	public Input getInput(String name)
 	{
-		if (this.currents.contains(name))
+		if (this.events.contains(name))
 		{
-			return (IAction) this.inputs.get(name);
+			return this.mapping.getInputMapping(name);
 		}
 		else
 		{
-			return null;
+			throw new IllegalArgumentException("could not find input with name '" + name + "'");
 		}
 	}
 
-	public IRange getInputRange(String name)
+	public boolean hasInput(String name)
 	{
-		if (this.currents.contains(name))
-		{
-			return (IRange) this.inputs.get(name);
-		}
-		else
-		{
-			return null;
-		}
+		return this.events.contains(name);
 	}
 
-	public IState getInputState(String name)
+	public Iterable<String> getInputEvents()
 	{
-		if (this.currents.contains(name))
-		{
-			return (IState) this.inputs.get(name);
-		}
-		else
-		{
-			return null;
-		}
+		return this.events;
 	}
 
-	public InputEngine getInputEngine()
+	public InputMapping getMapping()
 	{
-		return this.inputEngine;
+		return this.mapping;
 	}
 }

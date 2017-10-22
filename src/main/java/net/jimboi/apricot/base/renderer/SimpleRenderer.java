@@ -5,8 +5,8 @@ import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.render.OldRenderable;
 import net.jimboi.apricot.base.renderer.property.OldPropertyDiffuse;
 import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
-import net.jimboi.boron.base.render.OldRenderEngine;
-import net.jimboi.boron.base.render.OldishRenderService;
+import net.jimboi.boron.base_ab.render.OldRenderEngine;
+import net.jimboi.boron.base_ab.render.OldishRenderService;
 
 import org.bstone.camera.Camera;
 import org.bstone.mogli.Mesh;

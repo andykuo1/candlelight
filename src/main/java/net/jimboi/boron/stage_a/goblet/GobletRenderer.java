@@ -2,8 +2,8 @@ package net.jimboi.boron.stage_a.goblet;
 
 import net.jimboi.apricot.base.gui.base.Gui;
 import net.jimboi.apricot.base.gui.base.GuiManager;
-import net.jimboi.boron.base.render.OldRenderEngine;
-import net.jimboi.boron.base.window.input.InputManager;
+import net.jimboi.boron.base_ab.render.OldRenderEngine;
+import net.jimboi.boron.base_ab.window.input.InputManager;
 import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxRenderer;
 
