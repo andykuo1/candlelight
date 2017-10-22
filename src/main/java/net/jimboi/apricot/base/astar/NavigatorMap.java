@@ -1,5 +1,6 @@
 package net.jimboi.apricot.base.astar;
 
+@Deprecated
 public abstract class NavigatorMap<A>
 {
 	/**

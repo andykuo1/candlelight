@@ -3,6 +3,7 @@ package net.jimboi.apricot.base.living;
 /**
  * Created by Andy on 3/4/17.
  */
+@Deprecated
 public abstract class OldLiving
 {
 	int id;

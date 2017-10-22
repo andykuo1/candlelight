@@ -9,6 +9,7 @@ import org.qsilver.asset.Asset;
 /**
  * Created by Andy on 6/13/17.
  */
+@Deprecated
 public class OldModel
 {
 	protected final Asset<Mesh> mesh;

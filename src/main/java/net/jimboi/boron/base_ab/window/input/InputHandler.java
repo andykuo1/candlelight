@@ -9,6 +9,7 @@ import java.util.Set;
 /**
  * Created by Andy on 5/20/17.
  */
+@Deprecated
 public abstract class InputHandler
 {
 	protected final OldWindow window;

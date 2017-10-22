@@ -8,6 +8,7 @@ import org.bstone.camera.Camera;
 /**
  * Created by Andy on 7/5/17.
  */
+@Deprecated
 public abstract class OldRenderBase extends OldRenderService
 {
 	protected OldSceneBase scene;

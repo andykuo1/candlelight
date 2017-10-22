@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
 /**
  * Created by Andy on 8/3/17.
  */
+@Deprecated
 public class InputManager
 {
 	protected final InputEngine inputEngine;

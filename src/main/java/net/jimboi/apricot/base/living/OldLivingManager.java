@@ -11,6 +11,7 @@ import java.util.Map;
 /**
  * Created by Andy on 3/4/17.
  */
+@Deprecated
 public class OldLivingManager<L extends OldLiving>
 {
 	public interface OnLivingCreateListener<L extends OldLiving>

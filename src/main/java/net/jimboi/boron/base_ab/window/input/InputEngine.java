@@ -8,6 +8,7 @@ import java.util.TreeSet;
 /**
  * Created by Andy on 4/26/17.
  */
+@Deprecated
 public class InputEngine
 {
 	private final Set<InputLayer> layers = new TreeSet<>();

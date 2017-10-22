@@ -3,6 +3,7 @@ package net.jimboi.boron.base_ab.window.input;
 /**
  * Created by Andy on 7/17/17.
  */
+@Deprecated
 public interface InputLayer extends Comparable<InputLayer>
 {
 	//TODO: This means that input can only be referenced from here...

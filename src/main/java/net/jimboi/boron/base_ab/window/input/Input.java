@@ -3,6 +3,7 @@ package net.jimboi.boron.base_ab.window.input;
 /**
  * Created by Andy on 5/4/17.
  */
+@Deprecated
 public class Input
 {
 	private float prevAmount;

@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 /**
  * Created by Andy on 9/13/17.
  */
+@Deprecated
 public class OldMapUtil
 {
 	public static boolean contains(GridMap map, int x, int y, int w, int h, Object value)

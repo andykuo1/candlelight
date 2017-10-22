@@ -7,6 +7,7 @@ import org.lwjgl.glfw.GLFW;
 /**
  * Created by Andy on 5/20/17.
  */
+@Deprecated
 public class MouseHandler extends InputHandler
 {
 	public static final int POS_X = 8;

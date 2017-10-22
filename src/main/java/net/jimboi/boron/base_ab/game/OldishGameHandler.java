@@ -5,6 +5,7 @@ import net.jimboi.boron.base_ab.render.OldRenderEngine;
 /**
  * Created by Andy on 8/5/17.
  */
+@Deprecated
 public interface OldishGameHandler
 {
 	void onFirstUpdate();

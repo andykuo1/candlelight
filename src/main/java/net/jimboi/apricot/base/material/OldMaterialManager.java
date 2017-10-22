@@ -7,6 +7,7 @@ import java.util.Collection;
 /**
  * Created by Andy on 6/8/17.
  */
+@Deprecated
 public class OldMaterialManager extends ComponentManager<OldMaterial, OldProperty>
 {
 	public OldMaterialManager()

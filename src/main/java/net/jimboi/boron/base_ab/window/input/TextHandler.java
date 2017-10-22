@@ -3,6 +3,7 @@ package net.jimboi.boron.base_ab.window.input;
 /**
  * Created by Andy on 9/14/17.
  */
+@Deprecated
 public class TextHandler
 {
 	private StringBuffer buffer;

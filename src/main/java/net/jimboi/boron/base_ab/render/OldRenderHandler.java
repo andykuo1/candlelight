@@ -3,6 +3,7 @@ package net.jimboi.boron.base_ab.render;
 /**
  * Created by Andy on 8/4/17.
  */
+@Deprecated
 public interface OldRenderHandler
 {
 	void onRenderLoad(OldRenderEngine renderEngine);

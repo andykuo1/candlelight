@@ -5,6 +5,7 @@ import org.joml.Matrix4f;
 /**
  * Created by Andy on 8/4/17.
  */
+@Deprecated
 public interface OldRenderable
 {
 	default Matrix4f getRenderTransformation(Matrix4f dst)

@@ -18,6 +18,7 @@ import java.util.Arrays;
 /**
  * Created by Andy on 7/5/17.
  */
+@Deprecated
 public final class OldGameEngine
 {
 	public static OldTickEngine TICKENGINE;

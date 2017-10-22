@@ -5,6 +5,7 @@ import org.bstone.tick.TickCounter;
 /**
  * Created by Andy on 3/1/17.
  */
+@Deprecated
 public class OldTickEngine implements Runnable
 {
 	private volatile boolean running = false;

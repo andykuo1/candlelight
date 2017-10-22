@@ -11,6 +11,7 @@ import org.zilar.entity.EntityManager;
 /**
  * Created by Andy on 7/5/17.
  */
+@Deprecated
 public abstract class OldSceneBase extends Scene
 {
 	private final OldRenderBase renderer;

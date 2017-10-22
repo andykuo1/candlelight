@@ -10,6 +10,7 @@ import net.jimboi.boron.base_ab.window.input.InputManager;
 /**
  * Created by Andy on 8/5/17.
  */
+@Deprecated
 public class OldishGameEngine implements OldTickHandler, OldRenderHandler
 {
 	private final OldTickEngine tickEngine;

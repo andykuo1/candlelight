@@ -13,6 +13,7 @@ import java.util.NoSuchElementException;
 /**
  * Created by Andy on 5/20/17.
  */
+@Deprecated
 public class OldInputManager
 {
 	protected static InputEngine INPUT_ENGINE;

@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Stack;
 
+@Deprecated
 public final class AstarNavigator<A>
 {
 	private final NavigatorMap<A> map;

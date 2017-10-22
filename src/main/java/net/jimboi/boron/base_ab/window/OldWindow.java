@@ -18,6 +18,7 @@ import java.util.Stack;
 /**
  * Created by Andy on 4/6/17.
  */
+@Deprecated
 public class OldWindow
 {
 	public interface OnWindowSizeChanged

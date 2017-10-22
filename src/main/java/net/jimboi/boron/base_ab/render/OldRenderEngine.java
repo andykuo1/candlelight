@@ -8,6 +8,7 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 /**
  * Created by Andy on 8/4/17.
  */
+@Deprecated
 public class OldRenderEngine
 {
 	private final ServiceManager<OldishRenderService, OldRenderEngine> serviceManager;

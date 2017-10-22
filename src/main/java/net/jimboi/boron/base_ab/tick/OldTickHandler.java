@@ -3,6 +3,7 @@ package net.jimboi.boron.base_ab.tick;
 /**
  * Created by Andy on 8/1/17.
  */
+@Deprecated
 public interface OldTickHandler
 {
 	void onFirstUpdate(OldTickEngine tickEngine);
