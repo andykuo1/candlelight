@@ -8,13 +8,8 @@
         </element>
         <element id="module-output" name="Candlelight" />
       </element>
-      <element id="library" level="project" name="org.joml:joml:1.9.2" />
       <element id="library" level="project" name="lwjgl" />
       <element id="library" level="project" name="org.jbox2d:jbox2d-library:2.2.1.1" />
-      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl/libglfw.dylib" />
-      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl/liblwjgl_opengl.dylib" />
-      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl/liblwjgl_stb.dylib" />
-      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl/liblwjgl.dylib" />
       <element id="directory" name="src">
         <element id="directory" name="main">
           <element id="directory" name="res">
@@ -22,6 +17,34 @@
           </element>
         </element>
       </element>
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/glfw.dll" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/glfw32.dll" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/jemalloc.dll" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/jemalloc32.dll" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/libglfw.dylib" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/libglfw.so" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/libjemalloc.dylib" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/libjemalloc.so" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/liblwjgl_nuklear.dylib" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/liblwjgl_nuklear.so" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/liblwjgl_opengl.dylib" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/liblwjgl_opengl.so" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/liblwjgl_stb.dylib" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/liblwjgl_stb.so" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/liblwjgl.dylib" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/liblwjgl.so" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/libopenal.dylib" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/libopenal.so" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/lwjgl_nuklear.dll" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/lwjgl_nuklear32.dll" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/lwjgl_opengl.dll" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/lwjgl_opengl32.dll" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/lwjgl_stb.dll" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/lwjgl_stb32.dll" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/lwjgl.dll" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/lwjgl32.dll" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/OpenAL.dll" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/lwjgl-3.1.3/native/OpenAL32.dll" />
     </root>
   </artifact>
 </component>

@@ -12,7 +12,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="lwjgl" level="project" />
-    <orderEntry type="library" name="org.joml:joml:1.9.2" level="project" />
     <orderEntry type="library" name="org.jbox2d:jbox2d-library:2.2.1.1" level="project" />
     <orderEntry type="library" name="io.netty:netty-all:4.1.9.Final" level="project" />
   </component>
