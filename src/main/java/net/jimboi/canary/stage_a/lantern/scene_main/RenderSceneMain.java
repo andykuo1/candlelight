@@ -1,19 +1,24 @@
 package net.jimboi.canary.stage_a.lantern.scene_main;
 
-import org.bstone.application.scene.render.RenderScene;
+import net.jimboi.boron.base_ab.asset.Asset;
+
+import org.bstone.asset.AssetManager;
 import org.bstone.livingentity.LivingEntity;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
+import org.bstone.mogli.Program;
 import org.bstone.mogli.Texture;
 import org.bstone.render.RenderEngine;
 import org.bstone.render.renderer.SimpleProgramRenderer;
+import org.bstone.resource.BitmapLoader;
+import org.bstone.resource.MeshLoader;
+import org.bstone.resource.ProgramLoader;
+import org.bstone.resource.ShaderLoader;
+import org.bstone.resource.TextureLoader;
+import org.bstone.scene.render.RenderScene;
 import org.bstone.transform.Transform2;
 import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.qsilver.asset.Asset;
-import org.qsilver.asset.AssetManager;
-import org.qsilver.loader.OBJLoader;
+import org.lwjgl.opengl.GL20;
 import org.zilar.resource.ResourceLocation;
 
 /**
@@ -23,6 +28,7 @@ public class RenderSceneMain extends RenderScene
 {
 	public AssetManager assetManager;
 	public SimpleProgramRenderer renderer;
+	public Program program;
 	public Mesh mesh;
 	public Bitmap bitmap;
 	public Texture texture;
@@ -30,15 +36,25 @@ public class RenderSceneMain extends RenderScene
 	public RenderSceneMain(RenderEngine renderEngine, LanternSceneMain scene)
 	{
 		super(renderEngine, scene);
+		this.assetManager = new AssetManager(new ResourceLocation("lantern:lantern.assets"));
 	}
 
 	@Override
 	protected void onServiceStart(RenderEngine handler)
 	{
-		this.renderer = new SimpleProgramRenderer();
-		this.mesh = OBJLoader.read(new ResourceLocation("glim:model/sphere.obj"));
-		this.bitmap = new Bitmap(new ResourceLocation("glim:texture/wooden_crate.jpg"));
-		this.texture = new Texture(this.bitmap, GL11.GL_NEAREST, GL12.GL_CLAMP_TO_EDGE);
+		this.assetManager.registerLoader("bitmap", new BitmapLoader());
+		this.assetManager.registerLoader("texture", new TextureLoader(this.assetManager));
+		this.assetManager.registerLoader("mesh", new MeshLoader());
+		this.assetManager.registerLoader("program", new ProgramLoader(this.assetManager));
+		this.assetManager.registerLoader("vertex_shader", new ShaderLoader(GL20.GL_VERTEX_SHADER));
+		this.assetManager.registerLoader("fragment_shader", new ShaderLoader(GL20.GL_FRAGMENT_SHADER));
+
+		this.mesh = this.assetManager.<Mesh>getAsset("mesh", "sphere").get();
+		this.bitmap = this.assetManager.<Bitmap>getAsset("bitmap", "crate").get();
+		this.texture = this.assetManager.<Texture>getAsset("texture", "crate").get();
+		this.program = this.assetManager.<Program>getAsset("program", "simple").get();
+
+		this.renderer = new SimpleProgramRenderer(this.program);
 	}
 
 	@Override
@@ -57,14 +73,13 @@ public class RenderSceneMain extends RenderScene
 			}
 		}
 		this.renderer.unbind();
+
+		this.assetManager.update();
 	}
 
 	@Override
 	protected void onServiceStop(RenderEngine handler)
 	{
-		this.texture.close();
-		this.bitmap.close();
-		this.mesh.close();
-		this.renderer.close();
+		this.assetManager.destroy();
 	}
 }

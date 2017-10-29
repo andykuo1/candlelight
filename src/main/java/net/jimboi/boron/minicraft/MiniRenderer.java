@@ -2,6 +2,8 @@ package net.jimboi.boron.minicraft;
 
 import com.mojang.ld22.Game;
 
+import net.jimboi.boron.base_ab.asset.Asset;
+
 import org.bstone.camera.Camera;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
@@ -18,7 +20,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
-import org.qsilver.asset.Asset;
 import org.qsilver.util.ColorUtil;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;

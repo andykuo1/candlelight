@@ -6,7 +6,7 @@ import net.jimboi.canary.stage_a.lantern.scene_main.RenderSceneMain;
 import org.bstone.application.Application;
 import org.bstone.application.game.Game;
 import org.bstone.application.game.GameEngine;
-import org.bstone.application.scene.SceneManager;
+import org.bstone.scene.SceneManager;
 
 /**
  * Created by Andy on 10/20/17.

@@ -13,6 +13,8 @@ import net.jimboi.apricot.base.renderer.shadow.DynamicLight;
 import net.jimboi.apricot.stage_b.glim.bounding.BoundingManager;
 import net.jimboi.apricot.stage_b.glim.bounding.BoundingRenderer;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderable;
+import net.jimboi.boron.base_ab.asset.Asset;
+import net.jimboi.boron.base_ab.asset.AssetManager;
 import net.jimboi.boron.base_ab.render.OldRenderEngine;
 
 import org.bstone.camera.PerspectiveCamera;
@@ -23,8 +25,6 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
-import org.qsilver.asset.Asset;
-import org.qsilver.asset.AssetManager;
 import org.qsilver.resource.MeshLoader;
 import org.qsilver.util.iterator.CastIterator;
 import org.qsilver.util.iterator.FilterIterator;

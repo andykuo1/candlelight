@@ -55,8 +55,11 @@ public final class Bitmap implements AutoCloseable
 
 	public Bitmap(ResourceLocation location)
 	{
-		ByteBuffer imageBuffer = BitmapLoader.read(location.getFilePath(), 8 * 1024);
+		this(BitmapLoader.read(location.getFilePath(), 8 * 1024));
+	}
 
+	public Bitmap(ByteBuffer imageBuffer)
+	{
 		IntBuffer w = BufferUtils.createIntBuffer(1);
 		IntBuffer h = BufferUtils.createIntBuffer(1);
 		IntBuffer comp = BufferUtils.createIntBuffer(1);

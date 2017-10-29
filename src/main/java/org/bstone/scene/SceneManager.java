@@ -1,4 +1,4 @@
-package org.bstone.application.scene;
+package org.bstone.scene;
 
 import java.util.HashMap;
 import java.util.Map;

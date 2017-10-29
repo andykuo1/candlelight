@@ -1,8 +1,9 @@
 package org.bstone.render.model;
 
+import net.jimboi.boron.base_ab.asset.Asset;
+
 import org.bstone.mogli.Mesh;
 import org.bstone.render.material.Material;
-import org.qsilver.asset.Asset;
 
 /**
  * Created by Andy on 8/4/17.

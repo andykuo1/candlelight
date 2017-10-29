@@ -1,10 +1,11 @@
 package org.qsilver.resource;
 
+import net.jimboi.boron.base_ab.asset.Asset;
+import net.jimboi.boron.base_ab.asset.ResourceLoader;
+import net.jimboi.boron.base_ab.asset.ResourceParameter;
+
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Texture;
-import org.qsilver.asset.Asset;
-import org.qsilver.asset.ResourceLoader;
-import org.qsilver.asset.ResourceParameter;
 
 /**
  * Created by Andy on 6/10/17.

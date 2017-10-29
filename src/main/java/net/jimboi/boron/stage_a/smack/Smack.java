@@ -1,5 +1,6 @@
 package net.jimboi.boron.stage_a.smack;
 
+import net.jimboi.boron.base_ab.asset.Asset;
 import net.jimboi.boron.base_ab.game.OldishGameEngine;
 import net.jimboi.boron.base_ab.game.OldishGameHandler;
 import net.jimboi.boron.base_ab.render.OldRenderEngine;
@@ -28,7 +29,6 @@ import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import org.qsilver.asset.Asset;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;
 import org.zilar.resource.ResourceLocation;

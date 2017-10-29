@@ -1,8 +1,8 @@
-package org.qsilver.asset.assetloader;
+package net.jimboi.boron.base_ab.asset.assetloader;
 
-import org.qsilver.asset.Asset;
-import org.qsilver.asset.AssetManager;
-import org.qsilver.asset.ResourceParameter;
+import net.jimboi.boron.base_ab.asset.Asset;
+import net.jimboi.boron.base_ab.asset.AssetManager;
+import net.jimboi.boron.base_ab.asset.ResourceParameter;
 
 /**
  * Created by Andy on 6/13/17.

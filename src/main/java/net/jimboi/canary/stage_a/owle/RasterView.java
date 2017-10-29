@@ -1,5 +1,7 @@
 package net.jimboi.canary.stage_a.owle;
 
+import net.jimboi.boron.base_ab.asset.Asset;
+
 import org.bstone.mogli.Mesh;
 import org.bstone.transform.Transform2;
 import org.bstone.util.gridmap.ByteMap;
@@ -7,7 +9,6 @@ import org.bstone.util.gridmap.IntMap;
 import org.joml.Matrix4fc;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.qsilver.asset.Asset;
 import org.qsilver.util.ColorUtil;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.MeshData;

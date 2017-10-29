@@ -15,11 +15,11 @@ import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentNavigator
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderable;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTargeter;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform;
+import net.jimboi.boron.base_ab.asset.Asset;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
 import org.bstone.transform.Transform3;
-import org.qsilver.asset.Asset;
 import org.qsilver.resource.TextureAtlasLoader;
 import org.zilar.animation.AnimatorSpriteSheet;
 import org.zilar.entity.Entity;

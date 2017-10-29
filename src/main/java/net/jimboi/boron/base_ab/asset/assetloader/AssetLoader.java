@@ -1,4 +1,8 @@
-package org.qsilver.asset.assetloader;
+package net.jimboi.boron.base_ab.asset.assetloader;
+
+import net.jimboi.boron.base_ab.asset.Asset;
+import net.jimboi.boron.base_ab.asset.AssetManager;
+import net.jimboi.boron.base_ab.asset.ResourceParameter;
 
 import org.bstone.json.JSON;
 import org.bstone.json.JSONArray;
@@ -9,9 +13,6 @@ import org.bstone.json.JSONObject;
 import org.bstone.json.JSONString;
 import org.bstone.json.JSONValue;
 import org.bstone.util.SemanticVersion;
-import org.qsilver.asset.Asset;
-import org.qsilver.asset.AssetManager;
-import org.qsilver.asset.ResourceParameter;
 import org.zilar.resource.ResourceLocation;
 
 import java.io.FileNotFoundException;

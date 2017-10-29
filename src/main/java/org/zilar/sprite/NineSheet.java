@@ -1,7 +1,8 @@
 package org.zilar.sprite;
 
+import net.jimboi.boron.base_ab.asset.Asset;
+
 import org.bstone.util.direction.Direction;
-import org.qsilver.asset.Asset;
 
 /**
  * Created by Andy on 7/12/17.

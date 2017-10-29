@@ -5,6 +5,7 @@ import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.render.OldRenderable;
 import net.jimboi.apricot.base.renderer.property.OldPropertyDiffuse;
 import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
+import net.jimboi.boron.base_ab.asset.Asset;
 import net.jimboi.boron.base_ab.render.OldRenderEngine;
 import net.jimboi.boron.base_ab.render.OldishRenderService;
 
@@ -20,7 +21,6 @@ import org.joml.Vector4f;
 import org.joml.Vector4fc;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.qsilver.asset.Asset;
 import org.zilar.sprite.Sprite;
 
 import java.util.Iterator;

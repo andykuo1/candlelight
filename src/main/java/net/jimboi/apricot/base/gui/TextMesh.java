@@ -1,9 +1,10 @@
 package net.jimboi.apricot.base.gui;
 
+import net.jimboi.boron.base_ab.asset.Asset;
+
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
 import org.joml.Vector2f;
-import org.qsilver.asset.Asset;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.MeshData;
 import org.zilar.meshbuilder.ModelUtil;

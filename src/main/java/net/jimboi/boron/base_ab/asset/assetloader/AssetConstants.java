@@ -1,4 +1,4 @@
-package org.qsilver.asset.assetloader;
+package net.jimboi.boron.base_ab.asset.assetloader;
 
 import java.lang.reflect.Field;
 import java.util.HashSet;

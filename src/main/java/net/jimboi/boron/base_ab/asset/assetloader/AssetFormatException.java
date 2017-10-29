@@ -1,4 +1,4 @@
-package org.qsilver.asset.assetloader;
+package net.jimboi.boron.base_ab.asset.assetloader;
 
 /**
  * Created by Andy on 6/12/17.

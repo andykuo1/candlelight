@@ -1,11 +1,12 @@
 package net.jimboi.canary.stage_a.owle;
 
+import net.jimboi.boron.base_ab.asset.Asset;
+
 import org.bstone.input.TextHandler;
 import org.bstone.transform.Transform;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
-import org.qsilver.asset.Asset;
 import org.zilar.sprite.TextureAtlas;
 
 import java.util.ArrayList;

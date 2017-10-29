@@ -45,7 +45,7 @@ public class RefCountSet<T> extends SmallSet<T>
 
 			if (this.isEmpty())
 			{
-				System.out.println("PASS: " + this.name + "(s) is destroyed!");
+				Poma.debug("PASS: " + this.name + "(s) is destroyed!");
 				--TOTAL_REF_COUNT_SET;
 
 				if (TOTAL_REF_COUNT_SET == 0)

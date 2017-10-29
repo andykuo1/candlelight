@@ -1,6 +1,6 @@
 package net.jimboi.canary.stage_a.owle;
 
-import net.jimboi.canary.stage_a.lantern.Lantern;
+import net.jimboi.boron.base_ab.asset.Asset;
 
 import org.bstone.application.Application;
 import org.bstone.application.game.Game;
@@ -13,7 +13,6 @@ import org.bstone.util.direction.Direction;
 import org.bstone.window.view.ScreenSpace;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import org.qsilver.asset.Asset;
 import org.zilar.resource.ResourceLocation;
 import org.zilar.sprite.SpriteUtil;
 import org.zilar.sprite.TextureAtlas;
@@ -24,11 +23,11 @@ import org.zilar.sprite.TextureAtlasBuilder;
  */
 public class Console implements Game
 {
-	private static Lantern INST;
+	private static Console INST;
 	private static GameEngine ENGINE;
 	private static Application APP;
 
-	public static Lantern getLantern()
+	public static Console getConsole()
 	{
 		return INST;
 	}
@@ -45,7 +44,7 @@ public class Console implements Game
 
 	public static void main(String[] args)
 	{
-		INST = new Lantern();
+		INST = new Console();
 		ENGINE = new GameEngine(INST);
 		APP = new Application(ENGINE);
 		APP.run();

@@ -4,7 +4,6 @@ import org.bstone.json.JSON;
 import org.bstone.json.JSONArray;
 import org.bstone.json.JSONBoolean;
 import org.bstone.json.JSONLiteral;
-import org.bstone.json.JSONNumber;
 import org.bstone.json.JSONObject;
 import org.bstone.json.JSONString;
 import org.bstone.json.JSONValue;
@@ -35,6 +34,8 @@ public class JSONFormatParser extends DataFormatParser<JSONValue>
 
 	protected JSONValue readValue(Cursor cursor) throws IOException
 	{
+		this.consumeWhiteSpaces(cursor);
+
 		switch (cursor.getChar())
 		{
 			case 'n':
@@ -60,7 +61,7 @@ public class JSONFormatParser extends DataFormatParser<JSONValue>
 			case '7':
 			case '8':
 			case '9':
-				return this.readNumber(cursor);
+				return JSON.number(this.readNumber(cursor));
 			default:
 				throw formatError(cursor, "Found invalid format");
 		}
@@ -224,48 +225,5 @@ public class JSONFormatParser extends DataFormatParser<JSONValue>
 				throw formatError(cursor, "Found invalid escape sequence");
 		}
 		cursor.read(this.reader, this.capture);
-	}
-
-	protected JSONNumber readNumber(Cursor cursor) throws IOException
-	{
-		this.startBufferCapture(cursor);
-		{
-			this.readChar(cursor, '-');
-
-			char firstDigit = cursor.getChar();
-
-			requireAs(cursor, this::readDigit, "digit");
-
-			if (firstDigit != '0')
-			{
-				this.consumeDigits(cursor);
-			}
-
-			this.readDecimal(cursor);
-			this.readExponent(cursor);
-		}
-		String string = this.stopBufferCapture(cursor);
-		return JSON.number(string);
-	}
-
-	private boolean readDecimal(Cursor cursor) throws IOException
-	{
-		if (!this.readChar(cursor, '.')) return false;
-
-		requireAs(cursor, this::readDigit, "digit");
-
-		this.consumeDigits(cursor);
-		return true;
-	}
-
-	private boolean readExponent(Cursor cursor) throws IOException
-	{
-		if (!this.readChar(cursor, 'e') && !this.readChar(cursor, 'E')) return false;
-		if (!this.readChar(cursor, '+')) this.readChar(cursor, '-');
-
-		requireAs(cursor, this::readDigit, "digit");
-
-		this.consumeDigits(cursor);
-		return true;
 	}
 }

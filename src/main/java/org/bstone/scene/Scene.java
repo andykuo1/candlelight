@@ -1,4 +1,4 @@
-package org.bstone.application.scene;
+package org.bstone.scene;
 
 /**
  * Created by Andy on 10/20/17.

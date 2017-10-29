@@ -1,5 +1,7 @@
 package org.bstone.render.renderer;
 
+import net.jimboi.boron.base_ab.asset.Asset;
+
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
@@ -16,7 +18,6 @@ import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
-import org.qsilver.asset.Asset;
 import org.zilar.resource.ResourceLocation;
 import org.zilar.sprite.Sprite;
 

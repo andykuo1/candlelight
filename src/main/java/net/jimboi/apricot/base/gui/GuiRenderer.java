@@ -4,6 +4,7 @@ import net.jimboi.apricot.base.gui.base.Gui;
 import net.jimboi.apricot.base.gui.base.GuiManager;
 import net.jimboi.apricot.base.material.OldMaterial;
 import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
+import net.jimboi.boron.base_ab.asset.Asset;
 import net.jimboi.boron.base_ab.render.OldRenderEngine;
 import net.jimboi.boron.base_ab.render.OldishRenderService;
 
@@ -20,7 +21,6 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.qsilver.asset.Asset;
 import org.qsilver.util.ColorUtil;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;

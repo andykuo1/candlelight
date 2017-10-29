@@ -1,7 +1,8 @@
 package org.zilar.sprite;
 
+import net.jimboi.boron.base_ab.asset.Asset;
+
 import org.bstone.mogli.Texture;
-import org.qsilver.asset.Asset;
 
 import java.util.ArrayList;
 import java.util.List;

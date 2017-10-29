@@ -1,10 +1,11 @@
 package org.bstone.render.model;
 
+import net.jimboi.boron.base_ab.asset.Asset;
+
 import org.bstone.mogli.Mesh;
 import org.bstone.render.material.Material;
 import org.bstone.render.material.PropertyTexture;
 import org.joml.Vector2f;
-import org.qsilver.asset.Asset;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.MeshData;
 import org.zilar.meshbuilder.ModelUtil;

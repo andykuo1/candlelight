@@ -1,6 +1,6 @@
 package org.zilar.sprite;
 
-import org.qsilver.asset.Asset;
+import net.jimboi.boron.base_ab.asset.Asset;
 
 /**
  * Created by Andy on 5/11/17.

@@ -5,6 +5,8 @@ import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.render.OldRenderable;
 import net.jimboi.apricot.base.renderer.property.OldPropertyShadow;
 import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
+import net.jimboi.boron.base_ab.asset.Asset;
+import net.jimboi.boron.base_ab.asset.AssetManager;
 import net.jimboi.boron.base_ab.window.OldWindow;
 
 import org.bstone.camera.PerspectiveCamera;
@@ -23,8 +25,6 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.qsilver.asset.Asset;
-import org.qsilver.asset.AssetManager;
 import org.qsilver.resource.ProgramLoader;
 import org.qsilver.resource.ShaderLoader;
 import org.qsilver.resource.TextureLoader;

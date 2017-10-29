@@ -1,5 +1,6 @@
 package net.jimboi.boron.stage_a.goblet;
 
+import net.jimboi.boron.base_ab.asset.Asset;
 import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxManager;
 import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
@@ -24,7 +25,6 @@ import org.bstone.transform.Transform3;
 import org.bstone.transform.Transform3c;
 import org.joml.Matrix4f;
 import org.joml.Vector3fc;
-import org.qsilver.asset.Asset;
 
 import java.util.Random;
 

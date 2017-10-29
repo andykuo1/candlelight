@@ -1,7 +1,8 @@
 package org.qsilver.resource;
 
-import org.qsilver.asset.ResourceLoader;
-import org.qsilver.asset.ResourceParameter;
+import net.jimboi.boron.base_ab.asset.ResourceLoader;
+import net.jimboi.boron.base_ab.asset.ResourceParameter;
+
 import org.qsilver.loader.TEXALoader;
 import org.zilar.resource.ResourceLocation;
 import org.zilar.sprite.SpriteUtil;

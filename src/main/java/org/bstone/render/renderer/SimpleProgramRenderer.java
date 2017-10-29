@@ -1,5 +1,7 @@
 package org.bstone.render.renderer;
 
+import net.jimboi.boron.base_ab.asset.Asset;
+
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
@@ -16,7 +18,6 @@ import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
-import org.qsilver.asset.Asset;
 import org.zilar.resource.ResourceLocation;
 import org.zilar.sprite.Sprite;
 
@@ -28,6 +29,14 @@ public class SimpleProgramRenderer extends ProgramRenderer
 	private final Matrix4f viewProjection = new Matrix4f();
 	private final Matrix4f modelViewProjection = new Matrix4f();
 	private final Vector4f color = new Vector4f();
+
+	public SimpleProgramRenderer(Program program)
+	{
+		super(program, new Material());
+
+		this.material.addProperty(PropertyTexture.PROPERTY);
+		this.material.addProperty(PropertyColor.PROPERTY);
+	}
 
 	public SimpleProgramRenderer()
 	{

@@ -1,5 +1,6 @@
 package net.jimboi.boron.stage_a.smack;
 
+import net.jimboi.boron.base_ab.asset.Asset;
 import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
 import net.jimboi.boron.stage_a.smack.chunk.Chunk;
@@ -16,7 +17,6 @@ import org.bstone.render.material.PropertyTexture;
 import org.bstone.render.model.Model;
 import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
-import org.qsilver.asset.Asset;
 
 import java.util.Random;
 

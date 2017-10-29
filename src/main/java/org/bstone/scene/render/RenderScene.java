@@ -1,8 +1,8 @@
-package org.bstone.application.scene.render;
+package org.bstone.scene.render;
 
-import org.bstone.application.scene.Scene;
 import org.bstone.render.RenderEngine;
 import org.bstone.render.RenderService;
+import org.bstone.scene.Scene;
 
 /**
  * Created by Andy on 10/20/17.

@@ -9,11 +9,11 @@ import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderable;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform;
 import net.jimboi.apricot.stage_c.hoob.world.World;
+import net.jimboi.boron.base_ab.asset.Asset;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
 import org.bstone.transform.Transform3;
-import org.qsilver.asset.Asset;
 import org.zilar.BasicSideScrollCameraController;
 import org.zilar.animation.AnimatorSpriteSheet;
 import org.zilar.collision.CollisionManager;

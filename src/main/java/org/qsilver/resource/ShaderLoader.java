@@ -1,8 +1,9 @@
 package org.qsilver.resource;
 
+import net.jimboi.boron.base_ab.asset.ResourceLoader;
+import net.jimboi.boron.base_ab.asset.ResourceParameter;
+
 import org.bstone.mogli.Shader;
-import org.qsilver.asset.ResourceLoader;
-import org.qsilver.asset.ResourceParameter;
 import org.zilar.resource.ResourceLocation;
 
 /**

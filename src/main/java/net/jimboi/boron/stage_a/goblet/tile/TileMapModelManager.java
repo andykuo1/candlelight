@@ -1,5 +1,7 @@
 package net.jimboi.boron.stage_a.goblet.tile;
 
+import net.jimboi.boron.base_ab.asset.Asset;
+
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
 import org.bstone.render.material.Material;
@@ -9,7 +11,6 @@ import org.bstone.render.model.Model;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.joml.Vector3f;
-import org.qsilver.asset.Asset;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.MeshData;
 import org.zilar.meshbuilder.ModelUtil;

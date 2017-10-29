@@ -1,10 +1,11 @@
 package org.qsilver.resource;
 
+import net.jimboi.boron.base_ab.asset.Asset;
+import net.jimboi.boron.base_ab.asset.ResourceLoader;
+import net.jimboi.boron.base_ab.asset.ResourceParameter;
+
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
-import org.qsilver.asset.Asset;
-import org.qsilver.asset.ResourceLoader;
-import org.qsilver.asset.ResourceParameter;
 
 import java.util.ArrayList;
 import java.util.Collection;

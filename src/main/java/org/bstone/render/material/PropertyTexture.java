@@ -1,9 +1,10 @@
 package org.bstone.render.material;
 
+import net.jimboi.boron.base_ab.asset.Asset;
+
 import org.bstone.mogli.Texture;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
-import org.qsilver.asset.Asset;
 
 /**
  * Created by Andy on 8/10/17.

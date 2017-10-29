@@ -18,6 +18,7 @@ import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform
 import net.jimboi.apricot.stage_b.glim.entity.system.EntitySystemBillboard;
 import net.jimboi.apricot.stage_b.glim.entity.system.EntitySystemBounding;
 import net.jimboi.apricot.stage_b.glim.entity.system.EntitySystemHeading;
+import net.jimboi.boron.base_ab.asset.Asset;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
@@ -25,7 +26,6 @@ import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import org.qsilver.asset.Asset;
 import org.qsilver.resource.MeshLoader;
 import org.qsilver.resource.TextureAtlasLoader;
 import org.zilar.animation.AnimatorSpriteSheet;

@@ -5,12 +5,12 @@ import net.jimboi.canary.stage_a.lantern.Lantern;
 import net.jimboi.canary.stage_a.lantern.scene_main.entity.EntityCrate;
 import net.jimboi.canary.stage_a.lantern.scene_main.entity.EntityPlayer;
 
-import org.bstone.application.scene.Scene;
-import org.bstone.application.scene.SceneManager;
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.input.InputEngine;
 import org.bstone.input.context.InputContext;
 import org.bstone.livingentity.LivingEntityManager;
+import org.bstone.scene.Scene;
+import org.bstone.scene.SceneManager;
 import org.bstone.transform.Transform3;
 import org.bstone.util.direction.Direction;
 import org.bstone.window.view.ScreenSpace;
