@@ -2,12 +2,20 @@ package org.bstone.application.game;
 
 import org.bstone.application.Application;
 import org.bstone.application.Framework;
+import org.bstone.asset.AssetManager;
 import org.bstone.input.InputEngine;
 import org.bstone.input.context.InputContext;
 import org.bstone.input.context.InputMapping;
 import org.bstone.render.RenderEngine;
+import org.bstone.resource.BitmapLoader;
+import org.bstone.resource.MeshLoader;
+import org.bstone.resource.ProgramLoader;
+import org.bstone.resource.ShaderLoader;
+import org.bstone.resource.TextureLoader;
 import org.bstone.tick.TickEngine;
 import org.bstone.window.Window;
+import org.lwjgl.opengl.GL20;
+import org.zilar.resource.ResourceLocation;
 
 /**
  * Created by Andy on 10/17/17.
@@ -23,6 +31,8 @@ public class GameEngine implements Framework
 	protected final RenderEngine renderEngine;
 	protected final TickEngine tickEngine;
 
+	protected final AssetManager assetManager;
+
 	private double timeCounter;
 
 	public GameEngine(Game handler)
@@ -33,6 +43,16 @@ public class GameEngine implements Framework
 		this.inputEngine = new InputEngine(this.window);
 		this.tickEngine = new TickEngine(60, true, this.handler);
 		this.renderEngine = new RenderEngine(this.window, this.tickEngine, this.handler);
+
+		ResourceLocation assets = this.handler.getAssetLocation();
+		if (assets != null)
+		{
+			this.assetManager = new AssetManager(assets);
+		}
+		else
+		{
+			this.assetManager = new AssetManager();
+		}
 	}
 
 	@Override
@@ -48,11 +68,24 @@ public class GameEngine implements Framework
 		this.input = this.inputEngine.createContext(0);
 		this.input.addListener(0, this.handler);
 
+		this.assetManager.registerLoader("bitmap", new BitmapLoader());
+		this.assetManager.registerLoader("texture", new TextureLoader(this.assetManager));
+		this.assetManager.registerLoader("program", new ProgramLoader(this.assetManager));
+		this.assetManager.registerLoader("vertex_shader", new ShaderLoader(GL20.GL_VERTEX_SHADER));
+		this.assetManager.registerLoader("fragment_shader", new ShaderLoader(GL20.GL_FRAGMENT_SHADER));
+		this.assetManager.registerLoader("mesh", new MeshLoader());
+
 		app.startEngine(this.inputEngine);
 		app.startEngine(this.renderEngine);
 		app.startEngine(this.tickEngine);
 
 		this.timeCounter = System.currentTimeMillis();
+	}
+
+	@Override
+	public void onApplicationStop(Application app)
+	{
+		this.assetManager.destroy();
 	}
 
 	@Override
@@ -64,6 +97,8 @@ public class GameEngine implements Framework
 	@Override
 	public void onApplicationUpdate(Application app)
 	{
+		this.assetManager.update();
+
 		if (System.currentTimeMillis() - this.timeCounter > 1000)
 		{
 			this.timeCounter += 1000;
@@ -106,6 +141,11 @@ public class GameEngine implements Framework
 	public InputMapping getInput()
 	{
 		return this.inputEngine.getInput();
+	}
+
+	public AssetManager getAssetManager()
+	{
+		return this.assetManager;
 	}
 
 	public Game getGame()

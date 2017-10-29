@@ -1,47 +1,36 @@
 package org.bstone.resource;
 
+import org.bstone.asset.Asset;
 import org.bstone.asset.AssetManager;
 import org.bstone.json.JSONObject;
-import org.bstone.json.JSONString;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Texture;
-import org.bstone.util.dataformat.json.JSONFormatParser;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 /**
  * Created by Andy on 10/26/17.
  */
-public class TextureLoader implements ResourceLoader<Texture>
+public class TextureLoader extends AssetLoader<Texture>
 {
-	private final AssetManager assets;
-
-	public TextureLoader(AssetManager assets)
+	public TextureLoader(AssetManager assetManager)
 	{
-		this.assets = assets;
+		super(assetManager);
 	}
 
 	@Override
-	public Texture load(InputStream stream) throws Exception
+	protected Texture onLoad(JSONObject src) throws Exception
 	{
-		JSONFormatParser parser = new JSONFormatParser(256);
-		JSONObject json = (JSONObject) parser.parse(new InputStreamReader(stream, "UTF-8"));
-
-		JSONString pBitmap = (JSONString) json.get("bitmap");
-		JSONString pMinMagFilter = (JSONString) json.get("minMagFilter");
-		JSONString pWrapMode = (JSONString) json.get("wrapMode");
-
-		Bitmap bitmap = this.assets.<Bitmap>getAsset("bitmap", pBitmap.get()).get();
+		Asset<Bitmap> bitmap = this.assets.getAsset("bitmap", this.getString(src, "bitmap"));
+		String minMagFilterKey = this.getString(src, "minMagFilter");
+		String wrapModeKey = this.getString(src, "wrapMode");
 
 		int minMagFilter;
-		if ("nearest".equals(pMinMagFilter.get()))
+		if ("nearest".equals(minMagFilterKey))
 		{
 			minMagFilter = GL11.GL_NEAREST;
 		}
-		else if ("linear".equals(pMinMagFilter.get()))
+		else if ("linear".equals(minMagFilterKey))
 		{
 			minMagFilter = GL11.GL_LINEAR;
 		}
@@ -51,7 +40,7 @@ public class TextureLoader implements ResourceLoader<Texture>
 		}
 
 		int wrapMode;
-		if ("clamp_edge".equals(pWrapMode.get()))
+		if ("clamp_edge".equals(wrapModeKey))
 		{
 			wrapMode = GL12.GL_CLAMP_TO_EDGE;
 		}
@@ -60,6 +49,6 @@ public class TextureLoader implements ResourceLoader<Texture>
 			throw new IllegalArgumentException("could not find valid value for parameter '" + "wrapMode" + "'");
 		}
 
-		return new Texture(bitmap, minMagFilter, wrapMode);
+		return new Texture(bitmap.get(), minMagFilter, wrapMode);
 	}
 }

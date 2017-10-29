@@ -20,5 +20,6 @@ public class VirtualAxis extends AxisInput implements VirtualInput
 	public void update()
 	{
 		this.next = (this.positive.getState() ? 1 : 0) - (this.negative.getState() ? 1 : 0);
+		this.markDirty();
 	}
 }

@@ -17,10 +17,10 @@ public class ProgramLoader extends AssetLoader<Program>
 	}
 
 	@Override
-	protected Program onLoad(JSONObject data) throws Exception
+	protected Program onLoad(JSONObject src) throws Exception
 	{
-		String vertexShaderName = this.getString(data, "vertex_shader");
-		String fragmentShaderName = this.getString(data, "fragment_shader");
+		String vertexShaderName = this.getString(src, "vertex_shader");
+		String fragmentShaderName = this.getString(src, "fragment_shader");
 
 		Asset<Shader> vertexShader = this.assets.getAsset("vertex_shader", vertexShaderName);
 		Asset<Shader> fragmentShader = this.assets.getAsset("fragment_shader", fragmentShaderName);

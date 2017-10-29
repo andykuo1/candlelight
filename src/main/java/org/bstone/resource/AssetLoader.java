@@ -24,11 +24,11 @@ public abstract class AssetLoader<T extends AutoCloseable> implements ResourceLo
 	public T load(InputStream stream) throws Exception
 	{
 		JSONFormatParser parser = new JSONFormatParser(256);
-		JSONObject data = (JSONObject) parser.parse(new InputStreamReader(stream, "UTF-8"));
-		return this.onLoad(data);
+		JSONObject src = (JSONObject) parser.parse(new InputStreamReader(stream, "UTF-8"));
+		return this.onLoad(src);
 	}
 
-	protected abstract T onLoad(JSONObject data) throws Exception;
+	protected abstract T onLoad(JSONObject src) throws Exception;
 
 	protected final String getString(JSONObject src, String key)
 	{

@@ -150,12 +150,12 @@ public class MouseHandler extends InputHandler
 	@Override
 	protected boolean isRawButtonID(int id)
 	{
-		return id >= 0 || id < 8;
+		return id >= 0 && id < 8;
 	}
 
 	@Override
 	protected boolean isRawAxisID(int id)
 	{
-		return id >= 0 || id < 4;
+		return id >= 0 && id < 4;
 	}
 }

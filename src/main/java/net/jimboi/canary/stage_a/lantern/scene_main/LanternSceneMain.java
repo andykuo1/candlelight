@@ -56,17 +56,21 @@ public class LanternSceneMain extends Scene
 				inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_P));
 
 		this.input.getMapping().registerInputMapping("forward",
-				inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_W));
+				inputEngine.getKeyboard().createButtonGroup(-1,
+						GLFW.GLFW_KEY_W, GLFW.GLFW_KEY_UP));
 		this.input.getMapping().registerInputMapping("backward",
-				inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_S));
+				inputEngine.getKeyboard().createButtonGroup(-2,
+						GLFW.GLFW_KEY_S, GLFW.GLFW_KEY_DOWN));
 		this.input.getMapping().registerInputMapping("up",
 				inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_SPACE));
 		this.input.getMapping().registerInputMapping("down",
 				inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_E));
 		this.input.getMapping().registerInputMapping("left",
-				inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_A));
+				inputEngine.getKeyboard().createButtonGroup(-3,
+						GLFW.GLFW_KEY_A, GLFW.GLFW_KEY_LEFT));
 		this.input.getMapping().registerInputMapping("right",
-				inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_D));
+				inputEngine.getKeyboard().createButtonGroup(-4,
+						GLFW.GLFW_KEY_D, GLFW.GLFW_KEY_RIGHT));
 		this.input.getMapping().registerInputMapping("sprint",
 				inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_LEFT_SHIFT));
 

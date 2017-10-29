@@ -58,7 +58,7 @@ public class KeyboardHandler extends InputHandler
 	@Override
 	protected boolean isRawButtonID(int id)
 	{
-		return id >= 0 || id <= GLFW.GLFW_KEY_LAST;
+		return id >= 0 && id <= GLFW.GLFW_KEY_LAST;
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import org.bstone.input.mapping.AxisInput;
 import org.bstone.input.mapping.ButtonInput;
 import org.bstone.input.mapping.Input;
 import org.bstone.input.mapping.VirtualAxis;
+import org.bstone.input.mapping.VirtualButtonGroup;
 import org.bstone.input.mapping.VirtualInput;
 
 import java.util.HashMap;
@@ -55,6 +56,27 @@ public abstract class InputHandler
 		ButtonInput button = new ButtonInput(id);
 		this.buttons.put(button.id, button);
 		return button;
+	}
+
+	public final VirtualButtonGroup createButtonGroup(int id, int... ids)
+	{
+		if (this.isRawButtonID(id)) throw new IllegalArgumentException("not a valid virtual button group id");
+
+		Input[] inputs = new Input[ids.length];
+		int i = 0;
+		for(int input : ids)
+		{
+			if (!this.isRawButtonID(input))
+				throw new IllegalArgumentException("not a valid button id");
+
+			ButtonInput button = this.getButton(input);
+			inputs[i++] = button;
+		}
+
+		VirtualButtonGroup buttonGroup = new VirtualButtonGroup(id, inputs);
+		this.buttons.put(buttonGroup.id, buttonGroup);
+		this.virtuals.add(buttonGroup);
+		return buttonGroup;
 	}
 
 	public final AxisInput destroyAxis(int id)
