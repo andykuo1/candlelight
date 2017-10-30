@@ -3,6 +3,7 @@ package net.jimboi.canary.stage_a.owle;
 import net.jimboi.boron.base_ab.asset.Asset;
 
 import org.bstone.input.TextHandler;
+import org.bstone.input.context.event.StateEvent;
 import org.bstone.transform.Transform;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -39,8 +40,9 @@ public class ConsoleBase
 		this.view.clear((byte) 0, 0xFFFFFF);
 		this.background.clear((byte) 0, 0x888888);
 
-		Console.getEngine().getInput().registerInputMapping("newline",
-				Console.getEngine().getInputEngine().getKeyboard().getButton(GLFW.GLFW_KEY_ENTER));
+		Console.getEngine().getInputEngine().getDefaultContext()
+				.registerEvent("newline",
+						Console.getEngine().getInputEngine().getKeyboard().getButton(GLFW.GLFW_KEY_ENTER)::isDown);
 		this.textHandler = Console.getEngine().getInputEngine().getText();
 
 		this.initialize();
@@ -64,8 +66,11 @@ public class ConsoleBase
 		final StringBuffer sb = this.textHandler.getBuffer();
 
 		((ViewComponentText) this.components.get(2)).setText(": " + sb);
-		if (Console.getEngine().getInputEngine().getInput().isInputDown("newline") && sb.length() > 0)
+		StateEvent newline = Console.getEngine().getInputEngine().getDefaultContext().getState("newline");
+		if (newline.isPressed() && sb.length() > 0)
 		{
+			newline.consume();
+
 			((ViewComponentTextPanel) this.components.get(0)).append("\n" + sb);
 			this.textHandler.clear();
 		}
@@ -84,8 +89,8 @@ public class ConsoleBase
 			component.render(this.view);
 		}
 
-		float mouseX = Console.getEngine().getInputEngine().getInput().getInputRange("mousex");
-		float mouseY = Console.getEngine().getInputEngine().getInput().getInputRange("mousey");
+		float mouseX = Console.getEngine().getInputEngine().getDefaultContext().getRange("mousex").getRange();
+		float mouseY = Console.getEngine().getInputEngine().getDefaultContext().getRange("mousey").getRange();
 
 		Vector2f vec = this.console.screenSpace.getPoint2DFromScreen(mouseX, mouseY, new Vector2f());
 		this.view.setPixelType((int)Math.floor(vec.x()), (int)Math.floor(vec.y()), (byte) 'X');

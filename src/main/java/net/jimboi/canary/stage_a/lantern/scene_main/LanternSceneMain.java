@@ -8,6 +8,7 @@ import net.jimboi.canary.stage_a.lantern.scene_main.entity.EntityPlayer;
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.input.InputEngine;
 import org.bstone.input.context.InputContext;
+import org.bstone.input.context.adapter.InputAdapter;
 import org.bstone.livingentity.LivingEntityManager;
 import org.bstone.scene.Scene;
 import org.bstone.scene.SceneManager;
@@ -43,36 +44,46 @@ public class LanternSceneMain extends Scene
 	protected void onSceneCreate(SceneManager sceneManager)
 	{
 		InputEngine inputEngine = Lantern.getLantern().getFramework().getInputEngine();
-		this.input = Lantern.getLantern().getFramework().getInputContext();
+		this.input = Lantern.getLantern().getFramework().getInputEngine().getDefaultContext();
 
 		this.screenSpace = new ScreenSpace(Lantern.getLantern().getFramework().getWindow().getCurrentViewPort(),
 				this.camera, Direction.CENTER, Direction.NORTHEAST);
 
-		this.input.getMapping().registerInputMapping("mousex",
-				inputEngine.getMouse().getCursorX());
-		this.input.getMapping().registerInputMapping("mousey",
-				inputEngine.getMouse().getCursorY());
-		this.input.getMapping().registerInputMapping("mouselock",
-				inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_P));
+		this.input.registerEvent("mousex",
+				inputEngine.getMouse().getCursorX()::getRange);
+		this.input.registerEvent("mousey",
+				inputEngine.getMouse().getCursorY()::getRange);
+		this.input.registerEvent("mouselock",
+				inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_P)::isDown);
 
-		this.input.getMapping().registerInputMapping("forward",
-				inputEngine.getKeyboard().createButtonGroup(-1,
-						GLFW.GLFW_KEY_W, GLFW.GLFW_KEY_UP));
-		this.input.getMapping().registerInputMapping("backward",
-				inputEngine.getKeyboard().createButtonGroup(-2,
-						GLFW.GLFW_KEY_S, GLFW.GLFW_KEY_DOWN));
-		this.input.getMapping().registerInputMapping("up",
-				inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_SPACE));
-		this.input.getMapping().registerInputMapping("down",
-				inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_E));
-		this.input.getMapping().registerInputMapping("left",
-				inputEngine.getKeyboard().createButtonGroup(-3,
-						GLFW.GLFW_KEY_A, GLFW.GLFW_KEY_LEFT));
-		this.input.getMapping().registerInputMapping("right",
-				inputEngine.getKeyboard().createButtonGroup(-4,
-						GLFW.GLFW_KEY_D, GLFW.GLFW_KEY_RIGHT));
-		this.input.getMapping().registerInputMapping("sprint",
-				inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_LEFT_SHIFT));
+		this.input.registerEvent("forward",
+				InputAdapter.asRange(
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_W)::isDown,
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_S)::isDown
+				),
+				InputAdapter.asRange(
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_UP)::isDown,
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_DOWN)::isDown
+				));
+
+		this.input.registerEvent("up",
+				InputAdapter.asRange(
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_SPACE)::isDown,
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_E)::isDown
+				));
+
+		this.input.registerEvent("right",
+				InputAdapter.asRange(
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_D)::isDown,
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_A)::isDown
+				),
+				InputAdapter.asRange(
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_RIGHT)::isDown,
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_LEFT)::isDown
+				));
+
+		this.input.registerEvent("sprint",
+				inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_LEFT_SHIFT)::isDown);
 
 		this.controller = new FirstPersonCameraHandler(this.camera);
 

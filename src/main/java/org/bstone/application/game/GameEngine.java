@@ -5,7 +5,6 @@ import org.bstone.application.Framework;
 import org.bstone.asset.AssetManager;
 import org.bstone.input.InputEngine;
 import org.bstone.input.context.InputContext;
-import org.bstone.input.context.InputMapping;
 import org.bstone.render.RenderEngine;
 import org.bstone.resource.BitmapLoader;
 import org.bstone.resource.MeshLoader;
@@ -131,16 +130,6 @@ public class GameEngine implements Framework
 	public InputEngine getInputEngine()
 	{
 		return inputEngine;
-	}
-
-	public InputContext getInputContext()
-	{
-		return this.input;
-	}
-
-	public InputMapping getInput()
-	{
-		return this.inputEngine.getInput();
 	}
 
 	public AssetManager getAssetManager()

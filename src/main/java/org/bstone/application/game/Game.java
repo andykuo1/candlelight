@@ -2,8 +2,8 @@ package org.bstone.application.game;
 
 import org.bstone.application.handler.RenderHandler;
 import org.bstone.application.handler.TickHandler;
-import org.bstone.input.InputListener;
 import org.bstone.input.context.InputContext;
+import org.bstone.input.context.InputListener;
 import org.zilar.resource.ResourceLocation;
 
 /**

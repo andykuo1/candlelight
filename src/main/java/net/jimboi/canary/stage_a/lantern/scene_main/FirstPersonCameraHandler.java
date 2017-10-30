@@ -3,8 +3,8 @@ package net.jimboi.canary.stage_a.lantern.scene_main;
 import net.jimboi.canary.stage_a.lantern.Lantern;
 
 import org.bstone.camera.Camera;
-import org.bstone.input.InputListener;
 import org.bstone.input.context.InputContext;
+import org.bstone.input.context.InputListener;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
@@ -132,8 +132,8 @@ public class FirstPersonCameraHandler implements InputListener
 		{
 			//Update camera rotation
 			Vector2fc mouse = new Vector2f(
-					context.getMapping().getInputMapping("mousex").getMotion(),
-					context.getMapping().getInputMapping("mousey").getMotion()
+					context.getRange("mousex").getMotion(),
+					context.getRange("mousey").getMotion()
 			);
 
 			float rotx = mouse.x() * this.sensitivity;
@@ -144,26 +144,22 @@ public class FirstPersonCameraHandler implements InputListener
 			this.pitch = MathUtil.clamp(this.pitch, -MAX_PITCH, MAX_PITCH);
 		}
 
-		if (context.hasInput("mouselock")
-				&& context.getInput("mouselock").getState())
+		if (context.getState("mouselock").isPressedAndConsume())
 		{
 			Lantern.getLantern().getFramework().getInputEngine().getMouse().setCursorMode(!mouseLocked);
 		}
 
 		//Move
 		this.forward = 0;
-		this.forward += context.getMapping().getInputMapping("forward").getRange();
-		this.forward -= context.getMapping().getInputMapping("backward").getRange();
+		this.forward += context.getRange("forward").getRangeAndConsume();
 
 		this.up = 0;
-		this.up += context.getMapping().getInputMapping("up").getRange();
-		this.up -= context.getMapping().getInputMapping("down").getRange();
+		this.up += context.getRange("up").getRangeAndConsume();
 
 		this.right = 0;
-		this.right += context.getMapping().getInputMapping("right").getRange();
-		this.right -= context.getMapping().getInputMapping("left").getRange();
+		this.right += context.getRange("right").getRangeAndConsume();
 
-		this.sprint = context.getMapping().getInputMapping("sprint").getState();
+		this.sprint = context.getState("sprint").isDownAndConsume();
 	}
 
 	public void setSensitivity(float sensitivity)

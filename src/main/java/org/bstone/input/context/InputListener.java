@@ -1,6 +1,4 @@
-package org.bstone.input;
-
-import org.bstone.input.context.InputContext;
+package org.bstone.input.context;
 
 /**
  * Created by Andy on 10/16/17.

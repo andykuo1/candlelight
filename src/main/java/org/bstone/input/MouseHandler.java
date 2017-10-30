@@ -1,7 +1,7 @@
 package org.bstone.input;
 
-import org.bstone.input.mapping.AxisInput;
-import org.bstone.input.mapping.ButtonInput;
+import org.bstone.input.context.raw.AxisInput;
+import org.bstone.input.context.raw.ButtonInput;
 import org.bstone.window.Window;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
@@ -148,13 +148,13 @@ public class MouseHandler extends InputHandler
 	}
 
 	@Override
-	protected boolean isRawButtonID(int id)
+	protected boolean isButtonID(int id)
 	{
 		return id >= 0 && id < 8;
 	}
 
 	@Override
-	protected boolean isRawAxisID(int id)
+	protected boolean isAxisID(int id)
 	{
 		return id >= 0 && id < 4;
 	}

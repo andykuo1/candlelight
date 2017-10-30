@@ -1,16 +1,11 @@
 package org.bstone.input;
 
-import org.bstone.input.mapping.AxisInput;
-import org.bstone.input.mapping.ButtonInput;
-import org.bstone.input.mapping.Input;
-import org.bstone.input.mapping.VirtualAxis;
-import org.bstone.input.mapping.VirtualButtonGroup;
-import org.bstone.input.mapping.VirtualInput;
+import org.bstone.input.context.raw.AbstractInput;
+import org.bstone.input.context.raw.AxisInput;
+import org.bstone.input.context.raw.ButtonInput;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -20,82 +15,39 @@ public abstract class InputHandler
 {
 	private final Map<Integer, AxisInput> axes = new HashMap<>();
 	private final Map<Integer, ButtonInput> buttons = new HashMap<>();
-	private final Set<VirtualInput> virtuals = new HashSet<>();
 
-	public void update()
+	public void poll()
 	{
-		for(VirtualInput virtual : this.virtuals)
-		{
-			virtual.update();
-		}
+		this.getInputs().forEach(AbstractInput::poll);
 	}
 
-	public final AxisInput createAxis(int id)
+	protected final AxisInput createAxis(int id)
 	{
-		if (!this.isRawAxisID(id)) throw new IllegalArgumentException("not a valid axis id");
+		if (!this.isAxisID(id)) throw new IllegalArgumentException("not a valid axis id");
 
 		AxisInput axis = new AxisInput(id);
-		this.axes.put(axis.id, axis);
+		this.axes.put(axis.getID(), axis);
 		return axis;
 	}
 
-	public final VirtualAxis createAxis(int id, int positive, int negative)
+	protected final ButtonInput createButton(int id)
 	{
-		if (this.isRawAxisID(id)) throw new IllegalArgumentException("not a valid virtual axis id");
-
-		VirtualAxis axis = new VirtualAxis(id, this.getButton(positive), this.getButton(negative));
-		this.axes.put(axis.id, axis);
-		this.virtuals.add(axis);
-		return axis;
-	}
-
-	public final ButtonInput createButton(int id)
-	{
-		if (!this.isRawButtonID(id)) throw new IllegalArgumentException("not a valid button id");
+		if (!this.isButtonID(id)) throw new IllegalArgumentException("not a valid button id");
 
 		ButtonInput button = new ButtonInput(id);
-		this.buttons.put(button.id, button);
+		this.buttons.put(button.getID(), button);
 		return button;
 	}
 
-	public final VirtualButtonGroup createButtonGroup(int id, int... ids)
-	{
-		if (this.isRawButtonID(id)) throw new IllegalArgumentException("not a valid virtual button group id");
-
-		Input[] inputs = new Input[ids.length];
-		int i = 0;
-		for(int input : ids)
-		{
-			if (!this.isRawButtonID(input))
-				throw new IllegalArgumentException("not a valid button id");
-
-			ButtonInput button = this.getButton(input);
-			inputs[i++] = button;
-		}
-
-		VirtualButtonGroup buttonGroup = new VirtualButtonGroup(id, inputs);
-		this.buttons.put(buttonGroup.id, buttonGroup);
-		this.virtuals.add(buttonGroup);
-		return buttonGroup;
-	}
-
-	public final AxisInput destroyAxis(int id)
+	protected final AxisInput destroyAxis(int id)
 	{
 		AxisInput axis = this.axes.remove(id);
-		if (axis instanceof VirtualInput)
-		{
-			this.virtuals.remove(axis);
-		}
 		return axis;
 	}
 
-	public final ButtonInput destroyButton(int id)
+	protected final ButtonInput destroyButton(int id)
 	{
 		ButtonInput button = this.buttons.remove(id);
-		if (button instanceof VirtualInput)
-		{
-			this.virtuals.remove(button);
-		}
 		return button;
 	}
 
@@ -123,24 +75,23 @@ public abstract class InputHandler
 		}
 	}
 
-	public final Stream<Input> getInputs()
+	public final Stream<AbstractInput> getInputs()
 	{
 		return Stream.concat(this.axes.values().stream(), this.buttons.values().stream());
 	}
 
-	protected boolean isRawButtonID(int id)
+	protected boolean isButtonID(int id)
 	{
 		return false;
 	}
 
-	protected boolean isRawAxisID(int id)
+	protected boolean isAxisID(int id)
 	{
 		return false;
 	}
 
 	public void clear()
 	{
-		this.virtuals.clear();
 		this.axes.clear();
 		this.buttons.clear();
 	}

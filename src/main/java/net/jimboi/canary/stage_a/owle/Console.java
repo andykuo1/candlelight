@@ -79,10 +79,12 @@ public class Console implements Game
 		this.camera = new PerspectiveCamera(halfWidth, halfHeight, dist, ENGINE.getWindow().getWidth(), ENGINE.getWindow().getHeight());
 		this.screenSpace = new ScreenSpace(ENGINE.getWindow().getCurrentViewPort(), this.camera, Direction.CENTER, Direction.NORTHEAST);
 
-		ENGINE.getInputEngine().getInput().registerInputMapping("mousex",
-				ENGINE.getInputEngine().getMouse().getCursorX());
-		ENGINE.getInputEngine().getInput().registerInputMapping("mousey",
-				ENGINE.getInputEngine().getMouse().getCursorY());
+		ENGINE.getInputEngine().getDefaultContext()
+				.registerEvent("mousex",
+						ENGINE.getInputEngine().getMouse().getCursorX()::getRange);
+		ENGINE.getInputEngine().getDefaultContext()
+				.registerEvent("mousey",
+						ENGINE.getInputEngine().getMouse().getCursorY()::getRange);
 
 		this.renderer = new ConsoleProgramRenderer();
 
