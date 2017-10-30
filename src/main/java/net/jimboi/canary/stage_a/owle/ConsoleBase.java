@@ -42,7 +42,7 @@ public class ConsoleBase
 
 		Console.getEngine().getInputEngine().getDefaultContext()
 				.registerEvent("newline",
-						Console.getEngine().getInputEngine().getKeyboard().getButton(GLFW.GLFW_KEY_ENTER)::isDown);
+						Console.getEngine().getInputEngine().getKeyboard().getButton(GLFW.GLFW_KEY_ENTER)::getState);
 		this.textHandler = Console.getEngine().getInputEngine().getText();
 
 		this.initialize();

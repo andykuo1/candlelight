@@ -13,6 +13,7 @@ public class SceneManager
 
 	private Scene scene;
 
+	private boolean loaded = false;
 	private String nextScene;
 	private Consumer<Scene> nextCallback;
 
@@ -65,11 +66,17 @@ public class SceneManager
 
 			this.nextScene = null;
 			this.nextCallback = null;
+			this.loaded = false;
 		}
-		else if (this.scene != null)
+		else if (this.loaded && this.scene != null)
 		{
 			this.scene.onSceneUpdate();
 		}
+	}
+
+	public void setSceneLoaded()
+	{
+		this.loaded = true;
 	}
 
 	public void destroy()

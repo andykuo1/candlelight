@@ -1,6 +1,5 @@
 package org.bstone.input.context.event;
 
-import org.bstone.input.context.adapter.IRange;
 import org.bstone.input.context.adapter.InputAdapter;
 
 /**
@@ -67,9 +66,10 @@ public class RangeEvent extends AbstractInputEvent
 		return this.next - this.prev;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public IRange getAdapter()
+	public InputAdapter<Float> getAdapter()
 	{
-		return (IRange) super.getAdapter();
+		return (InputAdapter<Float>) super.getAdapter();
 	}
 }

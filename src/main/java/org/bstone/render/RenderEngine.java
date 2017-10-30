@@ -38,6 +38,10 @@ public class RenderEngine extends Engine
 		this.frameCounter.reset();
 
 		this.renderHandler.onRenderLoad();
+
+		this.serviceManager.beginServiceBlock();
+		this.serviceManager.endServiceBlock();
+
 		return true;
 	}
 
@@ -75,6 +79,9 @@ public class RenderEngine extends Engine
 	@Override
 	protected void onStop(Application app)
 	{
+		this.serviceManager.beginServiceBlock();
+		this.serviceManager.endServiceBlock();
+
 		this.renderHandler.onRenderUnload();
 		this.serviceManager.clearServices();
 	}

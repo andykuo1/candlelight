@@ -1,5 +1,7 @@
 package net.jimboi.boron.base_ab.asset;
 
+import java.util.function.Supplier;
+
 /**
  * Created by Andy on 6/9/17.
  */
@@ -9,6 +11,12 @@ public abstract class Asset<T>
 	public static <T> AssetWrappable<T> wrap(T source)
 	{
 		return new AssetWrappable<>((Class<T>) source.getClass(), source, source.toString());
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> AssetLateWrappable<T> wrap(Supplier<T> source, Class<T> type)
+	{
+		return new AssetLateWrappable<>(type, source, source.toString());
 	}
 
 	protected final Class<T> type;

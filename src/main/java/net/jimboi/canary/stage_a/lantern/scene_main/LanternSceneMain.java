@@ -54,36 +54,36 @@ public class LanternSceneMain extends Scene
 		this.input.registerEvent("mousey",
 				inputEngine.getMouse().getCursorY()::getRange);
 		this.input.registerEvent("mouselock",
-				inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_P)::isDown);
+				inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_P)::getState);
 
 		this.input.registerEvent("forward",
 				InputAdapter.asRange(
-						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_W)::isDown,
-						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_S)::isDown
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_W)::getState,
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_S)::getState
 				),
 				InputAdapter.asRange(
-						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_UP)::isDown,
-						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_DOWN)::isDown
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_UP)::getState,
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_DOWN)::getState
 				));
 
 		this.input.registerEvent("up",
 				InputAdapter.asRange(
-						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_SPACE)::isDown,
-						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_E)::isDown
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_SPACE)::getState,
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_E)::getState
 				));
 
 		this.input.registerEvent("right",
 				InputAdapter.asRange(
-						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_D)::isDown,
-						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_A)::isDown
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_D)::getState,
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_A)::getState
 				),
 				InputAdapter.asRange(
-						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_RIGHT)::isDown,
-						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_LEFT)::isDown
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_RIGHT)::getState,
+						inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_LEFT)::getState
 				));
 
 		this.input.registerEvent("sprint",
-				inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_LEFT_SHIFT)::isDown);
+				inputEngine.getKeyboard().getButton(GLFW.GLFW_KEY_LEFT_SHIFT)::getState);
 
 		this.controller = new FirstPersonCameraHandler(this.camera);
 

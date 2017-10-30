@@ -1,6 +1,5 @@
 package org.bstone.input.context.event;
 
-import org.bstone.input.context.adapter.IState;
 import org.bstone.input.context.adapter.InputAdapter;
 
 /**
@@ -91,9 +90,10 @@ public class StateEvent extends AbstractInputEvent
 		return this.prev != this.next;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public IState getAdapter()
+	public InputAdapter<Boolean> getAdapter()
 	{
-		return (IState) super.getAdapter();
+		return (InputAdapter<Boolean>) super.getAdapter();
 	}
 }

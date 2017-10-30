@@ -1,6 +1,5 @@
 package org.bstone.input.context.event;
 
-import org.bstone.input.context.adapter.IAction;
 import org.bstone.input.context.adapter.InputAdapter;
 
 /**
@@ -50,9 +49,10 @@ public class ActionEvent extends AbstractInputEvent
 		return this.prev;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public IAction getAdapter()
+	public InputAdapter<Integer> getAdapter()
 	{
-		return (IAction) super.getAdapter();
+		return (InputAdapter<Integer>) super.getAdapter();
 	}
 }

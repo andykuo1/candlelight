@@ -33,7 +33,7 @@ public class ButtonInput extends AbstractInput
 		super.poll();
 	}
 
-	public boolean isDown()
+	public boolean getState()
 	{
 		return this.next == 1;
 	}
