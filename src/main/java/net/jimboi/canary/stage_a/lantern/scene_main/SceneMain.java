@@ -31,6 +31,9 @@ public class SceneMain extends Scene
 		context.registerEvent("mousex", inputs.getMouse().getCursorX()::getRange);
 		context.registerEvent("mousey", inputs.getMouse().getCursorY()::getRange);
 
+		context.registerEvent("mouseleft", inputs.getMouse().getButton(GLFW.GLFW_MOUSE_BUTTON_LEFT)::getAction);
+		context.registerEvent("mouseright", inputs.getMouse().getButton(GLFW.GLFW_MOUSE_BUTTON_RIGHT)::getAction);
+
 		context.registerEvent("exit", inputs.getKeyboard().getButton(GLFW.GLFW_KEY_ESCAPE)::getState);
 
 		context.registerEvent("forward",
@@ -64,6 +67,8 @@ public class SceneMain extends Scene
 
 		context.registerEvent("action",
 				inputs.getKeyboard().getButton(GLFW.GLFW_KEY_F)::getState);
+
+		this.entityManager.addLivingEntity(new EntityPlayer());
 	}
 
 	@Override

@@ -9,7 +9,6 @@ import net.jimboi.canary.stage_a.cuplet.renderer.SimpleRenderer;
 import org.bstone.asset.AssetManager;
 import org.bstone.camera.Camera;
 import org.bstone.camera.OrthographicCamera;
-import org.bstone.mogli.Mesh;
 import org.bstone.render.RenderEngine;
 import org.bstone.scene.SceneRenderer;
 import org.bstone.sprite.textureatlas.TextureAtlas;
@@ -17,12 +16,9 @@ import org.bstone.util.Direction;
 import org.bstone.window.Window;
 import org.bstone.window.view.ScreenSpace;
 import org.joml.Matrix4f;
-import org.joml.Vector2f;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 import org.qsilver.ResourceLocation;
-import org.zilar.meshbuilder.MeshBuilder;
-import org.zilar.meshbuilder.ModelUtil;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -74,22 +70,12 @@ public class MainRenderer extends SceneRenderer
 		assets.registerResourceLocation("vertex_shader.wireframe", new ResourceLocation("base:wireframe.vsh"));
 		assets.registerResourceLocation("fragment_shader.wireframe", new ResourceLocation("base:wireframe.fsh"));
 
-		assets.registerResourceLocation("mesh.quad2", new ResourceLocation("lantern:quad.obj"));
+		assets.registerResourceLocation("mesh.quad", new ResourceLocation("lantern:quad.obj"));
 
 		//Models
 		//???
 		//Materials
 		//???
-
-		//Mesh
-		{
-			MeshBuilder mb = new MeshBuilder();
-			mb.addPlane(new Vector2f(0.0F, 0.0F), new Vector2f(1.0F, 1.0F), 0.0F, new Vector2f(0.0F, 0.0F), new Vector2f(1.0F, 1.0F));
-			Mesh mesh = ModelUtil.createStaticMesh(mb.bake(false, true));
-			mb.clear();
-
-			assets.cacheResource("mesh", "quad", mesh);
-		}
 
 		//Texture Atlas
 		{
@@ -109,7 +95,7 @@ public class MainRenderer extends SceneRenderer
 
 		this.collisionBoxRenderer = new CollisionBoxRenderer(
 				assets.getAsset("program", "wireframe"),
-				assets.getAsset("mesh", "quad2"));
+				assets.getAsset("mesh", "quad"));
 	}
 
 	@Override
