@@ -18,7 +18,7 @@ import net.jimboi.apricot.stage_b.glim.entity.system.EntitySystemBillboard;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
 import org.bstone.transform.Transform3;
-import org.bstone.util.direction.Direction;
+import org.bstone.util.Direction;
 import org.bstone.window.view.ScreenSpace;
 import org.zilar.BasicFirstPersonCameraController;
 

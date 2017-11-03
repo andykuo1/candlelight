@@ -1,6 +1,6 @@
 package org.bstone.console;
 
-import org.bstone.util.Procedure;
+import org.bstone.util.function.Procedure;
 
 import java.awt.Color;
 

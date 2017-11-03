@@ -3,8 +3,8 @@ package org.bstone.mogli;
 import org.bstone.RefCountSet;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBImage;
-import org.qsilver.loader.BitmapLoader;
-import org.zilar.resource.ResourceLocation;
+import org.qsilver.ResourceLocation;
+import org.zilar.loader.BitmapLoader;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;

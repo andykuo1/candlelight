@@ -3,7 +3,7 @@ package net.jimboi.boron.stage_a.smack.entity;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
 
 import org.bstone.transform.Transform3;
-import org.qsilver.util.ColorUtil;
+import org.bstone.util.ColorUtil;
 
 /**
  * Created by Andy on 8/6/17.

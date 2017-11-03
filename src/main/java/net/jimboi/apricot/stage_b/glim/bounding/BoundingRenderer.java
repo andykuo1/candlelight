@@ -16,10 +16,10 @@ import org.joml.Matrix4fc;
 import org.joml.Vector2fc;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
-import org.qsilver.resource.MeshLoader;
+import org.qsilver.ResourceLocation;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.MeshData;
-import org.zilar.resource.ResourceLocation;
+import org.zilar.resource.MeshLoader;
 
 import java.util.Iterator;
 

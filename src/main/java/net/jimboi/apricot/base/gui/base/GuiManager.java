@@ -6,7 +6,7 @@ import net.jimboi.boron.base_ab.window.input.InputLayer;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.OrthographicCamera;
-import org.bstone.util.direction.Direction;
+import org.bstone.util.Direction;
 import org.bstone.window.view.ScreenSpace;
 import org.bstone.window.view.ViewPort;
 import org.joml.Vector3f;

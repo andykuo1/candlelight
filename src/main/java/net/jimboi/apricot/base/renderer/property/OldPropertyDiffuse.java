@@ -2,9 +2,9 @@ package net.jimboi.apricot.base.renderer.property;
 
 import net.jimboi.apricot.base.material.OldProperty;
 
+import org.bstone.util.ColorUtil;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import org.qsilver.util.ColorUtil;
 
 /**
  * Created by Andy on 6/8/17.

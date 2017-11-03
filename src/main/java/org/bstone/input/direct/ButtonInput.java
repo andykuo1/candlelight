@@ -5,6 +5,11 @@ package org.bstone.input.direct;
  */
 public class ButtonInput extends AbstractInput
 {
+	public static final int RELEASED = -1;
+	public static final int NONE = 0;
+	public static final int PRESSED = 1;
+	public static final int HOLD = 2;
+
 	protected int prev;
 	protected int next;
 
@@ -15,13 +20,13 @@ public class ButtonInput extends AbstractInput
 
 	public void press()
 	{
-		this.next = 1;
+		if (this.next != HOLD) this.next = PRESSED;
 		this.markDirty();
 	}
 
 	public void release()
 	{
-		this.next = 0;
+		if (this.next != NONE) this.next = RELEASED;
 		this.markDirty();
 	}
 
@@ -30,22 +35,25 @@ public class ButtonInput extends AbstractInput
 	{
 		this.prev = this.next;
 
+		if (this.next == PRESSED) this.next = HOLD;
+		if (this.next == RELEASED) this.next = NONE;
+
 		super.poll();
 	}
 
 	public boolean getState()
 	{
-		return this.next == 1;
+		return this.next > 0;
 	}
 
 	public boolean isPressed()
 	{
-		return this.prev != this.next && this.next == 1;
+		return this.next == PRESSED;
 	}
 
 	public boolean isReleased()
 	{
-		return this.prev != this.next && this.next == 0;
+		return this.next == RELEASED;
 	}
 
 	public int getAction()
@@ -56,5 +64,10 @@ public class ButtonInput extends AbstractInput
 	public int getPreviousAction()
 	{
 		return this.prev;
+	}
+
+	public boolean getActionChanged()
+	{
+		return this.next != this.prev;
 	}
 }

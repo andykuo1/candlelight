@@ -1,7 +1,7 @@
 package org.bstone.resource;
 
 import org.bstone.mogli.Mesh;
-import org.bstone.util.dataformat.obj.OBJFormatParser;
+import org.bstone.util.parser.obj.OBJFormatParser;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;

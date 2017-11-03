@@ -3,7 +3,7 @@ package net.jimboi.test.sleuth.cluedo;
 import net.jimboi.test.sleuth.PrintableStruct;
 import net.jimboi.test.sleuth.data.Time;
 
-import org.bstone.util.Pair;
+import org.bstone.util.pair.Pair;
 
 import java.util.LinkedList;
 import java.util.List;

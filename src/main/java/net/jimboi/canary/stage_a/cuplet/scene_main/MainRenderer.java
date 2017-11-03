@@ -13,16 +13,16 @@ import org.bstone.mogli.Mesh;
 import org.bstone.render.RenderEngine;
 import org.bstone.scene.SceneRenderer;
 import org.bstone.sprite.textureatlas.TextureAtlas;
-import org.bstone.util.direction.Direction;
+import org.bstone.util.Direction;
 import org.bstone.window.Window;
 import org.bstone.window.view.ScreenSpace;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
+import org.qsilver.ResourceLocation;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;
-import org.zilar.resource.ResourceLocation;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -42,8 +42,6 @@ public class MainRenderer extends SceneRenderer
 
 	public Set<RenderableBase> renderables;
 	public Set<ComponentRenderable> renderComponents;
-
-	private boolean first = false;
 
 	@Override
 	protected void onRenderLoad(RenderEngine renderEngine)
@@ -75,6 +73,8 @@ public class MainRenderer extends SceneRenderer
 		assets.registerResourceLocation("program.wireframe", new ResourceLocation("cuplet:program_wireframe.res"));
 		assets.registerResourceLocation("vertex_shader.wireframe", new ResourceLocation("base:wireframe.vsh"));
 		assets.registerResourceLocation("fragment_shader.wireframe", new ResourceLocation("base:wireframe.fsh"));
+
+		assets.registerResourceLocation("mesh.quad2", new ResourceLocation("lantern:quad.obj"));
 
 		//Models
 		//???
@@ -109,7 +109,7 @@ public class MainRenderer extends SceneRenderer
 
 		this.collisionBoxRenderer = new CollisionBoxRenderer(
 				assets.getAsset("program", "wireframe"),
-				assets.getAsset("mesh", "quad"));
+				assets.getAsset("mesh", "quad2"));
 	}
 
 	@Override

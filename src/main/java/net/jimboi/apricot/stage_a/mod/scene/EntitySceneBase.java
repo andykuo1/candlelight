@@ -1,8 +1,7 @@
 package net.jimboi.apricot.stage_a.mod.scene;
 
+import net.jimboi.apricot.base.scene.Scene;
 import net.jimboi.apricot.stage_a.dood.entity.EntityManager;
-
-import org.qsilver.scene.Scene;
 
 /**
  * Created by Andy on 5/30/17.

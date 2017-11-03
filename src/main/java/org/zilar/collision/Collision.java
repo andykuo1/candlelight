@@ -1,7 +1,7 @@
 package org.zilar.collision;
 
-import org.bstone.util.Pair;
-import org.bstone.util.TriFunction;
+import org.bstone.util.function.TriFunction;
+import org.bstone.util.pair.Pair;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.qsilver.util.MathUtil;

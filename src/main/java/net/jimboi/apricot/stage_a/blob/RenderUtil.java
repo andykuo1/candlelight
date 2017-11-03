@@ -12,7 +12,7 @@ import org.bstone.mogli.Texture;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL20;
-import org.qsilver.loader.OBJLoader;
+import org.zilar.loader.OBJLoader;
 
 import java.util.HashMap;
 import java.util.Map;

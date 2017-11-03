@@ -9,7 +9,7 @@ import org.bstone.input.event.AbstractInputEvent;
 import org.bstone.input.event.ActionEvent;
 import org.bstone.input.event.RangeEvent;
 import org.bstone.input.event.StateEvent;
-import org.bstone.util.Pair;
+import org.bstone.util.pair.Pair;
 
 import java.util.Comparator;
 import java.util.HashMap;

@@ -1,13 +1,14 @@
 package net.jimboi.canary.stage_a.lantern;
 
-import net.jimboi.canary.stage_a.lantern.scene_main.LanternSceneMain;
-import net.jimboi.canary.stage_a.lantern.scene_main.RenderSceneMain;
+import net.jimboi.canary.stage_a.lantern.scene_main.SceneMain;
+import net.jimboi.canary.stage_a.lantern.scene_main.SceneMainRenderer;
+import net.jimboi.canary.stage_a.lantern.scene_test.SceneTest;
+import net.jimboi.canary.stage_a.lantern.scene_test.SceneTestRenderer;
 
 import org.bstone.application.Application;
 import org.bstone.application.game.Game;
 import org.bstone.application.game.GameEngine;
 import org.bstone.scene.SceneManager;
-import org.zilar.resource.ResourceLocation;
 
 /**
  * Created by Andy on 10/20/17.
@@ -41,7 +42,9 @@ public class Lantern implements Game
 	public void onFirstUpdate()
 	{
 		this.sceneManager = new SceneManager(this.getFramework().getRenderEngine().getRenderServices());
-		this.sceneManager.registerScene("init", LanternSceneMain.class, RenderSceneMain.class);
+		this.sceneManager.registerScene("test", SceneTest.class, SceneTestRenderer.class);
+		this.sceneManager.registerScene("init", SceneMain.class, SceneMainRenderer.class);
+
 		this.sceneManager.setNextScene("init");
 	}
 
@@ -70,11 +73,5 @@ public class Lantern implements Game
 	public final Application getApplication()
 	{
 		return application;
-	}
-
-	@Override
-	public ResourceLocation getAssetLocation()
-	{
-		return new ResourceLocation("lantern:lantern.assets");
 	}
 }

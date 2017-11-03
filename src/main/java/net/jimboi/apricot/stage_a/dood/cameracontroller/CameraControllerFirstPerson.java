@@ -1,6 +1,7 @@
 package net.jimboi.apricot.stage_a.dood.cameracontroller;
 
 import net.jimboi.apricot.base.input.OldInputManager;
+import net.jimboi.apricot.base.scene.Scene;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;
@@ -10,7 +11,6 @@ import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
-import org.qsilver.scene.Scene;
 import org.qsilver.util.MathUtil;
 
 /**

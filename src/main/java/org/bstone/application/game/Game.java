@@ -2,7 +2,7 @@ package org.bstone.application.game;
 
 import org.bstone.application.handler.RenderHandler;
 import org.bstone.application.handler.TickHandler;
-import org.zilar.resource.ResourceLocation;
+import org.qsilver.ResourceLocation;
 
 /**
  * Created by Andy on 10/17/17.

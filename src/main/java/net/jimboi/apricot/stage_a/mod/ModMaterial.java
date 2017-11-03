@@ -3,9 +3,9 @@ package net.jimboi.apricot.stage_a.mod;
 import net.jimboi.apricot.stage_a.mod.sprite.Sprite;
 
 import org.bstone.mogli.Texture;
+import org.bstone.util.ColorUtil;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.qsilver.util.ColorUtil;
 
 /**
  * Created by Andy on 4/29/17.

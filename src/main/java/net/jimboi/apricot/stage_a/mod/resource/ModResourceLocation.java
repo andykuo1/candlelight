@@ -1,6 +1,6 @@
 package net.jimboi.apricot.stage_a.mod.resource;
 
-import org.zilar.resource.ResourceLocation;
+import org.qsilver.ResourceLocation;
 
 public class ModResourceLocation extends ResourceLocation
 {

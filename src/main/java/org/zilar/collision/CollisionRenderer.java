@@ -8,13 +8,13 @@ import org.bstone.camera.Camera;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.transform.Transform2;
+import org.bstone.util.ColorUtil;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
-import org.qsilver.util.ColorUtil;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;
 

@@ -1,6 +1,6 @@
 package net.jimboi.apricot.stage_a.blob.torchlite;
 
-import org.bstone.util.direction.Direction;
+import org.bstone.util.Direction;
 import org.joml.Vector2i;
 
 import java.util.Random;

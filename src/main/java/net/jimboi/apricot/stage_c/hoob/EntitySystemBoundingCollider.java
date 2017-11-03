@@ -1,6 +1,7 @@
 package net.jimboi.apricot.stage_c.hoob;
 
-import org.qsilver.scene.Scene;
+import net.jimboi.apricot.base.scene.Scene;
+
 import org.zilar.collision.CollisionManager;
 import org.zilar.entity.AbstractEntitySystem;
 import org.zilar.entity.Entity;

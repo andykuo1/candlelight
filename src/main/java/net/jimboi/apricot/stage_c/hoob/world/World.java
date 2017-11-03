@@ -13,7 +13,7 @@ import net.jimboi.boron.base_ab.window.input.InputEngine;
 import net.jimboi.boron.base_ab.window.input.InputLayer;
 
 import org.bstone.transform.Transform3;
-import org.bstone.util.direction.Direction;
+import org.bstone.util.Direction;
 import org.bstone.window.view.ScreenSpace;
 import org.joml.Vector3f;
 import org.zilar.collision.Shape;

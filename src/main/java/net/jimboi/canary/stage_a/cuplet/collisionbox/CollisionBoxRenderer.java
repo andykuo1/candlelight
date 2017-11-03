@@ -11,9 +11,9 @@ import org.bstone.asset.Asset;
 import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
+import org.bstone.util.ColorUtil;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
-import org.qsilver.util.ColorUtil;
 
 /**
  * Created by Andy on 8/8/17.

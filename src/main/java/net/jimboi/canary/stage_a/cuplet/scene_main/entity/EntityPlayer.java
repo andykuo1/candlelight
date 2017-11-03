@@ -9,9 +9,11 @@ import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentDamageable
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentMotion;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tick.TickCounter;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tile.TileMap;
+import net.jimboi.canary.stage_a.lantern.Lantern;
 
 import org.bstone.entity.EntityManager;
 import org.bstone.input.InputContext;
+import org.bstone.input.InputListener;
 import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
@@ -20,7 +22,7 @@ import org.qsilver.util.MathUtil;
 /**
  * Created by Andy on 8/9/17.
  */
-public class EntityPlayer extends EntityHurtable
+public class EntityPlayer extends EntityHurtable implements InputListener
 {
 	private Vector2f direction = new Vector2f();
 	private Vector2f mousePos = new Vector2f();
@@ -35,6 +37,10 @@ public class EntityPlayer extends EntityHurtable
 	private int maxRollingCooldownTicks = 15;
 
 	private int rollingInputDir = -1;
+
+	private boolean fireLeft = false;
+	private boolean fireRight = false;
+	private boolean action = false;
 
 	public EntityPlayer(GobletWorld world, Transform3 transform)
 	{
@@ -56,6 +62,16 @@ public class EntityPlayer extends EntityHurtable
 		ComponentDamageable componentDamageable  = this.getComponent(ComponentDamageable.class);
 		componentDamageable.canTakeDamageFrom = (damageSource) -> !this.rolling;
 		componentDamageable.setMaxHealth(100);
+
+		Cuplet.getCuplet().getFramework().getInputEngine().getDefaultContext().addListener(0, this);
+	}
+
+	@Override
+	public void onEntityDestroy()
+	{
+		super.onEntityDestroy();
+
+		Lantern.getLantern().getFramework().getInputEngine().getDefaultContext().removeListener(this);
 	}
 
 	@Override
@@ -63,6 +79,48 @@ public class EntityPlayer extends EntityHurtable
 	{
 		if (this.rolling) return false;
 		return super.canSetFire(x, y, strength);
+	}
+
+	@Override
+	public void onInputUpdate(InputContext context)
+	{
+		if (!this.rolling)
+		{
+			if (context.getAction("rollleft").isPressedAndConsume())
+			{
+				this.updateRollInput(-1, 0, 0);
+			}
+
+			if (context.getAction("rollright").isPressedAndConsume())
+			{
+				this.updateRollInput(1, 0, 1);
+			}
+
+			if (context.getAction("rollup").isPressedAndConsume())
+			{
+				this.updateRollInput(0, 1, 2);
+			}
+
+			if (context.getAction("rolldown").isPressedAndConsume())
+			{
+				this.updateRollInput(0, -1, 3);
+			}
+		}
+
+		if (context.getAction("mouseright").isReleasedAndConsume())
+		{
+			this.fireRight = true;
+		}
+
+		if (context.getAction("mouseleft").isReleasedAndConsume())
+		{
+			this.fireLeft = true;
+		}
+
+		if (context.getAction("action").isReleasedAndConsume())
+		{
+			this.action = true;
+		}
 	}
 
 	private void roll(float dx, float dy)
@@ -114,27 +172,6 @@ public class EntityPlayer extends EntityHurtable
 			{
 				this.rollingInputTicks.tick();
 			}
-
-			InputContext ctx = Cuplet.getCuplet().getFramework().getInputEngine().getDefaultContext();
-			if (ctx.getState("left").isPressed())
-			{
-				this.updateRollInput(-1, 0, 0);
-			}
-
-			if (ctx.getState("right").isPressed())
-			{
-				this.updateRollInput(1, 0, 1);
-			}
-
-			if (ctx.getState("up").isPressed())
-			{
-				this.updateRollInput(0, 1, 2);
-			}
-
-			if (ctx.getState("down").isPressed())
-			{
-				this.updateRollInput(0, -1, 3);
-			}
 		}
 	}
 
@@ -175,16 +212,19 @@ public class EntityPlayer extends EntityHurtable
 				componentMotion.addMotion(0, -this.speed);
 			}
 
-			if (ctx.getState("mouseright").isReleased())
+			if (this.fireRight)
 			{
+				this.fireRight = false;
 				this.direction.normalize().mul(0.8F);
 				Transform3 transform = this.transform.derive3();
 				transform.position.add(this.direction.x(), this.direction.y(), 0);
 
 				this.world.spawnEntity(this.world.getRandom().nextBoolean() ? new EntitySlash(this.world, transform, this) : new EntityThrust(this.world, transform, this));
+
+				this.fireRight = false;
 			}
 
-			if (ctx.getState("mouseleft").isReleased())
+			if (this.fireLeft)
 			{
 				float dist = this.direction.length();
 				if (dist < 1F)
@@ -200,11 +240,14 @@ public class EntityPlayer extends EntityHurtable
 
 					this.world.spawnEntity(new EntityGrenade(this.world, this.world.createTransform(this.transform), this.direction.x(), this.direction.y(), zSpeed, Explosions.getRandomExplosion(this.world.getRandom())));
 				}
+
+				this.fireLeft = false;
 			}
 
-			if (ctx.getState("action").isReleased())
+			if (this.action)
 			{
 				System.out.println("ACTION!");
+				this.action = false;
 			}
 		}
 	}

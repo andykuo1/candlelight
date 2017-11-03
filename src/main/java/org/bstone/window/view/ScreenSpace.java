@@ -1,7 +1,7 @@
 package org.bstone.window.view;
 
 import org.bstone.camera.Camera;
-import org.bstone.util.direction.Direction;
+import org.bstone.util.Direction;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector2f;

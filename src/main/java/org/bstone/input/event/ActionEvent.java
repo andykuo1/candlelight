@@ -18,13 +18,49 @@ public class ActionEvent extends AbstractInputEvent
 	@Override
 	public void poll()
 	{
-		super.poll();
+		int prevprev = this.prev;
 		this.prev = this.next;
+
 		Integer i = this.getAdapter().poll();
 		if (i != null)
 		{
 			this.next = i;
 		}
+
+		if (prevprev != this.prev || this.prev != this.next)
+		{
+			super.poll();
+		}
+	}
+
+	public boolean isPressedAndConsume()
+	{
+		if (this.isPressed())
+		{
+			this.consume();
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isReleasedAndConsume()
+	{
+		if (this.isReleased())
+		{
+			this.consume();
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isPressed()
+	{
+		return this.isDirty() && this.prev <= 0 && this.next > 0;
+	}
+
+	public boolean isReleased()
+	{
+		return this.isDirty() && this.prev > 0 && this.next <= 0;
 	}
 
 	public int getActionAndConsume()
@@ -47,6 +83,11 @@ public class ActionEvent extends AbstractInputEvent
 	public int eventPrevious()
 	{
 		return this.prev;
+	}
+
+	public boolean eventActionChanged()
+	{
+		return this.next != this.prev;
 	}
 
 	@SuppressWarnings("unchecked")

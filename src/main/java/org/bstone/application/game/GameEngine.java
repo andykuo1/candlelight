@@ -15,7 +15,7 @@ import org.bstone.resource.TextureLoader;
 import org.bstone.tick.TickEngine;
 import org.bstone.window.Window;
 import org.lwjgl.opengl.GL20;
-import org.zilar.resource.ResourceLocation;
+import org.qsilver.ResourceLocation;
 
 /**
  * Created by Andy on 10/17/17.

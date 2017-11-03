@@ -3,7 +3,7 @@ package net.jimboi.canary.stage_a.owle;
 import net.jimboi.boron.base_ab.asset.Asset;
 
 import org.bstone.input.TextHandler;
-import org.bstone.input.event.StateEvent;
+import org.bstone.input.event.ActionEvent;
 import org.bstone.transform.Transform;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -42,7 +42,7 @@ public class ConsoleBase
 
 		Console.getEngine().getInputEngine().getDefaultContext()
 				.registerEvent("newline",
-						Console.getEngine().getInputEngine().getKeyboard().getButton(GLFW.GLFW_KEY_ENTER)::getState);
+						Console.getEngine().getInputEngine().getKeyboard().getButton(GLFW.GLFW_KEY_ENTER)::getAction);
 		this.textHandler = Console.getEngine().getInputEngine().getText();
 
 		this.initialize();
@@ -73,7 +73,7 @@ public class ConsoleBase
 		final StringBuffer sb = this.textHandler.getBuffer();
 
 		((ViewComponentText) this.components.get(2)).setText(": " + sb);
-		StateEvent newline = Console.getEngine().getInputEngine().getDefaultContext().getState("newline");
+		ActionEvent newline = Console.getEngine().getInputEngine().getDefaultContext().getAction("newline");
 		if (newline.isPressed() && sb.length() > 0)
 		{
 			newline.consume();

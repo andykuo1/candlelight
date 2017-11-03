@@ -25,12 +25,12 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
-import org.qsilver.resource.MeshLoader;
+import org.qsilver.ResourceLocation;
 import org.qsilver.util.iterator.CastIterator;
 import org.qsilver.util.iterator.FilterIterator;
 import org.zilar.base.Assets;
 import org.zilar.meshbuilder.MeshBuilder;
-import org.zilar.resource.ResourceLocation;
+import org.zilar.resource.MeshLoader;
 
 import java.util.ArrayList;
 import java.util.Collection;

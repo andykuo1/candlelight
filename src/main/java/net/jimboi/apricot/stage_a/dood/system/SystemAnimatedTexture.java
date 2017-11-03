@@ -1,13 +1,12 @@
 package net.jimboi.apricot.stage_a.dood.system;
 
+import net.jimboi.apricot.base.scene.Scene;
 import net.jimboi.apricot.stage_a.dood.Resources;
 import net.jimboi.apricot.stage_a.dood.component.ComponentSpriteSheet;
 import net.jimboi.apricot.stage_a.dood.entity.Entity;
 import net.jimboi.apricot.stage_a.dood.entity.EntityManager;
 import net.jimboi.apricot.stage_a.mod.ModMaterial;
 import net.jimboi.apricot.stage_a.mod.renderer.OldRenderService;
-
-import org.qsilver.scene.Scene;
 
 import java.util.Collection;
 

@@ -15,11 +15,11 @@ import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
+import org.qsilver.ResourceLocation;
 import org.zilar.render.material.Material;
 import org.zilar.render.material.PropertyColor;
 import org.zilar.render.material.PropertyTexture;
 import org.zilar.render.renderer.ProgramRenderer;
-import org.zilar.resource.ResourceLocation;
 import org.zilar.sprite.Sprite;
 
 /**

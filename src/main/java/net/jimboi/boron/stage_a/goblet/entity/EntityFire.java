@@ -6,7 +6,7 @@ import net.jimboi.boron.stage_a.goblet.GobletWorld;
 import net.jimboi.boron.stage_a.goblet.tick.TickCounter;
 
 import org.bstone.transform.Transform3;
-import org.qsilver.util.ColorUtil;
+import org.bstone.util.ColorUtil;
 import org.zilar.render.material.PropertyColor;
 
 /**

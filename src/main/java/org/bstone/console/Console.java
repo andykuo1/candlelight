@@ -1,6 +1,6 @@
 package org.bstone.console;
 
-import org.zilar.resource.ResourceLocation;
+import org.qsilver.ResourceLocation;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

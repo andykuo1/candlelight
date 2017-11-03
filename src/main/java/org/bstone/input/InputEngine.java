@@ -2,7 +2,7 @@ package org.bstone.input;
 
 import org.bstone.application.Application;
 import org.bstone.application.Engine;
-import org.bstone.util.Pair;
+import org.bstone.util.pair.Pair;
 import org.bstone.window.Window;
 
 import java.util.Comparator;

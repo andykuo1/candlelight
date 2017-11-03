@@ -5,7 +5,7 @@ package org.bstone.input;
  */
 public interface InputListener
 {
-	void onInputStart(InputEngine input, InputContext context);
-	void onInputStop(InputEngine input, InputContext context);
+	default void onInputStart(InputEngine input, InputContext context) {}
+	default void onInputStop(InputEngine input, InputContext context) {}
 	void onInputUpdate(InputContext context);
 }

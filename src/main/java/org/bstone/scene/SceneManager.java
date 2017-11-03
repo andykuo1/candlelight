@@ -2,7 +2,7 @@ package org.bstone.scene;
 
 import org.bstone.render.RenderService;
 import org.bstone.service.ServiceManager;
-import org.bstone.util.Pair;
+import org.bstone.util.pair.Pair;
 
 import java.util.HashMap;
 import java.util.Map;

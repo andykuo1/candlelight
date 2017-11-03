@@ -1,6 +1,6 @@
 package org.zilar.entity;
 
-import org.qsilver.scene.Scene;
+import net.jimboi.apricot.base.scene.Scene;
 
 /**
  * Created by Andy on 5/22/17.

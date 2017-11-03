@@ -6,14 +6,16 @@ import net.jimboi.canary.stage_a.cuplet.scene_main.MainScene;
 import org.bstone.application.Application;
 import org.bstone.application.game.Game;
 import org.bstone.application.game.GameEngine;
+import org.bstone.input.InputContext;
 import org.bstone.input.InputEngine;
+import org.bstone.input.InputListener;
 import org.bstone.scene.SceneManager;
 import org.lwjgl.glfw.GLFW;
 
 /**
  * Created by Andy on 10/29/17.
  */
-public class Cuplet implements Game
+public class Cuplet implements Game, InputListener
 {
 	private static Cuplet instance;
 	private static GameEngine framework;
@@ -52,20 +54,25 @@ public class Cuplet implements Game
 		this.sceneManager.registerScene("init", MainScene.class, MainRenderer.class);
 
 		final InputEngine input = this.getFramework().getInputEngine();
-		input.getDefaultContext().registerEvent("_debug", input.getKeyboard().getButton(GLFW.GLFW_KEY_P)::getState);
+		input.getDefaultContext().registerEvent("_debug", input.getKeyboard().getButton(GLFW.GLFW_KEY_P)::getAction);
+		input.getDefaultContext().addListener(0, this);
 
 		this.sceneManager.setNextScene("init");
 	}
 
 	@Override
-	public void onFixedUpdate()
+	public void onInputUpdate(InputContext context)
 	{
 		final InputEngine input = this.getFramework().getInputEngine();
-		if (input.getDefaultContext().getState("_debug").isPressedAndConsume())
+		if (input.getDefaultContext().getAction("_debug").isPressedAndConsume())
 		{
 			DEBUG = !DEBUG;
 		}
+	}
 
+	@Override
+	public void onFixedUpdate()
+	{
 		this.sceneManager.update();
 	}
 
@@ -73,6 +80,8 @@ public class Cuplet implements Game
 	public void onLastUpdate()
 	{
 		this.sceneManager.destroy();
+
+		Cuplet.getCuplet().getFramework().getInputEngine().getDefaultContext().removeListener(this);
 	}
 
 	public final SceneManager getSceneManager()

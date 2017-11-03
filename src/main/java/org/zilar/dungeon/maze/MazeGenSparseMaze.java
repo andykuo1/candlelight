@@ -1,6 +1,6 @@
 package org.zilar.dungeon.maze;
 
-import org.bstone.util.direction.Direction;
+import org.bstone.util.Direction;
 import org.joml.Vector2i;
 import org.zilar.dungeon.DungeonData;
 

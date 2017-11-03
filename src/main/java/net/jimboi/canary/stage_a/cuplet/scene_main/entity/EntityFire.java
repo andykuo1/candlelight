@@ -8,8 +8,8 @@ import net.jimboi.canary.stage_a.cuplet.scene_main.tick.TickCounter;
 
 import org.bstone.material.Material;
 import org.bstone.transform.Transform3;
+import org.bstone.util.ColorUtil;
 import org.joml.Vector4f;
-import org.qsilver.util.ColorUtil;
 
 /**
  * Created by Andy on 8/10/17.

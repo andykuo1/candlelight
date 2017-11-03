@@ -18,12 +18,18 @@ public class RangeEvent extends AbstractInputEvent
 	@Override
 	public void poll()
 	{
-		super.poll();
+		float prevprev = this.prev;
 		this.prev = this.next;
+
 		Float f = this.getAdapter().poll();
 		if (f != null)
 		{
 			this.next = f;
+		}
+
+		if (prevprev != this.prev || this.prev != this.next)
+		{
+			super.poll();
 		}
 	}
 

@@ -25,10 +25,10 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.qsilver.resource.ProgramLoader;
-import org.qsilver.resource.ShaderLoader;
-import org.qsilver.resource.TextureLoader;
-import org.zilar.resource.ResourceLocation;
+import org.qsilver.ResourceLocation;
+import org.zilar.resource.ProgramLoader;
+import org.zilar.resource.ShaderLoader;
+import org.zilar.resource.TextureLoader;
 import org.zilar.sprite.Sprite;
 
 import java.util.Arrays;

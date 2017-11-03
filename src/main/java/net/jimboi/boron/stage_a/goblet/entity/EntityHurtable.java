@@ -10,7 +10,7 @@ import net.jimboi.boron.stage_a.goblet.tick.TickCounter;
 import org.bstone.entity.EntityManager;
 import org.bstone.living.LivingManager;
 import org.bstone.transform.Transform3;
-import org.qsilver.util.ColorUtil;
+import org.bstone.util.ColorUtil;
 import org.zilar.render.material.Material;
 import org.zilar.render.material.PropertyColor;
 

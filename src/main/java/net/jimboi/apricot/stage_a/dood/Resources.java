@@ -15,7 +15,7 @@ import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import org.qsilver.loader.OBJLoader;
+import org.zilar.loader.OBJLoader;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;
 

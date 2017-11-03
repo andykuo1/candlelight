@@ -1,6 +1,6 @@
 package net.jimboi.test.sleuth.data;
 
-import org.bstone.util.direction.Direction;
+import org.bstone.util.Direction;
 
 import static net.jimboi.test.sleuth.data.BodyPart.ABDOMEN;
 import static net.jimboi.test.sleuth.data.BodyPart.CHEST;

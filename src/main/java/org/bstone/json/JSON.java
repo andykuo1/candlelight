@@ -1,6 +1,6 @@
 package org.bstone.json;
 
-import org.bstone.util.dataformat.json.JSONFormatParser;
+import org.bstone.util.parser.json.JSONFormatParser;
 
 import java.io.IOException;
 import java.io.Reader;

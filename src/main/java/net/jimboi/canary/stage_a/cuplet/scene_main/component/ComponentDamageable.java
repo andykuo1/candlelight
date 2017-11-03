@@ -4,7 +4,7 @@ import net.jimboi.canary.stage_a.cuplet.scene_main.entity.IDamageSource;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tick.TickCounter;
 
 import org.bstone.entity.Component;
-import org.bstone.util.Procedure;
+import org.bstone.util.function.Procedure;
 
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;

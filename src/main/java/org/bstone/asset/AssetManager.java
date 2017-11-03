@@ -3,8 +3,8 @@ package org.bstone.asset;
 import org.bstone.json.JSONObject;
 import org.bstone.json.JSONString;
 import org.bstone.resource.ResourceLoader;
-import org.bstone.util.dataformat.json.JSONFormatParser;
-import org.zilar.resource.ResourceLocation;
+import org.bstone.util.parser.json.JSONFormatParser;
+import org.qsilver.ResourceLocation;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

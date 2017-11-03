@@ -1,5 +1,6 @@
 package net.jimboi.apricot.stage_a.dood.system;
 
+import net.jimboi.apricot.base.scene.Scene;
 import net.jimboi.apricot.stage_a.dood.component.ComponentLocalDirection;
 import net.jimboi.apricot.stage_a.dood.component.ComponentMotion;
 import net.jimboi.apricot.stage_a.dood.component.ComponentTransform;
@@ -8,7 +9,6 @@ import net.jimboi.apricot.stage_a.dood.entity.EntityManager;
 
 import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
-import org.qsilver.scene.Scene;
 import org.qsilver.util.MathUtil;
 
 import java.util.Collection;

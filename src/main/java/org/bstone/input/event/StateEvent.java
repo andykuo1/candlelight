@@ -18,41 +18,39 @@ public class StateEvent extends AbstractInputEvent
 	@Override
 	public void poll()
 	{
-		super.poll();
+		boolean prevprev = this.prev;
 		this.prev = this.next;
+
 		Boolean b = this.getAdapter().poll();
 		if (b != null)
 		{
 			this.next = b;
 		}
+
+		if (prevprev != this.prev || this.prev != this.next)
+		{
+			super.poll();
+		}
 	}
 
 	public boolean isUpAndConsume()
 	{
-		boolean b = this.isUp();
-		if (this.isDirty()) this.consume();
-		return b;
+		if (this.isUp())
+		{
+			this.consume();
+			return true;
+		}
+		return false;
 	}
 
 	public boolean isDownAndConsume()
 	{
-		boolean b = this.isDown();
-		if (this.isDirty()) this.consume();
-		return b;
-	}
-
-	public boolean isPressedAndConsume()
-	{
-		boolean b = this.isPressed();
-		if (this.isDirty()) this.consume();
-		return b;
-	}
-
-	public boolean isReleasedAndConsume()
-	{
-		boolean b = this.isReleased();
-		if (this.isDirty()) this.consume();
-		return b;
+		if (this.isDown())
+		{
+			this.consume();
+			return true;
+		}
+		return false;
 	}
 
 	public boolean isUp()
@@ -63,16 +61,6 @@ public class StateEvent extends AbstractInputEvent
 	public boolean isDown()
 	{
 		return this.isDirty() && this.next;
-	}
-
-	public boolean isPressed()
-	{
-		return this.isDirty() && this.eventStateChanged() && this.next;
-	}
-
-	public boolean isReleased()
-	{
-		return this.isDirty() && this.eventStateChanged() && !this.next;
 	}
 
 	public boolean eventState()

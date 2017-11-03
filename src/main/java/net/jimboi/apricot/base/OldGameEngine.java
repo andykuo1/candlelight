@@ -1,6 +1,8 @@
 package net.jimboi.apricot.base;
 
 import net.jimboi.apricot.base.input.OldInputManager;
+import net.jimboi.apricot.base.scene.Scene;
+import net.jimboi.apricot.base.scene.SceneManager;
 import net.jimboi.boron.base_ab.asset.AssetManager;
 import net.jimboi.boron.base_ab.render.OldRenderEngine;
 import net.jimboi.boron.base_ab.render.OldRenderHandler;
@@ -10,8 +12,6 @@ import net.jimboi.boron.base_ab.window.OldWindow;
 import net.jimboi.boron.base_ab.window.input.InputEngine;
 
 import org.qsilver.poma.Poma;
-import org.qsilver.scene.Scene;
-import org.qsilver.scene.SceneManager;
 
 import java.util.Arrays;
 

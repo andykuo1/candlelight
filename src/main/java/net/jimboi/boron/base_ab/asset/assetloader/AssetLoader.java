@@ -13,7 +13,7 @@ import org.bstone.json.JSONObject;
 import org.bstone.json.JSONString;
 import org.bstone.json.JSONValue;
 import org.bstone.util.SemanticVersion;
-import org.zilar.resource.ResourceLocation;
+import org.qsilver.ResourceLocation;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

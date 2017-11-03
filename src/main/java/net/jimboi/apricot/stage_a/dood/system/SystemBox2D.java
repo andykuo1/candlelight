@@ -1,5 +1,6 @@
 package net.jimboi.apricot.stage_a.dood.system;
 
+import net.jimboi.apricot.base.scene.Scene;
 import net.jimboi.apricot.stage_a.dood.Box2DHandler;
 import net.jimboi.apricot.stage_a.dood.component.ComponentBox2DBody;
 import net.jimboi.apricot.stage_a.dood.component.ComponentTransform;
@@ -12,7 +13,6 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.World;
 import org.joml.Vector3fc;
-import org.qsilver.scene.Scene;
 
 import java.util.Collection;
 import java.util.HashSet;

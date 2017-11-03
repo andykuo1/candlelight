@@ -9,7 +9,7 @@ import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentTransform;
 
 import org.bstone.entity.EntityManager;
 import org.bstone.transform.Transform3;
-import org.qsilver.util.ColorUtil;
+import org.bstone.util.ColorUtil;
 
 /**
  * Created by Andy on 8/11/17.

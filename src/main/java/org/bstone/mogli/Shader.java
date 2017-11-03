@@ -3,8 +3,8 @@ package org.bstone.mogli;
 import org.bstone.RefCountSet;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
-import org.qsilver.loader.StringLoader;
-import org.zilar.resource.ResourceLocation;
+import org.qsilver.ResourceLocation;
+import org.zilar.loader.StringLoader;
 
 import java.util.Set;
 

@@ -3,7 +3,7 @@ package org.bstone.resource;
 import org.bstone.asset.AssetManager;
 import org.bstone.json.JSONObject;
 import org.bstone.json.JSONString;
-import org.bstone.util.dataformat.json.JSONFormatParser;
+import org.bstone.util.parser.json.JSONFormatParser;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;

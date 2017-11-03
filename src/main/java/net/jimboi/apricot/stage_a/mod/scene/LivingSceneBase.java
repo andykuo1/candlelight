@@ -2,9 +2,8 @@ package net.jimboi.apricot.stage_a.mod.scene;
 
 import net.jimboi.apricot.base.living.OldLiving;
 import net.jimboi.apricot.base.living.OldLivingManager;
+import net.jimboi.apricot.base.scene.Scene;
 import net.jimboi.apricot.stage_a.blob.livings.LivingBase;
-
-import org.qsilver.scene.Scene;
 
 import java.util.HashSet;
 import java.util.Iterator;

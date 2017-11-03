@@ -1,6 +1,6 @@
 package com.mojang.ld22.sound;
 
-import org.zilar.resource.ResourceLocation;
+import org.qsilver.ResourceLocation;
 
 import java.applet.AudioClip;
 

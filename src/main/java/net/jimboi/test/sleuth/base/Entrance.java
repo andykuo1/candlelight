@@ -2,7 +2,7 @@ package net.jimboi.test.sleuth.base;
 
 import net.jimboi.test.sleuth.cluedo.Room;
 
-import org.bstone.util.UnorderedPair;
+import org.bstone.util.pair.UnorderedPair;
 
 /**
  * Created by Andy on 10/7/17.

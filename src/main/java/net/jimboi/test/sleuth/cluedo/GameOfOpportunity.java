@@ -6,7 +6,7 @@ import net.jimboi.test.sleuth.data.Time;
 
 import org.bstone.console.Console;
 import org.bstone.console.ConsoleUtil;
-import org.bstone.util.Pair;
+import org.bstone.util.pair.Pair;
 
 import java.util.HashSet;
 import java.util.Random;
