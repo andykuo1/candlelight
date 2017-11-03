@@ -1,24 +1,22 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main.tile;
 
-import net.jimboi.boron.base_ab.asset.Asset;
+import net.jimboi.canary.stage_a.cuplet.Cuplet;
+import net.jimboi.canary.stage_a.cuplet.model.Model;
+import net.jimboi.canary.stage_a.cuplet.renderer.MaterialProperty;
 
+import org.bstone.asset.Asset;
+import org.bstone.asset.AssetManager;
+import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
-import org.bstone.render.material.Material;
-import org.bstone.render.material.PropertyColor;
-import org.bstone.render.material.PropertyTexture;
-import org.bstone.render.model.Model;
+import org.bstone.sprite.textureatlas.SubTexture;
+import org.bstone.sprite.textureatlas.TextureAtlas;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.joml.Vector3f;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.MeshData;
 import org.zilar.meshbuilder.ModelUtil;
-import org.zilar.sprite.Sprite;
-import org.zilar.sprite.TextureAtlas;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by Andy on 9/1/17.
@@ -27,7 +25,6 @@ public class TileMapModelManager
 {
 	private Asset<Texture> texture;
 	private Asset<TextureAtlas> textureAtlas;
-	private Set<Mesh> meshes = new HashSet<>();
 	private Material material;
 
 	public TileMapModelManager(Asset<Texture> texture, Asset<TextureAtlas> textureAtlas)
@@ -36,28 +33,21 @@ public class TileMapModelManager
 		this.textureAtlas = textureAtlas;
 
 		this.material = new Material();
-		this.material.addProperty(PropertyTexture.PROPERTY);
-		this.material.addProperty(PropertyColor.PROPERTY);
-		PropertyTexture.PROPERTY.bind(this.material)
-				.setTexture(this.texture)
-				.unbind();
+		this.material.setProperty(MaterialProperty.TEXTURE, this.texture);
 	}
 
 	public void destroy()
 	{
-		for (Mesh mesh : this.meshes)
-		{
-			mesh.close();
-		}
-
-		this.meshes.clear();
 	}
 
 	public Model createStaticModel(TileMap tilemap)
 	{
+		AssetManager assets = Cuplet.getCuplet().getFramework().getAssetManager();
 		Mesh mesh = ModelUtil.createStaticMesh(createMesh3DFromMap(tilemap, this.textureAtlas));
-		this.meshes.add(mesh);
-		Model model = new Model(Asset.wrap(mesh), this.material);
+		String name = mesh.toString();
+		assets.cacheResource("mesh", name, mesh);
+
+		Model model = new Model(assets.getAsset("mesh", name), this.material);
 		model.transformation().translation(tilemap.getOffsetX(), tilemap.getOffsetY(), 0);
 		return model;
 	}
@@ -69,7 +59,7 @@ public class TileMapModelManager
 		Vector2f texTopLeft = new Vector2f();
 		Vector2f texBotRight = new Vector2f(1, 1);
 
-		Sprite sprite;
+		SubTexture subtexture;
 		Vector2f vec = new Vector2f();
 
 		for (int x = 0; x < tilemap.getWidth(); ++x)
@@ -97,9 +87,9 @@ public class TileMapModelManager
 					if (isSolid(map, x, y - 1)) tile += 8;
 					*/
 				}
-				sprite = textureAtlas.getSource().getSprite(tile);
-				texTopLeft.set(sprite.getU(), sprite.getV());
-				texBotRight.set(texTopLeft).add(sprite.getWidth(), sprite.getHeight());
+				subtexture = textureAtlas.get().getSubTexture(tile);
+				texTopLeft.set(subtexture.getU(), subtexture.getV());
+				texBotRight.set(texTopLeft).add(subtexture.getWidth(), subtexture.getHeight());
 
 				mb.addPlane(wallPos, wallPos.add(1, 1, vec), 0, texTopLeft, texBotRight);
 			}
@@ -115,9 +105,9 @@ public class TileMapModelManager
 		Vector2f texTopLeft = new Vector2f();
 		Vector2f texBotRight = new Vector2f(1, 1);
 
-		Sprite sprite = textureAtlas.getSource().getSprite(0);
-		Vector2f texSideTopLeft = new Vector2f(sprite.getU(), sprite.getV());
-		Vector2f texSideBotRight = new Vector2f(texSideTopLeft).add(sprite.getWidth(), sprite.getHeight());
+		SubTexture subtexture = textureAtlas.get().getSubTexture(0);
+		Vector2f texSideTopLeft = new Vector2f(subtexture.getU(), subtexture.getV());
+		Vector2f texSideBotRight = new Vector2f(texSideTopLeft).add(subtexture.getWidth(), subtexture.getHeight());
 
 		Vector3f pos = new Vector3f();
 		Vector3f u = new Vector3f();
@@ -144,9 +134,9 @@ public class TileMapModelManager
 					if (!right) tile += 4;
 					if (!down) tile += 8;
 
-					sprite = textureAtlas.getSource().getSprite(tile);
-					texTopLeft.set(sprite.getU(), sprite.getV());
-					texBotRight.set(texTopLeft).add(sprite.getWidth(), sprite.getHeight());
+					subtexture = textureAtlas.get().getSubTexture(tile);
+					texTopLeft.set(subtexture.getU(), subtexture.getV());
+					texBotRight.set(texTopLeft).add(subtexture.getWidth(), subtexture.getHeight());
 
 					mb.addBox(pos,
 							pos.add(1, 1, 0, v),
@@ -165,9 +155,9 @@ public class TileMapModelManager
 					if (up) tile += 2;
 					if (right) tile += 4;
 					if (down) tile += 8;
-					sprite = textureAtlas.getSource().getSprite(tile + 9 * 16);
-					texTopLeft.set(sprite.getU(), sprite.getV());
-					texBotRight.set(texTopLeft).add(sprite.getWidth(), sprite.getHeight());
+					subtexture = textureAtlas.get().getSubTexture(tile + 9 * 16);
+					texTopLeft.set(subtexture.getU(), subtexture.getV());
+					texBotRight.set(texTopLeft).add(subtexture.getWidth(), subtexture.getHeight());
 
 					mb.addTexturedBox(pos, pos.add(1, 1, 2, v),
 							texTopLeft, texBotRight,

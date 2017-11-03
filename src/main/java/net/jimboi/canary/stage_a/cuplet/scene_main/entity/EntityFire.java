@@ -1,12 +1,14 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main.entity;
 
-import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
+import net.jimboi.canary.stage_a.cuplet.collisionbox.collider.BoxCollider;
+import net.jimboi.canary.stage_a.cuplet.renderer.MaterialProperty;
 import net.jimboi.canary.stage_a.cuplet.scene_main.GobletEntity;
 import net.jimboi.canary.stage_a.cuplet.scene_main.GobletWorld;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tick.TickCounter;
 
-import org.bstone.render.material.PropertyColor;
+import org.bstone.material.Material;
 import org.bstone.transform.Transform3;
+import org.joml.Vector4f;
 import org.qsilver.util.ColorUtil;
 
 /**
@@ -14,8 +16,8 @@ import org.qsilver.util.ColorUtil;
  */
 public class EntityFire extends GobletEntity implements IDamageSource
 {
-	private static final int EARLY_COLOR = 0xFFFF00;
-	private static final int LATE_COLOR = 0xFF0000;
+	private static final int EARLY_COLOR = 0xFFFFFF00;
+	private static final int LATE_COLOR = 0xFFFF0000;
 
 	private float strength;
 	private int delay = 60;
@@ -68,11 +70,12 @@ public class EntityFire extends GobletEntity implements IDamageSource
 				}
 			}
 
-			PropertyColor.PROPERTY.bind(this.getRenderable().getRenderModel().getMaterial())
-					.setColor(ColorUtil.getColorMix(
-							PropertyColor.PROPERTY.getColor(this.getRenderable().getRenderModel().getMaterial()),
-							LATE_COLOR, 0.5F))
-					.unbind();
+			Material material = this.getRenderable().getRenderModel().material();
+			material.setProperty(MaterialProperty.COLOR,
+					ColorUtil.getNormalizedRGBA(
+							ColorUtil.getColorMix(
+									ColorUtil.getColor(material.getProperty(MaterialProperty.COLOR)),
+									LATE_COLOR, 0.5F), new Vector4f()));
 		}
 		else if (ticks > 0)
 		{

@@ -130,7 +130,7 @@ public final class Texture implements AutoCloseable
 	}
 
 	@Override
-	public void close()
+	public void close() throws Exception
 	{
 		GL11.glDeleteTextures(this.handle);
 

@@ -6,9 +6,9 @@ import net.jimboi.canary.stage_a.lantern.scene_main.entity.EntityCrate;
 import net.jimboi.canary.stage_a.lantern.scene_main.entity.EntityPlayer;
 
 import org.bstone.camera.PerspectiveCamera;
+import org.bstone.input.InputContext;
 import org.bstone.input.InputEngine;
-import org.bstone.input.context.InputContext;
-import org.bstone.input.context.adapter.InputAdapter;
+import org.bstone.input.adapter.InputAdapter;
 import org.bstone.livingentity.LivingEntityManager;
 import org.bstone.scene.Scene;
 import org.bstone.scene.SceneManager;
@@ -43,6 +43,7 @@ public class LanternSceneMain extends Scene
 	@Override
 	protected void onSceneCreate(SceneManager sceneManager)
 	{
+		System.out.println("CREATED!");
 		InputEngine inputEngine = Lantern.getLantern().getFramework().getInputEngine();
 		this.input = Lantern.getLantern().getFramework().getInputEngine().getDefaultContext();
 
@@ -105,6 +106,7 @@ public class LanternSceneMain extends Scene
 	@Override
 	protected void onSceneDestroy()
 	{
+		System.out.println("DESTROYED!");
 		this.input.removeListener(this.controller);
 		this.livings.clear();
 

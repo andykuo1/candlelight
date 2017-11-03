@@ -1,7 +1,7 @@
 package org.bstone.input;
 
-import org.bstone.input.context.raw.AxisInput;
-import org.bstone.input.context.raw.ButtonInput;
+import org.bstone.input.direct.AxisInput;
+import org.bstone.input.direct.ButtonInput;
 import org.bstone.window.Window;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;

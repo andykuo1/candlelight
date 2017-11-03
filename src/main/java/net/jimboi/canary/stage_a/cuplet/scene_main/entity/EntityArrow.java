@@ -1,7 +1,7 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main.entity;
 
-import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
-import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionResponse;
+import net.jimboi.canary.stage_a.cuplet.collisionbox.collider.BoxCollider;
+import net.jimboi.canary.stage_a.cuplet.collisionbox.response.CollisionResponse;
 import net.jimboi.canary.stage_a.cuplet.scene_main.GobletWorld;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentMotion;
 import net.jimboi.canary.stage_a.cuplet.scene_main.entity.base.EntitySolid;

@@ -1,23 +1,39 @@
 package org.bstone.scene;
 
+import org.bstone.render.RenderService;
+import org.bstone.service.ServiceManager;
+import org.bstone.util.Pair;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 /**
  * Created by Andy on 10/20/17.
  */
 public class SceneManager
 {
-	private final Map<String, Class<? extends Scene>> scenes = new HashMap<>();
+	private final Map<String, Pair<Class<? extends Scene>, Class<? extends SceneRenderer>>> scenes = new HashMap<>();
 
 	private Scene scene;
+	private SceneRenderer renderer;
+	private String renderServiceID;
 
-	private boolean loaded = false;
+	private volatile boolean performingSetup;
+	private volatile boolean sceneDestroyed;
+	private volatile boolean sceneLoaded;
+
 	private String nextScene;
-	private Consumer<Scene> nextCallback;
+	private BiConsumer<Scene, SceneRenderer> nextCallback;
 
-	public void registerScene(String id, Class<? extends Scene> scene)
+	private final ServiceManager<RenderService> renderServices;
+
+	public SceneManager(ServiceManager<RenderService> renderServices)
+	{
+		this.renderServices = renderServices;
+	}
+
+	public void registerScene(String id, Class<? extends Scene> scene, Class<? extends SceneRenderer> renderer)
 	{
 		if (this.scenes.containsKey(id))
 			throw new IllegalArgumentException("scene with id '" + id + "' already exists!");
@@ -31,7 +47,16 @@ public class SceneManager
 			throw new IllegalArgumentException("not a valid scene class - must have a default constructor");
 		}
 
-		this.scenes.put(id, scene);
+		try
+		{
+			renderer.getConstructor();
+		}
+		catch (NoSuchMethodException e)
+		{
+			throw new IllegalArgumentException("not a valid scene renderer class - must have a default constructor");
+		}
+
+		this.scenes.put(id, new Pair<>(scene, renderer));
 	}
 
 	public void unregisterScene(String id)
@@ -49,34 +74,71 @@ public class SceneManager
 		//If queued to start a new scene...
 		if (this.nextScene != null)
 		{
-			//Destroy previous scene
-			if (this.scene != null)
+			if (!this.performingSetup)
 			{
-				this.scene.onSceneDestroy();
-				this.scene = null;
+				this.performingSetup = true;
+
+				this.sceneDestroyed = false;
+				this.sceneLoaded = false;
 			}
 
-			//Create next scene
-			this.scene = this.createScene(this.nextScene);
-			if (this.nextCallback != null)
+			//Destroy the previous scene
+			if (!this.sceneDestroyed)
 			{
-				this.nextCallback.accept(this.scene);
-			}
-			this.scene.onSceneCreate(this);
+				if (this.scene != null)
+				{
+					this.scene.onSceneDestroy();
+					this.scene = null;
+				}
 
-			this.nextScene = null;
-			this.nextCallback = null;
-			this.loaded = false;
+				this.sceneDestroyed = true;
+
+				if (this.renderer != null)
+				{
+					this.renderServices.stopService(this.renderServiceID,
+							renderService ->
+							{
+								this.renderer = null;
+								this.renderServiceID = null;
+							});
+				}
+
+				this.renderServices.startService(this.nextScene, this.scenes.get(this.nextScene).getSecond(),
+						renderService -> {
+							this.renderer = (SceneRenderer) renderService;
+							this.renderServiceID = this.nextScene;
+							this.sceneLoaded = true;
+						});
+				this.renderServices.pauseService(this.nextScene);
+			}
+			//Create the next scene
+			else if (this.sceneLoaded)
+			{
+				if (this.scene != null)
+				{
+					throw new IllegalStateException("another scene is still active");
+				}
+
+				this.scene = this.createScene(this.nextScene);
+				this.scene.onSceneCreate(this);
+
+				//Start the scene
+				if (this.nextCallback != null)
+				{
+					this.nextCallback.accept(this.scene, this.renderer);
+				}
+				this.renderServices.resumeService(this.nextScene);
+
+				this.nextScene = null;
+				this.nextCallback = null;
+
+				this.performingSetup = false;
+			}
 		}
-		else if (this.loaded && this.scene != null)
+		else if (this.scene != null)
 		{
 			this.scene.onSceneUpdate();
 		}
-	}
-
-	public void setSceneLoaded()
-	{
-		this.loaded = true;
 	}
 
 	public void destroy()
@@ -87,11 +149,18 @@ public class SceneManager
 			this.scene.onSceneDestroy();
 			this.scene = null;
 		}
+		if (this.renderer != null)
+		{
+			this.renderServices.stopService(this.renderServiceID);
+			this.renderer = null;
+			this.renderServiceID = null;
+		}
 	}
 
 	private Scene createScene(String id)
 	{
-		final Class<? extends Scene> sceneClass = this.scenes.get(id);
+		final Pair<Class<? extends Scene>, Class<? extends SceneRenderer>> pair = this.scenes.get(id);
+		final Class<? extends Scene> sceneClass = pair.getFirst();
 		if (sceneClass == null) throw new IllegalArgumentException("could not instantiate scene with id '" + id + "'");
 
 		Scene scene;
@@ -111,6 +180,11 @@ public class SceneManager
 		return this.scene;
 	}
 
+	public SceneRenderer getCurrentRenderer()
+	{
+		return this.renderer;
+	}
+
 	public void setNextScene(String id)
 	{
 		this.setNextScene(id, null);
@@ -126,7 +200,7 @@ public class SceneManager
 	 * @param id the scene id
 	 * @param callback the function called on instantiation of the next scene
 	 */
-	public void setNextScene(String id, Consumer<Scene> callback)
+	public void setNextScene(String id, BiConsumer<Scene, SceneRenderer> callback)
 	{
 		if (!this.scenes.containsKey(id)) throw new IllegalArgumentException("could not find scene with id '" + id + "' - be sure to register it first!");
 

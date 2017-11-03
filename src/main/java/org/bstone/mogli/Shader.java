@@ -50,7 +50,7 @@ public final class Shader implements AutoCloseable
 	}
 
 	@Override
-	public void close()
+	public void close() throws Exception
 	{
 		GL20.glDeleteShader(this.handle);
 		this.handle = 0;

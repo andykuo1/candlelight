@@ -1,23 +1,18 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main;
 
-import net.jimboi.apricot.base.gui.base.Gui;
-import net.jimboi.apricot.base.gui.base.GuiManager;
-import net.jimboi.boron.base_ab.asset.Asset;
-import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
-import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxRenderer;
 import net.jimboi.canary.stage_a.cuplet.Cuplet;
+import net.jimboi.canary.stage_a.cuplet.TextureAtlasBuilder;
+import net.jimboi.canary.stage_a.cuplet.basicobject.ComponentRenderable;
+import net.jimboi.canary.stage_a.cuplet.collisionbox.CollisionBoxRenderer;
+import net.jimboi.canary.stage_a.cuplet.renderer.SimpleRenderer;
 
+import org.bstone.asset.AssetManager;
 import org.bstone.camera.Camera;
 import org.bstone.camera.OrthographicCamera;
-import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
-import org.bstone.mogli.Texture;
 import org.bstone.render.RenderEngine;
-import org.bstone.render.Renderable;
-import org.bstone.render.model.TextModelManager;
-import org.bstone.render.renderer.SimpleProgramRenderer;
-import org.bstone.scene.Scene;
-import org.bstone.scene.render.RenderScene;
+import org.bstone.scene.SceneRenderer;
+import org.bstone.sprite.textureatlas.TextureAtlas;
 import org.bstone.util.direction.Direction;
 import org.bstone.window.Window;
 import org.bstone.window.view.ScreenSpace;
@@ -25,14 +20,9 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;
 import org.zilar.resource.ResourceLocation;
-import org.zilar.sprite.FontSheet;
-import org.zilar.sprite.SpriteUtil;
-import org.zilar.sprite.TextureAtlas;
-import org.zilar.sprite.TextureAtlasBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -40,39 +30,25 @@ import java.util.Set;
 /**
  * Created by Andy on 10/29/17.
  */
-public class MainRenderer extends RenderScene
+public class MainRenderer extends SceneRenderer
 {
 	private Camera camera;
 	private ScreenSpace screenSpace;
 
-	public Mesh mshQuad;
-	public Bitmap bmpFont;
-	public Texture texFont;
-	public TextureAtlas atsFont;
-
 	public FontSheet fontSheet;
 
-	public SimpleProgramRenderer simpleRenderer;
+	public SimpleRenderer simpleRenderer;
 	public CollisionBoxRenderer collisionBoxRenderer;
 
-	private TextModelManager textModelManager;
-	private GuiManager guiManager;
-
-	public Set<Renderable> renderables;
+	public Set<RenderableBase> renderables;
 	public Set<ComponentRenderable> renderComponents;
 
 	private boolean first = false;
 
-	public MainRenderer(RenderEngine renderEngine, Scene scene)
-	{
-		super(renderEngine, scene);
-	}
-
 	@Override
-	protected void onServiceStart(RenderEngine handler)
+	protected void onRenderLoad(RenderEngine renderEngine)
 	{
 		System.out.println("LOADING");
-		super.onServiceStart(handler);
 
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glCullFace(GL11.GL_BACK);
@@ -81,72 +57,74 @@ public class MainRenderer extends RenderScene
 		this.renderComponents = new HashSet<>();
 
 		final Window window = Cuplet.getCuplet().getFramework().getWindow();
-
-		//Gui
-		this.guiManager = new GuiManager(new OrthographicCamera(window.getWidth(), window.getHeight()), window.getCurrentViewPort());
+		final AssetManager assets = Cuplet.getCuplet().getFramework().getAssetManager();
 
 		//Camera
 		this.camera = new OrthographicCamera(window.getWidth(), window.getHeight());
 		this.screenSpace = new ScreenSpace(window.getCurrentViewPort(), this.camera, Direction.CENTER, Direction.NORTHEAST);
 
+		//Assets
+		assets.registerResourceLocation("bitmap.font", new ResourceLocation("base:font.png"));
+		assets.registerResourceLocation("texture.font", new ResourceLocation("cuplet:texture_font.res"));
+		assets.registerResourceLocation("texture_atlas.font", new ResourceLocation("cuplet:texture_atlas_font.res"));
+
+		assets.registerResourceLocation("program.simple", new ResourceLocation("cuplet:program_simple.res"));
+		assets.registerResourceLocation("vertex_shader.simple", new ResourceLocation("base:simple.vsh"));
+		assets.registerResourceLocation("fragment_shader.simple", new ResourceLocation("base:simple.fsh"));
+
+		assets.registerResourceLocation("program.wireframe", new ResourceLocation("cuplet:program_wireframe.res"));
+		assets.registerResourceLocation("vertex_shader.wireframe", new ResourceLocation("base:wireframe.vsh"));
+		assets.registerResourceLocation("fragment_shader.wireframe", new ResourceLocation("base:wireframe.fsh"));
+
+		//Models
+		//???
+		//Materials
+		//???
+
 		//Mesh
-		MeshBuilder mb = new MeshBuilder();
-		mb.addPlane(new Vector2f(0.0F, 0.0F), new Vector2f(1.0F, 1.0F), 0.0F, new Vector2f(0.0F, 0.0F), new Vector2f(1.0F, 1.0F));
-		this.mshQuad = ModelUtil.createStaticMesh(mb.bake(false, true));
-		mb.clear();
+		{
+			MeshBuilder mb = new MeshBuilder();
+			mb.addPlane(new Vector2f(0.0F, 0.0F), new Vector2f(1.0F, 1.0F), 0.0F, new Vector2f(0.0F, 0.0F), new Vector2f(1.0F, 1.0F));
+			Mesh mesh = ModelUtil.createStaticMesh(mb.bake(false, true));
+			mb.clear();
 
-		//Texture
-		this.bmpFont = new Bitmap(new ResourceLocation("base:font.png"));
-		this.texFont = new Texture(this.bmpFont, GL11.GL_NEAREST, GL12.GL_CLAMP_TO_EDGE);
+			assets.cacheResource("mesh", "quad", mesh);
+		}
 
-		TextureAtlasBuilder tab = new TextureAtlasBuilder(Asset.wrap(this.texFont), 256, 256);
-		tab.addTileSheet(0, 0, 16, 16, 0, 0, 16, 16);
-		this.atsFont = SpriteUtil.createTextureAtlas(tab.bake());
-		tab.clear();
+		//Texture Atlas
+		{
+			TextureAtlasBuilder tab = new TextureAtlasBuilder(assets.getAsset("texture", "font"), 256, 256);
+			tab.addTileSheet(0, 0, 16, 16, 0, 0, 16, 16);
+			TextureAtlas atlas = tab.bake();
+			tab.clear();
 
-		this.fontSheet = new FontSheet(Asset.wrap(this.atsFont), 0, (char) 0, (char) 255);
+			assets.cacheResource("texture_atlas", "font", atlas);
+		}
 
-		//Manager
-		this.textModelManager = new TextModelManager(this.fontSheet);
+		this.fontSheet = new FontSheet(assets.getAsset("texture_atlas", "font"), 0, (char) 0, (char) 255);
 
 		//Renderer
-		this.simpleRenderer = new SimpleProgramRenderer();
-		this.collisionBoxRenderer = new CollisionBoxRenderer();
+		this.simpleRenderer = new SimpleRenderer(
+				assets.getAsset("program", "simple"));
 
-		Cuplet.getCuplet().getSceneManager().setSceneLoaded();
-	}
-
-	@Override
-	protected void onServiceStop(RenderEngine handler)
-	{
-		super.onServiceStop(handler);
-
-		this.simpleRenderer.close();
-		this.collisionBoxRenderer.close();
-
-		this.textModelManager.destroy();
-
-		this.bmpFont.close();
-		this.texFont.close();
-		this.mshQuad.close();
+		this.collisionBoxRenderer = new CollisionBoxRenderer(
+				assets.getAsset("program", "wireframe"),
+				assets.getAsset("mesh", "quad"));
 	}
 
 	@Override
 	protected void onRenderUpdate(RenderEngine renderEngine, double delta)
 	{
-		super.onRenderUpdate(renderEngine, delta);
-
-		this.guiManager.update();
 
 		this.simpleRenderer.bind(this.camera.view(), this.camera.projection());
 		{
 			Matrix4f matrix = new Matrix4f();
 			Vector4f vec4 = new Vector4f();
 
-			for (Renderable renderable : this.renderables)
+			for (RenderableBase renderable : this.renderables)
 			{
-				this.simpleRenderer.draw(renderable.getRenderModel().getMesh().getSource(),
-						renderable.getRenderModel().getMaterial(),
+				this.simpleRenderer.draw(renderable.getRenderModel().getMesh(),
+						renderable.getRenderModel().material(),
 						renderable.getRenderTransformation(matrix));
 			}
 
@@ -157,13 +135,9 @@ public class MainRenderer extends RenderScene
 
 			for (ComponentRenderable renderable : this.renderComponents)
 			{
-				this.simpleRenderer.draw(renderable.getRenderModel().getMesh().getSource(),
-						renderable.getRenderModel().getMaterial(),
+				this.simpleRenderer.draw(renderable.getRenderModel().getMesh(),
+						renderable.getRenderModel().material(),
 						renderable.getRenderTransformation(matrix));
-			}
-
-			for(Gui gui : this.guiManager.elements)
-			{
 			}
 		}
 		this.simpleRenderer.unbind();
@@ -179,9 +153,10 @@ public class MainRenderer extends RenderScene
 		}
 	}
 
-	public GuiManager getGuiManager()
+	@Override
+	protected void onRenderUnload(RenderEngine renderEngine)
 	{
-		return this.guiManager;
+
 	}
 
 	public Camera getCamera()

@@ -6,7 +6,6 @@ import net.jimboi.boron.stage_a.base.collisionbox.box.GridBasedBoundingBox;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 
 import org.bstone.mogli.Mesh;
-import org.bstone.render.renderer.WireframeProgramRenderer;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -14,6 +13,7 @@ import org.joml.Vector3fc;
 import org.qsilver.util.ColorUtil;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;
+import org.zilar.render.renderer.WireframeProgramRenderer;
 
 /**
  * Created by Andy on 8/8/17.
@@ -33,7 +33,7 @@ public class CollisionBoxRenderer extends WireframeProgramRenderer
 	}
 
 	@Override
-	public void close()
+	public void close() throws Exception
 	{
 		this.quad.close();
 

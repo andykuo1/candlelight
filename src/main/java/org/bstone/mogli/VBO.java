@@ -39,7 +39,7 @@ public final class VBO implements AutoCloseable
 	}
 
 	@Override
-	public void close()
+	public void close() throws Exception
 	{
 		GL15.glDeleteBuffers(this.handle);
 		this.handle = 0;

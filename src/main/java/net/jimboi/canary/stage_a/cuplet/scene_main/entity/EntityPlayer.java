@@ -1,16 +1,17 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main.entity;
 
-import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
-import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionResponse;
 import net.jimboi.canary.stage_a.cuplet.Cuplet;
+import net.jimboi.canary.stage_a.cuplet.collisionbox.collider.BoxCollider;
+import net.jimboi.canary.stage_a.cuplet.collisionbox.response.CollisionResponse;
 import net.jimboi.canary.stage_a.cuplet.scene_main.GobletWorld;
+import net.jimboi.canary.stage_a.cuplet.scene_main.MainRenderer;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentDamageable;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentMotion;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tick.TickCounter;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tile.TileMap;
 
 import org.bstone.entity.EntityManager;
-import org.bstone.input.context.InputContext;
+import org.bstone.input.InputContext;
 import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
@@ -145,7 +146,7 @@ public class EntityPlayer extends EntityHurtable
 		InputContext ctx = Cuplet.getCuplet().getFramework().getInputEngine().getDefaultContext();
 		float mousex = ctx.getRange("mousex").getRange();
 		float mousey = ctx.getRange("mousey").getRange();
-		Vector2fc mouse = Cuplet.getCuplet().getRender().getScreenSpace().getPoint2DFromScreen(mousex, mousey, this.mousePos);
+		Vector2fc mouse = ((MainRenderer) Cuplet.getCuplet().getSceneManager().getCurrentRenderer()).getScreenSpace().getPoint2DFromScreen(mousex, mousey, this.mousePos);
 		mouse.sub(this.transform.posX(), this.transform.posY(), this.direction);
 		this.transform.rotation.rotationZ((float) Math.atan2(this.direction.y(), this.direction.x()));
 
@@ -203,14 +204,7 @@ public class EntityPlayer extends EntityHurtable
 
 			if (ctx.getState("action").isReleased())
 			{
-				EntityVillager villager = this.world.getNearestEntity(this.transform.posX(), this.transform.posY(), EntityVillager.class);
-				if (villager != null)
-				{
-					if (villager.getTransform().position.distanceSquared(this.transform.position3()) < 1F)
-					{
-						villager.onInteract(this);
-					}
-				}
+				System.out.println("ACTION!");
 			}
 		}
 	}

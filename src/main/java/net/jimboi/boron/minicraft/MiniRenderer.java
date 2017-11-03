@@ -79,14 +79,23 @@ public class MiniRenderer
 
 	public void load()
 	{
-		Shader vs = new Shader(new ResourceLocation("minicraft:simple.vsh"), GL20.GL_VERTEX_SHADER);
-		Shader fs = new Shader(new ResourceLocation("minicraft:simple.fsh"), GL20.GL_FRAGMENT_SHADER);
-		Program prgm = new Program();
-		prgm.link(vs, fs);
-		vs.close();
-		fs.close();
-		this.program = prgm;
-
+		try(Shader vs = new Shader(new ResourceLocation("minicraft:simple.vsh"), GL20.GL_VERTEX_SHADER))
+		{
+			try(Shader fs = new Shader(new ResourceLocation("minicraft:simple.fsh"), GL20.GL_FRAGMENT_SHADER))
+			{
+				Program prgm = new Program();
+				prgm.link(vs, fs);
+				this.program = prgm;
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 
 		MeshBuilder mb = new MeshBuilder();
 		mb.addPlane(new Vector2f(0.0F, 0.0F), new Vector2f(1.0F, 1.0F), 0.0F, new Vector2f(0.0F, 0.0F), new Vector2f(1.0F, 1.0F));
@@ -135,20 +144,27 @@ public class MiniRenderer
 
 	public void unload()
 	{
-		this.program.close();
-		this.mesh.close();
+		try
+		{
+			this.program.close();
+			this.mesh.close();
 
-		this.bmpBird.close();
-		this.bmpFont.close();
-		this.bmpIcons.close();
-		this.bmpIcons2.close();
-		this.bmpScreen.close();
+			this.bmpBird.close();
+			this.bmpFont.close();
+			this.bmpIcons.close();
+			this.bmpIcons2.close();
+			this.bmpScreen.close();
 
-		this.bird.close();
-		this.font.close();
-		this.icons.close();
-		this.icons2.close();
-		this.screen.close();
+			this.bird.close();
+			this.font.close();
+			this.icons.close();
+			this.icons2.close();
+			this.screen.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public void render()

@@ -9,10 +9,10 @@ import net.jimboi.boron.stage_a.goblet.tick.TickCounter;
 
 import org.bstone.entity.EntityManager;
 import org.bstone.living.LivingManager;
-import org.bstone.render.material.Material;
-import org.bstone.render.material.PropertyColor;
 import org.bstone.transform.Transform3;
 import org.qsilver.util.ColorUtil;
+import org.zilar.render.material.Material;
+import org.zilar.render.material.PropertyColor;
 
 /**
  * Created by Andy on 8/11/17.

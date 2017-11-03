@@ -1,6 +1,7 @@
 package net.jimboi.boron.base_ab.render;
 
-import org.bstone.service.ServiceManager;
+import net.jimboi.boron.base_ab.service.ServiceManager;
+
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;

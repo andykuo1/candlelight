@@ -6,10 +6,6 @@ import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
 import org.bstone.mogli.Shader;
 import org.bstone.mogli.Texture;
-import org.bstone.render.material.Material;
-import org.bstone.render.material.PropertyColor;
-import org.bstone.render.material.PropertyTexture;
-import org.bstone.render.renderer.ProgramRenderer;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector2f;
@@ -19,6 +15,10 @@ import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
+import org.zilar.render.material.Material;
+import org.zilar.render.material.PropertyColor;
+import org.zilar.render.material.PropertyTexture;
+import org.zilar.render.renderer.ProgramRenderer;
 import org.zilar.resource.ResourceLocation;
 import org.zilar.sprite.Sprite;
 
@@ -35,11 +35,21 @@ public class ConsoleProgramRenderer extends ProgramRenderer
 	{
 		super(new Program(), new Material());
 
-		Shader vsh = new Shader(new ResourceLocation("gordo:simple.vsh"), GL20.GL_VERTEX_SHADER);
-		Shader fsh = new Shader(new ResourceLocation("gordo:simple.fsh"), GL20.GL_FRAGMENT_SHADER);
-		this.program.link(vsh, fsh);
-		vsh.close();
-		fsh.close();
+		try (Shader vsh = new Shader(new ResourceLocation("gordo:simple.vsh"), GL20.GL_VERTEX_SHADER))
+		{
+			try (Shader fsh = new Shader(new ResourceLocation("gordo:simple.fsh"), GL20.GL_FRAGMENT_SHADER))
+			{
+				this.program.link(vsh, fsh);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 
 		this.material.addProperty(PropertyTexture.PROPERTY);
 		this.material.addProperty(PropertyColor.PROPERTY);

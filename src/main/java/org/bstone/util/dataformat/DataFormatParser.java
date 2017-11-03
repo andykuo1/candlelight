@@ -267,6 +267,11 @@ public abstract class DataFormatParser<T>
 		return c == (char) -1;
 	}
 
+	protected static boolean isPOSIXCompatible(char c)
+	{
+		return isLetter(c) || isDigit(c) || c == '_';
+	}
+
 	protected static void requireAs(Cursor cursor, IOBooleanSupplier testFunction, String requiredMsg) throws IOException
 	{
 		char c = cursor.getChar();

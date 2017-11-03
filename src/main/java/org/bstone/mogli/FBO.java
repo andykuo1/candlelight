@@ -45,7 +45,7 @@ public final class FBO implements AutoCloseable
 	}
 
 	@Override
-	public void close()
+	public void close() throws Exception
 	{
 		GL30.glDeleteFramebuffers(this.handle);
 		this.handle = 0;

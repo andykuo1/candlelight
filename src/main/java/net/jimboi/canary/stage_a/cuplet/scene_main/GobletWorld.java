@@ -1,32 +1,33 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main;
 
-import net.jimboi.boron.base_ab.asset.Asset;
-import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
-import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxManager;
-import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
 import net.jimboi.canary.stage_a.cuplet.Cuplet;
+import net.jimboi.canary.stage_a.cuplet.basicobject.ComponentRenderable;
+import net.jimboi.canary.stage_a.cuplet.collisionbox.CollisionBoxManager;
+import net.jimboi.canary.stage_a.cuplet.collisionbox.box.AxisAlignedBoundingBox;
+import net.jimboi.canary.stage_a.cuplet.model.Model;
+import net.jimboi.canary.stage_a.cuplet.renderer.MaterialProperty;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.SystemDamageable;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.SystemMotion;
 import net.jimboi.canary.stage_a.cuplet.scene_main.entity.EntityPlayer;
 import net.jimboi.canary.stage_a.cuplet.scene_main.entity.EntityRat;
 import net.jimboi.canary.stage_a.cuplet.scene_main.entity.EntitySkeleton;
-import net.jimboi.canary.stage_a.cuplet.scene_main.entity.EntityVillager;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tile.Tile;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tile.TileMap;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tile.TileMapModelManager;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tile.Tiles;
 
+import org.bstone.asset.AssetManager;
 import org.bstone.livingentity.LivingEntity;
+import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
-import org.bstone.render.RenderableBase;
-import org.bstone.render.material.Material;
-import org.bstone.render.material.PropertyColor;
-import org.bstone.render.material.PropertyTexture;
-import org.bstone.render.model.Model;
+import org.bstone.sprite.textureatlas.SubTexture;
 import org.bstone.transform.Transform3;
 import org.bstone.transform.Transform3c;
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 import org.joml.Vector3fc;
+import org.joml.Vector4f;
+import org.qsilver.util.ColorUtil;
 
 import java.util.Random;
 
@@ -61,7 +62,7 @@ public class GobletWorld
 	public void start()
 	{
 		this.cameraController = new GobletCameraController();
-		this.cameraController.start(Cuplet.getCuplet().getRender().getCamera());
+		this.cameraController.start(((MainRenderer) Cuplet.getCuplet().getSceneManager().getCurrentRenderer()).getCamera());
 
 		this.motionSystem.start();
 		this.damageableSystem.start();
@@ -115,18 +116,18 @@ public class GobletWorld
 					{
 						this.spawnEntity(new EntitySkeleton(this, new Transform3().setPosition(i + 0.5F, j + 0.5F, 0)));
 					}
-					else if (this.random.nextInt(60) == 0)
-					{
-						this.spawnEntity(new EntityVillager(this, new Transform3().setPosition(i + 0.5F, j + 0.5F, 0)));
-					}
 				}
 			}
 		}
 		this.getBoundingManager().addCollider(this.tilemap);
 
-		this.tileMapModelManager = new TileMapModelManager(Asset.wrap(Cuplet.getCuplet().getRender().texFont), Asset.wrap(Cuplet.getCuplet().getRender().atsFont));
+		final AssetManager assets = Cuplet.getCuplet().getFramework().getAssetManager();
+
+		this.tileMapModelManager = new TileMapModelManager(
+				assets.getAsset("texture", "font"),
+				assets.getAsset("texture_atlas", "font"));
 		Model model = this.tileMapModelManager.createStaticModel(this.tilemap);
-		Cuplet.getCuplet().getRender().renderables.add(new RenderableBase(model, new Matrix4f()));
+		((MainRenderer) Cuplet.getCuplet().getSceneManager().getCurrentRenderer()).renderables.add(new RenderableBase(model, new Matrix4f()));
 	}
 
 	public void stop()
@@ -175,25 +176,22 @@ public class GobletWorld
 
 	public Model createModel2D(char c, int color)
 	{
-		return new Model(Asset.wrap(() ->
-		{
-			return Cuplet.getCuplet().getRender().mshQuad;
-		}, Mesh.class), this.createMaterial2D(c, color));
+		return new Model(Cuplet.getCuplet().getFramework().getAssetManager().<Mesh>getAsset("mesh", "quad"), this.createMaterial2D(c, color));
 	}
 
 	public Material createMaterial2D(char c, int color)
 	{
 		Material material = new Material();
-		material.addProperty(PropertyTexture.PROPERTY);
-		material.addProperty(PropertyColor.PROPERTY);
-
-		PropertyTexture.PROPERTY.bind(material)
-				.setSprite(Cuplet.getCuplet().getRender().fontSheet.get(c))
-				.unbind();
-		PropertyColor.PROPERTY.bind(material)
-				.setColor(color)
-				.unbind();
-
+		material.setProperty(MaterialProperty.COLOR, new Vector4f(
+				ColorUtil.getRed(color) / 255F,
+				ColorUtil.getGreen(color) / 255F,
+				ColorUtil.getBlue(color) / 255F,
+				1
+		));
+		SubTexture subtexture = ((MainRenderer) Cuplet.getCuplet().getSceneManager().getCurrentRenderer()).fontSheet.get(c);
+		material.setProperty(MaterialProperty.TEXTURE, subtexture.getTextureAtlas().getTexture());
+		material.setProperty(MaterialProperty.SPRITE_OFFSET, new Vector2f(subtexture.getU(), subtexture.getV()));
+		material.setProperty(MaterialProperty.SPRITE_SCALE, new Vector2f(subtexture.getWidth(), subtexture.getHeight()));
 		return material;
 	}
 

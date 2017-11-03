@@ -2,7 +2,6 @@ package org.bstone.input;
 
 import org.bstone.application.Application;
 import org.bstone.application.Engine;
-import org.bstone.input.context.InputContext;
 import org.bstone.util.Pair;
 import org.bstone.window.Window;
 
@@ -34,7 +33,7 @@ public class InputEngine extends Engine
 	@Override
 	protected boolean onStart(Application app)
 	{
-		this.defaultContext = new InputContext();
+		this.defaultContext = new InputContext(this);
 
 		this.keyboard = new KeyboardHandler(this.window);
 		this.mouse = new MouseHandler(this.window);
@@ -89,7 +88,7 @@ public class InputEngine extends Engine
 
 	public InputContext createContext(int id)
 	{
-		InputContext ctx = new InputContext();
+		InputContext ctx = new InputContext(this);
 		this.contexts.add(new Pair<>(id, ctx));
 		return ctx;
 	}

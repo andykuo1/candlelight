@@ -33,7 +33,7 @@ public final class Mesh implements AutoCloseable
 	}
 
 	@Override
-	public void close()
+	public void close() throws Exception
 	{
 		for(int i = 0; i < this.vertexBuffers.length; ++i)
 		{
@@ -62,7 +62,14 @@ public final class Mesh implements AutoCloseable
 
 		if (this.indexBuffer != null)
 		{
-			this.indexBuffer.close();
+			try
+			{
+				this.indexBuffer.close();
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 		this.indexBuffer = buffer;
 		this.vertexCount = this.indexBuffer.getLength();
@@ -88,7 +95,14 @@ public final class Mesh implements AutoCloseable
 		VBO vbo = this.vertexBuffers[location];
 		if (vbo != null)
 		{
-			vbo.close();
+			try
+			{
+				vbo.close();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		this.vertexBuffers[location] = buffer;

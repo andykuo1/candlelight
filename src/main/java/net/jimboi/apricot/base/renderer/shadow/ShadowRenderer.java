@@ -76,7 +76,14 @@ public class ShadowRenderer
 
 	public void unload()
 	{
-		this.shadowFBO.close();
+		try
+		{
+			this.shadowFBO.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public void render(Iterator<OldRenderable> instances, DynamicLight light)

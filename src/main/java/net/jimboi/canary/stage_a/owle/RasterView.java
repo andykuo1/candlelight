@@ -19,7 +19,7 @@ import org.zilar.sprite.TextureAtlas;
 /**
  * Created by Andy on 9/13/17.
  */
-public class RasterView
+public class RasterView implements AutoCloseable
 {
 	private final Mesh mesh;
 
@@ -44,7 +44,7 @@ public class RasterView
 		this.mesh = ModelUtil.createDynamicMesh(this.generateMeshData());
 	}
 
-	public void close()
+	public void close() throws Exception
 	{
 		this.mesh.close();
 	}

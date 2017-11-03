@@ -1,14 +1,15 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main.entity.base;
 
-import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
+import net.jimboi.canary.stage_a.cuplet.basicobject.ComponentRenderable;
+import net.jimboi.canary.stage_a.cuplet.renderer.MaterialProperty;
 import net.jimboi.canary.stage_a.cuplet.scene_main.GobletEntity;
 import net.jimboi.canary.stage_a.cuplet.scene_main.GobletWorld;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentBounding;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentTransform;
 
 import org.bstone.entity.EntityManager;
-import org.bstone.render.material.PropertyColor;
 import org.bstone.transform.Transform3;
+import org.qsilver.util.ColorUtil;
 
 /**
  * Created by Andy on 8/11/17.
@@ -21,7 +22,7 @@ public class EntityBase extends GobletEntity
 	{
 		super(world, transform, renderable);
 
-		this.mainColor = PropertyColor.PROPERTY.getColor(this.renderable.getRenderModel().getMaterial());
+		this.mainColor = ColorUtil.getColor(this.renderable.getRenderModel().material().getProperty(MaterialProperty.COLOR));
 	}
 
 	@Override

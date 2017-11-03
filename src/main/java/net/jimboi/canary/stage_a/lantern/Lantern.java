@@ -7,6 +7,7 @@ import org.bstone.application.Application;
 import org.bstone.application.game.Game;
 import org.bstone.application.game.GameEngine;
 import org.bstone.scene.SceneManager;
+import org.zilar.resource.ResourceLocation;
 
 /**
  * Created by Andy on 10/20/17.
@@ -30,22 +31,18 @@ public class Lantern implements Game
 		application.run();
 	}
 
-	private final SceneManager sceneManager;
+	private SceneManager sceneManager;
 
 	public Lantern()
 	{
-		this.sceneManager = new SceneManager();
-
-		this.sceneManager.registerScene("init", LanternSceneMain.class);
 	}
 
 	@Override
 	public void onFirstUpdate()
 	{
-		this.sceneManager.setNextScene("init", scene -> {
-			this.getFramework().getRenderEngine().getRenderServices().startService(
-					new RenderSceneMain(this.getFramework().getRenderEngine(), (LanternSceneMain) scene));
-		});
+		this.sceneManager = new SceneManager(this.getFramework().getRenderEngine().getRenderServices());
+		this.sceneManager.registerScene("init", LanternSceneMain.class, RenderSceneMain.class);
+		this.sceneManager.setNextScene("init");
 	}
 
 	@Override
@@ -73,5 +70,11 @@ public class Lantern implements Game
 	public final Application getApplication()
 	{
 		return application;
+	}
+
+	@Override
+	public ResourceLocation getAssetLocation()
+	{
+		return new ResourceLocation("lantern:lantern.assets");
 	}
 }

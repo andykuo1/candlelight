@@ -1,8 +1,8 @@
 package org.bstone.input;
 
-import org.bstone.input.context.raw.AbstractInput;
-import org.bstone.input.context.raw.AxisInput;
-import org.bstone.input.context.raw.ButtonInput;
+import org.bstone.input.direct.AbstractInput;
+import org.bstone.input.direct.AxisInput;
+import org.bstone.input.direct.ButtonInput;
 
 import java.util.HashMap;
 import java.util.Map;

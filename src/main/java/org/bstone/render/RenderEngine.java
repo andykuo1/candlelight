@@ -15,7 +15,7 @@ public class RenderEngine extends Engine
 {
 	private final Window window;
 
-	private final ServiceManager<RenderService, RenderEngine> serviceManager;
+	private final ServiceManager<RenderService> services;
 
 	private final TickCounter frameCounter;
 	private final FrameHandler frameHandler;
@@ -24,7 +24,8 @@ public class RenderEngine extends Engine
 	public RenderEngine(Window window, FrameHandler frameHandler, RenderHandler renderHandler)
 	{
 		this.window = window;
-		this.serviceManager = new ServiceManager<>(this);
+
+		this.services = new ServiceManager<>(renderService -> renderService.renderEngine = this);
 
 		this.frameHandler = frameHandler;
 		this.renderHandler = renderHandler;
@@ -39,8 +40,8 @@ public class RenderEngine extends Engine
 
 		this.renderHandler.onRenderLoad();
 
-		this.serviceManager.beginServiceBlock();
-		this.serviceManager.endServiceBlock();
+		this.services.beginServices();
+		this.services.endServices();
 
 		return true;
 	}
@@ -48,18 +49,16 @@ public class RenderEngine extends Engine
 	@Override
 	protected void onUpdate(Application app)
 	{
+		this.services.beginServices();
+
 		if (this.frameHandler.shouldRenderCurrentFrame())
 		{
 			this.window.clearScreenBuffer();
 			{
 				double delta = this.frameHandler.getElapsedFrameTime();
 
-				this.serviceManager.beginServiceBlock();
-				{
-					this.renderHandler.onRenderUpdate(delta);
-					this.serviceManager.forEach(service->service.onRenderUpdate(this, delta));
-				}
-				this.serviceManager.endServiceBlock();
+				this.renderHandler.onRenderUpdate(delta);
+				this.services.forEach(renderService -> renderService.onRenderUpdate(this, delta));
 			}
 			this.window.updateScreenBuffer();
 
@@ -74,16 +73,19 @@ public class RenderEngine extends Engine
 		{
 			app.stop();
 		}
+
+		this.services.endServices();
 	}
 
 	@Override
 	protected void onStop(Application app)
 	{
-		this.serviceManager.beginServiceBlock();
-		this.serviceManager.endServiceBlock();
+		this.services.beginServices();
+		this.services.endServices();
+
+		this.services.destroy();
 
 		this.renderHandler.onRenderUnload();
-		this.serviceManager.clearServices();
 	}
 
 	public final TickCounter getFrameCounter()
@@ -91,8 +93,8 @@ public class RenderEngine extends Engine
 		return this.frameCounter;
 	}
 
-	public final ServiceManager<RenderService, RenderEngine> getRenderServices()
+	public final ServiceManager<RenderService> getRenderServices()
 	{
-		return this.serviceManager;
+		return this.services;
 	}
 }

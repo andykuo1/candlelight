@@ -1,6 +1,6 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main.component;
 
-import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
+import net.jimboi.canary.stage_a.cuplet.collisionbox.box.AxisAlignedBoundingBox;
 
 import org.bstone.entity.Component;
 

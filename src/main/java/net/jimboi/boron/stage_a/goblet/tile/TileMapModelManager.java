@@ -4,16 +4,16 @@ import net.jimboi.boron.base_ab.asset.Asset;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
-import org.bstone.render.material.Material;
-import org.bstone.render.material.PropertyColor;
-import org.bstone.render.material.PropertyTexture;
-import org.bstone.render.model.Model;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.joml.Vector3f;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.MeshData;
 import org.zilar.meshbuilder.ModelUtil;
+import org.zilar.render.material.Material;
+import org.zilar.render.material.PropertyColor;
+import org.zilar.render.material.PropertyTexture;
+import org.zilar.render.model.Model;
 import org.zilar.sprite.Sprite;
 import org.zilar.sprite.TextureAtlas;
 
@@ -47,7 +47,14 @@ public class TileMapModelManager
 	{
 		for (Mesh mesh : this.meshes)
 		{
-			mesh.close();
+			try
+			{
+				mesh.close();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		this.meshes.clear();

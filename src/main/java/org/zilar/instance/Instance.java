@@ -1,9 +1,9 @@
 package org.zilar.instance;
 
-import org.bstone.render.Renderable;
-import org.bstone.render.model.Model;
 import org.bstone.transform.Transform;
 import org.joml.Matrix4f;
+import org.zilar.render.Renderable;
+import org.zilar.render.model.Model;
 
 /**
  * Created by Andy on 4/8/17.

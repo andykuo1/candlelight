@@ -40,7 +40,7 @@ public final class Program implements AutoCloseable
 	}
 
 	@Override
-	public void close()
+	public void close() throws Exception
 	{
 		GL20.glDeleteProgram(this.handle);
 		this.handle = 0;

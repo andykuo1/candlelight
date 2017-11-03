@@ -1,6 +1,6 @@
 package org.qsilver.scene;
 
-import org.bstone.service.Service;
+import net.jimboi.boron.base_ab.service.Service;
 
 /**
  * Created by Andy on 7/15/17.

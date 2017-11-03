@@ -1,7 +1,8 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main.entity;
 
-import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
-import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
+import net.jimboi.canary.stage_a.cuplet.basicobject.ComponentRenderable;
+import net.jimboi.canary.stage_a.cuplet.collisionbox.box.AxisAlignedBoundingBox;
+import net.jimboi.canary.stage_a.cuplet.renderer.MaterialProperty;
 import net.jimboi.canary.stage_a.cuplet.scene_main.GobletWorld;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentDamageable;
 import net.jimboi.canary.stage_a.cuplet.scene_main.entity.base.EntitySolid;
@@ -9,9 +10,9 @@ import net.jimboi.canary.stage_a.cuplet.scene_main.tick.TickCounter;
 
 import org.bstone.entity.EntityManager;
 import org.bstone.living.LivingManager;
-import org.bstone.render.material.Material;
-import org.bstone.render.material.PropertyColor;
+import org.bstone.material.Material;
 import org.bstone.transform.Transform3;
+import org.joml.Vector4f;
 import org.qsilver.util.ColorUtil;
 
 /**
@@ -51,10 +52,8 @@ public class EntityHurtable extends EntitySolid implements IBurnable
 	protected void onDamageTick()
 	{
 		ComponentDamageable componentDamageable = this.getComponent(ComponentDamageable.class);
-		Material material = this.getRenderable().getRenderModel().getMaterial();
-		PropertyColor.PROPERTY.bind(material)
-				.setColor(ColorUtil.getColorMix(this.mainColor, this.hurtColor, 1 - componentDamageable.getDamageTicks().getProgress()))
-				.unbind();
+		Material material = this.getRenderable().getRenderModel().material();
+		material.setProperty(MaterialProperty.COLOR, ColorUtil.getNormalizedRGBA(ColorUtil.getColorMix(this.mainColor, this.hurtColor, 1 - componentDamageable.getDamageTicks().getProgress()), new Vector4f()));
 	}
 
 	@Override

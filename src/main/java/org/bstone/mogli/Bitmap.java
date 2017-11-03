@@ -95,7 +95,7 @@ public final class Bitmap implements AutoCloseable
 	}
 
 	@Override
-	public void close()
+	public void close() throws Exception
 	{
 		if (this.loadFromSTB)
 		{

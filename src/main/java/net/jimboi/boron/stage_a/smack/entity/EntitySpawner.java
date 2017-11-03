@@ -5,9 +5,9 @@ import net.jimboi.boron.stage_a.smack.DamageSource;
 import net.jimboi.boron.stage_a.smack.SmackEntity;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
 
-import org.bstone.render.material.PropertyColor;
 import org.bstone.transform.Transform3;
 import org.qsilver.util.ColorUtil;
+import org.zilar.render.material.PropertyColor;
 
 /**
  * Created by Andy on 8/6/17.

@@ -3,6 +3,8 @@ package org.qsilver.util;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.joml.Vector3fc;
+import org.joml.Vector4f;
+import org.joml.Vector4fc;
 
 import java.util.Iterator;
 
@@ -11,6 +13,8 @@ import java.util.Iterator;
  */
 public class VectorUtil
 {
+	public static final Vector4fc ZERO = new Vector4f();
+
 	public static float distanceSquared(Vector2fc a, Vector2fc b)
 	{
 		float x = a.x() - b.x();

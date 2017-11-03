@@ -11,12 +11,12 @@ import net.jimboi.boron.stage_a.smack.tile.DungeonModelManager;
 import net.jimboi.boron.stage_a.smack.tile.LevelGenerator;
 
 import org.bstone.livingentity.LivingEntity;
-import org.bstone.render.material.Material;
-import org.bstone.render.material.PropertyColor;
-import org.bstone.render.material.PropertyTexture;
-import org.bstone.render.model.Model;
 import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
+import org.zilar.render.material.Material;
+import org.zilar.render.material.PropertyColor;
+import org.zilar.render.material.PropertyTexture;
+import org.zilar.render.model.Model;
 
 import java.util.Random;
 

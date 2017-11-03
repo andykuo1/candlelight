@@ -1,6 +1,7 @@
 package net.jimboi.canary.stage_a.cuplet;
 
 import net.jimboi.canary.stage_a.cuplet.scene_main.MainRenderer;
+import net.jimboi.canary.stage_a.cuplet.scene_main.MainScene;
 
 import org.bstone.application.Application;
 import org.bstone.application.game.Game;
@@ -38,29 +39,22 @@ public class Cuplet implements Game
 		return DEBUG;
 	}
 
-	private final SceneManager sceneManager;
-
-	private MainRenderer render;
+	private SceneManager sceneManager;
 
 	public Cuplet()
 	{
-		this.sceneManager = new SceneManager();
-
-		this.sceneManager.registerScene("init", net.jimboi.canary.stage_a.cuplet.scene_main.MainScene.class);
 	}
 
 	@Override
 	public void onFirstUpdate()
 	{
+		this.sceneManager = new SceneManager(this.getFramework().getRenderEngine().getRenderServices());
+		this.sceneManager.registerScene("init", MainScene.class, MainRenderer.class);
+
 		final InputEngine input = this.getFramework().getInputEngine();
+		input.getDefaultContext().registerEvent("_debug", input.getKeyboard().getButton(GLFW.GLFW_KEY_P)::getState);
 
-		input.getDefaultContext().registerEvent("_debug",
-				input.getKeyboard().getButton(GLFW.GLFW_KEY_P)::getState);
-
-		this.sceneManager.setNextScene("init", scene -> {
-			this.getFramework().getRenderEngine().getRenderServices().startService(
-					this.render = new net.jimboi.canary.stage_a.cuplet.scene_main.MainRenderer(this.getFramework().getRenderEngine(), scene));
-		});
+		this.sceneManager.setNextScene("init");
 	}
 
 	@Override
@@ -79,11 +73,6 @@ public class Cuplet implements Game
 	public void onLastUpdate()
 	{
 		this.sceneManager.destroy();
-	}
-
-	public final MainRenderer getRender()
-	{
-		return this.render;
 	}
 
 	public final SceneManager getSceneManager()

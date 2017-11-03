@@ -3,14 +3,32 @@ package org.bstone.render;
 import org.bstone.service.Service;
 
 /**
- * Created by Andy on 7/15/17.
+ * Created by Andy on 11/2/17.
  */
-public abstract class RenderService extends Service<RenderEngine>
+public abstract class RenderService implements Service
 {
-	public RenderService(RenderEngine renderEngine)
+	RenderEngine renderEngine;
+
+	@Override
+	public final void start()
 	{
-		super(renderEngine.getRenderServices());
+		this.onRenderLoad(this.renderEngine);
 	}
 
+	@Override
+	public final void stop()
+	{
+		this.onRenderUnload(this.renderEngine);
+	}
+
+	protected abstract void onRenderLoad(RenderEngine renderEngine);
+
+	protected abstract void onRenderUnload(RenderEngine renderEngine);
+
 	protected abstract void onRenderUpdate(RenderEngine renderEngine, double delta);
+
+	public final RenderEngine getRenderEngine()
+	{
+		return this.renderEngine;
+	}
 }

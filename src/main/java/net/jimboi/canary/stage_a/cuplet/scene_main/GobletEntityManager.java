@@ -1,7 +1,7 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main;
 
-import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxManager;
-import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
+import net.jimboi.canary.stage_a.cuplet.collisionbox.CollisionBoxManager;
+import net.jimboi.canary.stage_a.cuplet.collisionbox.collider.BoxCollider;
 
 import org.bstone.livingentity.LivingEntity;
 import org.bstone.livingentity.LivingEntityManager;

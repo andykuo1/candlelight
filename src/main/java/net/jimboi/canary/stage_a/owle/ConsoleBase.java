@@ -3,7 +3,7 @@ package net.jimboi.canary.stage_a.owle;
 import net.jimboi.boron.base_ab.asset.Asset;
 
 import org.bstone.input.TextHandler;
-import org.bstone.input.context.event.StateEvent;
+import org.bstone.input.event.StateEvent;
 import org.bstone.transform.Transform;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -57,8 +57,15 @@ public class ConsoleBase
 
 	public void terminate()
 	{
-		this.view.close();
-		this.background.close();
+		try
+		{
+			this.view.close();
+			this.background.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public void update()

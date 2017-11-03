@@ -16,15 +16,15 @@ import net.jimboi.boron.stage_a.goblet.tile.TileMapModelManager;
 import net.jimboi.boron.stage_a.goblet.tile.Tiles;
 
 import org.bstone.livingentity.LivingEntity;
-import org.bstone.render.RenderableBase;
-import org.bstone.render.material.Material;
-import org.bstone.render.material.PropertyColor;
-import org.bstone.render.material.PropertyTexture;
-import org.bstone.render.model.Model;
 import org.bstone.transform.Transform3;
 import org.bstone.transform.Transform3c;
 import org.joml.Matrix4f;
 import org.joml.Vector3fc;
+import org.zilar.render.RenderableBase;
+import org.zilar.render.material.Material;
+import org.zilar.render.material.PropertyColor;
+import org.zilar.render.material.PropertyTexture;
+import org.zilar.render.model.Model;
 
 import java.util.Random;
 

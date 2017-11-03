@@ -114,8 +114,16 @@ public class Console implements Game
 	public void onRenderUnload()
 	{
 		this.consoleBase.terminate();
-		this.texture.close();
-		this.bitmap.close();
-		this.renderer.close();
+
+		try
+		{
+			this.texture.close();
+			this.bitmap.close();
+			this.renderer.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

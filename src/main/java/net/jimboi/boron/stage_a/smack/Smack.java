@@ -14,14 +14,6 @@ import org.bstone.camera.PerspectiveCamera;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
-import org.bstone.render.Renderable;
-import org.bstone.render.material.Material;
-import org.bstone.render.material.PropertyColor;
-import org.bstone.render.material.PropertyTexture;
-import org.bstone.render.model.Model;
-import org.bstone.render.model.TextModel;
-import org.bstone.render.model.TextModelManager;
-import org.bstone.render.renderer.SimpleProgramRenderer;
 import org.bstone.util.direction.Direction;
 import org.bstone.window.view.ScreenSpace;
 import org.joml.Matrix4f;
@@ -31,6 +23,14 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;
+import org.zilar.render.Renderable;
+import org.zilar.render.material.Material;
+import org.zilar.render.material.PropertyColor;
+import org.zilar.render.material.PropertyTexture;
+import org.zilar.render.model.Model;
+import org.zilar.render.model.TextModel;
+import org.zilar.render.model.TextModelManager;
+import org.zilar.render.renderer.SimpleProgramRenderer;
 import org.zilar.resource.ResourceLocation;
 import org.zilar.sprite.FontSheet;
 import org.zilar.sprite.SpriteUtil;
@@ -253,12 +253,19 @@ public class Smack implements OldishGameHandler
 	@Override
 	public void onUnload(OldRenderEngine renderEngine)
 	{
-		this.simpleRenderer.close();
-		this.collisionBoxRenderer.close();
-		this.textModelManager.destroy();
-		this.bmpFont.close();
-		this.texFont.close();
-		this.quad.close();
+		try
+		{
+			this.simpleRenderer.close();
+			this.collisionBoxRenderer.close();
+			this.textModelManager.destroy();
+			this.bmpFont.close();
+			this.texFont.close();
+			this.quad.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public InputManager getInput()

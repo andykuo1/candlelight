@@ -96,7 +96,14 @@ public class AssetManager
 				AutoCloseable resource = iter.next();
 				try
 				{
-					loader.unload(resource);
+					if (loader != null)
+					{
+						loader.unload(resource);
+					}
+					else
+					{
+						resource.close();
+					}
 				}
 				catch (Exception e)
 				{
@@ -105,6 +112,7 @@ public class AssetManager
 				iter.remove();
 			}
 		}
+
 		this.cached.clear();
 	}
 
@@ -126,7 +134,14 @@ public class AssetManager
 				AutoCloseable resource = cache.get(name);
 				try
 				{
-					loader.unload(resource);
+					if (loader != null)
+					{
+						loader.unload(resource);
+					}
+					else
+					{
+						resource.close();
+					}
 				}
 				catch (Exception e)
 				{
@@ -221,6 +236,8 @@ public class AssetManager
 	public <T extends AutoCloseable> T loadResource(String type, String name) throws Exception
 	{
 		ResourceLoader loader = this.getLoader(type);
+		if (loader == null) throw new IllegalArgumentException("cannot find resource loader for type '" + type + "'");
+
 		AutoCloseable resource;
 		try (InputStream stream = this.getResourceStream(type, name))
 		{
@@ -238,7 +255,14 @@ public class AssetManager
 			AutoCloseable resource = this.cached.get(loader).remove(name);
 			if (resource != null)
 			{
-				loader.unload(resource);
+				if (loader != null)
+				{
+					loader.unload(resource);
+				}
+				else
+				{
+					resource.close();
+				}
 				return;
 			}
 		}
@@ -255,6 +279,7 @@ public class AssetManager
 	public <T extends AutoCloseable> T cacheResource(String type, String name, T resource)
 	{
 		ResourceLoader loader = this.getLoader(type);
+
 		Map<String, AutoCloseable> cache = this.cached.computeIfAbsent(loader, k -> new HashMap<>());
 		if (cache.containsKey(name))
 		{

@@ -1,7 +1,7 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main;
 
-import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
-import net.jimboi.boron.stage_a.base.basicobject.LivingEntityBase;
+import net.jimboi.canary.stage_a.cuplet.basicobject.ComponentRenderable;
+import net.jimboi.canary.stage_a.cuplet.basicobject.LivingEntityBase;
 
 import org.bstone.transform.Transform3;
 

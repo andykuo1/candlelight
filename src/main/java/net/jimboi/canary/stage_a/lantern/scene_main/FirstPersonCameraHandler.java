@@ -3,8 +3,9 @@ package net.jimboi.canary.stage_a.lantern.scene_main;
 import net.jimboi.canary.stage_a.lantern.Lantern;
 
 import org.bstone.camera.Camera;
-import org.bstone.input.context.InputContext;
-import org.bstone.input.context.InputListener;
+import org.bstone.input.InputContext;
+import org.bstone.input.InputEngine;
+import org.bstone.input.InputListener;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
@@ -118,6 +119,16 @@ public class FirstPersonCameraHandler implements InputListener
 
 		//Make sure camera is aware of changes!
 		this.camera.markDirty();
+	}
+
+	@Override
+	public void onInputStart(InputEngine input, InputContext context)
+	{
+	}
+
+	@Override
+	public void onInputStop(InputEngine input, InputContext context)
+	{
 	}
 
 	@Override

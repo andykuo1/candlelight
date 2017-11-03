@@ -76,10 +76,17 @@ public class CollisionRenderer extends OldishRenderService
 	@Override
 	protected void onServiceStop(OldRenderEngine handler)
 	{
-		CIRCLE.close();
-		QUAD.close();
-		POINT.close();
-		SEGMENT.close();
+		try
+		{
+			CIRCLE.close();
+			QUAD.close();
+			POINT.close();
+			SEGMENT.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	@Override

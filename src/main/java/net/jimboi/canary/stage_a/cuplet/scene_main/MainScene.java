@@ -2,8 +2,8 @@ package net.jimboi.canary.stage_a.cuplet.scene_main;
 
 import net.jimboi.canary.stage_a.cuplet.Cuplet;
 
+import org.bstone.input.InputContext;
 import org.bstone.input.InputEngine;
-import org.bstone.input.context.InputContext;
 import org.bstone.scene.Scene;
 import org.bstone.scene.SceneManager;
 import org.lwjgl.glfw.GLFW;
@@ -24,7 +24,6 @@ public class MainScene extends Scene
 	@Override
 	protected void onSceneCreate(SceneManager sceneManager)
 	{
-		System.out.println("CREATING");
 		final InputEngine input = Cuplet.getCuplet().getFramework().getInputEngine();
 		final InputContext ctx = input.getDefaultContext();
 		ctx.registerEvent("mousex",
@@ -58,7 +57,6 @@ public class MainScene extends Scene
 	{
 		if (this.init)
 		{
-			System.out.println("STARTING");
 			this.world.start();
 			this.init = false;
 		}

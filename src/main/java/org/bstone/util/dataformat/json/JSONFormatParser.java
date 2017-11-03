@@ -19,11 +19,19 @@ public class JSONFormatParser extends DataFormatParser<JSONValue>
 	private static final char CONTROL_CHAR = 0x20;
 	private static final int MAX_LEVEL = 1000;
 
+	private final boolean strict;
+
 	private int level;
 
 	public JSONFormatParser(int bufferSize)
 	{
+		this(bufferSize, true);
+	}
+
+	public JSONFormatParser(int bufferSize, boolean strict)
+	{
 		super(bufferSize);
+		this.strict = strict;
 	}
 
 	@Override
@@ -38,12 +46,6 @@ public class JSONFormatParser extends DataFormatParser<JSONValue>
 
 		switch (cursor.getChar())
 		{
-			case 'n':
-				return this.readNull(cursor);
-			case 't':
-				return this.readTrue(cursor);
-			case 'f':
-				return this.readFalse(cursor);
 			case '"':
 				return this.readString(cursor);
 			case '[':
@@ -63,6 +65,18 @@ public class JSONFormatParser extends DataFormatParser<JSONValue>
 			case '9':
 				return JSON.number(this.readNumber(cursor));
 			default:
+				if (this.strict)
+				{
+					char c = cursor.getChar();
+					if (c == 'n') return this.readNull(cursor);
+					if (c == 't') return this.readTrue(cursor);
+					if (c == 'f') return this.readFalse(cursor);
+				}
+				else if (isLetter(cursor.getChar()))
+				{
+					return this.readLiteral(cursor);
+				}
+
 				throw formatError(cursor, "Found invalid format");
 		}
 	}
@@ -136,6 +150,24 @@ public class JSONFormatParser extends DataFormatParser<JSONValue>
 		requireAs(cursor, cursor.getChar(), (c) -> (c == '"'), "name");
 
 		return this.readString(cursor).get();
+	}
+
+	protected JSONLiteral readLiteral(Cursor cursor) throws IOException
+	{
+		this.startBufferCapture(cursor);
+		{
+			char c = cursor.getChar();
+			while(!isVerticalWhiteSpace(c) && c != ',')
+			{
+				cursor.read(this.reader, this.capture);
+				c = cursor.getChar();
+			}
+		}
+		String buffer = this.stopBufferCapture(cursor);
+		if ("null".equals(buffer)) return JSON.NULL;
+		if ("true".equals(buffer)) return JSON.TRUE;
+		if ("false".equals(buffer)) return JSON.FALSE;
+		return JSON.literal(buffer);
 	}
 
 	protected JSONLiteral readNull(Cursor cursor) throws IOException

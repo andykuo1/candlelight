@@ -7,8 +7,8 @@ import net.jimboi.boron.stage_a.goblet.component.ComponentBounding;
 import net.jimboi.boron.stage_a.goblet.component.ComponentTransform;
 
 import org.bstone.entity.EntityManager;
-import org.bstone.render.material.PropertyColor;
 import org.bstone.transform.Transform3;
+import org.zilar.render.material.PropertyColor;
 
 /**
  * Created by Andy on 8/11/17.

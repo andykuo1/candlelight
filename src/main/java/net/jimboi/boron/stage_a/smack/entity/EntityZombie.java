@@ -9,11 +9,11 @@ import net.jimboi.boron.stage_a.smack.SmackWorld;
 import net.jimboi.boron.stage_a.smack.tile.DungeonHandler;
 
 import org.bstone.livingentity.LivingEntity;
-import org.bstone.render.material.PropertyColor;
 import org.bstone.transform.Transform3;
 import org.bstone.transform.Transform3c;
 import org.joml.Vector2f;
 import org.qsilver.util.ColorUtil;
+import org.zilar.render.material.PropertyColor;
 
 /**
  * Created by Andy on 8/6/17.

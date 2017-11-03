@@ -13,9 +13,6 @@ import org.bstone.camera.OrthographicCamera;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
-import org.bstone.render.Renderable;
-import org.bstone.render.model.TextModelManager;
-import org.bstone.render.renderer.SimpleProgramRenderer;
 import org.bstone.util.direction.Direction;
 import org.bstone.window.view.ScreenSpace;
 import org.joml.Matrix4f;
@@ -26,6 +23,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;
+import org.zilar.render.Renderable;
+import org.zilar.render.model.TextModelManager;
+import org.zilar.render.renderer.SimpleProgramRenderer;
 import org.zilar.resource.ResourceLocation;
 import org.zilar.sprite.FontSheet;
 import org.zilar.sprite.SpriteUtil;
@@ -111,14 +111,21 @@ public class GobletRenderer
 
 	public void unload(OldRenderEngine renderEngine)
 	{
-		this.simpleRenderer.close();
-		this.collisionBoxRenderer.close();
+		try
+		{
+			this.simpleRenderer.close();
+			this.collisionBoxRenderer.close();
 
-		this.textModelManager.destroy();
+			this.textModelManager.destroy();
 
-		this.bmpFont.close();
-		this.texFont.close();
-		this.mshQuad.close();
+			this.bmpFont.close();
+			this.texFont.close();
+			this.mshQuad.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public void update(OldRenderEngine renderEngine, double delta)

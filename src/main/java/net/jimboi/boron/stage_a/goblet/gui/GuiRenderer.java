@@ -65,7 +65,14 @@ public class GuiRenderer extends OldishRenderService
 	@Override
 	protected void onServiceStop(OldRenderEngine handler)
 	{
-		QUAD.close();
+		try
+		{
+			QUAD.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	@Override
