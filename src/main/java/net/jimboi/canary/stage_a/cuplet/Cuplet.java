@@ -4,21 +4,20 @@ import net.jimboi.canary.stage_a.cuplet.scene_main.MainRenderer;
 import net.jimboi.canary.stage_a.cuplet.scene_main.MainScene;
 
 import org.bstone.application.Application;
-import org.bstone.application.game.Game;
 import org.bstone.application.game.GameEngine;
 import org.bstone.input.InputContext;
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputListener;
 import org.bstone.scene.SceneManager;
+import org.bstone.tick.TickEngine;
 import org.lwjgl.glfw.GLFW;
 
 /**
  * Created by Andy on 10/29/17.
  */
-public class Cuplet implements Game, InputListener
+public class Cuplet extends GameEngine implements InputListener
 {
 	private static Cuplet instance;
-	private static GameEngine framework;
 	private static Application application;
 
 	public static Cuplet getCuplet()
@@ -28,9 +27,8 @@ public class Cuplet implements Game, InputListener
 
 	public static void main(String[] args)
 	{
-		instance = new Cuplet();
-		framework = new GameEngine(instance);
-		application = new Application(framework);
+		application = new Application()
+				.setFramework(instance = new Cuplet());
 		application.run();
 	}
 
@@ -43,17 +41,13 @@ public class Cuplet implements Game, InputListener
 
 	private SceneManager sceneManager;
 
-	public Cuplet()
-	{
-	}
-
 	@Override
-	public void onFirstUpdate()
+	public void onFirstUpdate(TickEngine tickEngine)
 	{
-		this.sceneManager = new SceneManager(this.getFramework().getRenderEngine().getRenderServices());
+		this.sceneManager = new SceneManager(this.getRenderEngine().getRenderServices());
 		this.sceneManager.registerScene("init", MainScene.class, MainRenderer.class);
 
-		final InputEngine input = this.getFramework().getInputEngine();
+		final InputEngine input = this.getInputEngine();
 		input.getDefaultContext().registerEvent("_debug", input.getKeyboard().getButton(GLFW.GLFW_KEY_P)::getAction);
 		input.getDefaultContext().addListener(0, this);
 
@@ -63,7 +57,7 @@ public class Cuplet implements Game, InputListener
 	@Override
 	public void onInputUpdate(InputContext context)
 	{
-		final InputEngine input = this.getFramework().getInputEngine();
+		final InputEngine input = this.getInputEngine();
 		if (input.getDefaultContext().getAction("_debug").isPressedAndConsume())
 		{
 			DEBUG = !DEBUG;
@@ -77,21 +71,16 @@ public class Cuplet implements Game, InputListener
 	}
 
 	@Override
-	public void onLastUpdate()
+	public void onLastUpdate(TickEngine tickEngine)
 	{
 		this.sceneManager.destroy();
 
-		Cuplet.getCuplet().getFramework().getInputEngine().getDefaultContext().removeListener(this);
+		this.getInputEngine().getDefaultContext().removeListener(this);
 	}
 
 	public final SceneManager getSceneManager()
 	{
 		return this.sceneManager;
-	}
-
-	public final GameEngine getFramework()
-	{
-		return framework;
 	}
 
 	public final Application getApplication()

@@ -1,11 +1,11 @@
-package net.jimboi.canary.stage_a.cuplet.collisionbox;
+package net.jimboi.canary.stage_a.base.collisionbox;
 
-import net.jimboi.canary.stage_a.cuplet.collisionbox.box.AxisAlignedBoundingBox;
-import net.jimboi.canary.stage_a.cuplet.collisionbox.box.BoundingBox;
-import net.jimboi.canary.stage_a.cuplet.collisionbox.box.GridBasedBoundingBox;
-import net.jimboi.canary.stage_a.cuplet.collisionbox.collider.BoxCollider;
-import net.jimboi.canary.stage_a.cuplet.renderer.MaterialProperty;
-import net.jimboi.canary.stage_a.cuplet.renderer.WireframeRenderer;
+import net.jimboi.canary.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
+import net.jimboi.canary.stage_a.base.collisionbox.box.BoundingBox;
+import net.jimboi.canary.stage_a.base.collisionbox.box.GridBasedBoundingBox;
+import net.jimboi.canary.stage_a.base.collisionbox.collider.BoxCollider;
+import net.jimboi.canary.stage_a.base.renderer.MaterialProperty;
+import net.jimboi.canary.stage_a.base.renderer.WireframeRenderer;
 
 import org.bstone.asset.Asset;
 import org.bstone.material.Material;

@@ -72,7 +72,7 @@ public class OBJFormatParser extends DataFormatParser<Mesh>
 				}
 				else
 				{
-					break;
+					this.consumeLine(cursor);
 				}
 			}
 

@@ -5,6 +5,8 @@ import org.bstone.application.Framework;
 import org.bstone.asset.AssetManager;
 import org.bstone.input.InputContext;
 import org.bstone.input.InputEngine;
+import org.bstone.json.JSONObject;
+import org.bstone.json.JSONString;
 import org.bstone.render.RenderEngine;
 import org.bstone.resource.BitmapLoader;
 import org.bstone.resource.MeshLoader;
@@ -13,17 +15,20 @@ import org.bstone.resource.ShaderLoader;
 import org.bstone.resource.TextureAtlasLoader;
 import org.bstone.resource.TextureLoader;
 import org.bstone.tick.TickEngine;
+import org.bstone.util.parser.json.JSONFormatParser;
 import org.bstone.window.Window;
 import org.lwjgl.opengl.GL20;
 import org.qsilver.ResourceLocation;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 /**
  * Created by Andy on 10/17/17.
  */
-public class GameEngine implements Framework
+public class GameEngine implements Framework, Game
 {
-	protected final Game handler;
-
 	protected final Window window;
 	protected final InputEngine inputEngine;
 	protected InputContext input;
@@ -35,24 +40,13 @@ public class GameEngine implements Framework
 
 	private double timeCounter;
 
-	public GameEngine(Game handler)
+	public GameEngine()
 	{
-		this.handler = handler;
-
 		this.window = new Window();
 		this.inputEngine = new InputEngine(this.window);
-		this.tickEngine = new TickEngine(60, true, this.handler);
-		this.renderEngine = new RenderEngine(this.window, this.tickEngine, this.handler);
-
-		ResourceLocation assets = this.handler.getAssetLocation();
-		if (assets != null)
-		{
-			this.assetManager = new AssetManager(assets);
-		}
-		else
-		{
-			this.assetManager = new AssetManager();
-		}
+		this.tickEngine = new TickEngine(60, true);
+		this.renderEngine = new RenderEngine(this.window, this.tickEngine);
+		this.assetManager = new AssetManager();
 	}
 
 	@Override
@@ -74,6 +68,9 @@ public class GameEngine implements Framework
 		this.assetManager.registerLoader("fragment_shader", new ShaderLoader(GL20.GL_FRAGMENT_SHADER));
 		this.assetManager.registerLoader("mesh", new MeshLoader());
 
+		this.renderEngine.getRenderServices().startService("framework", new Game.Render(this));
+		this.tickEngine.getTickServices().startService("framework", new Game.Tick(this));
+
 		app.startEngine(this.inputEngine);
 		app.startEngine(this.renderEngine);
 		app.startEngine(this.tickEngine);
@@ -84,6 +81,9 @@ public class GameEngine implements Framework
 	@Override
 	public void onApplicationStop(Application app)
 	{
+		this.tickEngine.getTickServices().stopService("framework");
+		this.renderEngine.getRenderServices().stopService("framework");
+
 		this.assetManager.destroy();
 	}
 
@@ -137,8 +137,25 @@ public class GameEngine implements Framework
 		return this.assetManager;
 	}
 
-	public Game getGame()
+	protected static void loadAssetsFromLocation(AssetManager assets, ResourceLocation location)
 	{
-		return handler;
+		try
+		{
+			try (BufferedReader reader = new BufferedReader(new FileReader(location.getFilePath())))
+			{
+				JSONFormatParser parser = new JSONFormatParser(256);
+				JSONObject obj = (JSONObject) parser.parse(reader);
+
+				for(String name : obj.names())
+				{
+					assets.registerResourceLocation(name,
+							new ResourceLocation(((JSONString) obj.get(name)).get()));
+				}
+			}
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

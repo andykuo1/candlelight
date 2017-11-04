@@ -1,10 +1,10 @@
-package net.jimboi.canary.stage_a.cuplet.collisionbox.response;
+package net.jimboi.canary.stage_a.base.collisionbox.response;
 
-import net.jimboi.canary.stage_a.cuplet.collisionbox.box.AxisAlignedBoundingBox;
-import net.jimboi.canary.stage_a.cuplet.collisionbox.box.BoundingBox;
-import net.jimboi.canary.stage_a.cuplet.collisionbox.box.GridAlignedBoundingBox;
-import net.jimboi.canary.stage_a.cuplet.collisionbox.box.GridBasedBoundingBox;
-import net.jimboi.canary.stage_a.cuplet.collisionbox.collider.BoxCollider;
+import net.jimboi.canary.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
+import net.jimboi.canary.stage_a.base.collisionbox.box.BoundingBox;
+import net.jimboi.canary.stage_a.base.collisionbox.box.GridAlignedBoundingBox;
+import net.jimboi.canary.stage_a.base.collisionbox.box.GridBasedBoundingBox;
+import net.jimboi.canary.stage_a.base.collisionbox.collider.BoxCollider;
 
 import org.qsilver.util.MathUtil;
 

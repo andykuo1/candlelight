@@ -1,8 +1,8 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main.entity;
 
+import net.jimboi.canary.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
+import net.jimboi.canary.stage_a.base.renderer.MaterialProperty;
 import net.jimboi.canary.stage_a.cuplet.basicobject.ComponentRenderable;
-import net.jimboi.canary.stage_a.cuplet.collisionbox.box.AxisAlignedBoundingBox;
-import net.jimboi.canary.stage_a.cuplet.renderer.MaterialProperty;
 import net.jimboi.canary.stage_a.cuplet.scene_main.GobletWorld;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentDamageable;
 import net.jimboi.canary.stage_a.cuplet.scene_main.entity.base.EntitySolid;
@@ -30,7 +30,7 @@ public class EntityHurtable extends EntitySolid implements IBurnable
 	{
 		super(world, transform, boundingBox, renderable);
 
-		this.hurtColor = 0xFF0000;
+		this.hurtColor = 0xFFFF0000;
 	}
 
 	@Override

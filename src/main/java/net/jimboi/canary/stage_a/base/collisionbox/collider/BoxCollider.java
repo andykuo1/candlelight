@@ -1,7 +1,7 @@
-package net.jimboi.canary.stage_a.cuplet.collisionbox.collider;
+package net.jimboi.canary.stage_a.base.collisionbox.collider;
 
-import net.jimboi.canary.stage_a.cuplet.collisionbox.box.BoundingBox;
-import net.jimboi.canary.stage_a.cuplet.collisionbox.response.CollisionResponse;
+import net.jimboi.canary.stage_a.base.collisionbox.box.BoundingBox;
+import net.jimboi.canary.stage_a.base.collisionbox.response.CollisionResponse;
 
 /**
  * Created by Andy on 8/7/17.

@@ -1,6 +1,6 @@
-package net.jimboi.canary.stage_a.cuplet.collisionbox.response;
+package net.jimboi.canary.stage_a.base.collisionbox.response;
 
-import net.jimboi.canary.stage_a.cuplet.collisionbox.collider.BoxCollider;
+import net.jimboi.canary.stage_a.base.collisionbox.collider.BoxCollider;
 
 import org.joml.Vector2f;
 import org.joml.Vector2fc;

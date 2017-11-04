@@ -1,7 +1,7 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main.entity;
 
-import net.jimboi.canary.stage_a.cuplet.collisionbox.collider.BoxCollider;
-import net.jimboi.canary.stage_a.cuplet.renderer.MaterialProperty;
+import net.jimboi.canary.stage_a.base.collisionbox.collider.BoxCollider;
+import net.jimboi.canary.stage_a.base.renderer.MaterialProperty;
 import net.jimboi.canary.stage_a.cuplet.scene_main.GobletEntity;
 import net.jimboi.canary.stage_a.cuplet.scene_main.GobletWorld;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tick.TickCounter;
@@ -58,7 +58,7 @@ public class EntityFire extends GobletEntity implements IDamageSource
 		}
 		else if (ticks == this.ageTicks.getMaxTicks())
 		{
-			for(BoxCollider collider : this.world.getBoundingManager().getNearestColliders(this.transform.posX(), this.transform.posY(), 0.5F))
+			for(BoxCollider collider : this.world.getBoundingManager().getNearestColliders(this.world.getColliders().iterator(), this.transform.posX(), this.transform.posY(), 0.5F))
 			{
 				if (collider instanceof IBurnable)
 				{

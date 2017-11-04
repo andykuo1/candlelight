@@ -1,28 +1,41 @@
 package net.jimboi.canary.stage_a.lantern.scene_main;
 
-import net.jimboi.canary.stage_a.cuplet.collisionbox.CollisionBoxManager;
-import net.jimboi.canary.stage_a.cuplet.collisionbox.CollisionBoxRenderer;
+import net.jimboi.canary.stage_a.base.collisionbox.CollisionBoxRenderer;
+import net.jimboi.canary.stage_a.base.renderer.MaterialProperty;
+import net.jimboi.canary.stage_a.base.renderer.SimpleRenderer;
 import net.jimboi.canary.stage_a.lantern.Lantern;
+import net.jimboi.canary.stage_a.lantern.TextureAtlasBuilder;
+import net.jimboi.canary.stage_a.lantern.scene_main.component.ComponentRenderable;
 
 import org.bstone.asset.AssetManager;
 import org.bstone.camera.Camera;
-import org.bstone.camera.PerspectiveCamera;
+import org.bstone.material.Material;
 import org.bstone.render.RenderEngine;
 import org.bstone.scene.SceneRenderer;
+import org.bstone.sprite.textureatlas.TextureAtlas;
+import org.bstone.transform.Transform;
+import org.bstone.transform.Transform3;
+import org.joml.Matrix4f;
 import org.qsilver.ResourceLocation;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by Andy on 11/2/17.
  */
 public class SceneMainRenderer extends SceneRenderer
 {
-	private Camera camera;
 	private CollisionBoxRenderer collisionRenderer;
+	private SimpleRenderer simpleRenderer;
+	private boolean renderCollision = false;
+
+	private Material material;
 
 	@Override
 	protected void onRenderLoad(RenderEngine renderEngine)
 	{
-		final AssetManager assets = Lantern.getLantern().getFramework().getAssetManager();
+		final AssetManager assets = Lantern.getLantern().getAssetManager();
 
 		assets.registerResourceLocation("program.simple",
 				new ResourceLocation("lantern:program_simple.res"));
@@ -38,14 +51,38 @@ public class SceneMainRenderer extends SceneRenderer
 		assets.registerResourceLocation("fragment_shader.wireframe",
 				new ResourceLocation("base:wireframe.fsh"));
 
+		assets.registerResourceLocation("mesh.cube",
+				new ResourceLocation("lantern:cube.obj"));
 		assets.registerResourceLocation("mesh.quad",
 				new ResourceLocation("lantern:quad.obj"));
+
+		assets.registerResourceLocation("bitmap.crate",
+				new ResourceLocation("glim:texture/wooden_crate.jpg"));
+		assets.registerResourceLocation("texture.crate",
+				new ResourceLocation("lantern:texture_wooden_crate.res"));
+
+		assets.registerResourceLocation("bitmap.font",
+				new ResourceLocation("base:font.png"));
+
+		assets.registerResourceLocation("texture.font",
+				new ResourceLocation("lantern:texture_font.res"));
+
+		{
+			TextureAtlasBuilder tab = new TextureAtlasBuilder(assets.getAsset("texture", "font"), 256, 256);
+			tab.addTileSheet(0, 0, 16, 16, 0, 0, 16, 16);
+			TextureAtlas textureAtlas = tab.bake();
+			assets.cacheResource("texture_atlas", "font", textureAtlas);
+
+			this.material = new Material();
+			this.material.setProperty(MaterialProperty.TEXTURE, assets.getAsset("texture", "font"));
+		}
+
+		this.simpleRenderer = new SimpleRenderer(
+				assets.getAsset("program", "simple"));
 
 		this.collisionRenderer = new CollisionBoxRenderer(
 				assets.getAsset("program", "wireframe"),
 				assets.getAsset("mesh", "quad"));
-
-		this.camera = new PerspectiveCamera(0, 0, 10, 640, 480);
 	}
 
 	@Override
@@ -57,12 +94,34 @@ public class SceneMainRenderer extends SceneRenderer
 	@Override
 	protected void onRenderUpdate(RenderEngine renderEngine, double delta)
 	{
-		CollisionBoxManager collisionManager = ((SceneMain) Lantern.getLantern().getSceneManager().getCurrentScene()).getCollisionManager();
+		final AssetManager assets = Lantern.getLantern().getAssetManager();
+		final SceneMain scene = (SceneMain) Lantern.getLantern().getSceneManager().getCurrentScene();
+		final Camera camera = scene.getCamera();
+		final Matrix4f mat = new Matrix4f();
 
-		this.collisionRenderer.bind(this.camera.view(), this.camera.projection());
+		this.simpleRenderer.bind(camera.view(), camera.projection());
 		{
-			this.collisionRenderer.draw(collisionManager.getColliders(), 0x00FF00);
+			Collection<ComponentRenderable> renderables = scene.getEntityManager().getEntityManager().getComponents(ComponentRenderable.class, new ArrayList<>());
+			for(ComponentRenderable renderable : renderables)
+			{
+				this.simpleRenderer.draw(renderable.getRenderModel().getMesh(),
+						renderable.getRenderModel().material(),
+						renderable.getRenderTransformation(mat));
+			}
+
+			this.simpleRenderer.draw(assets.getAsset("mesh", "dungeon"), this.material, new Matrix4f());
 		}
-		this.collisionRenderer.unbind();
+		this.simpleRenderer.unbind();
+
+		if (this.renderCollision)
+		{
+			this.collisionRenderer.bind(camera.view().rotate(Transform.HALF_PI, Transform3.XAXIS, mat),
+					camera.projection());
+			{
+				this.collisionRenderer.draw(scene.getColliders(), 0x00FF00);
+			}
+			this.collisionRenderer.unbind();
+		}
+
 	}
 }

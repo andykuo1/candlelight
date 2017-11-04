@@ -1,8 +1,8 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main.tile;
 
+import net.jimboi.canary.stage_a.base.model.Model;
+import net.jimboi.canary.stage_a.base.renderer.MaterialProperty;
 import net.jimboi.canary.stage_a.cuplet.Cuplet;
-import net.jimboi.canary.stage_a.cuplet.model.Model;
-import net.jimboi.canary.stage_a.cuplet.renderer.MaterialProperty;
 
 import org.bstone.asset.Asset;
 import org.bstone.asset.AssetManager;
@@ -42,7 +42,7 @@ public class TileMapModelManager
 
 	public Model createStaticModel(TileMap tilemap)
 	{
-		AssetManager assets = Cuplet.getCuplet().getFramework().getAssetManager();
+		AssetManager assets = Cuplet.getCuplet().getAssetManager();
 		Mesh mesh = ModelUtil.createStaticMesh(createMesh3DFromMap(tilemap, this.textureAtlas));
 		String name = mesh.toString();
 		assets.cacheResource("mesh", name, mesh);
@@ -121,10 +121,10 @@ public class TileMapModelManager
 				v.set(0);
 
 				boolean center = isSolid(tilemap, x, y);
-				boolean up = isSolid(tilemap, x, y + 1);
-				boolean down = isSolid(tilemap, x, y - 1);
-				boolean left = isSolid(tilemap, x + 1, y);
-				boolean right = isSolid(tilemap, x - 1, y);
+				boolean up = isSolid(tilemap, x, y - 1);
+				boolean down = isSolid(tilemap, x, y + 1);
+				boolean left = isSolid(tilemap, x - 1, y);
+				boolean right = isSolid(tilemap, x + 1, y);
 
 				if (!center)
 				{

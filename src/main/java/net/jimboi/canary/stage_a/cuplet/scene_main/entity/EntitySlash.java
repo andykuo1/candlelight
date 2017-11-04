@@ -1,7 +1,7 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main.entity;
 
-import net.jimboi.canary.stage_a.cuplet.collisionbox.collider.BoxCollider;
-import net.jimboi.canary.stage_a.cuplet.collisionbox.response.CollisionResponse;
+import net.jimboi.canary.stage_a.base.collisionbox.collider.BoxCollider;
+import net.jimboi.canary.stage_a.base.collisionbox.response.CollisionResponse;
 import net.jimboi.canary.stage_a.cuplet.scene_main.GobletWorld;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentDamageable;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentMotion;
@@ -44,7 +44,7 @@ public class EntitySlash extends EntitySolid implements IDamageSource
 		}
 		else if (this.ageTicks.getTicks() == this.ageTicks.getMaxTicks() / 2)
 		{
-			for(BoxCollider collider : this.world.getBoundingManager().getNearestColliders(this.transform.posX(), this.transform.posY(), 0.5F))
+			for(BoxCollider collider : this.world.getBoundingManager().getNearestColliders(this.world.getColliders().iterator(), this.transform.posX(), this.transform.posY(), 0.5F))
 			{
 				if (collider == this.owner) continue;
 

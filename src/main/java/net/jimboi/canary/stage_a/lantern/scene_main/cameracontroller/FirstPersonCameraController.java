@@ -1,27 +1,30 @@
-package net.jimboi.canary.stage_a.lantern.scene_test;
-
-import net.jimboi.canary.stage_a.lantern.Lantern;
+package net.jimboi.canary.stage_a.lantern.scene_main.cameracontroller;
 
 import org.bstone.camera.Camera;
+import org.bstone.camera.PerspectiveCamera;
 import org.bstone.input.InputContext;
-import org.bstone.input.InputEngine;
 import org.bstone.input.InputListener;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.joml.Vector3f;
-import org.joml.Vector3fc;
 import org.qsilver.util.MathUtil;
 
 /**
- * Created by Andy on 10/20/17.
+ * Created by Andy on 11/3/17.
  */
-public class FirstPersonCameraHandler implements InputListener
+public class FirstPersonCameraController extends CameraController implements InputListener
 {
-	public static final float MAX_PITCH = Transform.DEG2RAD * 80F;
+	public static final String INPUT_LOOK_X = "mousex";
+	public static final String INPUT_LOOK_Y = "mousey";
+	public static final String INPUT_LOOK_LOCK = "mouselock";
+	public static final String INPUT_FORWARD = "forward";
+	public static final String INPUT_UP = "up";
+	public static final String INPUT_RIGHT = "right";
+	public static final String INPUT_SPRINT = "sprint";
 
-	private final Camera camera;
+	public static final float MAX_PITCH = Transform.DEG2RAD * 80F;
 
 	protected float sensitivity = 0.01F;
 
@@ -33,6 +36,7 @@ public class FirstPersonCameraHandler implements InputListener
 	protected float acceleration = 0.1F;
 	protected float friction = 0.1F;
 
+	protected Vector3f position = new Vector3f();
 	protected float forward;
 	protected float up;
 	protected float right;
@@ -40,43 +44,24 @@ public class FirstPersonCameraHandler implements InputListener
 
 	protected float counter;
 
-	protected Transform3 target;
-
-	public FirstPersonCameraHandler(Camera camera)
+	public FirstPersonCameraController(PerspectiveCamera camera)
 	{
-		this.camera = camera;
-	}
+		super(camera);
 
-	public void setTarget(Transform3 target)
-	{
-		this.target = target;
-	}
-
-	public boolean hasTarget()
-	{
-		return this.target != null;
+		this.position.set(camera.transform().position3());
 	}
 
 	private static final Vector3f _VEC = new Vector3f();
 	private static final Vector3f _RIGHT = new Vector3f();
 	private static final Vector3f _FORWARD = new Vector3f();
 
-	public void update()
+	@Override
+	protected boolean onUpdate(Camera camera, Transform3 cameraTransform)
 	{
-		if (this.target == null) return;
-
-		Transform3 cameraTransform = (Transform3) this.camera.transform();
-
 		//Look
 		cameraTransform.setYaw(this.yaw);
 		Vector3f right = cameraTransform.getRight(_RIGHT);
 		cameraTransform.rotate(this.pitch, right);
-
-		Transform3 transform = this.target;
-		transform.rotation.set(transform.rotation);
-		transform.rotation.x = 0;
-		transform.rotation.z = 0;
-		transform.rotation.normalize().invert();
 
 		//Movement
 		Vector3f forward = Transform3.YAXIS.cross(right, _FORWARD);
@@ -85,7 +70,7 @@ public class FirstPersonCameraHandler implements InputListener
 		{
 			forward.normalize().mul(this.forward);
 			right.normalize().mul(this.right);
-			_VEC.set(0).add(forward).add(right).normalize().mul(this.getSpeed());
+			_VEC.set(0).add(forward).add(right).normalize().mul(this.getMoveSpeed());
 
 			this.velocity.lerp(_VEC, this.acceleration);
 		}
@@ -96,12 +81,12 @@ public class FirstPersonCameraHandler implements InputListener
 		float dist = _VEC.length();
 		if (dist != 0)
 		{
-			this.target.translate(_VEC.normalize(), dist);
+			this.position.add(_VEC.normalize().mul(dist));
 		}
 
 		if (this.up != 0)
 		{
-			this.target.translate(Transform3.YAXIS, this.up * this.getSpeed() * 2);
+			this.position.add(Transform3.YAXIS.mul(this.up * this.getMoveSpeed() * 1.2F, _VEC));
 		}
 
 		if (this.velocity.lengthSquared() != 0)
@@ -112,39 +97,25 @@ public class FirstPersonCameraHandler implements InputListener
 
 		float wiggleX = 0.03F;
 		float wiggleY = 0.03F;
-		Vector3fc pos = this.target.position3();
-		cameraTransform.position.set(pos.x(), pos.y(), pos.z());
+		cameraTransform.position.set(this.position);
 		cameraTransform.moveUp((float) Math.abs(Math.cos(this.counter)) * wiggleY - wiggleY / 2F);
 		cameraTransform.moveRight((float) Math.cos(this.counter) * wiggleX);
 
-		//Make sure camera is aware of changes!
-		this.camera.markDirty();
-	}
-
-	@Override
-	public void onInputStart(InputEngine input, InputContext context)
-	{
-	}
-
-	@Override
-	public void onInputStop(InputEngine input, InputContext context)
-	{
+		return true;
 	}
 
 	@Override
 	public void onInputUpdate(InputContext context)
 	{
-		if (this.target == null) return;
-
 		//Look
-		boolean mouseLocked = Lantern.getLantern().getInputEngine().getMouse().getCursorMode();
+		boolean mouseLocked = context.getInputEngine().getMouse().getCursorMode();
 
 		if (mouseLocked)
 		{
 			//Update camera rotation
 			Vector2fc mouse = new Vector2f(
-					context.getRange("mousex").getMotion(),
-					context.getRange("mousey").getMotion()
+					context.getRange(INPUT_LOOK_X).getMotion(),
+					context.getRange(INPUT_LOOK_Y).getMotion()
 			);
 
 			float rotx = mouse.x() * this.sensitivity;
@@ -155,35 +126,40 @@ public class FirstPersonCameraHandler implements InputListener
 			this.pitch = MathUtil.clamp(this.pitch, -MAX_PITCH, MAX_PITCH);
 		}
 
-		if (context.getAction("mouselock").isPressedAndConsume())
+		if (context.getAction(INPUT_LOOK_LOCK).isPressedAndConsume())
 		{
-			Lantern.getLantern().getInputEngine().getMouse().setCursorMode(!mouseLocked);
+			context.getInputEngine().getMouse().setCursorMode(!mouseLocked);
 		}
 
 		//Move
-		this.forward = 0;
-		this.forward += context.getRange("forward").getRangeAndConsume();
+		this.forward = context.getRange(INPUT_FORWARD).getRangeAndConsume();
+		this.up = context.getRange(INPUT_UP).getRangeAndConsume();
+		this.right = context.getRange(INPUT_RIGHT).getRangeAndConsume();
 
-		this.up = 0;
-		this.up += context.getRange("up").getRangeAndConsume();
-
-		this.right = 0;
-		this.right += context.getRange("right").getRangeAndConsume();
-
-		this.sprint = context.getState("sprint").isDownAndConsume();
+		this.sprint = context.getState(INPUT_SPRINT).isDown();
 	}
 
-	public void setSensitivity(float sensitivity)
+	public void updateTransform(Transform3 transform)
+	{
+		this.getCamera().transform().getRotation(transform.rotation);
+		transform.rotation.x = 0;
+		transform.rotation.z = 0;
+		transform.rotation.normalize().invert();
+
+		transform.position.set(this.position);
+	}
+
+	public void setLookSensitivity(float sensitivity)
 	{
 		this.sensitivity = sensitivity;
 	}
 
-	public float getSpeed()
+	public float getMoveSpeed()
 	{
 		return this.sprint ? this.maxSpeed * 2 : this.maxSpeed;
 	}
 
-	public void setSpeed(float speed)
+	public void setMoveSpeed(float speed)
 	{
 		this.maxSpeed = speed;
 	}

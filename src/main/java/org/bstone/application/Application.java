@@ -10,7 +10,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class Application implements Runnable
 {
-	private final Framework framework;
+	private Framework framework;
 	private Thread thread;
 
 	private List<Engine> engines = new LinkedList<>();
@@ -20,13 +20,16 @@ public class Application implements Runnable
 	private volatile boolean running = false;
 
 	/**
-	 * Constructs the application with client-defined framework
+	 * Prepares the application with the client-defined framework
 	 *
 	 * @param framework the listening framework
 	 */
-	public Application(Framework framework)
+	public Application setFramework(Framework framework)
 	{
+		if (this.running) throw new IllegalStateException("cannot change framework while running");
+
 		this.framework = framework;
+		return this;
 	}
 
 	/**
@@ -91,6 +94,11 @@ public class Application implements Runnable
 		this.thread = Thread.currentThread();
 		this.running = true;
 		this.currentIndex = -1;
+
+		if (this.framework == null)
+		{
+			throw new IllegalStateException("cannot start application without a framework - must set framework before running");
+		}
 
 		//Create application
 		try

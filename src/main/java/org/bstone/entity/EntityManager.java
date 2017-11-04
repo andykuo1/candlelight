@@ -184,7 +184,7 @@ public class EntityManager<E extends IEntity>
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends Component> Collection<T> getComponents(Class<? extends T> type, Collection<T> dst)
+	public <T> Collection<T> getComponents(Class<? extends T> type, Collection<T> dst)
 	{
 		for(Class<? extends Component> componentType : this.components.keySet())
 		{

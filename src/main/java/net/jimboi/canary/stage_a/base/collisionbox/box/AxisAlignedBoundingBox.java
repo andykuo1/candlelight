@@ -1,4 +1,4 @@
-package net.jimboi.canary.stage_a.cuplet.collisionbox.box;
+package net.jimboi.canary.stage_a.base.collisionbox.box;
 
 /**
  * Created by Andy on 8/7/17.

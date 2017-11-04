@@ -1,13 +1,8 @@
 package org.bstone.asset;
 
-import org.bstone.json.JSONObject;
-import org.bstone.json.JSONString;
 import org.bstone.resource.ResourceLoader;
-import org.bstone.util.parser.json.JSONFormatParser;
 import org.qsilver.ResourceLocation;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -29,31 +24,6 @@ public class AssetManager
 
 	private final Map<String, ResourceLoader> loaders = new HashMap<>();
 	private final Map<ResourceLoader, Map<String, AutoCloseable>> cached = new HashMap<>();
-
-	public AssetManager()
-	{
-	}
-
-	public AssetManager(ResourceLocation location)
-	{
-		try
-		{
-			try (BufferedReader reader = new BufferedReader(new FileReader(location.getFilePath())))
-			{
-				JSONFormatParser parser = new JSONFormatParser(256);
-				JSONObject obj = (JSONObject) parser.parse(reader);
-
-				for(String name : obj.names())
-				{
-					this.registerResourceLocation(name, new ResourceLocation(((JSONString) obj.get(name)).get()));
-				}
-			}
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
 
 	public void update()
 	{

@@ -1,11 +1,12 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main;
 
+import net.jimboi.canary.stage_a.base.collisionbox.CollisionBoxManager;
+import net.jimboi.canary.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
+import net.jimboi.canary.stage_a.base.collisionbox.collider.BoxCollider;
+import net.jimboi.canary.stage_a.base.model.Model;
+import net.jimboi.canary.stage_a.base.renderer.MaterialProperty;
 import net.jimboi.canary.stage_a.cuplet.Cuplet;
 import net.jimboi.canary.stage_a.cuplet.basicobject.ComponentRenderable;
-import net.jimboi.canary.stage_a.cuplet.collisionbox.CollisionBoxManager;
-import net.jimboi.canary.stage_a.cuplet.collisionbox.box.AxisAlignedBoundingBox;
-import net.jimboi.canary.stage_a.cuplet.model.Model;
-import net.jimboi.canary.stage_a.cuplet.renderer.MaterialProperty;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.SystemDamageable;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.SystemMotion;
 import net.jimboi.canary.stage_a.cuplet.scene_main.entity.EntityPlayer;
@@ -30,6 +31,7 @@ import org.joml.Vector3fc;
 import org.joml.Vector4f;
 
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Created by Andy on 8/9/17.
@@ -119,9 +121,9 @@ public class GobletWorld
 				}
 			}
 		}
-		this.getBoundingManager().addCollider(this.tilemap);
+		this.getColliders().add(this.tilemap);
 
-		final AssetManager assets = Cuplet.getCuplet().getFramework().getAssetManager();
+		final AssetManager assets = Cuplet.getCuplet().getAssetManager();
 
 		this.tileMapModelManager = new TileMapModelManager(
 				assets.getAsset("texture", "font"),
@@ -176,7 +178,7 @@ public class GobletWorld
 
 	public Model createModel2D(char c, int color)
 	{
-		return new Model(Cuplet.getCuplet().getFramework().getAssetManager().<Mesh>getAsset("mesh", "quad"), this.createMaterial2D(c, color));
+		return new Model(Cuplet.getCuplet().getAssetManager().<Mesh>getAsset("mesh", "quad"), this.createMaterial2D(c, color));
 	}
 
 	public Material createMaterial2D(char c, int color)
@@ -247,5 +249,10 @@ public class GobletWorld
 	public CollisionBoxManager getBoundingManager()
 	{
 		return this.entityManager.getBoundingManager();
+	}
+
+	public Set<BoxCollider> getColliders()
+	{
+		return this.entityManager.getColliders();
 	}
 }

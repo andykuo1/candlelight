@@ -1,4 +1,4 @@
-package net.jimboi.canary.stage_a.cuplet.collisionbox.box;
+package net.jimboi.canary.stage_a.base.collisionbox.box;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,12 +1,13 @@
-package net.jimboi.canary.stage_a.lantern.scene_main;
+package net.jimboi.canary.stage_a.lantern.scene_main.entity;
 
-import net.jimboi.canary.stage_a.cuplet.model.Model;
+import net.jimboi.canary.stage_a.base.model.Model;
+import net.jimboi.canary.stage_a.base.renderer.MaterialProperty;
 import net.jimboi.canary.stage_a.lantern.Lantern;
 import net.jimboi.canary.stage_a.lantern.scene_main.component.ComponentRenderable;
 import net.jimboi.canary.stage_a.lantern.scene_main.component.ComponentTransform;
 
+import org.bstone.asset.AssetManager;
 import org.bstone.entity.EntityManager;
-import org.bstone.material.Material;
 import org.bstone.transform.Transform3;
 
 /**
@@ -17,9 +18,13 @@ public class EntityPlayer extends EntityBase
 	@Override
 	public void onEntityCreate(EntityManager entityManager)
 	{
-		Model model = new Model(Lantern.getLantern().getFramework().getAssetManager().getAsset("mesh", "player"), new Material());
+		final AssetManager assets = Lantern.getLantern().getAssetManager();
+
+		Model model = new Model(assets.getAsset("mesh", "cube"));
+		model.material().setProperty(MaterialProperty.TEXTURE, assets.getAsset("texture", "crate"));
+
 		Transform3 transform = new Transform3();
 		this.addComponent(new ComponentTransform(transform));
-		this.addComponent(new ComponentRenderable(transform, model));
+		this.addComponent(new ComponentRenderable(transform.derive3().setPosition(0, -2, 0), model));
 	}
 }

@@ -1,4 +1,4 @@
-package net.jimboi.canary.stage_a.cuplet;
+package net.jimboi.canary.stage_a.lantern;
 
 import org.bstone.asset.Asset;
 import org.bstone.mogli.Texture;
@@ -41,7 +41,7 @@ public class TextureAtlasBuilder
 		float w = spriteWidth / (float) this.width;
 		float h = spriteHeight / (float) this.height;
 
-		this.subtextures.add(new Vector4f(u, v, w, h));
+		this.subtextures.add(new Vector4f(1 - u - w, 1 - v - h, w, h));
 
 		return this;
 	}

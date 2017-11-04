@@ -55,10 +55,10 @@ public final class Bitmap implements AutoCloseable
 
 	public Bitmap(ResourceLocation location)
 	{
-		this(BitmapLoader.read(location.getFilePath(), 8 * 1024));
+		this(BitmapLoader.read(location.getFilePath(), 8 * 1024), true, true);
 	}
 
-	public Bitmap(ByteBuffer imageBuffer)
+	public Bitmap(ByteBuffer imageBuffer, boolean vmirror, boolean hmirror)
 	{
 		IntBuffer w = BufferUtils.createIntBuffer(1);
 		IntBuffer h = BufferUtils.createIntBuffer(1);
@@ -76,9 +76,9 @@ public final class Bitmap implements AutoCloseable
 		if (this.pixels == null)
 			throw new RuntimeException("Failed to load image: " + stbi_failure_reason());
 
-		//TODO: This is because OpenGL texture origin is bottom-left, NOT top-left
-		this.flipVertically();
-		this.flipHorizontally();
+		//This is because OpenGL texture origin is bottom-left, NOT top-left
+		if (vmirror) this.flipVertically();
+		if (hmirror) this.flipHorizontally();
 
 		BITMAPS.add(this);
 	}

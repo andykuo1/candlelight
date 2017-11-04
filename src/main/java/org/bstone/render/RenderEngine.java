@@ -3,7 +3,6 @@ package org.bstone.render;
 import org.bstone.application.Application;
 import org.bstone.application.Engine;
 import org.bstone.application.handler.FrameHandler;
-import org.bstone.application.handler.RenderHandler;
 import org.bstone.service.ServiceManager;
 import org.bstone.tick.TickCounter;
 import org.bstone.window.Window;
@@ -15,20 +14,18 @@ public class RenderEngine extends Engine
 {
 	private final Window window;
 
-	private final ServiceManager<RenderService> services;
+	private final ServiceManager<RenderEngine, RenderService> services;
 
 	private final TickCounter frameCounter;
 	private final FrameHandler frameHandler;
-	private final RenderHandler renderHandler;
 
-	public RenderEngine(Window window, FrameHandler frameHandler, RenderHandler renderHandler)
+	public RenderEngine(Window window, FrameHandler frameHandler)
 	{
 		this.window = window;
 
-		this.services = new ServiceManager<>(renderService -> renderService.renderEngine = this);
+		this.services = new ServiceManager<>(this);
 
 		this.frameHandler = frameHandler;
-		this.renderHandler = renderHandler;
 
 		this.frameCounter = new TickCounter();
 	}
@@ -37,8 +34,6 @@ public class RenderEngine extends Engine
 	protected boolean onStart(Application app)
 	{
 		this.frameCounter.reset();
-
-		this.renderHandler.onRenderLoad();
 
 		this.services.beginServices();
 		this.services.endServices();
@@ -57,7 +52,6 @@ public class RenderEngine extends Engine
 			{
 				double delta = this.frameHandler.getElapsedFrameTime();
 
-				this.renderHandler.onRenderUpdate(delta);
 				this.services.forEach(renderService -> renderService.onRenderUpdate(this, delta));
 			}
 			this.window.updateScreenBuffer();
@@ -84,8 +78,6 @@ public class RenderEngine extends Engine
 		this.services.endServices();
 
 		this.services.destroy();
-
-		this.renderHandler.onRenderUnload();
 	}
 
 	public final TickCounter getFrameCounter()
@@ -93,7 +85,7 @@ public class RenderEngine extends Engine
 		return this.frameCounter;
 	}
 
-	public final ServiceManager<RenderService> getRenderServices()
+	public final ServiceManager<RenderEngine, RenderService> getRenderServices()
 	{
 		return this.services;
 	}

@@ -1,10 +1,10 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main;
 
+import net.jimboi.canary.stage_a.base.collisionbox.CollisionBoxRenderer;
+import net.jimboi.canary.stage_a.base.renderer.SimpleRenderer;
 import net.jimboi.canary.stage_a.cuplet.Cuplet;
-import net.jimboi.canary.stage_a.cuplet.TextureAtlasBuilder;
 import net.jimboi.canary.stage_a.cuplet.basicobject.ComponentRenderable;
-import net.jimboi.canary.stage_a.cuplet.collisionbox.CollisionBoxRenderer;
-import net.jimboi.canary.stage_a.cuplet.renderer.SimpleRenderer;
+import net.jimboi.canary.stage_a.lantern.TextureAtlasBuilder;
 
 import org.bstone.asset.AssetManager;
 import org.bstone.camera.Camera;
@@ -16,7 +16,6 @@ import org.bstone.util.Direction;
 import org.bstone.window.Window;
 import org.bstone.window.view.ScreenSpace;
 import org.joml.Matrix4f;
-import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 import org.qsilver.ResourceLocation;
 
@@ -50,8 +49,8 @@ public class MainRenderer extends SceneRenderer
 		this.renderables = new HashSet<>();
 		this.renderComponents = new HashSet<>();
 
-		final Window window = Cuplet.getCuplet().getFramework().getWindow();
-		final AssetManager assets = Cuplet.getCuplet().getFramework().getAssetManager();
+		final Window window = Cuplet.getCuplet().getWindow();
+		final AssetManager assets = Cuplet.getCuplet().getAssetManager();
 
 		//Camera
 		this.camera = new OrthographicCamera(window.getWidth(), window.getHeight());
@@ -59,6 +58,11 @@ public class MainRenderer extends SceneRenderer
 
 		//Assets
 		assets.registerResourceLocation("bitmap.font", new ResourceLocation("base:font.png"));
+
+		//hack to display stuff correctly
+		//assets.<Bitmap>getAsset("bitmap", "font").get().flipVertically();
+		//assets.<Bitmap>getAsset("bitmap", "font").get().flipHorizontally();
+
 		assets.registerResourceLocation("texture.font", new ResourceLocation("cuplet:texture_font.res"));
 		assets.registerResourceLocation("texture_atlas.font", new ResourceLocation("cuplet:texture_atlas_font.res"));
 
@@ -101,11 +105,9 @@ public class MainRenderer extends SceneRenderer
 	@Override
 	protected void onRenderUpdate(RenderEngine renderEngine, double delta)
 	{
-
 		this.simpleRenderer.bind(this.camera.view(), this.camera.projection());
 		{
 			Matrix4f matrix = new Matrix4f();
-			Vector4f vec4 = new Vector4f();
 
 			for (RenderableBase renderable : this.renderables)
 			{
@@ -133,7 +135,7 @@ public class MainRenderer extends SceneRenderer
 			this.collisionBoxRenderer.bind(this.camera.view(), this.camera.projection());
 			{
 				MainScene scene = (MainScene) Cuplet.getCuplet().getSceneManager().getCurrentScene();
-				this.collisionBoxRenderer.draw(scene.getWorld().getBoundingManager().getColliders(), 0x00FF00);
+				this.collisionBoxRenderer.draw(scene.getWorld().getColliders(), 0x00FF00);
 			}
 			this.collisionBoxRenderer.unbind();
 		}

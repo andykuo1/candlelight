@@ -1,10 +1,13 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main;
 
-import net.jimboi.canary.stage_a.cuplet.collisionbox.CollisionBoxManager;
-import net.jimboi.canary.stage_a.cuplet.collisionbox.collider.BoxCollider;
+import net.jimboi.canary.stage_a.base.collisionbox.CollisionBoxManager;
+import net.jimboi.canary.stage_a.base.collisionbox.collider.BoxCollider;
 
 import org.bstone.livingentity.LivingEntity;
 import org.bstone.livingentity.LivingEntityManager;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Andy on 8/9/17.
@@ -12,10 +15,12 @@ import org.bstone.livingentity.LivingEntityManager;
 public class GobletEntityManager extends LivingEntityManager
 {
 	private final CollisionBoxManager boundingManager;
+	private Set<BoxCollider> colliders;
 
 	public GobletEntityManager()
 	{
 		this.boundingManager = new CollisionBoxManager();
+		this.colliders = new HashSet<>();
 	}
 
 	@Override
@@ -23,7 +28,7 @@ public class GobletEntityManager extends LivingEntityManager
 	{
 		super.update();
 
-		this.boundingManager.update();
+		this.boundingManager.update(this.colliders);
 	}
 
 	@Override
@@ -31,7 +36,7 @@ public class GobletEntityManager extends LivingEntityManager
 	{
 		super.clear();
 
-		this.boundingManager.clear();
+		this.colliders.clear();
 	}
 
 	@Override
@@ -41,7 +46,7 @@ public class GobletEntityManager extends LivingEntityManager
 
 		if (living instanceof BoxCollider)
 		{
-			this.boundingManager.addCollider((BoxCollider) living);
+			this.colliders.add((BoxCollider) living);
 		}
 	}
 
@@ -52,12 +57,17 @@ public class GobletEntityManager extends LivingEntityManager
 
 		if (living instanceof BoxCollider)
 		{
-			this.boundingManager.removeCollider((BoxCollider) living);
+			this.colliders.remove(living);
 		}
 	}
 
 	public CollisionBoxManager getBoundingManager()
 	{
 		return this.boundingManager;
+	}
+
+	public Set<BoxCollider> getColliders()
+	{
+		return this.colliders;
 	}
 }

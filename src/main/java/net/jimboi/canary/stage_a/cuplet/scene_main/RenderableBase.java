@@ -1,6 +1,6 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main;
 
-import net.jimboi.canary.stage_a.cuplet.model.Model;
+import net.jimboi.canary.stage_a.base.model.Model;
 
 import org.joml.Matrix4f;
 

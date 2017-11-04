@@ -33,7 +33,7 @@ public class SceneTestRenderer extends SceneRenderer
 	{
 		System.out.println("LOADED!");
 
-		final AssetManager assets = Lantern.getLantern().getFramework().getAssetManager();
+		final AssetManager assets = Lantern.getLantern().getAssetManager();
 
 		assets.registerResourceLocation("texture.crate",
 				new ResourceLocation("lantern:texture_wooden_crate.res"));

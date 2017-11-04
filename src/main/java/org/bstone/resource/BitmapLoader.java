@@ -29,7 +29,7 @@ public class BitmapLoader implements ResourceLoader<Bitmap>
 		}
 		buffer.flip();
 
-		return new Bitmap(buffer);
+		return new Bitmap(buffer, false, false);
 	}
 
 	private static ByteBuffer resizeBuffer(ByteBuffer buffer, int newCapacity)

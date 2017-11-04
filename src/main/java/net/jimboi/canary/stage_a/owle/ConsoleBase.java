@@ -40,10 +40,10 @@ public class ConsoleBase
 		this.view.clear((byte) 0, 0xFFFFFF);
 		this.background.clear((byte) 0, 0x888888);
 
-		Console.getEngine().getInputEngine().getDefaultContext()
+		Console.getConsole().getInputEngine().getDefaultContext()
 				.registerEvent("newline",
-						Console.getEngine().getInputEngine().getKeyboard().getButton(GLFW.GLFW_KEY_ENTER)::getAction);
-		this.textHandler = Console.getEngine().getInputEngine().getText();
+						Console.getConsole().getInputEngine().getKeyboard().getButton(GLFW.GLFW_KEY_ENTER)::getAction);
+		this.textHandler = Console.getConsole().getInputEngine().getText();
 
 		this.initialize();
 	}
@@ -73,7 +73,7 @@ public class ConsoleBase
 		final StringBuffer sb = this.textHandler.getBuffer();
 
 		((ViewComponentText) this.components.get(2)).setText(": " + sb);
-		ActionEvent newline = Console.getEngine().getInputEngine().getDefaultContext().getAction("newline");
+		ActionEvent newline = Console.getConsole().getInputEngine().getDefaultContext().getAction("newline");
 		if (newline.isPressed() && sb.length() > 0)
 		{
 			newline.consume();
@@ -96,8 +96,8 @@ public class ConsoleBase
 			component.render(this.view);
 		}
 
-		float mouseX = Console.getEngine().getInputEngine().getDefaultContext().getRange("mousex").getRange();
-		float mouseY = Console.getEngine().getInputEngine().getDefaultContext().getRange("mousey").getRange();
+		float mouseX = Console.getConsole().getInputEngine().getDefaultContext().getRange("mousex").getRange();
+		float mouseY = Console.getConsole().getInputEngine().getDefaultContext().getRange("mousey").getRange();
 
 		Vector2f vec = this.console.screenSpace.getPoint2DFromScreen(mouseX, mouseY, new Vector2f());
 		this.view.setPixelType((int)Math.floor(vec.x()), (int)Math.floor(vec.y()), (byte) 'X');

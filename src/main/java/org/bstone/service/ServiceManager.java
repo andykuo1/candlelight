@@ -11,33 +11,29 @@ import java.util.function.Consumer;
 /**
  * Created by Andy on 11/2/17.
  */
-public class ServiceManager<T extends Service>
+public class ServiceManager<E, T extends Service<E>>
 {
 	public static final Set<Service> SERVICES = new RefCountSet<>("Service");
 
 	private final Queue<ServiceEvent> events = new LinkedList<>();
 
 	private final Queue<ServiceEntity> services = new LinkedList<>();
-	private final Consumer<T> createCallback;
+
+	private final E handler;
 
 	private volatile boolean active = false;
 
-	public ServiceManager()
+	public ServiceManager(E handler)
 	{
-		this(null);
+		this.handler = handler;
 	}
 
-	public ServiceManager(Consumer<T> createCallback)
-	{
-		this.createCallback = createCallback;
-	}
-
-	public synchronized void startService(String id, Class<? extends T> service)
+	public synchronized void startService(String id, T service)
 	{
 		this.startService(id, service, null);
 	}
 
-	public synchronized void startService(String id, Class<? extends T> service, Consumer<T> callback)
+	public synchronized void startService(String id, T service, Consumer<T> callback)
 	{
 		if (this.active)
 		{
@@ -49,31 +45,16 @@ public class ServiceManager<T extends Service>
 				}
 			}
 
-			T inst;
-			try
-			{
-				inst = service.newInstance();
-			}
-			catch (InstantiationException | IllegalAccessException e)
-			{
-				throw new IllegalArgumentException("could not instantiate service '" + service.getName() + "' - must have a default constructor");
-			}
+			service.start(this.handler);
 
-			if (this.createCallback != null)
-			{
-				this.createCallback.accept(inst);
-			}
-
-			inst.start();
-
-			this.services.add(new ServiceEntity(id, inst));
+			this.services.add(new ServiceEntity(id, service));
 
 			if (callback != null)
 			{
-				callback.accept(inst);
+				callback.accept(service);
 			}
 
-			SERVICES.add(inst);
+			SERVICES.add(service);
 		}
 		else
 		{
@@ -97,7 +78,7 @@ public class ServiceManager<T extends Service>
 				if (id.equals(entity.id))
 				{
 					T service = entity.service;
-					service.stop();
+					service.stop(this.handler);
 					iter.remove();
 
 					if (callback != null)
@@ -214,12 +195,20 @@ public class ServiceManager<T extends Service>
 		Iterator<ServiceEntity> iter = this.services.iterator();
 		while(iter.hasNext())
 		{
-			T service = iter.next().service;
-			service.stop();
+			ServiceEntity entity = iter.next();
+			T service = entity.service;
+			service.stop(this.handler);
 			iter.remove();
+
+			SERVICES.remove(service);
 		}
 
 		this.active = false;
+	}
+
+	public final E getHandler()
+	{
+		return this.handler;
 	}
 
 	final class ServiceEntity
@@ -239,11 +228,11 @@ public class ServiceManager<T extends Service>
 	final class ServiceEvent
 	{
 		final String id;
-		final Class<? extends T> service;
+		final T service;
 		final ServiceEventType eventType;
 		final Consumer<T> callback;
 
-		ServiceEvent(String id, Class<? extends T> service, ServiceEventType eventType, Consumer<T> callback)
+		ServiceEvent(String id, T service, ServiceEventType eventType, Consumer<T> callback)
 		{
 			this.id = id;
 			this.service = service;

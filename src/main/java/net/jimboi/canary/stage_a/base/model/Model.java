@@ -1,4 +1,4 @@
-package net.jimboi.canary.stage_a.cuplet.model;
+package net.jimboi.canary.stage_a.base.model;
 
 import org.bstone.asset.Asset;
 import org.bstone.material.Material;
@@ -14,6 +14,11 @@ public class Model
 	protected Material material;
 
 	protected final Matrix4f transformation = new Matrix4f();
+
+	public Model(Asset<Mesh> mesh)
+	{
+		this(mesh, new Material());
+	}
 
 	public Model(Asset<Mesh> mesh, Material material)
 	{

@@ -5,20 +5,18 @@ import org.bstone.service.Service;
 /**
  * Created by Andy on 11/2/17.
  */
-public abstract class RenderService implements Service
+public abstract class RenderService implements Service<RenderEngine>
 {
-	RenderEngine renderEngine;
-
 	@Override
-	public final void start()
+	public final void start(RenderEngine handler)
 	{
-		this.onRenderLoad(this.renderEngine);
+		this.onRenderLoad(handler);
 	}
 
 	@Override
-	public final void stop()
+	public final void stop(RenderEngine handler)
 	{
-		this.onRenderUnload(this.renderEngine);
+		this.onRenderUnload(handler);
 	}
 
 	protected abstract void onRenderLoad(RenderEngine renderEngine);
@@ -26,9 +24,4 @@ public abstract class RenderService implements Service
 	protected abstract void onRenderUnload(RenderEngine renderEngine);
 
 	protected abstract void onRenderUpdate(RenderEngine renderEngine, double delta);
-
-	public final RenderEngine getRenderEngine()
-	{
-		return this.renderEngine;
-	}
 }

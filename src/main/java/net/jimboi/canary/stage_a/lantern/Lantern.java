@@ -6,17 +6,16 @@ import net.jimboi.canary.stage_a.lantern.scene_test.SceneTest;
 import net.jimboi.canary.stage_a.lantern.scene_test.SceneTestRenderer;
 
 import org.bstone.application.Application;
-import org.bstone.application.game.Game;
 import org.bstone.application.game.GameEngine;
 import org.bstone.scene.SceneManager;
+import org.bstone.tick.TickEngine;
 
 /**
  * Created by Andy on 10/20/17.
  */
-public class Lantern implements Game
+public class Lantern extends GameEngine
 {
 	private static Lantern instance;
-	private static GameEngine framework;
 	private static Application application;
 
 	public static Lantern getLantern()
@@ -26,22 +25,17 @@ public class Lantern implements Game
 
 	public static void main(String[] args)
 	{
-		instance = new Lantern();
-		framework = new GameEngine(instance);
-		application = new Application(framework);
+		application = new Application()
+				.setFramework(instance = new Lantern());
 		application.run();
 	}
 
 	private SceneManager sceneManager;
 
-	public Lantern()
-	{
-	}
-
 	@Override
-	public void onFirstUpdate()
+	public void onFirstUpdate(TickEngine tickEngine)
 	{
-		this.sceneManager = new SceneManager(this.getFramework().getRenderEngine().getRenderServices());
+		this.sceneManager = new SceneManager(this.getRenderEngine().getRenderServices());
 		this.sceneManager.registerScene("test", SceneTest.class, SceneTestRenderer.class);
 		this.sceneManager.registerScene("init", SceneMain.class, SceneMainRenderer.class);
 
@@ -55,7 +49,7 @@ public class Lantern implements Game
 	}
 
 	@Override
-	public void onLastUpdate()
+	public void onLastUpdate(TickEngine tickEngine)
 	{
 		this.sceneManager.destroy();
 	}
@@ -63,11 +57,6 @@ public class Lantern implements Game
 	public final SceneManager getSceneManager()
 	{
 		return this.sceneManager;
-	}
-
-	public final GameEngine getFramework()
-	{
-		return framework;
 	}
 
 	public final Application getApplication()

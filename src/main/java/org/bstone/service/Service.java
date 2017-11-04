@@ -3,8 +3,8 @@ package org.bstone.service;
 /**
  * Created by Andy on 11/2/17.
  */
-public interface Service
+public interface Service<E>
 {
-	void start();
-	void stop();
+	void start(E handler);
+	void stop(E handler);
 }

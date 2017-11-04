@@ -45,10 +45,10 @@ public class SceneTest extends Scene
 	{
 		System.out.println("CREATED!");
 
-		final InputEngine inputEngine = Lantern.getLantern().getFramework().getInputEngine();
-		this.input = Lantern.getLantern().getFramework().getInputEngine().getDefaultContext();
+		final InputEngine inputEngine = Lantern.getLantern().getInputEngine();
+		this.input = Lantern.getLantern().getInputEngine().getDefaultContext();
 
-		this.screenSpace = new ScreenSpace(Lantern.getLantern().getFramework().getWindow().getCurrentViewPort(),
+		this.screenSpace = new ScreenSpace(Lantern.getLantern().getWindow().getCurrentViewPort(),
 				this.camera, Direction.CENTER, Direction.NORTHEAST);
 
 		this.input.registerEvent("mousex",
@@ -111,7 +111,7 @@ public class SceneTest extends Scene
 		this.input.removeListener(this.controller);
 		this.livings.clear();
 
-		Lantern.getLantern().getFramework().getInputEngine().destroyContext(this.input);
+		Lantern.getLantern().getInputEngine().destroyContext(this.input);
 	}
 
 	public PerspectiveCamera getCamera()

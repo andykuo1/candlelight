@@ -1,5 +1,6 @@
 package org.bstone.scene;
 
+import org.bstone.render.RenderEngine;
 import org.bstone.render.RenderService;
 import org.bstone.service.ServiceManager;
 import org.bstone.util.pair.Pair;
@@ -26,9 +27,9 @@ public class SceneManager
 	private String nextScene;
 	private BiConsumer<Scene, SceneRenderer> nextCallback;
 
-	private final ServiceManager<RenderService> renderServices;
+	private final ServiceManager<RenderEngine, RenderService> renderServices;
 
-	public SceneManager(ServiceManager<RenderService> renderServices)
+	public SceneManager(ServiceManager<RenderEngine, RenderService> renderServices)
 	{
 		this.renderServices = renderServices;
 	}
@@ -103,9 +104,9 @@ public class SceneManager
 							});
 				}
 
-				this.renderServices.startService(this.nextScene, this.scenes.get(this.nextScene).getSecond(),
+				this.renderer = this.createRenderer(this.nextScene);
+				this.renderServices.startService(this.nextScene, this.renderer,
 						renderService -> {
-							this.renderer = (SceneRenderer) renderService;
 							this.renderServiceID = this.nextScene;
 							this.sceneLoaded = true;
 						});
@@ -173,6 +174,24 @@ public class SceneManager
 			throw new IllegalStateException("could not create scene with id '" + id + "'");
 		}
 		return scene;
+	}
+
+	private SceneRenderer createRenderer(String id)
+	{
+		final Pair<Class<? extends Scene>, Class<? extends SceneRenderer>> pair = this.scenes.get(id);
+		final Class<? extends SceneRenderer> renderClass = pair.getSecond();
+		if (renderClass == null) throw new IllegalArgumentException("could not instantiate scene renderer with id '" + id + "'");
+
+		SceneRenderer render;
+		try
+		{
+			render = renderClass.newInstance();
+		}
+		catch (InstantiationException | IllegalAccessException e)
+		{
+			throw new IllegalStateException("could not create scene renderer with id '" + id + "'");
+		}
+		return render;
 	}
 
 	public Scene getCurrentScene()

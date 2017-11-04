@@ -3,7 +3,7 @@ package org.bstone.tick;
 import org.bstone.application.Application;
 import org.bstone.application.Engine;
 import org.bstone.application.handler.FrameHandler;
-import org.bstone.application.handler.TickHandler;
+import org.bstone.service.ServiceManager;
 
 /**
  * Created by Andy on 10/12/17.
@@ -20,14 +20,16 @@ public class TickEngine extends Engine implements FrameHandler
 
 	private double timeDelta;
 
-	private final TickCounter updateCounter;
-	private final TickHandler handler;
+	private final ServiceManager<TickEngine, TickService> services;
 
-	public TickEngine(int ticksPerSecond, boolean limitFrameRate, TickHandler handler)
+	private final TickCounter updateCounter;
+
+	public TickEngine(int ticksPerSecond, boolean limitFrameRate)
 	{
 		this.timeStep = 1000000000D / ticksPerSecond;
 		this.limitFrameRate = limitFrameRate;
-		this.handler = handler;
+
+		this.services = new ServiceManager<>(this);
 
 		this.updateCounter = new TickCounter();
 	}
@@ -40,7 +42,9 @@ public class TickEngine extends Engine implements FrameHandler
 		this.timePrevious = System.nanoTime();
 		this.timeLatency = 0;
 
-		this.handler.onFirstUpdate();
+		this.services.beginServices();
+		this.services.endServices();
+
 		return true;
 	}
 
@@ -53,17 +57,20 @@ public class TickEngine extends Engine implements FrameHandler
 		this.timePrevious = current;
 		this.timeLatency += elapsed;
 
-		this.handler.onEarlyUpdate();
+		this.services.beginServices();
+		this.services.forEach(TickService::onEarlyUpdate);
 
 		while(this.timeLatency >= this.timeStep)
 		{
-			this.handler.onFixedUpdate();
+			this.services.forEach(TickService::onFixedUpdate);
+
 			this.timeLatency -= this.timeStep;
 			this.updateCounter.tick();
 			this.dirty = true;
 		}
 
-		this.handler.onLateUpdate();
+		this.services.forEach(TickService::onLateUpdate);
+		this.services.endServices();
 
 		this.timeDelta = this.timeLatency / this.timeStep;
 	}
@@ -71,7 +78,10 @@ public class TickEngine extends Engine implements FrameHandler
 	@Override
 	protected void onStop(Application app)
 	{
-		this.handler.onLastUpdate();
+		this.services.beginServices();
+		this.services.endServices();
+
+		this.services.destroy();
 	}
 
 	public final TickCounter getUpdateCounter()
@@ -97,4 +107,8 @@ public class TickEngine extends Engine implements FrameHandler
 		this.dirty = false;
 	}
 
+	public final ServiceManager<TickEngine, TickService> getTickServices()
+	{
+		return this.services;
+	}
 }

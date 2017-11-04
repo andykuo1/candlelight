@@ -1,15 +1,14 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main.entity;
 
+import net.jimboi.canary.stage_a.base.collisionbox.collider.BoxCollider;
+import net.jimboi.canary.stage_a.base.collisionbox.response.CollisionResponse;
 import net.jimboi.canary.stage_a.cuplet.Cuplet;
-import net.jimboi.canary.stage_a.cuplet.collisionbox.collider.BoxCollider;
-import net.jimboi.canary.stage_a.cuplet.collisionbox.response.CollisionResponse;
 import net.jimboi.canary.stage_a.cuplet.scene_main.GobletWorld;
 import net.jimboi.canary.stage_a.cuplet.scene_main.MainRenderer;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentDamageable;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentMotion;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tick.TickCounter;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tile.TileMap;
-import net.jimboi.canary.stage_a.lantern.Lantern;
 
 import org.bstone.entity.EntityManager;
 import org.bstone.input.InputContext;
@@ -63,7 +62,7 @@ public class EntityPlayer extends EntityHurtable implements InputListener
 		componentDamageable.canTakeDamageFrom = (damageSource) -> !this.rolling;
 		componentDamageable.setMaxHealth(100);
 
-		Cuplet.getCuplet().getFramework().getInputEngine().getDefaultContext().addListener(0, this);
+		Cuplet.getCuplet().getInputEngine().getDefaultContext().addListener(0, this);
 	}
 
 	@Override
@@ -71,7 +70,7 @@ public class EntityPlayer extends EntityHurtable implements InputListener
 	{
 		super.onEntityDestroy();
 
-		Lantern.getLantern().getFramework().getInputEngine().getDefaultContext().removeListener(this);
+		Cuplet.getCuplet().getInputEngine().getDefaultContext().removeListener(this);
 	}
 
 	@Override
@@ -180,7 +179,7 @@ public class EntityPlayer extends EntityHurtable implements InputListener
 	{
 		super.onLivingUpdate();
 
-		InputContext ctx = Cuplet.getCuplet().getFramework().getInputEngine().getDefaultContext();
+		InputContext ctx = Cuplet.getCuplet().getInputEngine().getDefaultContext();
 		float mousex = ctx.getRange("mousex").getRange();
 		float mousey = ctx.getRange("mousey").getRange();
 		Vector2fc mouse = ((MainRenderer) Cuplet.getCuplet().getSceneManager().getCurrentRenderer()).getScreenSpace().getPoint2DFromScreen(mousex, mousey, this.mousePos);

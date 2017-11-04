@@ -1,4 +1,4 @@
-package net.jimboi.canary.stage_a.cuplet.renderer;
+package net.jimboi.canary.stage_a.base.renderer;
 
 import org.bstone.asset.Asset;
 import org.bstone.material.Material;

@@ -1,8 +1,8 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main.entity.base;
 
+import net.jimboi.canary.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
+import net.jimboi.canary.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.canary.stage_a.cuplet.basicobject.ComponentRenderable;
-import net.jimboi.canary.stage_a.cuplet.collisionbox.box.AxisAlignedBoundingBox;
-import net.jimboi.canary.stage_a.cuplet.collisionbox.collider.BoxCollider;
 import net.jimboi.canary.stage_a.cuplet.scene_main.GobletWorld;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentBounding;
 

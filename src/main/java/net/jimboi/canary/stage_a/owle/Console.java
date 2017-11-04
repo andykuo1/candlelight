@@ -8,6 +8,8 @@ import org.bstone.application.game.GameEngine;
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Texture;
+import org.bstone.render.RenderEngine;
+import org.bstone.tick.TickEngine;
 import org.bstone.transform.Transform3;
 import org.bstone.util.Direction;
 import org.bstone.window.view.ScreenSpace;
@@ -21,20 +23,14 @@ import org.zilar.sprite.TextureAtlasBuilder;
 /**
  * Created by Andy on 10/20/17.
  */
-public class Console implements Game
+public class Console extends GameEngine implements Game
 {
 	private static Console INST;
-	private static GameEngine ENGINE;
 	private static Application APP;
 
 	public static Console getConsole()
 	{
 		return INST;
-	}
-
-	public static GameEngine getEngine()
-	{
-		return ENGINE;
 	}
 
 	public static Application getApplication()
@@ -44,9 +40,8 @@ public class Console implements Game
 
 	public static void main(String[] args)
 	{
-		INST = new Console();
-		ENGINE = new GameEngine(INST);
-		APP = new Application(ENGINE);
+		APP = new Application()
+				.setFramework(INST = new Console());
 		APP.run();
 	}
 
@@ -62,13 +57,13 @@ public class Console implements Game
 	public ConsoleBase consoleBase;
 
 	@Override
-	public void onFirstUpdate()
+	public void onFirstUpdate(TickEngine tickEngine)
 	{
 
 	}
 
 	@Override
-	public void onRenderLoad()
+	public void onRenderLoad(RenderEngine renderEngine)
 	{
 		final int width = 24;
 		final int height = 16;
@@ -76,15 +71,15 @@ public class Console implements Game
 		final int halfHeight = height / 2;
 		final int dist = 20;
 
-		this.camera = new PerspectiveCamera(halfWidth, halfHeight, dist, ENGINE.getWindow().getWidth(), ENGINE.getWindow().getHeight());
-		this.screenSpace = new ScreenSpace(ENGINE.getWindow().getCurrentViewPort(), this.camera, Direction.CENTER, Direction.NORTHEAST);
+		this.camera = new PerspectiveCamera(halfWidth, halfHeight, dist, this.getWindow().getWidth(), this.getWindow().getHeight());
+		this.screenSpace = new ScreenSpace(this.getWindow().getCurrentViewPort(), this.camera, Direction.CENTER, Direction.NORTHEAST);
 
-		ENGINE.getInputEngine().getDefaultContext()
+		this.getInputEngine().getDefaultContext()
 				.registerEvent("mousex",
-						ENGINE.getInputEngine().getMouse().getCursorX()::getRange);
-		ENGINE.getInputEngine().getDefaultContext()
+						this.getInputEngine().getMouse().getCursorX()::getRange);
+		this.getInputEngine().getDefaultContext()
 				.registerEvent("mousey",
-						ENGINE.getInputEngine().getMouse().getCursorY()::getRange);
+						this.getInputEngine().getMouse().getCursorY()::getRange);
 
 		this.renderer = new ConsoleProgramRenderer();
 
@@ -99,7 +94,7 @@ public class Console implements Game
 	}
 
 	@Override
-	public void onRenderUpdate(double delta)
+	public void onRenderUpdate(RenderEngine renderEngine, double delta)
 	{
 		this.consoleBase.update();
 
@@ -111,7 +106,7 @@ public class Console implements Game
 	}
 
 	@Override
-	public void onRenderUnload()
+	public void onRenderUnload(RenderEngine renderEngine)
 	{
 		this.consoleBase.terminate();
 

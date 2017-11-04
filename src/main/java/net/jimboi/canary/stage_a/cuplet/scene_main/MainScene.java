@@ -24,7 +24,7 @@ public class MainScene extends Scene
 	@Override
 	protected void onSceneCreate(SceneManager sceneManager)
 	{
-		final InputEngine input = Cuplet.getCuplet().getFramework().getInputEngine();
+		final InputEngine input = Cuplet.getCuplet().getInputEngine();
 		final InputContext ctx = input.getDefaultContext();
 		ctx.registerEvent("mousex",
 				input.getMouse().getCursorX()::getRange);
