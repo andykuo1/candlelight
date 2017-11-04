@@ -1,4 +1,4 @@
-package net.jimboi.canary.stage_a.base.renderer;
+package net.jimboi.canary.stage_a.base;
 
 import org.bstone.material.property.PropertyBool;
 import org.bstone.material.property.PropertyMat4;

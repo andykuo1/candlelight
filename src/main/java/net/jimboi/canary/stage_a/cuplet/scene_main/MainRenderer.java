@@ -1,10 +1,10 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main;
 
+import net.jimboi.canary.stage_a.base.TextureAtlasBuilder;
 import net.jimboi.canary.stage_a.base.collisionbox.CollisionBoxRenderer;
 import net.jimboi.canary.stage_a.base.renderer.SimpleRenderer;
 import net.jimboi.canary.stage_a.cuplet.Cuplet;
 import net.jimboi.canary.stage_a.cuplet.basicobject.ComponentRenderable;
-import net.jimboi.canary.stage_a.lantern.TextureAtlasBuilder;
 
 import org.bstone.asset.AssetManager;
 import org.bstone.camera.Camera;

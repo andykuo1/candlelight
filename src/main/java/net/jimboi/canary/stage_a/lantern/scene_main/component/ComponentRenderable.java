@@ -1,6 +1,6 @@
 package net.jimboi.canary.stage_a.lantern.scene_main.component;
 
-import net.jimboi.canary.stage_a.base.model.Model;
+import net.jimboi.canary.stage_a.base.Model;
 import net.jimboi.canary.stage_a.cuplet.scene_main.Renderable;
 
 import org.bstone.entity.Component;

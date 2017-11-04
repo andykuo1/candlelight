@@ -1,10 +1,10 @@
 package net.jimboi.canary.stage_a.lantern.scene_main;
 
+import net.jimboi.canary.stage_a.base.MaterialProperty;
+import net.jimboi.canary.stage_a.base.TextureAtlasBuilder;
 import net.jimboi.canary.stage_a.base.collisionbox.CollisionBoxRenderer;
-import net.jimboi.canary.stage_a.base.renderer.MaterialProperty;
 import net.jimboi.canary.stage_a.base.renderer.SimpleRenderer;
 import net.jimboi.canary.stage_a.lantern.Lantern;
-import net.jimboi.canary.stage_a.lantern.TextureAtlasBuilder;
 import net.jimboi.canary.stage_a.lantern.scene_main.component.ComponentRenderable;
 
 import org.bstone.asset.AssetManager;

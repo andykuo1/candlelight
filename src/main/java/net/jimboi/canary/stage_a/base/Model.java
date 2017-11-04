@@ -1,4 +1,4 @@
-package net.jimboi.canary.stage_a.base.model;
+package net.jimboi.canary.stage_a.base;
 
 import org.bstone.asset.Asset;
 import org.bstone.material.Material;

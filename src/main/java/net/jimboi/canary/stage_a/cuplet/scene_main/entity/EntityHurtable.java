@@ -1,7 +1,7 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main.entity;
 
+import net.jimboi.canary.stage_a.base.MaterialProperty;
 import net.jimboi.canary.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
-import net.jimboi.canary.stage_a.base.renderer.MaterialProperty;
 import net.jimboi.canary.stage_a.cuplet.basicobject.ComponentRenderable;
 import net.jimboi.canary.stage_a.cuplet.scene_main.GobletWorld;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentDamageable;

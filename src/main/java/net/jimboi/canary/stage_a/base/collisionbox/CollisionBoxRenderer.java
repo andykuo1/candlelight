@@ -1,10 +1,10 @@
 package net.jimboi.canary.stage_a.base.collisionbox;
 
+import net.jimboi.canary.stage_a.base.MaterialProperty;
 import net.jimboi.canary.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
 import net.jimboi.canary.stage_a.base.collisionbox.box.BoundingBox;
 import net.jimboi.canary.stage_a.base.collisionbox.box.GridBasedBoundingBox;
 import net.jimboi.canary.stage_a.base.collisionbox.collider.BoxCollider;
-import net.jimboi.canary.stage_a.base.renderer.MaterialProperty;
 import net.jimboi.canary.stage_a.base.renderer.WireframeRenderer;
 
 import org.bstone.asset.Asset;

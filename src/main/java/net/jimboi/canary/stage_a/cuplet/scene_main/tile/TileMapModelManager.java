@@ -1,7 +1,7 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main.tile;
 
-import net.jimboi.canary.stage_a.base.model.Model;
-import net.jimboi.canary.stage_a.base.renderer.MaterialProperty;
+import net.jimboi.canary.stage_a.base.MaterialProperty;
+import net.jimboi.canary.stage_a.base.Model;
 import net.jimboi.canary.stage_a.cuplet.Cuplet;
 
 import org.bstone.asset.Asset;

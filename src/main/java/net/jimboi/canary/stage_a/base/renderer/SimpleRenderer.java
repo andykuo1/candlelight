@@ -1,5 +1,7 @@
 package net.jimboi.canary.stage_a.base.renderer;
 
+import net.jimboi.canary.stage_a.base.MaterialProperty;
+
 import org.bstone.asset.Asset;
 import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;

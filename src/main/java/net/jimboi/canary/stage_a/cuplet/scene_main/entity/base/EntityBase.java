@@ -1,6 +1,6 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main.entity.base;
 
-import net.jimboi.canary.stage_a.base.renderer.MaterialProperty;
+import net.jimboi.canary.stage_a.base.MaterialProperty;
 import net.jimboi.canary.stage_a.cuplet.basicobject.ComponentRenderable;
 import net.jimboi.canary.stage_a.cuplet.scene_main.GobletEntity;
 import net.jimboi.canary.stage_a.cuplet.scene_main.GobletWorld;

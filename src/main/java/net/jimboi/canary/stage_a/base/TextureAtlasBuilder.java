@@ -1,4 +1,4 @@
-package net.jimboi.canary.stage_a.lantern;
+package net.jimboi.canary.stage_a.base;
 
 import org.bstone.asset.Asset;
 import org.bstone.mogli.Texture;

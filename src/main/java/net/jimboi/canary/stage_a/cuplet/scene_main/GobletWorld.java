@@ -1,10 +1,10 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main;
 
+import net.jimboi.canary.stage_a.base.MaterialProperty;
+import net.jimboi.canary.stage_a.base.Model;
 import net.jimboi.canary.stage_a.base.collisionbox.CollisionBoxManager;
 import net.jimboi.canary.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
 import net.jimboi.canary.stage_a.base.collisionbox.collider.BoxCollider;
-import net.jimboi.canary.stage_a.base.model.Model;
-import net.jimboi.canary.stage_a.base.renderer.MaterialProperty;
 import net.jimboi.canary.stage_a.cuplet.Cuplet;
 import net.jimboi.canary.stage_a.cuplet.basicobject.ComponentRenderable;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.SystemDamageable;
