@@ -3,6 +3,11 @@ package net.jimboi.boron.minicraft;
 import com.mojang.ld22.Game;
 
 import net.jimboi.boron.base_ab.asset.Asset;
+import net.jimboi.boron.base_ab.sprite.Sprite;
+import net.jimboi.boron.base_ab.sprite.SpriteSheet;
+import net.jimboi.boron.base_ab.sprite.SpriteUtil;
+import net.jimboi.boron.base_ab.sprite.TextureAtlas;
+import net.jimboi.boron.base_ab.sprite.TextureAtlasBuilder;
 
 import org.bstone.camera.Camera;
 import org.bstone.mogli.Bitmap;
@@ -24,11 +29,6 @@ import org.lwjgl.opengl.GL20;
 import org.qsilver.ResourceLocation;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;
-import org.zilar.sprite.Sprite;
-import org.zilar.sprite.SpriteSheet;
-import org.zilar.sprite.SpriteUtil;
-import org.zilar.sprite.TextureAtlas;
-import org.zilar.sprite.TextureAtlasBuilder;
 
 import java.nio.ByteBuffer;
 import java.util.Collection;

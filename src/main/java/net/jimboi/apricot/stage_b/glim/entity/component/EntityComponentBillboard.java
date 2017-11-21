@@ -1,8 +1,7 @@
 package net.jimboi.apricot.stage_b.glim.entity.component;
 
+import net.jimboi.apricot.base.entity.EntityComponent;
 import net.jimboi.apricot.base.renderer.BillboardRenderer;
-
-import org.zilar.entity.EntityComponent;
 
 /**
  * Created by Andy on 6/14/17.

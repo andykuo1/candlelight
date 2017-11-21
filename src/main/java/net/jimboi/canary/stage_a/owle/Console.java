@@ -1,6 +1,9 @@
 package net.jimboi.canary.stage_a.owle;
 
 import net.jimboi.boron.base_ab.asset.Asset;
+import net.jimboi.boron.base_ab.sprite.SpriteUtil;
+import net.jimboi.boron.base_ab.sprite.TextureAtlas;
+import net.jimboi.boron.base_ab.sprite.TextureAtlasBuilder;
 
 import org.bstone.application.Application;
 import org.bstone.application.game.Game;
@@ -16,9 +19,6 @@ import org.bstone.window.view.ScreenSpace;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.qsilver.ResourceLocation;
-import org.zilar.sprite.SpriteUtil;
-import org.zilar.sprite.TextureAtlas;
-import org.zilar.sprite.TextureAtlasBuilder;
 
 /**
  * Created by Andy on 10/20/17.

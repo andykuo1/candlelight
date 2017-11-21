@@ -2,6 +2,10 @@ package net.jimboi.apricot.stage_b.glim;
 
 import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.OldSceneBase;
+import net.jimboi.apricot.base.animation.AnimatorSpriteSheet;
+import net.jimboi.apricot.base.assets.resource.MeshLoader;
+import net.jimboi.apricot.base.assets.resource.TextureAtlasLoader;
+import net.jimboi.apricot.base.entity.Entity;
 import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.renderer.property.OldPropertyDiffuse;
 import net.jimboi.apricot.base.renderer.property.OldPropertyShadow;
@@ -19,6 +23,10 @@ import net.jimboi.apricot.stage_b.glim.entity.system.EntitySystemBillboard;
 import net.jimboi.apricot.stage_b.glim.entity.system.EntitySystemBounding;
 import net.jimboi.apricot.stage_b.glim.entity.system.EntitySystemHeading;
 import net.jimboi.boron.base_ab.asset.Asset;
+import net.jimboi.boron.base_ab.sprite.SpriteSheet;
+import net.jimboi.boron.base_ab.sprite.TextureAtlas;
+import net.jimboi.boron.base_ab.sprite.TextureAtlasBuilder;
+import net.jimboi.boron.base_ab.sprite.TextureAtlasData;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
@@ -26,15 +34,7 @@ import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import org.zilar.animation.AnimatorSpriteSheet;
-import org.zilar.entity.Entity;
 import org.zilar.meshbuilder.MeshData;
-import org.zilar.resource.MeshLoader;
-import org.zilar.resource.TextureAtlasLoader;
-import org.zilar.sprite.SpriteSheet;
-import org.zilar.sprite.TextureAtlas;
-import org.zilar.sprite.TextureAtlasBuilder;
-import org.zilar.sprite.TextureAtlasData;
 
 /**
  * Created by Andy on 6/1/17.

@@ -1,5 +1,8 @@
 package net.jimboi.apricot.base.renderer.shadow;
 
+import net.jimboi.apricot.base.assets.resource.ProgramLoader;
+import net.jimboi.apricot.base.assets.resource.ShaderLoader;
+import net.jimboi.apricot.base.assets.resource.TextureLoader;
 import net.jimboi.apricot.base.material.OldMaterial;
 import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.render.OldRenderable;
@@ -7,6 +10,7 @@ import net.jimboi.apricot.base.renderer.property.OldPropertyShadow;
 import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
 import net.jimboi.boron.base_ab.asset.Asset;
 import net.jimboi.boron.base_ab.asset.AssetManager;
+import net.jimboi.boron.base_ab.sprite.Sprite;
 import net.jimboi.boron.base_ab.window.OldWindow;
 
 import org.bstone.camera.PerspectiveCamera;
@@ -26,10 +30,6 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.qsilver.ResourceLocation;
-import org.zilar.resource.ProgramLoader;
-import org.zilar.resource.ShaderLoader;
-import org.zilar.resource.TextureLoader;
-import org.zilar.sprite.Sprite;
 
 import java.util.Arrays;
 import java.util.Iterator;

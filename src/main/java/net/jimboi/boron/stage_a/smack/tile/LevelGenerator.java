@@ -1,5 +1,7 @@
 package net.jimboi.boron.stage_a.smack.tile;
 
+import net.jimboi.boron.base_ab.gridmap.ByteMap;
+import net.jimboi.boron.base_ab.gridmap.IntMap;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
 import net.jimboi.boron.stage_a.smack.entity.EntityAmmo;
 import net.jimboi.boron.stage_a.smack.entity.EntityBoulder;
@@ -7,8 +9,6 @@ import net.jimboi.boron.stage_a.smack.entity.EntitySpawner;
 import net.jimboi.boron.stage_a.smack.entity.EntityZombie;
 
 import org.bstone.transform.Transform3;
-import org.bstone.util.gridmap.ByteMap;
-import org.bstone.util.gridmap.IntMap;
 import org.joml.Vector2f;
 import org.zilar.dungeon.DungeonData;
 import org.zilar.dungeon.maze.MazeDungeonBuilder;

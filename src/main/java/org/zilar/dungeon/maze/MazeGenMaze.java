@@ -1,8 +1,8 @@
 package org.zilar.dungeon.maze;
 
 import net.jimboi.apricot.base.OldMapUtil;
+import net.jimboi.boron.base_ab.gridmap.IntMap;
 
-import org.bstone.util.gridmap.IntMap;
 import org.zilar.dungeon.DungeonData;
 
 import java.util.Random;

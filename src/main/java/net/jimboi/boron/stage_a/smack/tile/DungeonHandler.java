@@ -1,11 +1,11 @@
 package net.jimboi.boron.stage_a.smack.tile;
 
+import net.jimboi.boron.base_ab.gridmap.IntMap;
 import net.jimboi.boron.stage_a.base.collisionbox.box.GridBasedBoundingBox;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.boron.stage_a.smack.SmackWorld;
 
 import org.bstone.livingentity.LivingEntity;
-import org.bstone.util.gridmap.IntMap;
 
 import java.util.Random;
 

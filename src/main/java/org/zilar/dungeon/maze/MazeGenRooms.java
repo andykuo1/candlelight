@@ -1,6 +1,7 @@
 package org.zilar.dungeon.maze;
 
-import org.bstone.util.gridmap.IntMap;
+import net.jimboi.boron.base_ab.gridmap.IntMap;
+
 import org.zilar.dungeon.DungeonData;
 import org.zilar.dungeon.RoomBuilder;
 import org.zilar.dungeon.RoomData;

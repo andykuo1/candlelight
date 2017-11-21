@@ -164,7 +164,7 @@ public class Application implements Runnable
 	}
 
 	/**
-	 * Stop the application from running next loop.
+	 * Stop the application from running next loop (will continue to finish current loop).
 	 */
 	public void stop()
 	{

@@ -53,6 +53,7 @@ public final class Bitmap implements AutoCloseable
 	private final ByteBuffer pixels;
 	private final boolean loadFromSTB;
 
+	@Deprecated
 	public Bitmap(ResourceLocation location)
 	{
 		this(BitmapLoader.read(location.getFilePath(), 8 * 1024), true, true);

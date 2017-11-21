@@ -1,9 +1,10 @@
 package net.jimboi.boron.minicraft;
 
+import net.jimboi.boron.base_ab.sprite.Sprite;
+
 import org.bstone.mogli.Mesh;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
-import org.zilar.sprite.Sprite;
 
 /**
  * Created by Andy on 8/3/17.

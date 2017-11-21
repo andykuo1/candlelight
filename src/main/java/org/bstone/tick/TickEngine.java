@@ -2,11 +2,11 @@ package org.bstone.tick;
 
 import org.bstone.application.Application;
 import org.bstone.application.Engine;
-import org.bstone.application.handler.FrameHandler;
+import org.bstone.render.FrameHandler;
 import org.bstone.service.ServiceManager;
 
 /**
- * Created by Andy on 10/12/17.
+ * An engine that handles fixed updating of the application
  */
 public class TickEngine extends Engine implements FrameHandler
 {

@@ -1,24 +1,24 @@
 package net.jimboi.apricot.stage_b.glim;
 
+import net.jimboi.apricot.base.animation.AnimationManager;
 import net.jimboi.apricot.base.astar.AstarNavigator;
 import net.jimboi.apricot.base.astar.NavigatorMap;
 import net.jimboi.apricot.base.astar.map.NavigatorCardinalMap;
 import net.jimboi.apricot.stage_b.glim.bounding.BoundingManager;
 import net.jimboi.apricot.stage_b.glim.bounding.square.AABB;
 import net.jimboi.boron.base_ab.asset.Asset;
+import net.jimboi.boron.base_ab.gridmap.IntMap;
+import net.jimboi.boron.base_ab.sprite.Sprite;
+import net.jimboi.boron.base_ab.sprite.TextureAtlas;
 
-import org.bstone.util.gridmap.IntMap;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
-import org.zilar.animation.AnimationManager;
 import org.zilar.dungeon.DungeonBuilder;
 import org.zilar.dungeon.DungeonData;
 import org.zilar.dungeon.maze.MazeDungeonBuilder;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.MeshData;
-import org.zilar.sprite.Sprite;
-import org.zilar.sprite.TextureAtlas;
 
 /**
  * Created by Andy on 6/1/17.

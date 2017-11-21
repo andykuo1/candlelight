@@ -1,10 +1,11 @@
 package net.jimboi.boron.stage_a.base.basicobject;
 
+import net.jimboi.boron.base_ab.render.Renderable;
+import net.jimboi.boron.base_ab.render.model.Model;
+
 import org.bstone.entity.Component;
 import org.bstone.transform.Transform;
 import org.joml.Matrix4f;
-import org.zilar.render.Renderable;
-import org.zilar.render.model.Model;
 
 /**
  * Created by Andy on 8/12/17.

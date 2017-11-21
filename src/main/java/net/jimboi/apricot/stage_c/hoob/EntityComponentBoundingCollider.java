@@ -1,8 +1,8 @@
 package net.jimboi.apricot.stage_c.hoob;
 
-import org.zilar.collision.DynamicCollider;
-import org.zilar.collision.Shape;
-import org.zilar.entity.EntityComponent;
+import net.jimboi.apricot.base.collision.DynamicCollider;
+import net.jimboi.apricot.base.collision.Shape;
+import net.jimboi.apricot.base.entity.EntityComponent;
 
 /**
  * Created by Andy on 7/15/17.

@@ -1,6 +1,7 @@
 package net.jimboi.apricot.stage_b.glim.bounding;
 
 import net.jimboi.apricot.base.OldGameEngine;
+import net.jimboi.apricot.base.assets.resource.MeshLoader;
 import net.jimboi.apricot.stage_b.glim.bounding.square.AABB;
 import net.jimboi.apricot.stage_b.glim.bounding.square.Circle;
 import net.jimboi.boron.base_ab.asset.Asset;
@@ -19,7 +20,6 @@ import org.lwjgl.opengl.GL11;
 import org.qsilver.ResourceLocation;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.MeshData;
-import org.zilar.resource.MeshLoader;
 
 import java.util.Iterator;
 

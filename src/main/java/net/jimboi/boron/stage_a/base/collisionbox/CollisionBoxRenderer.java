@@ -1,5 +1,6 @@
 package net.jimboi.boron.stage_a.base.collisionbox;
 
+import net.jimboi.boron.base_ab.render.renderer.WireframeProgramRenderer;
 import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
 import net.jimboi.boron.stage_a.base.collisionbox.box.BoundingBox;
 import net.jimboi.boron.stage_a.base.collisionbox.box.GridBasedBoundingBox;
@@ -13,7 +14,6 @@ import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;
-import org.zilar.render.renderer.WireframeProgramRenderer;
 
 /**
  * Created by Andy on 8/8/17.

@@ -1,6 +1,7 @@
 package net.jimboi.canary.stage_a.lantern.scene_test;
 
 import net.jimboi.boron.base_ab.asset.Asset;
+import net.jimboi.boron.base_ab.render.renderer.SimpleProgramRenderer;
 import net.jimboi.canary.stage_a.lantern.Lantern;
 
 import org.bstone.asset.AssetManager;
@@ -14,7 +15,6 @@ import org.bstone.scene.SceneRenderer;
 import org.bstone.transform.Transform2;
 import org.joml.Matrix4f;
 import org.qsilver.ResourceLocation;
-import org.zilar.render.renderer.SimpleProgramRenderer;
 
 /**
  * Created by Andy on 10/20/17.

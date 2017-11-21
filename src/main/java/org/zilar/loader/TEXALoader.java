@@ -1,7 +1,8 @@
 package org.zilar.loader;
 
+import net.jimboi.boron.base_ab.sprite.TextureAtlas;
+
 import org.qsilver.ResourceLocation;
-import org.zilar.sprite.TextureAtlas;
 
 /**
  * Created by Andy on 7/6/17.

@@ -1,6 +1,8 @@
 package net.jimboi.apricot.stage_c.hoob.world;
 
 import net.jimboi.apricot.base.OldGameEngine;
+import net.jimboi.apricot.base.collision.Shape;
+import net.jimboi.apricot.base.entity.Entity;
 import net.jimboi.apricot.base.input.OldInputManager;
 import net.jimboi.apricot.base.living.OldLivingManager;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform;
@@ -16,8 +18,6 @@ import org.bstone.transform.Transform3;
 import org.bstone.util.Direction;
 import org.bstone.window.view.ScreenSpace;
 import org.joml.Vector3f;
-import org.zilar.collision.Shape;
-import org.zilar.entity.Entity;
 
 import java.util.Iterator;
 import java.util.Random;

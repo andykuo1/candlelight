@@ -1,12 +1,11 @@
 package net.jimboi.apricot.stage_c.hoob;
 
+import net.jimboi.apricot.base.collision.CollisionManager;
+import net.jimboi.apricot.base.entity.AbstractEntitySystem;
+import net.jimboi.apricot.base.entity.Entity;
+import net.jimboi.apricot.base.entity.EntityComponent;
+import net.jimboi.apricot.base.entity.EntityManager;
 import net.jimboi.apricot.base.scene.Scene;
-
-import org.zilar.collision.CollisionManager;
-import org.zilar.entity.AbstractEntitySystem;
-import org.zilar.entity.Entity;
-import org.zilar.entity.EntityComponent;
-import org.zilar.entity.EntityManager;
 
 /**
  * Created by Andy on 7/15/17.

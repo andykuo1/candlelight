@@ -7,7 +7,6 @@ import net.jimboi.canary.stage_a.lantern.scene_test.SceneTestRenderer;
 
 import org.bstone.application.Application;
 import org.bstone.application.game.GameEngine;
-import org.bstone.scene.SceneManager;
 import org.bstone.tick.TickEngine;
 
 /**
@@ -30,33 +29,13 @@ public class Lantern extends GameEngine
 		application.run();
 	}
 
-	private SceneManager sceneManager;
-
 	@Override
 	public void onFirstUpdate(TickEngine tickEngine)
 	{
-		this.sceneManager = new SceneManager(this.getRenderEngine().getRenderServices());
 		this.sceneManager.registerScene("test", SceneTest.class, SceneTestRenderer.class);
 		this.sceneManager.registerScene("init", SceneMain.class, SceneMainRenderer.class);
 
 		this.sceneManager.setNextScene("init");
-	}
-
-	@Override
-	public void onFixedUpdate()
-	{
-		this.sceneManager.update();
-	}
-
-	@Override
-	public void onLastUpdate(TickEngine tickEngine)
-	{
-		this.sceneManager.destroy();
-	}
-
-	public final SceneManager getSceneManager()
-	{
-		return this.sceneManager;
 	}
 
 	public final Application getApplication()

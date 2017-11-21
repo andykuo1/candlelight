@@ -1,6 +1,7 @@
 package org.bstone.util.astar;
 
-import org.bstone.util.gridmap.GridMap;
+import org.bstone.util.grid.GridMap;
+import org.joml.Vector2i;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class AStarGridCardinal<T> extends AStar<Integer, Integer>
 				(c, c2) -> c + c2,
 				(integer, integer2) -> !integer.equals(integer2) ? 1 : 0,
 				(integer, integer2) -> {
-					int w = map.getWidth();
+					int w = map.width();
 					int x = integer % w;
 					int y = integer / w;
 					int x2 = integer2 % w;
@@ -31,13 +32,14 @@ public class AStarGridCardinal<T> extends AStar<Integer, Integer>
 				},
 				integer -> {
 					List<Integer> neighbors = new ArrayList<>(4);
-					int w = map.getWidth();
+					int w = map.width();
 					int x = integer % w;
 					int y = integer / w;
-					if (x < w - 1 && solid.test(map.getValue(integer + 1))) neighbors.add(integer + 1);
-					if (x > 0 && solid.test(map.getValue(integer - 1))) neighbors.add(integer - 1);
-					if (y < w - 1 && solid.test(map.getValue(integer + w))) neighbors.add(integer + w);
-					if (y > 0 && solid.test(map.getValue(integer - w))) neighbors.add(integer - w);
+					Vector2i key = new Vector2i(x, y);
+					if (x < w - 1 && solid.test(map.get(key.set(x + 1, y)))) neighbors.add(integer + 1);
+					if (x > 0 && solid.test(map.get(key.set(x - 1, y)))) neighbors.add(integer - 1);
+					if (y < w - 1 && solid.test(map.get(key.set(x, y + 1)))) neighbors.add(integer + w);
+					if (y > 0 && solid.test(map.get(key.set(x, y - 1)))) neighbors.add(integer - w);
 					return neighbors;
 				},
 				Integer::equals);

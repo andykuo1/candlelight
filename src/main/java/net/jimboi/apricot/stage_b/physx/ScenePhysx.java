@@ -2,6 +2,7 @@ package net.jimboi.apricot.stage_b.physx;
 
 import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.OldSceneBase;
+import net.jimboi.apricot.base.controller.BasicFirstPersonCameraController;
 import net.jimboi.apricot.base.input.OldInputManager;
 import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.renderer.property.OldPropertyDiffuse;
@@ -20,7 +21,6 @@ import org.bstone.mogli.Texture;
 import org.bstone.transform.Transform3;
 import org.bstone.util.Direction;
 import org.bstone.window.view.ScreenSpace;
-import org.zilar.BasicFirstPersonCameraController;
 
 /**
  * Created by Andy on 6/18/17.

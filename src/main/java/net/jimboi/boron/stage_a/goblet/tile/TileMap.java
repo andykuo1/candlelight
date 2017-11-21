@@ -1,9 +1,8 @@
 package net.jimboi.boron.stage_a.goblet.tile;
 
+import net.jimboi.boron.base_ab.gridmap.IntMap;
 import net.jimboi.boron.stage_a.base.collisionbox.box.GridBasedBoundingBox;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
-
-import org.bstone.util.gridmap.IntMap;
 
 /**
  * Created by Andy on 9/1/17.

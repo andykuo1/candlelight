@@ -1,6 +1,11 @@
 package net.jimboi.canary.stage_a.owle;
 
 import net.jimboi.boron.base_ab.asset.Asset;
+import net.jimboi.boron.base_ab.render.material.Material;
+import net.jimboi.boron.base_ab.render.material.PropertyColor;
+import net.jimboi.boron.base_ab.render.material.PropertyTexture;
+import net.jimboi.boron.base_ab.render.renderer.ProgramRenderer;
+import net.jimboi.boron.base_ab.sprite.Sprite;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
@@ -16,11 +21,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.qsilver.ResourceLocation;
-import org.zilar.render.material.Material;
-import org.zilar.render.material.PropertyColor;
-import org.zilar.render.material.PropertyTexture;
-import org.zilar.render.renderer.ProgramRenderer;
-import org.zilar.sprite.Sprite;
 
 /**
  * Created by Andy on 8/4/17.

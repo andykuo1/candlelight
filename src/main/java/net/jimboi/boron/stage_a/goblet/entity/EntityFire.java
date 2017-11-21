@@ -1,5 +1,6 @@
 package net.jimboi.boron.stage_a.goblet.entity;
 
+import net.jimboi.boron.base_ab.render.material.PropertyColor;
 import net.jimboi.boron.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.boron.stage_a.goblet.GobletEntity;
 import net.jimboi.boron.stage_a.goblet.GobletWorld;
@@ -7,7 +8,6 @@ import net.jimboi.boron.stage_a.goblet.tick.TickCounter;
 
 import org.bstone.transform.Transform3;
 import org.bstone.util.ColorUtil;
-import org.zilar.render.material.PropertyColor;
 
 /**
  * Created by Andy on 8/10/17.

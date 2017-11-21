@@ -14,6 +14,7 @@ import org.bstone.resource.ProgramLoader;
 import org.bstone.resource.ShaderLoader;
 import org.bstone.resource.TextureAtlasLoader;
 import org.bstone.resource.TextureLoader;
+import org.bstone.scene.SceneManager;
 import org.bstone.tick.TickEngine;
 import org.bstone.util.parser.json.JSONFormatParser;
 import org.bstone.window.Window;
@@ -37,6 +38,7 @@ public class GameEngine implements Framework, Game
 	protected final TickEngine tickEngine;
 
 	protected final AssetManager assetManager;
+	protected final SceneManager sceneManager;
 
 	private double timeCounter;
 
@@ -47,6 +49,7 @@ public class GameEngine implements Framework, Game
 		this.tickEngine = new TickEngine(60, true);
 		this.renderEngine = new RenderEngine(this.window, this.tickEngine);
 		this.assetManager = new AssetManager();
+		this.sceneManager = new SceneManager(this.renderEngine.getRenderServices());
 	}
 
 	@Override
@@ -84,6 +87,7 @@ public class GameEngine implements Framework, Game
 		this.tickEngine.getTickServices().stopService("framework");
 		this.renderEngine.getRenderServices().stopService("framework");
 
+		this.sceneManager.destroy();
 		this.assetManager.destroy();
 	}
 
@@ -112,6 +116,12 @@ public class GameEngine implements Framework, Game
 		}
 	}
 
+	@Override
+	public void onFixedUpdate()
+	{
+		this.sceneManager.update();
+	}
+
 	public Window getWindow()
 	{
 		return window;
@@ -135,6 +145,11 @@ public class GameEngine implements Framework, Game
 	public AssetManager getAssetManager()
 	{
 		return this.assetManager;
+	}
+
+	public SceneManager getSceneManager()
+	{
+		return this.sceneManager;
 	}
 
 	protected static void loadAssetsFromLocation(AssetManager assets, ResourceLocation location)

@@ -1,7 +1,8 @@
 package org.zilar.dungeon.maze;
 
+import net.jimboi.boron.base_ab.gridmap.IntMap;
+
 import org.bstone.util.Direction;
-import org.bstone.util.gridmap.IntMap;
 import org.joml.Vector2i;
 import org.joml.Vector2ic;
 

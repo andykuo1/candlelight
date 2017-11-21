@@ -1,5 +1,7 @@
 package net.jimboi.boron.stage_a.goblet.entity;
 
+import net.jimboi.boron.base_ab.render.material.Material;
+import net.jimboi.boron.base_ab.render.material.PropertyColor;
 import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
 import net.jimboi.boron.stage_a.goblet.GobletWorld;
@@ -11,8 +13,6 @@ import org.bstone.entity.EntityManager;
 import org.bstone.living.LivingManager;
 import org.bstone.transform.Transform3;
 import org.bstone.util.ColorUtil;
-import org.zilar.render.material.Material;
-import org.zilar.render.material.PropertyColor;
 
 /**
  * Created by Andy on 8/11/17.

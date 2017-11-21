@@ -1,6 +1,11 @@
 package net.jimboi.boron.stage_a.goblet;
 
 import net.jimboi.boron.base_ab.asset.Asset;
+import net.jimboi.boron.base_ab.render.RenderableBase;
+import net.jimboi.boron.base_ab.render.material.Material;
+import net.jimboi.boron.base_ab.render.material.PropertyColor;
+import net.jimboi.boron.base_ab.render.material.PropertyTexture;
+import net.jimboi.boron.base_ab.render.model.Model;
 import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxManager;
 import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
@@ -20,11 +25,6 @@ import org.bstone.transform.Transform3;
 import org.bstone.transform.Transform3c;
 import org.joml.Matrix4f;
 import org.joml.Vector3fc;
-import org.zilar.render.RenderableBase;
-import org.zilar.render.material.Material;
-import org.zilar.render.material.PropertyColor;
-import org.zilar.render.material.PropertyTexture;
-import org.zilar.render.model.Model;
 
 import java.util.Random;
 

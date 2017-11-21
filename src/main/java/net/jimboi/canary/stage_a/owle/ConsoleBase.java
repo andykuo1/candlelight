@@ -1,6 +1,7 @@
 package net.jimboi.canary.stage_a.owle;
 
 import net.jimboi.boron.base_ab.asset.Asset;
+import net.jimboi.boron.base_ab.sprite.TextureAtlas;
 
 import org.bstone.input.TextHandler;
 import org.bstone.input.event.ActionEvent;
@@ -8,7 +9,6 @@ import org.bstone.transform.Transform;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
-import org.zilar.sprite.TextureAtlas;
 
 import java.util.ArrayList;
 import java.util.List;

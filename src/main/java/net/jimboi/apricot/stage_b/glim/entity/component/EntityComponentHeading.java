@@ -1,8 +1,9 @@
 package net.jimboi.apricot.stage_b.glim.entity.component;
 
+import net.jimboi.apricot.base.entity.EntityComponent;
+
 import org.bstone.transform.Transform;
 import org.joml.Vector3fc;
-import org.zilar.entity.EntityComponent;
 
 /**
  * Created by Andy on 6/14/17.

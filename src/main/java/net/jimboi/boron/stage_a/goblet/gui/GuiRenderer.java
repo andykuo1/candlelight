@@ -5,6 +5,7 @@ import net.jimboi.apricot.base.renderer.property.OldPropertyTexture;
 import net.jimboi.boron.base_ab.asset.Asset;
 import net.jimboi.boron.base_ab.render.OldRenderEngine;
 import net.jimboi.boron.base_ab.render.OldishRenderService;
+import net.jimboi.boron.base_ab.sprite.Sprite;
 import net.jimboi.boron.stage_a.goblet.gui.base.Gui;
 import net.jimboi.boron.stage_a.goblet.gui.base.GuiManager;
 
@@ -24,7 +25,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.ModelUtil;
-import org.zilar.sprite.Sprite;
 
 import java.util.Iterator;
 

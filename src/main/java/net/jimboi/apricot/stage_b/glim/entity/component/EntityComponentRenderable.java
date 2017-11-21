@@ -1,11 +1,11 @@
 package net.jimboi.apricot.stage_b.glim.entity.component;
 
+import net.jimboi.apricot.base.entity.EntityComponent;
 import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.render.OldRenderable;
 
 import org.bstone.transform.Transform3;
 import org.joml.Matrix4f;
-import org.zilar.entity.EntityComponent;
 
 /**
  * Created by Andy on 6/1/17.

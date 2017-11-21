@@ -1,5 +1,6 @@
 package net.jimboi.boron.stage_a.goblet.entity.base;
 
+import net.jimboi.boron.base_ab.render.material.PropertyColor;
 import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.goblet.GobletEntity;
 import net.jimboi.boron.stage_a.goblet.GobletWorld;
@@ -8,7 +9,6 @@ import net.jimboi.boron.stage_a.goblet.component.ComponentTransform;
 
 import org.bstone.entity.EntityManager;
 import org.bstone.transform.Transform3;
-import org.zilar.render.material.PropertyColor;
 
 /**
  * Created by Andy on 8/11/17.

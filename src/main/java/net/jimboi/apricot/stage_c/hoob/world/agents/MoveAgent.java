@@ -1,12 +1,12 @@
 package net.jimboi.apricot.stage_c.hoob.world.agents;
 
+import net.jimboi.apricot.base.collision.DynamicCollider;
+import net.jimboi.apricot.base.entity.Entity;
 import net.jimboi.apricot.stage_c.hoob.EntityComponentBoundingCollider;
 import net.jimboi.apricot.stage_c.hoob.world.World;
 
 import org.bstone.transform.Transform;
 import org.joml.Vector2f;
-import org.zilar.collision.DynamicCollider;
-import org.zilar.entity.Entity;
 
 /**
  * Created by Andy on 7/13/17.

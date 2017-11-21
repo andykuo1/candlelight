@@ -1,6 +1,8 @@
 package net.jimboi.apricot.base.gui;
 
 import net.jimboi.boron.base_ab.asset.Asset;
+import net.jimboi.boron.base_ab.sprite.FontSheet;
+import net.jimboi.boron.base_ab.sprite.Sprite;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
@@ -8,8 +10,6 @@ import org.joml.Vector2f;
 import org.zilar.meshbuilder.MeshBuilder;
 import org.zilar.meshbuilder.MeshData;
 import org.zilar.meshbuilder.ModelUtil;
-import org.zilar.sprite.FontSheet;
-import org.zilar.sprite.Sprite;
 
 import java.util.HashMap;
 import java.util.Map;

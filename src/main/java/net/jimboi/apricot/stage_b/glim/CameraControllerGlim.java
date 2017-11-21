@@ -1,6 +1,7 @@
 package net.jimboi.apricot.stage_b.glim;
 
 import net.jimboi.apricot.base.OldGameEngine;
+import net.jimboi.apricot.base.entity.Entity;
 import net.jimboi.apricot.stage_b.glim.controller.FirstPersonLookController;
 import net.jimboi.apricot.stage_b.glim.controller.FirstPersonMoveController;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentBounding;
@@ -11,7 +12,6 @@ import net.jimboi.boron.base_ab.window.input.InputLayer;
 import org.bstone.camera.Camera;
 import org.bstone.camera.CameraController;
 import org.bstone.transform.Transform3;
-import org.zilar.entity.Entity;
 
 /**
  * Created by Andy on 6/1/17.

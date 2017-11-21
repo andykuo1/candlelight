@@ -2,10 +2,10 @@ package net.jimboi.apricot.base.renderer.property;
 
 import net.jimboi.apricot.base.material.OldProperty;
 import net.jimboi.boron.base_ab.asset.Asset;
+import net.jimboi.boron.base_ab.sprite.Sprite;
+import net.jimboi.boron.base_ab.sprite.SpriteSheet;
 
 import org.bstone.mogli.Texture;
-import org.zilar.sprite.Sprite;
-import org.zilar.sprite.SpriteSheet;
 
 /**
  * Created by Andy on 6/8/17.

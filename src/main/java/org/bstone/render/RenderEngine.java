@@ -2,13 +2,12 @@ package org.bstone.render;
 
 import org.bstone.application.Application;
 import org.bstone.application.Engine;
-import org.bstone.application.handler.FrameHandler;
 import org.bstone.service.ServiceManager;
 import org.bstone.tick.TickCounter;
 import org.bstone.window.Window;
 
 /**
- * Created by Andy on 10/12/17.
+ * An engine that handles the rendering of the application
  */
 public class RenderEngine extends Engine
 {

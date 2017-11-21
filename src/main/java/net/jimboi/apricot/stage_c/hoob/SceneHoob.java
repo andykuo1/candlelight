@@ -2,6 +2,11 @@ package net.jimboi.apricot.stage_c.hoob;
 
 import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.OldSceneBase;
+import net.jimboi.apricot.base.animation.AnimatorSpriteSheet;
+import net.jimboi.apricot.base.collision.CollisionManager;
+import net.jimboi.apricot.base.collision.Shape;
+import net.jimboi.apricot.base.controller.BasicSideScrollCameraController;
+import net.jimboi.apricot.base.entity.Entity;
 import net.jimboi.apricot.base.material.OldMaterial;
 import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.renderer.property.OldPropertyDiffuse;
@@ -10,17 +15,12 @@ import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentRenderabl
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform;
 import net.jimboi.apricot.stage_c.hoob.world.World;
 import net.jimboi.boron.base_ab.asset.Asset;
+import net.jimboi.boron.base_ab.sprite.SpriteSheet;
+import net.jimboi.boron.base_ab.sprite.TextureAtlas;
 
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
 import org.bstone.transform.Transform3;
-import org.zilar.BasicSideScrollCameraController;
-import org.zilar.animation.AnimatorSpriteSheet;
-import org.zilar.collision.CollisionManager;
-import org.zilar.collision.Shape;
-import org.zilar.entity.Entity;
-import org.zilar.sprite.SpriteSheet;
-import org.zilar.sprite.TextureAtlas;
 
 /**
  * Created by Andy on 6/25/17.

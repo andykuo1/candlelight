@@ -1,5 +1,8 @@
 package net.jimboi.apricot.stage_b.glim.entity.system;
 
+import net.jimboi.apricot.base.entity.AbstractUpdateableEntitySystem;
+import net.jimboi.apricot.base.entity.Entity;
+import net.jimboi.apricot.base.entity.EntityManager;
 import net.jimboi.apricot.base.renderer.BillboardRenderer;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentBillboard;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform;
@@ -8,9 +11,6 @@ import org.bstone.camera.Camera;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
-import org.zilar.entity.AbstractUpdateableEntitySystem;
-import org.zilar.entity.Entity;
-import org.zilar.entity.EntityManager;
 
 import java.util.Collection;
 

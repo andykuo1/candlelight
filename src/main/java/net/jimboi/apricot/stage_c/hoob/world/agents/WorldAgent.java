@@ -1,10 +1,10 @@
 package net.jimboi.apricot.stage_c.hoob.world.agents;
 
+import net.jimboi.apricot.base.entity.EntityComponent;
 import net.jimboi.apricot.base.living.OldLiving;
 import net.jimboi.apricot.stage_c.hoob.world.World;
 
 import org.joml.Vector2f;
-import org.zilar.entity.EntityComponent;
 
 /**
  * Created by Andy on 7/13/17.

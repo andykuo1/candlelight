@@ -2,9 +2,8 @@ package net.jimboi.apricot.stage_b.glim.entity.component;
 
 import net.jimboi.apricot.base.astar.AstarNavigator;
 import net.jimboi.apricot.base.astar.map.NavigatorCardinalMap;
+import net.jimboi.apricot.base.entity.EntityComponent;
 import net.jimboi.apricot.stage_b.glim.WorldGlim;
-
-import org.zilar.entity.EntityComponent;
 
 import java.util.Stack;
 

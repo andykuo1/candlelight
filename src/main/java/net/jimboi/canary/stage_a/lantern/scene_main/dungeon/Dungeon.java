@@ -1,11 +1,11 @@
 package net.jimboi.canary.stage_a.lantern.scene_main.dungeon;
 
+import net.jimboi.boron.base_ab.gridmap.IntMap;
 import net.jimboi.canary.stage_a.base.collisionbox.box.GridBasedBoundingBox;
 
 import org.bstone.asset.Asset;
 import org.bstone.sprite.textureatlas.SubTexture;
 import org.bstone.sprite.textureatlas.TextureAtlas;
-import org.bstone.util.gridmap.IntMap;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;

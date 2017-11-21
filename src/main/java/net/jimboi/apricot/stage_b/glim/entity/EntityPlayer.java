@@ -1,12 +1,12 @@
 package net.jimboi.apricot.stage_b.glim.entity;
 
+import net.jimboi.apricot.base.entity.Entity;
 import net.jimboi.apricot.stage_b.glim.WorldGlim;
 import net.jimboi.apricot.stage_b.glim.bounding.square.AABB;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentBounding;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform;
 
 import org.bstone.transform.Transform3;
-import org.zilar.entity.Entity;
 
 /**
  * Created by Andy on 6/4/17.

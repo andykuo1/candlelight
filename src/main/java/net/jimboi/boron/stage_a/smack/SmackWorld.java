@@ -1,6 +1,10 @@
 package net.jimboi.boron.stage_a.smack;
 
 import net.jimboi.boron.base_ab.asset.Asset;
+import net.jimboi.boron.base_ab.render.material.Material;
+import net.jimboi.boron.base_ab.render.material.PropertyColor;
+import net.jimboi.boron.base_ab.render.material.PropertyTexture;
+import net.jimboi.boron.base_ab.render.model.Model;
 import net.jimboi.boron.stage_a.base.basicobject.ComponentRenderable;
 import net.jimboi.boron.stage_a.base.collisionbox.box.AxisAlignedBoundingBox;
 import net.jimboi.boron.stage_a.smack.chunk.Chunk;
@@ -13,10 +17,6 @@ import net.jimboi.boron.stage_a.smack.tile.LevelGenerator;
 import org.bstone.livingentity.LivingEntity;
 import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
-import org.zilar.render.material.Material;
-import org.zilar.render.material.PropertyColor;
-import org.zilar.render.material.PropertyTexture;
-import org.zilar.render.model.Model;
 
 import java.util.Random;
 

@@ -1,8 +1,7 @@
 package net.jimboi.apricot.stage_b.glim.entity;
 
+import net.jimboi.apricot.base.entity.EntityManager;
 import net.jimboi.apricot.stage_b.glim.SceneGlim;
-
-import org.zilar.entity.EntityManager;
 
 /**
  * Created by Andy on 6/4/17.

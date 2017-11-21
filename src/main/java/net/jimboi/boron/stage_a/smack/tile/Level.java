@@ -1,8 +1,9 @@
 package net.jimboi.boron.stage_a.smack.tile;
 
+import net.jimboi.boron.base_ab.gridmap.ByteMap;
+import net.jimboi.boron.base_ab.gridmap.IntMap;
+
 import org.bstone.livingentity.LivingEntity;
-import org.bstone.util.gridmap.ByteMap;
-import org.bstone.util.gridmap.IntMap;
 
 import java.util.List;
 

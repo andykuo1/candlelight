@@ -1,5 +1,6 @@
 package net.jimboi.boron.stage_a.smack.entity;
 
+import net.jimboi.boron.base_ab.render.material.PropertyColor;
 import net.jimboi.boron.stage_a.base.collisionbox.response.CollisionSolver;
 import net.jimboi.boron.stage_a.smack.DamageSource;
 import net.jimboi.boron.stage_a.smack.SmackEntity;
@@ -7,7 +8,6 @@ import net.jimboi.boron.stage_a.smack.SmackWorld;
 
 import org.bstone.transform.Transform3;
 import org.bstone.util.ColorUtil;
-import org.zilar.render.material.PropertyColor;
 
 /**
  * Created by Andy on 8/6/17.

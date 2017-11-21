@@ -1,9 +1,8 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main.tile;
 
+import net.jimboi.boron.base_ab.gridmap.IntMap;
 import net.jimboi.canary.stage_a.base.collisionbox.box.GridBasedBoundingBox;
 import net.jimboi.canary.stage_a.base.collisionbox.collider.BoxCollider;
-
-import org.bstone.util.gridmap.IntMap;
 
 /**
  * Created by Andy on 9/1/17.

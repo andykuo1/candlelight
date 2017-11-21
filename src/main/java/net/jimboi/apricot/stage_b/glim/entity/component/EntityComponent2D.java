@@ -1,6 +1,6 @@
 package net.jimboi.apricot.stage_b.glim.entity.component;
 
-import org.zilar.entity.EntityComponent;
+import net.jimboi.apricot.base.entity.EntityComponent;
 
 /**
  * Created by Andy on 6/18/17.

@@ -35,7 +35,7 @@ public final class FBO implements AutoCloseable
 			GL11.glReadBuffer(GL11.GL_NONE);
 		}
 
-		//this.texture = new Texture(this.viewport.getWidth(), this.viewport.getHeight(), GL11.GL_NEAREST, GL12.GL_CLAMP_TO_EDGE, Bitmap.Format.DEPTH);
+		//this.texture = new Texture(this.viewport.getWidth(), this.VIEW.getHeight(), GL11.GL_NEAREST, GL12.GL_CLAMP_TO_EDGE, Bitmap.Format.DEPTH);
 
 		//GL32.glFramebufferTexture(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, texture.handle(), 0);
 

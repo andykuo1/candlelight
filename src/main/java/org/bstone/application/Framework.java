@@ -1,7 +1,8 @@
 package org.bstone.application;
 
 /**
- * Created by Andy on 10/11/17.
+ * The basis of an Application; describes the relationship between engines and
+ * further client-specific operations.
  */
 public interface Framework
 {

@@ -8,7 +8,6 @@ import org.bstone.application.game.GameEngine;
 import org.bstone.input.InputContext;
 import org.bstone.input.InputEngine;
 import org.bstone.input.InputListener;
-import org.bstone.scene.SceneManager;
 import org.bstone.tick.TickEngine;
 import org.lwjgl.glfw.GLFW;
 
@@ -39,12 +38,9 @@ public class Cuplet extends GameEngine implements InputListener
 		return DEBUG;
 	}
 
-	private SceneManager sceneManager;
-
 	@Override
 	public void onFirstUpdate(TickEngine tickEngine)
 	{
-		this.sceneManager = new SceneManager(this.getRenderEngine().getRenderServices());
 		this.sceneManager.registerScene("init", MainScene.class, MainRenderer.class);
 
 		final InputEngine input = this.getInputEngine();
@@ -65,22 +61,9 @@ public class Cuplet extends GameEngine implements InputListener
 	}
 
 	@Override
-	public void onFixedUpdate()
-	{
-		this.sceneManager.update();
-	}
-
-	@Override
 	public void onLastUpdate(TickEngine tickEngine)
 	{
-		this.sceneManager.destroy();
-
 		this.getInputEngine().getDefaultContext().removeListener(this);
-	}
-
-	public final SceneManager getSceneManager()
-	{
-		return this.sceneManager;
 	}
 
 	public final Application getApplication()

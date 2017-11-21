@@ -1,6 +1,6 @@
 package org.zilar.dungeon;
 
-import org.bstone.util.gridmap.IntMap;
+import net.jimboi.boron.base_ab.gridmap.IntMap;
 
 import java.util.Random;
 

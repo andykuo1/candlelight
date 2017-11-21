@@ -1,6 +1,7 @@
 package net.jimboi.apricot.stage_b.glim.entity;
 
 import net.jimboi.apricot.base.OldGameEngine;
+import net.jimboi.apricot.base.entity.Entity;
 import net.jimboi.apricot.base.render.OldModel;
 import net.jimboi.apricot.base.renderer.property.OldPropertyDiffuse;
 import net.jimboi.apricot.base.renderer.property.OldPropertyShadow;
@@ -15,7 +16,6 @@ import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentTransform
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Texture;
 import org.bstone.transform.Transform3;
-import org.zilar.entity.Entity;
 
 /**
  * Created by Andy on 6/4/17.

@@ -14,6 +14,7 @@ import net.jimboi.boron.base_ab.asset.Asset;
 import net.jimboi.boron.base_ab.asset.AssetManager;
 import net.jimboi.boron.base_ab.render.OldRenderEngine;
 import net.jimboi.boron.base_ab.render.OldishRenderService;
+import net.jimboi.boron.base_ab.sprite.Sprite;
 import net.jimboi.boron.base_ab.window.OldWindow;
 
 import org.bstone.camera.Camera;
@@ -27,7 +28,6 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.zilar.sprite.Sprite;
 
 import java.util.Collection;
 import java.util.Iterator;

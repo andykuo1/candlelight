@@ -1,6 +1,7 @@
 package net.jimboi.apricot.base;
 
-import org.bstone.util.gridmap.GridMap;
+import net.jimboi.boron.base_ab.gridmap.GridMap;
+
 import org.joml.Vector2i;
 import org.qsilver.poma.Poma;
 

@@ -1,12 +1,12 @@
 package net.jimboi.apricot.base;
 
+import net.jimboi.apricot.base.animation.AnimationManager;
+import net.jimboi.apricot.base.entity.EntityManager;
 import net.jimboi.apricot.base.material.OldMaterialManager;
 import net.jimboi.apricot.base.scene.Scene;
 import net.jimboi.boron.base_ab.render.OldRenderEngine;
 
 import org.bstone.camera.CameraController;
-import org.zilar.animation.AnimationManager;
-import org.zilar.entity.EntityManager;
 
 /**
  * Created by Andy on 7/5/17.

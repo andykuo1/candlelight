@@ -3,6 +3,8 @@ package net.jimboi.apricot.stage_b.glim;
 import net.jimboi.apricot.base.OldGameEngine;
 import net.jimboi.apricot.base.OldRenderBase;
 import net.jimboi.apricot.base.OldSceneBase;
+import net.jimboi.apricot.base.assets.Assets;
+import net.jimboi.apricot.base.assets.resource.MeshLoader;
 import net.jimboi.apricot.base.input.OldInputManager;
 import net.jimboi.apricot.base.render.OldRenderable;
 import net.jimboi.apricot.base.renderer.BillboardRenderer;
@@ -28,9 +30,7 @@ import org.lwjgl.opengl.GL11;
 import org.qsilver.ResourceLocation;
 import org.qsilver.util.iterator.CastIterator;
 import org.qsilver.util.iterator.FilterIterator;
-import org.zilar.base.Assets;
 import org.zilar.meshbuilder.MeshBuilder;
-import org.zilar.resource.MeshLoader;
 
 import java.util.ArrayList;
 import java.util.Collection;

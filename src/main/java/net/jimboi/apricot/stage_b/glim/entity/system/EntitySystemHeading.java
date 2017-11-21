@@ -1,6 +1,9 @@
 package net.jimboi.apricot.stage_b.glim.entity.system;
 
 import net.jimboi.apricot.base.astar.map.NavigatorCardinalMap;
+import net.jimboi.apricot.base.entity.AbstractUpdateableEntitySystem;
+import net.jimboi.apricot.base.entity.Entity;
+import net.jimboi.apricot.base.entity.EntityManager;
 import net.jimboi.apricot.stage_b.glim.bounding.BoundingManager;
 import net.jimboi.apricot.stage_b.glim.bounding.IntersectionData;
 import net.jimboi.apricot.stage_b.glim.entity.component.EntityComponentBounding;
@@ -14,9 +17,6 @@ import org.bstone.transform.Transform3;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.qsilver.util.MathUtil;
-import org.zilar.entity.AbstractUpdateableEntitySystem;
-import org.zilar.entity.Entity;
-import org.zilar.entity.EntityManager;
 
 import java.util.Collection;
 
