@@ -41,9 +41,9 @@ public class SceneTestRenderer extends SceneRenderer
 		assets.registerResourceLocation("texture.crate",
 				new ResourceLocation("lantern:texture_wooden_crate.res"));
 		assets.registerResourceLocation("bitmap.crate",
-				new ResourceLocation("glim:texture/wooden_crate.jpg"));
+				new ResourceLocation("base:wooden_crate.jpg"));
 		assets.registerResourceLocation("mesh.sphere",
-				new ResourceLocation("glim:model/sphere.obj"));
+				new ResourceLocation("base:sphere.obj"));
 		assets.registerResourceLocation("program.simple",
 				new ResourceLocation("lantern:program_simple.res"));
 		assets.registerResourceLocation("vertex_shader.simple",

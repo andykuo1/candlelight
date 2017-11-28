@@ -57,7 +57,7 @@ public class SceneMainRenderer extends SceneRenderer
 				new ResourceLocation("lantern:quad.obj"));
 
 		assets.registerResourceLocation("bitmap.crate",
-				new ResourceLocation("glim:texture/wooden_crate.jpg"));
+				new ResourceLocation("base:wooden_crate.jpg"));
 		assets.registerResourceLocation("texture.crate",
 				new ResourceLocation("lantern:texture_wooden_crate.res"));
 
