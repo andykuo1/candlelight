@@ -1,6 +1,5 @@
 package net.jimboi.canary.stage_a.lantern.scene_main;
 
-import net.jimboi.boron.base_ab.gridmap.IntMap;
 import net.jimboi.canary.stage_a.base.collisionbox.CollisionBoxManager;
 import net.jimboi.canary.stage_a.base.collisionbox.collider.BoxCollider;
 import net.jimboi.canary.stage_a.lantern.Lantern;
@@ -20,6 +19,7 @@ import org.bstone.input.adapter.InputAdapter;
 import org.bstone.livingentity.LivingEntityManager;
 import org.bstone.scene.Scene;
 import org.bstone.scene.SceneManager;
+import org.bstone.util.grid.IntMap;
 import org.lwjgl.glfw.GLFW;
 import org.zilar.dungeon.DungeonBuilder;
 import org.zilar.dungeon.DungeonData;

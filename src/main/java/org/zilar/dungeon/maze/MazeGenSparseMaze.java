@@ -48,7 +48,7 @@ public class MazeGenSparseMaze extends AbstractMazeGen
 
 					if (exits != 1) continue;
 
-					data.getTiles().put(x, y, 0);
+					data.getTiles().set(x, y, 0);
 					running = true;
 				}
 			}

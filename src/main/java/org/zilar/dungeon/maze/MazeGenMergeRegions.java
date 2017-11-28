@@ -87,7 +87,7 @@ public class MazeGenMergeRegions extends AbstractMazeGen
 			if (connectors.isEmpty()) break;
 			final Vector2ic connector = connectors.get(0);
 
-			data.getTiles().put(connector.x(), connector.y(), this.getConnectorTiles.get());
+			data.getTiles().set(connector.x(), connector.y(), this.getConnectorTiles.get());
 			///genMapCarveJunction(rand, map, connector);
 
 			List<Integer> connectorRegions = new ArrayList<>();
@@ -128,7 +128,7 @@ public class MazeGenMergeRegions extends AbstractMazeGen
 
 				if (rand.nextFloat() < mergePercent)
 				{
-					data.getTiles().put(pos.x, pos.y, getConnectorTiles.get());
+					data.getTiles().set(pos.x, pos.y, getConnectorTiles.get());
 					///genMapCarveJunction(rand, map, pos);
 				}
 

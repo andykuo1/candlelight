@@ -1,6 +1,5 @@
 package net.jimboi.canary.stage_a.lantern.scene_test;
 
-import net.jimboi.boron.stage_a.base.collisionbox.CollisionBoxManager;
 import net.jimboi.canary.stage_a.lantern.Lantern;
 import net.jimboi.canary.stage_a.lantern.scene_test.entity.EntityCrate;
 import net.jimboi.canary.stage_a.lantern.scene_test.entity.EntityPlayer;
@@ -23,7 +22,6 @@ import org.lwjgl.glfw.GLFW;
 public class SceneTest extends Scene
 {
 	public final LivingEntityManager livings;
-	public final CollisionBoxManager collisionManager;
 
 	public final PerspectiveCamera camera;
 
@@ -35,7 +33,6 @@ public class SceneTest extends Scene
 	public SceneTest()
 	{
 		this.livings = new LivingEntityManager();
-		this.collisionManager = new CollisionBoxManager();
 
 		this.camera = new PerspectiveCamera(0, 0, 0, 640, 480);
 	}
@@ -122,10 +119,5 @@ public class SceneTest extends Scene
 	public LivingEntityManager getLivings()
 	{
 		return this.livings;
-	}
-
-	public CollisionBoxManager getCollisionManager()
-	{
-		return this.collisionManager;
 	}
 }

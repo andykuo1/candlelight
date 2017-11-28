@@ -55,7 +55,7 @@ public class MazeDungeonBuilder extends DungeonBuilder
 			{
 				RoomData spawnRoom = new RoomData(regionHandler.getNextAvailableRegion(), centerX - 3, centerY - 3, 7, 7);
 				spawnDecorator.decorate(spawnRoom);
-				spawnRoom.getTiles().put(3, 3, 2);
+				spawnRoom.getTiles().set(3, 3, 2);
 				genRooms.addRoom(spawnRoom);
 			}
 

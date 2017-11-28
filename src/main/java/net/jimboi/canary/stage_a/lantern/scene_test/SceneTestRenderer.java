@@ -1,11 +1,13 @@
 package net.jimboi.canary.stage_a.lantern.scene_test;
 
-import net.jimboi.boron.base_ab.asset.Asset;
-import net.jimboi.boron.base_ab.render.renderer.SimpleProgramRenderer;
+import net.jimboi.canary.stage_a.base.MaterialProperty;
+import net.jimboi.canary.stage_a.base.renderer.SimpleRenderer;
 import net.jimboi.canary.stage_a.lantern.Lantern;
 
+import org.bstone.asset.Asset;
 import org.bstone.asset.AssetManager;
 import org.bstone.livingentity.LivingEntity;
+import org.bstone.material.Material;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
 import org.bstone.mogli.Program;
@@ -22,11 +24,12 @@ import org.qsilver.ResourceLocation;
 public class SceneTestRenderer extends SceneRenderer
 {
 	public AssetManager assetManager;
-	public SimpleProgramRenderer renderer;
-	public Program program;
-	public Mesh mesh;
-	public Bitmap bitmap;
-	public Texture texture;
+	public SimpleRenderer renderer;
+	public Asset<Program> program;
+	public Asset<Mesh> mesh;
+	public Asset<Bitmap> bitmap;
+	public Asset<Texture> texture;
+	public Material material;
 
 	@Override
 	protected void onRenderLoad(RenderEngine renderEngine)
@@ -48,12 +51,17 @@ public class SceneTestRenderer extends SceneRenderer
 		assets.registerResourceLocation("fragment_shader.simple",
 				new ResourceLocation("base:simple.fsh"));
 
-		this.mesh = assets.<Mesh>getAsset("mesh", "sphere").get();
-		this.bitmap = assets.<Bitmap>getAsset("bitmap", "crate").get();
-		this.texture = assets.<Texture>getAsset("texture", "crate").get();
-		this.program = assets.<Program>getAsset("program", "simple").get();
+		this.mesh = assets.getAsset("mesh", "sphere");
+		this.bitmap = assets.getAsset("bitmap", "crate");
+		this.texture = assets.getAsset("texture", "crate");
+		this.program = assets.getAsset("program", "simple");
 
-		this.renderer = new SimpleProgramRenderer(this.program);
+		this.renderer = new SimpleRenderer(this.program);
+		this.material = new Material();
+		this.material.setProperty(MaterialProperty.TEXTURE, this.texture);
+		this.material.setProperty(MaterialProperty.SPRITE_OFFSET, Transform2.ZERO);
+		this.material.setProperty(MaterialProperty.SPRITE_SCALE, Transform2.IDENTITY);
+		this.material.setProperty(MaterialProperty.TRANSPARENCY, false);
 	}
 
 	@Override
@@ -66,9 +74,7 @@ public class SceneTestRenderer extends SceneRenderer
 			if (entity instanceof EntityBase)
 			{
 				EntityBase entityBase = (EntityBase) entity;
-				this.renderer.draw(this.mesh, Asset.wrap(this.texture),
-						Transform2.ZERO, Transform2.IDENTITY, false,
-						null, entityBase.getTransform().getTransformation(new Matrix4f()).translate(2, 0, -5));
+				this.renderer.draw(this.mesh, this.material, entityBase.getTransform().getTransformation(new Matrix4f()).translate(2, 0, -5));
 			}
 		}
 		this.renderer.unbind();

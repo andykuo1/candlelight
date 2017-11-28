@@ -1,8 +1,9 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main.tile;
 
-import net.jimboi.boron.base_ab.gridmap.IntMap;
 import net.jimboi.canary.stage_a.base.collisionbox.box.GridBasedBoundingBox;
 import net.jimboi.canary.stage_a.base.collisionbox.collider.BoxCollider;
+
+import org.bstone.util.grid.IntMap;
 
 /**
  * Created by Andy on 9/1/17.
@@ -25,7 +26,7 @@ public class TileMap implements BoxCollider
 
 	public boolean isWithinBounds(float x, float y)
 	{
-		return x >= this.offsetX && y >= this.offsetY && x < this.offsetX + this.tiles.getWidth() && y < this.offsetY + this.tiles.getHeight();
+		return x >= this.offsetX && y >= this.offsetY && x < this.offsetX + this.tiles.width() && y < this.offsetY + this.tiles.height();
 	}
 
 	public Tile getTile(float x, float y)
@@ -55,7 +56,7 @@ public class TileMap implements BoxCollider
 
 	public void setTileByMap(int ix, int iy, Tile tile)
 	{
-		this.tiles.put(ix, iy, tile.getID());
+		this.tiles.set(ix, iy, tile.getID());
 		this.boundingBox.setSolid(ix + iy * this.getWidth(), tile.isSolid());
 	}
 
@@ -71,12 +72,12 @@ public class TileMap implements BoxCollider
 
 	public int getWidth()
 	{
-		return this.tiles.getWidth();
+		return this.tiles.width();
 	}
 
 	public int getHeight()
 	{
-		return this.tiles.getHeight();
+		return this.tiles.height();
 	}
 
 	@Override

@@ -1,11 +1,11 @@
 package net.jimboi.canary.stage_a.lantern.scene_main.dungeon;
 
-import net.jimboi.boron.base_ab.gridmap.IntMap;
 import net.jimboi.canary.stage_a.base.collisionbox.box.GridBasedBoundingBox;
 
 import org.bstone.asset.Asset;
 import org.bstone.sprite.textureatlas.SubTexture;
 import org.bstone.sprite.textureatlas.TextureAtlas;
+import org.bstone.util.grid.IntMap;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
@@ -19,11 +19,11 @@ public class Dungeon
 {
 	public static GridBasedBoundingBox createBoundingBoxFromMap(IntMap map)
 	{
-		GridBasedBoundingBox gbbb = new GridBasedBoundingBox(0, 0, map.getWidth(), map.getHeight());
+		GridBasedBoundingBox gbbb = new GridBasedBoundingBox(0, 0, map.width(), map.height());
 
-		for (int y = 0; y < map.getHeight(); ++y)
+		for (int y = 0; y < map.height(); ++y)
 		{
-			for (int x = 0; x < map.getWidth(); ++x)
+			for (int x = 0; x < map.width(); ++x)
 			{
 				if (isSolid(map, x, y))
 				{
@@ -48,9 +48,9 @@ public class Dungeon
 
 		Vector3f u = new Vector3f();
 		Vector3f v = new Vector3f();
-		for (int x = 0; x < map.getWidth(); ++x)
+		for (int x = 0; x < map.width(); ++x)
 		{
-			for (int y = 0; y < map.getHeight(); ++y)
+			for (int y = 0; y < map.height(); ++y)
 			{
 				Vector3fc wallPos = new Vector3f(x, 0, y);
 				u.set(0);
@@ -117,7 +117,7 @@ public class Dungeon
 
 	private static boolean isSolid(IntMap map, int x, int y)
 	{
-		if (!map.containsKey(x, y)) return true;
+		if (x < 0 || x >= map.width() || y < 0 || y >= map.height()) return true;
 		return map.get(x, y) == 0;
 	}
 }

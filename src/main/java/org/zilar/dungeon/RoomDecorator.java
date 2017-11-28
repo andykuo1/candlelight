@@ -1,6 +1,6 @@
 package org.zilar.dungeon;
 
-import net.jimboi.boron.base_ab.gridmap.IntMap;
+import org.bstone.util.grid.IntMap;
 
 import java.util.Random;
 
@@ -20,13 +20,13 @@ public class RoomDecorator
 		IntMap map = roomData.getTiles();
 		map.clear(1);
 
-		for (int x = 0; x < map.getWidth(); ++x)
+		for (int x = 0; x < map.width(); ++x)
 		{
-			for (int y = 0; y < map.getHeight(); ++y)
+			for (int y = 0; y < map.height(); ++y)
 			{
 				if (this.rand.nextFloat() < 0.3F)
 				{
-					map.put(x, y, 8);
+					map.set(x, y, 8);
 				}
 			}
 		}

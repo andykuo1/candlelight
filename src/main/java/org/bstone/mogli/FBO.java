@@ -1,8 +1,7 @@
 package org.bstone.mogli;
 
-import net.jimboi.boron.base_ab.window.OldWindow;
-
 import org.bstone.RefCountSet;
+import org.bstone.window.Window;
 import org.bstone.window.view.ViewPort;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
@@ -79,7 +78,7 @@ public final class FBO implements AutoCloseable
 		this.unbind(null, true, true);
 	}
 
-	public void bind(OldWindow window, boolean draw, boolean read)
+	public void bind(Window window, boolean draw, boolean read)
 	{
 		if (draw && read)
 		{
@@ -100,7 +99,7 @@ public final class FBO implements AutoCloseable
 		}
 	}
 
-	public void unbind(OldWindow window, boolean draw, boolean read)
+	public void unbind(Window window, boolean draw, boolean read)
 	{
 		if (draw && read)
 		{

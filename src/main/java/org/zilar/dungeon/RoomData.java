@@ -1,7 +1,6 @@
 package org.zilar.dungeon;
 
-import net.jimboi.boron.base_ab.gridmap.IntMap;
-
+import org.bstone.util.grid.IntMap;
 import org.zilar.dungeon.maze.Region;
 
 /**
