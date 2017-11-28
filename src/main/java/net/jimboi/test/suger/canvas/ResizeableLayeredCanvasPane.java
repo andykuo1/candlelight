@@ -8,13 +8,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 /**
- * Created by Andy on 11/22/17.
+ * Created by Andy on 11/9/17.
  */
-public class LayeredCanvasPane extends Pane implements LayeredCanvas
+public class ResizeableLayeredCanvasPane extends Pane implements LayeredCanvas
 {
 	private final Canvas[] layers;
 
-	public LayeredCanvasPane(int layers, double width, double height)
+	public ResizeableLayeredCanvasPane(int layers, double width, double height)
 	{
 		this.layers = new Canvas[layers];
 		for(int i = 0; i < this.layers.length; ++i)
@@ -22,6 +22,24 @@ public class LayeredCanvasPane extends Pane implements LayeredCanvas
 			this.layers[i] = new Canvas(width, height);
 			this.getChildren().add(this.layers[i]);
 			this.layers[i].toFront();
+		}
+	}
+
+	@Override
+	protected void layoutChildren()
+	{
+		super.layoutChildren();
+		final double x = this.snappedLeftInset();
+		final double y = this.snappedTopInset();
+		final double w = this.snapSize(this.getWidth()) - x - this.snappedRightInset();
+		final double h = this.snapSize(this.getHeight()) - y - this.snappedBottomInset();
+
+		for(Canvas canvas : this.layers)
+		{
+			canvas.setLayoutX(x);
+			canvas.setLayoutY(y);
+			canvas.setWidth(w);
+			canvas.setHeight(h);
 		}
 	}
 
@@ -35,7 +53,7 @@ public class LayeredCanvasPane extends Pane implements LayeredCanvas
 	}
 
 	@Override
-	public final Canvas getCanvas(int layer)
+	public Canvas getCanvas(int layer)
 	{
 		return this.layers[layer];
 	}

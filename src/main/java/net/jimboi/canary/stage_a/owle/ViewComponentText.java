@@ -1,5 +1,7 @@
 package net.jimboi.canary.stage_a.owle;
 
+import net.jimboi.canary.stage_a.smuc.RasterizedView;
+
 /**
  * Created by Andy on 9/13/17.
  */
@@ -19,7 +21,7 @@ public class ViewComponentText extends ViewComponent
 	}
 
 	@Override
-	public void render(RasterView view)
+	public void render(RasterizedView view)
 	{
 		if (this.maxLines == 0 || this.maxLength == 0) return;
 
@@ -38,7 +40,7 @@ public class ViewComponentText extends ViewComponent
 			++i;
 
 			if (i >= this.maxLength) continue;
-			view.setPixel(this.x + i, this.y + j, this.color, (byte) this.text.charAt(k));
+			view.draw(this.x + i, this.y + j, this.text.charAt(k), this.color);
 		}
 	}
 

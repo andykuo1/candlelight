@@ -1,7 +1,7 @@
 package net.jimboi.test.suger.dungeon;
 
 import net.jimboi.test.suger.baron.ViewPort;
-import net.jimboi.test.suger.canvas.LayeredCanvasPane;
+import net.jimboi.test.suger.canvas.LayeredCanvas;
 
 import org.joml.Vector2d;
 import org.joml.Vector2dc;
@@ -14,9 +14,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import javafx.geometry.Rectangle2D;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
-import javafx.scene.paint.Color;
 
 /**
  * Created by Andy on 11/15/17.
@@ -54,12 +52,9 @@ public class DungeonHandler
 				endScreen.x() - offset.x(), endScreen.y() - offset.y());
 	}
 
-	public WritableImage exportToImage(LayeredCanvasPane canvas, ViewPort view)
+	public WritableImage exportToImage(LayeredCanvas canvas, ViewPort view)
 	{
-		SnapshotParameters params = new SnapshotParameters();
-		params.setViewport(this.getExportArea(view));
-		params.setFill(Color.TRANSPARENT);
-		return canvas.snapshot(params, null);
+		return canvas.toWritableImage(this.getExportArea(view));
 	}
 
 	public void solveDirectionsByRegion()

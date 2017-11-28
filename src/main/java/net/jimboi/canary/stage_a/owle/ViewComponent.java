@@ -1,5 +1,7 @@
 package net.jimboi.canary.stage_a.owle;
 
+import net.jimboi.canary.stage_a.smuc.RasterizedView;
+
 /**
  * Created by Andy on 9/13/17.
  */
@@ -17,5 +19,5 @@ public abstract class ViewComponent
 	public void update()
 	{}
 
-	public abstract void render(RasterView view);
+	public abstract void render(RasterizedView view);
 }

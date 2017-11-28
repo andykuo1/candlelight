@@ -79,6 +79,11 @@ public class RenderEngine extends Engine
 		this.services.destroy();
 	}
 
+	public final Window getWindow()
+	{
+		return this.window;
+	}
+
 	public final TickCounter getFrameCounter()
 	{
 		return this.frameCounter;

@@ -78,6 +78,9 @@ public class GameEngine implements Framework, Game
 		app.startEngine(this.renderEngine);
 		app.startEngine(this.tickEngine);
 
+		this.input = this.inputEngine.getDefaultContext();
+		this.input.addListener(0, this);
+
 		this.timeCounter = System.currentTimeMillis();
 	}
 

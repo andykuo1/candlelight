@@ -1,5 +1,7 @@
 package net.jimboi.canary.stage_a.owle;
 
+import net.jimboi.canary.stage_a.smuc.RasterizedView;
+
 /**
  * Created by Andy on 9/14/17.
  */
@@ -19,7 +21,7 @@ public class ViewComponentPanel extends ViewComponent
 	}
 
 	@Override
-	public void render(RasterView view)
+	public void render(RasterizedView view)
 	{
 		if (this.width <= 0 || this.height <= 0) return;
 
@@ -34,7 +36,7 @@ public class ViewComponentPanel extends ViewComponent
 				if (i != this.width - 1) k += 1;
 				if (j != this.height - 1) k += 2;
 
-				view.setPixel(this.x + i, this.y + j, this.color, (byte) k);
+				view.draw(this.x + i, this.y + j, (char) k, this.color);
 			}
 		}
 	}

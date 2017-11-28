@@ -1,6 +1,6 @@
 package org.bstone.util.chunk;
 
-import net.jimboi.test.suger.oldsuger.dungeon.DungeonChunk;
+import net.jimboi.test.suger.dungeon.DungeonChunk;
 
 import org.joml.Vector2i;
 import org.joml.Vector2ic;
@@ -48,6 +48,11 @@ public class ChunkMap<T extends Chunk>
 			this.markChunkForUpdate(chunk);
 		}
 		return chunk;
+	}
+
+	public void cacheChunk(T chunk)
+	{
+		this.chunks.put(new Vector2i(chunk.chunkX, chunk.chunkY), chunk);
 	}
 
 	public T loadChunk(Vector2ic chunkCoord)

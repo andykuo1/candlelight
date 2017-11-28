@@ -1,12 +1,13 @@
 package org.bstone.json;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * Created by Andy on 6/9/17.
  */
-public class JSONArray extends JSONCollection
+public class JSONArray extends JSONCollection implements Iterable<JSONValue>
 {
 	protected final List<JSONValue> values = new ArrayList<>();
 
@@ -74,5 +75,11 @@ public class JSONArray extends JSONCollection
 		}
 		sb.append(" ]");
 		return sb.toString();
+	}
+
+	@Override
+	public Iterator<JSONValue> iterator()
+	{
+		return this.values.iterator();
 	}
 }

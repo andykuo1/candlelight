@@ -3,9 +3,18 @@ package net.jimboi.test.suger.dungeon;
 import net.jimboi.test.suger.dungeon.tile.DungeonTile;
 import net.jimboi.test.suger.dungeon.tile.DungeonTiles;
 
+import org.bstone.json.JSON;
+import org.bstone.json.JSONArray;
+import org.bstone.json.JSONBoolean;
+import org.bstone.json.JSONNumber;
+import org.bstone.json.JSONObject;
+import org.bstone.json.JSONValue;
 import org.bstone.util.chunk.Chunk;
 import org.bstone.util.chunk.ChunkLoader;
 import org.bstone.util.chunk.ChunkMap;
+import org.bstone.util.grid.BooleanMap;
+import org.bstone.util.grid.ByteMap;
+import org.bstone.util.grid.IntMap;
 import org.joml.Vector2i;
 import org.joml.Vector2ic;
 
@@ -17,6 +26,112 @@ import java.util.Map;
  */
 public class Dungeon implements ChunkLoader<DungeonChunk>
 {
+	private static final String CHUNKS = "chunks";
+	private static final String CHUNK_SIZE = "size";
+	private static final String COORDX = "coordX";
+	private static final String COORDY = "coordY";
+	private static final String MAP_PERMEABLES = "permeables";
+	private static final String MAP_SOLIDS = "solids";
+	private static final String MAP_DIRECTIONS = "directions";
+	private static final String MAP_REGIONS = "regions";
+	private static final String MAP_ITEMS = "items";
+
+	public static Dungeon loadFromJSON(JSONObject data)
+	{
+		Dungeon dungeon = new Dungeon();
+		JSONArray chunks = (JSONArray) data.get(CHUNKS);
+		for(JSONValue c : chunks)
+		{
+			JSONObject obj = (JSONObject) c;
+			JSONNumber coordX = (JSONNumber) obj.get(COORDX);
+			JSONNumber coordY = (JSONNumber) obj.get(COORDY);
+			JSONNumber size = (JSONNumber) obj.get(CHUNK_SIZE);
+
+			int chunkSize = size.toInt();
+			BooleanMap solids = new BooleanMap(chunkSize, chunkSize);
+			BooleanMap permeables = new BooleanMap(chunkSize, chunkSize);
+			ByteMap directions = new ByteMap(chunkSize, chunkSize);
+			IntMap regions = new IntMap(chunkSize, chunkSize);
+			IntMap items = new IntMap(chunkSize, chunkSize);
+
+			JSONArray array;
+
+			array = (JSONArray) obj.get(MAP_SOLIDS);
+			for(int i = 0; i < solids.array().length; ++i)
+			{
+				solids.array()[i] = ((JSONBoolean) array.get(i)).toBoolean();
+			}
+
+			array = (JSONArray) obj.get(MAP_PERMEABLES);
+			for(int i = 0; i < permeables.array().length; ++i)
+			{
+				permeables.array()[i] = ((JSONBoolean) array.get(i)).toBoolean();
+			}
+
+			array = (JSONArray) obj.get(MAP_DIRECTIONS);
+			for(int i = 0; i < directions.array().length; ++i)
+			{
+				directions.array()[i] = (byte) ((JSONNumber) array.get(i)).toInt();
+			}
+
+			array = (JSONArray) obj.get(MAP_REGIONS);
+			for(int i = 0; i < directions.array().length; ++i)
+			{
+				regions.array()[i] = ((JSONNumber) array.get(i)).toInt();
+			}
+
+			array = (JSONArray) obj.get(MAP_ITEMS);
+			for(int i = 0; i < directions.array().length; ++i)
+			{
+				items.array()[i] = ((JSONNumber) array.get(i)).toInt();
+			}
+
+			DungeonChunk chunk = new DungeonChunk(coordX.toInt(), coordY.toInt(), chunkSize,
+					solids, permeables, directions, regions, items);
+			dungeon.getMap().cacheChunk(chunk);
+		}
+
+		return dungeon;
+
+	}
+
+	public static JSONObject writeToJSON(Dungeon dungeon)
+	{
+		JSONObject root = JSON.object();
+		JSONArray chunks = JSON.array();
+		for(DungeonChunk chunk : dungeon.getMap().getLoadedChunks())
+		{
+			JSONObject c = JSON.object();
+			c.put(COORDX, JSON.value(chunk.getChunkCoordX()));
+			c.put(COORDY, JSON.value(chunk.getChunkCoordY()));
+			c.put(CHUNK_SIZE, JSON.value(chunk.getChunkSize()));
+
+			JSONArray solids = JSON.array();
+			for(boolean b : chunk.solids.array()) solids.add(JSON.value(b));
+			c.put(MAP_SOLIDS, solids);
+
+			JSONArray permeables = JSON.array();
+			for(boolean b : chunk.permeables.array()) permeables.add(JSON.value(b));
+			c.put(MAP_PERMEABLES, permeables);
+
+			JSONArray directions = JSON.array();
+			for(byte b : chunk.directions.array()) directions.add(JSON.value(b));
+			c.put(MAP_DIRECTIONS, directions);
+
+			JSONArray regions = JSON.array();
+			for(int i : chunk.regions.array()) regions.add(JSON.value(i));
+			c.put(MAP_REGIONS, regions);
+
+			JSONArray items = JSON.array();
+			for(int i : chunk.items.array()) items.add(JSON.value(i));
+			c.put(MAP_ITEMS, items);
+
+			chunks.add(c);
+		}
+		root.put(CHUNKS, chunks);
+		return root;
+	}
+
 	private final ChunkMap<DungeonChunk> chunks;
 	private final Map<Integer, DungeonTile> regionTiles;
 

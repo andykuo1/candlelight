@@ -20,14 +20,27 @@ public class DungeonChunk extends Chunk
 
 	public DungeonChunk(int chunkCoordX, int chunkCoordY, int chunkSize)
 	{
+		this(chunkCoordX, chunkCoordY, chunkSize,
+				new BooleanMap(chunkSize, chunkSize),
+				new BooleanMap(chunkSize, chunkSize),
+				new ByteMap(chunkSize, chunkSize),
+				new IntMap(chunkSize, chunkSize),
+				new IntMap(chunkSize, chunkSize));
+
+		this.solids.clear(true);
+		this.directions.clear((byte) 15);
+	}
+
+	public DungeonChunk(int chunkCoordX, int chunkCoordY, int chunkSize,
+	                    BooleanMap solids, BooleanMap permeables,
+	                    ByteMap directions, IntMap regions, IntMap items)
+	{
 		super(chunkCoordX, chunkCoordY, chunkSize);
 
-		this.solids = new BooleanMap(this.chunkSize, this.chunkSize);
-		this.solids.clear(true);
-		this.permeables = new BooleanMap(this.chunkSize, this.chunkSize);
-		this.directions = new ByteMap(this.chunkSize, this.chunkSize);
-		this.directions.clear((byte) 15);
-		this.regions = new IntMap(this.chunkSize, this.chunkSize);
-		this.items = new IntMap(this.chunkSize, this.chunkSize);
+		this.solids = solids;
+		this.permeables = permeables;
+		this.directions = directions;
+		this.regions = regions;
+		this.items = items;
 	}
 }

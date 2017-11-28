@@ -1,14 +1,15 @@
 package net.jimboi.canary.stage_a.owle;
 
-import net.jimboi.boron.base_ab.asset.Asset;
-import net.jimboi.boron.base_ab.gridmap.ByteMap;
-import net.jimboi.boron.base_ab.gridmap.IntMap;
-import net.jimboi.boron.base_ab.sprite.Sprite;
-import net.jimboi.boron.base_ab.sprite.TextureAtlas;
+import net.jimboi.canary.stage_a.base.MaterialProperty;
+import net.jimboi.canary.stage_a.base.renderer.SimpleRenderer;
 
+import org.bstone.asset.Asset;
+import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
-import org.bstone.transform.Transform2;
+import org.bstone.sprite.textureatlas.SubTexture;
+import org.bstone.sprite.textureatlas.TextureAtlas;
 import org.bstone.util.ColorUtil;
+import org.bstone.util.grid.IntMap;
 import org.joml.Matrix4fc;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -21,16 +22,17 @@ import org.zilar.meshbuilder.ModelUtil;
  */
 public class RasterView implements AutoCloseable
 {
-	private final Mesh mesh;
+	private final Asset<Mesh> mesh;
 
 	private final int width;
 	private final int height;
 
 	private final IntMap colors;
-	private final ByteMap types;
+	private final IntMap glyphs;
 	private boolean dirty;
 
 	private final Asset<TextureAtlas> textureAtlas;
+	private final Material material;
 
 	public RasterView(int width, int height, Asset<TextureAtlas> textureAtlas)
 	{
@@ -38,15 +40,19 @@ public class RasterView implements AutoCloseable
 		this.height = height;
 
 		this.colors = new IntMap(this.width, this.height);
-		this.types = new ByteMap(this.width, this.height);
+		this.glyphs = new IntMap(this.width, this.height);
 
 		this.textureAtlas = textureAtlas;
-		this.mesh = ModelUtil.createDynamicMesh(this.generateMeshData());
+		this.material = new Material();
+		this.material.setProperty(MaterialProperty.TEXTURE, this.textureAtlas.get().getTexture());
+		Mesh mesh = ModelUtil.createDynamicMesh(this.generateMeshData());
+		Console.getConsole().getAssetManager().cacheResource("mesh", this.toString(), mesh);
+		this.mesh = Console.getConsole().getAssetManager().getAsset("mesh", this.toString());
 	}
 
 	public void close() throws Exception
 	{
-		this.mesh.close();
+		Console.getConsole().getAssetManager().unloadResource("mesh", this.toString());
 	}
 
 	private MeshData generateMeshData()
@@ -62,20 +68,34 @@ public class RasterView implements AutoCloseable
 		{
 			for(int j = 0; j < this.height; ++j)
 			{
-				final Sprite sprite = this.textureAtlas.getSource().getSprite(this.types.get(i, j));
+				final SubTexture subTexture = this.textureAtlas.get()
+						.getSubTexture(this.glyphs.get(i, j));
 				ColorUtil.getNormalizedRGB(this.colors.get(i, j), color);
 				from.set(i, j);
 				to.set(i + 1, j + 1);
-				textl.set(sprite.getU(), sprite.getV());
-				texbr.set(sprite.getU() + sprite.getWidth(), sprite.getV() + sprite.getHeight());
+				textl.set(subTexture.getU(), subTexture.getV());
+				texbr.set(subTexture.getU() + subTexture.getWidth(),
+						subTexture.getV() + subTexture.getHeight());
 
 				int count = mb.getVertexCount();
-				mb.addVertex(from.x(), from.y(), 0, texbr.x(), textl.y(), color.x(), color.y(), color.z());
-				mb.addVertex(to.x(), from.y(), 0, textl.x(), textl.y(), color.x(), color.y(), color.z());
-				mb.addVertex(from.x(), to.y(), 0, texbr.x(), texbr.y(), color.x(), color.y(), color.z());
-				mb.addVertex(to.x(), from.y(), 0, textl.x(), textl.y(), color.x(), color.y(), color.z());
-				mb.addVertex(to.x(), to.y(), 0, textl.x(), texbr.y(), color.x(), color.y(), color.z());
-				mb.addVertex(from.x(), to.y(), 0, texbr.x(), texbr.y(), color.x(), color.y(), color.z());
+				mb.addVertex(from.x(), from.y(), 0,
+						textl.x(), texbr.y(),
+						color.x(), color.y(), color.z());
+				mb.addVertex(to.x(), from.y(), 0,
+						texbr.x(), texbr.y(),
+						color.x(), color.y(), color.z());
+				mb.addVertex(from.x(), to.y(), 0,
+						textl.x(), textl.y(),
+						color.x(), color.y(), color.z());
+				mb.addVertex(to.x(), from.y(), 0,
+						texbr.x(), texbr.y(),
+						color.x(), color.y(), color.z());
+				mb.addVertex(to.x(), to.y(), 0,
+						texbr.x(), textl.y(),
+						color.x(), color.y(), color.z());
+				mb.addVertex(from.x(), to.y(), 0,
+						textl.x(), textl.y(),
+						color.x(), color.y(), color.z());
 
 				mb.addVertexIndex(count++, count++, count++);
 				mb.addVertexIndex(count++, count++, count++);
@@ -88,84 +108,58 @@ public class RasterView implements AutoCloseable
 	{
 		if (this.dirty)
 		{
-			ModelUtil.updateMesh(this.mesh, this.generateMeshData());
+			ModelUtil.updateMesh(this.mesh.get(), this.generateMeshData());
 			this.dirty = false;
 		}
 	}
 
-	public void doRender(Matrix4fc transformation, ConsoleProgramRenderer renderer)
+	public void doRender(Matrix4fc transformation, SimpleRenderer renderer)
 	{
-		final Mesh mesh = this.mesh;
 		this.update();
-		renderer.draw(mesh,
-				this.textureAtlas.getSource().getSprite(0).getTexture(),
-				Transform2.ZERO, Transform2.IDENTITY, true,
-				null, transformation);
+		renderer.draw(this.mesh, this.material, transformation);
 	}
 
-	public void clear(byte type, int color)
+	public void color(int x, int y, int color)
 	{
-		this.colors.clear(color);
-		this.types.clear(type);
-		this.dirty = true;
+		if (x >= 0 && x < this.colors.width() && y >= 0 && y < this.colors.height())
+		{
+			if (this.colors.set(x, y, color) != color)
+			{
+				this.dirty = true;
+			}
+		}
 	}
 
-	public void setPixels(RasterView view)
+	public void glyph(int x, int y, char glyph)
 	{
-		this.colors.putAll(view.colors);
-		this.types.putAll(view.types);
-		this.dirty = true;
+		if (x >= 0 && x < this.glyphs.width() && y >= 0 && y < this.glyphs.height())
+		{
+			if (this.glyphs.set(x, y, glyph) != glyph)
+			{
+				this.dirty = true;
+			}
+		}
 	}
 
-	public void setPixelTypes(RasterView view)
+	public void draw(int x, int y, char glyph, int color)
 	{
-		this.types.putAll(view.types);
-		this.dirty = true;
+		if (x >= 0 && x < this.glyphs.width() && y >= 0 && y < this.glyphs.height())
+		{
+			if (this.glyphs.set(x, y, glyph) != glyph || this.colors.set(x, y, color) != color)
+			{
+				this.dirty = true;
+			}
+		}
 	}
 
-	public void setPixelColors(RasterView view)
+	public IntMap getColors()
 	{
-		this.colors.putAll(view.colors);
-		this.dirty = true;
+		return this.colors;
 	}
 
-	public void setPixel(int x, int y, int color, byte type)
+	public IntMap getGlyphs()
 	{
-		if (!this.colors.containsKey(x, y)) return;
-
-		this.colors.put(x, y, color);
-		this.types.put(x, y, type);
-		this.dirty = true;
-	}
-
-	public void setPixelType(int x, int y, byte type)
-	{
-		if (!this.types.containsKey(x, y)) return;
-
-		this.types.put(x, y, type);
-		this.dirty = true;
-	}
-
-	public void setPixelColor(int x, int y, int color)
-	{
-		if (!this.colors.containsKey(x, y)) return;
-
-		this.colors.put(x, y, color);
-		this.dirty = true;
-	}
-
-	public byte getPixelType(int x, int y)
-	{
-		if (!this.types.containsKey(x, y)) return 0;
-
-		return this.types.get(x, y);
-	}
-
-	public int getPixelColor(int x, int y)
-	{
-		if (!this.colors.containsKey(x, y)) return 0;
-
-		return this.colors.get(x, y);
+		return this.glyphs;
 	}
 
 	public Asset<TextureAtlas> getTextureAtlas()

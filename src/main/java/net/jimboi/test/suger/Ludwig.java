@@ -4,19 +4,29 @@ import net.jimboi.test.suger.baron.Baron;
 import net.jimboi.test.suger.baron.InputHandler;
 import net.jimboi.test.suger.baron.RenderHandler;
 import net.jimboi.test.suger.baron.ViewPort;
-import net.jimboi.test.suger.baron.WorldHandler;
-import net.jimboi.test.suger.canvas.LayeredCanvasPane;
+import net.jimboi.test.suger.canvas.LayeredCanvas;
 import net.jimboi.test.suger.dungeon.Dungeon;
 import net.jimboi.test.suger.dungeon.DungeonHandler;
-import net.jimboi.test.suger.dungeon.DungeonTileRenderer;
-import net.jimboi.test.suger.dungeon.tile.DungeonTile;
+import net.jimboi.test.suger.dungeon.slot.DungeonSlot;
+import net.jimboi.test.suger.dungeon.slot.DungeonSlotGroup;
+import net.jimboi.test.suger.dungeon.slot.SlotButton;
+import net.jimboi.test.suger.dungeon.slot.SlotGroupTileSelector;
 import net.jimboi.test.suger.dungeon.tile.DungeonTiles;
 
+import org.bstone.json.JSON;
+import org.bstone.json.JSONObject;
+import org.bstone.util.parser.json.JSONFormatParser;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 
@@ -29,21 +39,17 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
  * Created by Andy on 11/13/17.
  */
-public class Ludwig extends Application implements InputHandler, WorldHandler, RenderHandler
+public class Ludwig extends Application implements InputHandler, RenderHandler
 {
-	private final Renderer renderer = new Renderer();
-
+	private boolean draftMode = true;
+	private boolean helpMode = false;
 	private int gridMode = 0;
-
-	private int tileMode = 0;
-	private int tile = DungeonTiles.DOOR.getTileID() + 1;
-
-	private boolean showExport = false;
 	private boolean export = false;
 
 	private boolean dirty = false;
@@ -52,27 +58,127 @@ public class Ludwig extends Application implements InputHandler, WorldHandler, R
 	private Dungeon dungeon;
 	private DungeonHandler dungeonHandler;
 
+	private Set<DungeonSlotGroup> slotGroups = new HashSet<>();
+	private DungeonSlot slotFocus = null;
+
+	private boolean prevDown = false;
 	private Vector2f prevMouse = new Vector2f();
 	private Vector2f nextMouse = new Vector2f();
 
+	private SlotGroupTileSelector selector;
+
 	@Override
-	public void onCreate()
+	public void onLoad(Stage stage, LayeredCanvas canvas, ViewPort view)
+	{
+		final double width = canvas.getWidth();
+		final double height = canvas.getHeight();
+
+		this.slotGroups.add(this.selector = new SlotGroupTileSelector());
+
+		final int slotWidth = SlotButton.WIDTH;
+		final int slotHeight = SlotButton.HEIGHT;
+
+		int buttonIndex = 0;
+
+		this.slotGroups.add(new DungeonSlotGroup(new SlotButton("NEW",
+				() -> this.newDungeon(stage))
+				.setHotkey(KeyCode.O)
+				.setPosition(width - slotWidth - 10,
+						10 + (slotHeight + 8) * buttonIndex++)));
+
+		this.slotGroups.add(new DungeonSlotGroup(new SlotButton("SAVE",
+				() -> this.saveDungeon(stage))
+				.setHotkey(KeyCode.O)
+				.setPosition(width - slotWidth - 10,
+						10 + (slotHeight + 8) * buttonIndex++)));
+
+		this.slotGroups.add(new DungeonSlotGroup(new SlotButton("LOAD",
+				() -> this.loadDungeon(stage))
+				.setHotkey(KeyCode.O)
+				.setPosition(width - slotWidth - 10,
+						10 + (slotHeight + 8) * buttonIndex++)));
+
+		this.slotGroups.add(new DungeonSlotGroup(new SlotButton("EXPORT",
+				() -> this.export = true)
+				.setHotkey(KeyCode.O)
+				.setPosition(width - slotWidth - 10,
+						10 + (slotHeight + 8) * buttonIndex++)));
+		this.slotGroups.add(new DungeonSlotGroup(new SlotButton("GRID",
+				() ->
+				{
+					if (++this.gridMode > 2) this.gridMode = 0;
+				})
+				.setHotkey(KeyCode.P)
+				.setPosition(width - slotWidth - 10,
+						10 + (slotHeight + 8) * buttonIndex++)));
+
+		this.slotGroups.add(new DungeonSlotGroup(new SlotButton("DRAFT",
+				() -> this.draftMode = !this.draftMode)
+				.setHotkey(KeyCode.L)
+				.setPosition(width - slotWidth - 10,
+						10 + (slotHeight + 8) * buttonIndex++)));
+
+		this.slotGroups.add(new DungeonSlotGroup(new SlotButton("HELP",
+				() -> this.helpMode = !this.helpMode)
+				.setHotkey(KeyCode.K)
+				.setPosition(width - slotWidth - 10,
+						10 + (slotHeight + 8) * buttonIndex++)));
+
+		this.newDungeon(stage);
+	}
+
+	private void newDungeon(Stage stage)
 	{
 		this.dungeon = new Dungeon();
 		this.dungeonHandler = new DungeonHandler(this.dungeon);
-
 		this.dungeon.getMap().loadChunk(new Vector2i(0, 0));
 	}
 
-	@Override
-	public void onUpdate()
+	private void saveDungeon(Stage stage)
 	{
-		if (this.dirty && this.tick-- < 0)
+		FileChooser chooser = new FileChooser();
+		chooser.setInitialFileName("dungeon.json");
+		File file = chooser.showSaveDialog(stage);
+
+		if (file != null)
 		{
-			this.dungeonHandler.solveRegions();
-			this.dungeonHandler.solveDirectionsByRegion();
-			this.tick = 5;
-			this.dirty = false;
+			try
+			{
+				BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+				JSONObject data = Dungeon.writeToJSON(this.dungeon);
+				JSON.write(writer, data);
+				writer.flush();
+				writer.close();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void loadDungeon(Stage stage)
+	{
+		FileChooser chooser = new FileChooser();
+		chooser.setInitialFileName("dungeon.json");
+		File file = chooser.showOpenDialog(stage);
+
+		if (file != null)
+		{
+			try
+			{
+				JSONObject data;
+				BufferedReader reader = new BufferedReader(new FileReader(file));
+				JSONFormatParser parser = new JSONFormatParser(256);
+				data = (JSONObject) parser.parse(reader);
+				reader.close();
+				this.dungeon = Dungeon.loadFromJSON(data);
+				this.dungeonHandler = new DungeonHandler(this.dungeon);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -81,118 +187,135 @@ public class Ludwig extends Application implements InputHandler, WorldHandler, R
 	{
 		switch (code)
 		{
-			case W:
-				this.tileMode = 0;
-				break;
-			case S:
-				this.tileMode = 1;
-				break;
-			case D:
-				if (this.tileMode != 2)
-				{
-					this.tileMode = 2;
-				}
-				else
-				{
-					++this.tile;
-					if (this.tile >= DungeonTile.getNumOfRegisteredTiles())
-					{
-						this.tile = DungeonTiles.DOOR.getTileID() + 1;
-					}
-				}
-				break;
-			case A:
-				this.tileMode = 3;
-				break;
-			case P:
-				if (++this.gridMode > 2)
-				{
-					this.gridMode = 0;
-				}
-				break;
 			case E:
-				if (this.tileMode != 2)
+				if (this.selector.getTileMode() != 2)
 				{
 					this.dungeon.setBlockTile(this.dungeon.getRegion(this.nextMouse.x(), this.nextMouse.y()), null);
 				}
 				else
 				{
-					this.dungeon.setBlockTile(this.dungeon.getRegion(this.nextMouse.x(), this.nextMouse.y()), DungeonTile.getTileByID(this.tile));
+					this.dungeon.setBlockTile(this.dungeon.getRegion(this.nextMouse.x(), this.nextMouse.y()), this.selector.getTile());
 				}
 				break;
-			case O:
-				this.export = true;
-				break;
+			default:
+				for(DungeonSlotGroup group : this.slotGroups)
+				{
+					if (group.input(code)) break;
+				}
 		}
 	}
 
 	@Override
-	public void onDraw(LayeredCanvasPane canvas, ViewPort view)
+	public void onDraw(Stage stage, LayeredCanvas canvas, ViewPort view)
 	{
-		canvas.clear();
+		if (this.dirty && this.tick-- < 0)
+		{
+			this.dungeonHandler.solveRegions();
+			this.dungeonHandler.solveDirectionsByRegion();
+			this.tick = 5;
+			this.dirty = false;
+		}
 
+		canvas.clear();
 		final double width = canvas.getWidth();
 		final double height = canvas.getHeight();
 		view.setSize(width, height);
+		final double mousex = view.getCursorX();
+		final double mousey = view.getCursorY();
 
 		this.prevMouse.set(this.nextMouse);
-		ViewPort.getWorldPos(view, view.getCursorX(), view.getCursorY(), this.nextMouse);
+		ViewPort.getWorldPos(view, mousex, mousey, this.nextMouse);
+
+		this.slotFocus = null;
+		for(DungeonSlotGroup group : this.slotGroups)
+		{
+			for(DungeonSlot slot : group.getSlots())
+			{
+				if (slot.contains(mousex, mousey))
+				{
+					this.slotFocus = slot;
+				}
+			}
+		}
 
 		if (view.isCursorDown())
 		{
-			float x = this.nextMouse.x();
-			float y = this.nextMouse.y();
+			this.prevDown = true;
 
-			if (this.tileMode == 0)
+			if (this.slotFocus == null)
 			{
-				this.dungeon.setItem(x, y, DungeonTiles.AIR);
-				this.dungeon.setSolid(x, y, true);
-				this.dungeon.setDirection(x, y, (byte) 0);
-				this.dungeon.setRegion(x, y, 0);
-			}
-			else if (this.tileMode == 1)
-			{
-				this.dungeon.setItem(x, y, DungeonTiles.AIR);
-				this.dungeon.setSolid(x, y, false);
-				this.dungeon.setDirection(x, y, (byte) 15);
-				this.dungeon.setRegion(x, y, 1);
+				float x = this.nextMouse.x();
+				float y = this.nextMouse.y();
+
+				if (this.selector.getTileMode() == 1)
+				{
+					this.dungeon.setItem(x, y, DungeonTiles.AIR);
+					this.dungeon.setSolid(x, y, true);
+					this.dungeon.setDirection(x, y, (byte) 0);
+					this.dungeon.setRegion(x, y, 0);
+				}
+				else if (this.selector.getTileMode() == 0)
+				{
+					this.dungeon.setItem(x, y, DungeonTiles.AIR);
+					this.dungeon.setSolid(x, y, false);
+					this.dungeon.setDirection(x, y, (byte) 15);
+					this.dungeon.setRegion(x, y, 1);
+					this.dirty = true;
+				}
+				else if (this.selector.getTileMode() == 2)
+				{
+					this.dungeon.setItem(x, y, this.selector.getTile());
+				}
+				else if (this.selector.getTileMode() == 3)
+				{
+					this.dungeon.setItem(x, y, DungeonTiles.DOOR);
+				}
+
 				this.dirty = true;
 			}
-			else if (this.tileMode == 2)
-			{
-				this.dungeon.setItem(x, y, DungeonTile.getTileByID(this.tile));
-			}
-			else if (this.tileMode == 3)
-			{
-				this.dungeon.setItem(x, y, DungeonTiles.DOOR);
-			}
+		}
+		else if (this.prevDown)
+		{
+			this.prevDown = false;
 
-			this.dirty = true;
+			if (this.slotFocus != null)
+			{
+				this.slotFocus.activate();
+			}
 		}
 
 		GraphicsContext gui = canvas.getCanvas(Renderer.LAYER_GUI).getGraphicsContext2D();
-		this.renderer.drawDungeon(canvas, view, this.dungeon);
+		Renderer.drawDungeon(canvas, view, this.dungeon, this.draftMode);
 
 		if (this.gridMode == 1)
 		{
-			this.renderer.drawGrid(gui, view);
+			Renderer.drawGrid(gui, view);
 		}
 
 		if (this.export)
 		{
-			Image image = this.dungeonHandler.exportToImage(canvas, view);
+			FileChooser chooser = new FileChooser();
+			chooser.setInitialFileName("dungeon.png");
+			File file = chooser.showSaveDialog(stage);
 
-			File file = new File("img.png");
+			if (file != null)
+			{
+				Image image = this.dungeonHandler.exportToImage(canvas, view);
 
-			try
-			{
-				ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+				try
+				{
+					ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
+				finally
+				{
+					this.export = false;
+				}
 			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-			finally
+			else
 			{
 				this.export = false;
 			}
@@ -202,7 +325,7 @@ public class Ludwig extends Application implements InputHandler, WorldHandler, R
 			if (this.gridMode == 2)
 			{
 				Rectangle2D area = this.dungeonHandler.getExportArea(view);
-				this.renderer.drawExportArea(gui, area);
+				Renderer.drawExportArea(gui, area);
 				double w = area.getWidth() / view.getUnitScale();
 				double h = area.getHeight() / view.getUnitScale();
 				int i = (int) Math.floor(w);
@@ -222,17 +345,22 @@ public class Ludwig extends Application implements InputHandler, WorldHandler, R
 				gui.restore();
 			}
 
-			this.renderer.drawCursor(gui, view, this.nextMouse);
-			this.renderer.drawSlot(gui, this.tileMode, 10, 10, 44, 44);
-			DungeonTileRenderer renderer = new DungeonTileRenderer();
-			renderer.direction = -1;
-			this.renderer.drawTile(gui, renderer,
-					this.tileMode == 0 ? DungeonTiles.PLACEHOLDER :
-							this.tileMode == 1 ? DungeonTiles.AIR :
-									this.tileMode == 3 ? DungeonTiles.DOOR :
-											DungeonTile.getTileByID(this.tile),
-					18, 18,
-					28, 28);
+			if (this.slotFocus == null)
+			{
+				Renderer.drawCursor(gui, view, this.nextMouse);
+			}
+
+			for(DungeonSlotGroup group : this.slotGroups)
+			{
+				group.render(gui);
+				if (this.helpMode)
+				{
+					for(DungeonSlot slot : group.getSlots())
+					{
+						slot.renderHotkey(gui);
+					}
+				}
+			}
 		}
 	}
 
@@ -246,7 +374,7 @@ public class Ludwig extends Application implements InputHandler, WorldHandler, R
 	public void start(Stage primaryStage) throws Exception
 	{
 		Baron.initialize(new ViewPort(),
-				this, this, this,
+				this, this,
 				primaryStage);
 	}
 

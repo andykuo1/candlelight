@@ -1,23 +1,21 @@
 package net.jimboi.canary.stage_a.owle;
 
-import net.jimboi.boron.base_ab.asset.Asset;
-import net.jimboi.boron.base_ab.sprite.SpriteUtil;
-import net.jimboi.boron.base_ab.sprite.TextureAtlas;
-import net.jimboi.boron.base_ab.sprite.TextureAtlasBuilder;
+import net.jimboi.canary.stage_a.base.TextureAtlasBuilder;
+import net.jimboi.canary.stage_a.base.renderer.SimpleRenderer;
 
 import org.bstone.application.Application;
 import org.bstone.application.game.Game;
 import org.bstone.application.game.GameEngine;
-import org.bstone.camera.PerspectiveCamera;
+import org.bstone.asset.Asset;
+import org.bstone.camera.OrthographicCamera;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Texture;
 import org.bstone.render.RenderEngine;
+import org.bstone.sprite.textureatlas.TextureAtlas;
 import org.bstone.tick.TickEngine;
 import org.bstone.transform.Transform3;
 import org.bstone.util.Direction;
 import org.bstone.window.view.ScreenSpace;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 import org.qsilver.ResourceLocation;
 
 /**
@@ -45,12 +43,12 @@ public class Console extends GameEngine implements Game
 		APP.run();
 	}
 
-	public PerspectiveCamera camera;
-	public ConsoleProgramRenderer renderer;
+	public OrthographicCamera camera;
+	public SimpleRenderer renderer;
 
-	public Bitmap bitmap;
-	public Texture texture;
-	public TextureAtlas textureAtlas;
+	public Asset<Bitmap> bitmap;
+	public Asset<Texture> texture;
+	public Asset<TextureAtlas> textureAtlas;
 
 	public ScreenSpace screenSpace;
 
@@ -65,13 +63,15 @@ public class Console extends GameEngine implements Game
 	@Override
 	public void onRenderLoad(RenderEngine renderEngine)
 	{
-		final int width = 24;
+		this.window.setWindowSize(480, 640);
+
+		final int width = 16;
 		final int height = 16;
 		final int halfWidth = width / 2;
 		final int halfHeight = height / 2;
 		final int dist = 20;
 
-		this.camera = new PerspectiveCamera(halfWidth, halfHeight, dist, this.getWindow().getWidth(), this.getWindow().getHeight());
+		this.camera = new OrthographicCamera(halfWidth, halfHeight, dist, this.getWindow().getWidth(), this.getWindow().getHeight());
 		this.screenSpace = new ScreenSpace(this.getWindow().getCurrentViewPort(), this.camera, Direction.CENTER, Direction.NORTHEAST);
 
 		this.getInputEngine().getDefaultContext()
@@ -81,16 +81,28 @@ public class Console extends GameEngine implements Game
 				.registerEvent("mousey",
 						this.getInputEngine().getMouse().getCursorY()::getRange);
 
-		this.renderer = new ConsoleProgramRenderer();
-
-		this.bitmap = new Bitmap(new ResourceLocation("gordo:font.png"));
-		this.texture = new Texture(this.bitmap, GL11.GL_NEAREST, GL12.GL_CLAMP_TO_EDGE);
-
-		TextureAtlasBuilder tab = new TextureAtlasBuilder(Asset.wrap(this.texture), this.texture.width(), this.texture.height());
+		this.assetManager.registerResourceLocation("program.simple",
+				new ResourceLocation("gordo:program_simple.res"));
+		this.assetManager.registerResourceLocation("vertex_shader.simple",
+				new ResourceLocation("gordo:simple.vsh"));
+		this.assetManager.registerResourceLocation("fragment_shader.simple",
+				new ResourceLocation("gordo:simple.fsh"));
+		this.assetManager.registerResourceLocation("bitmap.font",
+				new ResourceLocation("gordo:font.png"));
+		this.assetManager.registerResourceLocation("texture.font",
+				new ResourceLocation("gordo:texture_font.res"));
+		this.bitmap = this.assetManager.getAsset("bitmap", "font");
+		this.texture = this.assetManager.getAsset("texture", "font");
+		TextureAtlasBuilder tab = new TextureAtlasBuilder(this.texture,
+				this.texture.get().width(), this.texture.get().height());
 		tab.addTileSheet(0, 0, 16, 16, 0, 0, 16, 16);
-		this.textureAtlas = SpriteUtil.createTextureAtlas(tab.bake());
+		this.assetManager.cacheResource("texture_atlas", "font", tab.bake());
+		this.textureAtlas = this.assetManager.getAsset("texture_atlas", "font");
 
-		this.consoleBase = new ConsoleBase(this, new Transform3(), Asset.wrap(this.textureAtlas), width, height);
+		this.renderer = new SimpleRenderer(this.assetManager.getAsset("program", "simple"));
+
+		this.consoleBase = new ConsoleBase(this, new Transform3(), this.textureAtlas, width, height);
+		this.consoleBase.load(this.assetManager);
 	}
 
 	@Override
@@ -109,16 +121,5 @@ public class Console extends GameEngine implements Game
 	public void onRenderUnload(RenderEngine renderEngine)
 	{
 		this.consoleBase.terminate();
-
-		try
-		{
-			this.texture.close();
-			this.bitmap.close();
-			this.renderer.close();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
 }

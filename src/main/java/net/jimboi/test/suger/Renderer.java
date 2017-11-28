@@ -1,7 +1,7 @@
 package net.jimboi.test.suger;
 
 import net.jimboi.test.suger.baron.ViewPort;
-import net.jimboi.test.suger.canvas.LayeredCanvasPane;
+import net.jimboi.test.suger.canvas.LayeredCanvas;
 import net.jimboi.test.suger.dungeon.Dungeon;
 import net.jimboi.test.suger.dungeon.DungeonChunk;
 import net.jimboi.test.suger.dungeon.DungeonTileRenderer;
@@ -15,10 +15,10 @@ import org.joml.Vector2fc;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
@@ -48,12 +48,9 @@ public class Renderer
 	private static final Color COLOR_GRID = Color.DARKGRAY;
 	private static final Color COLOR_CURSOR = Color.WHITE.deriveColor(0, 1, 1, 0.2);
 
-	private static final Color COLOR_SLOT_BLOCK = Color.CORNFLOWERBLUE;
-	private static final Color COLOR_SLOT_AIR = Color.INDIANRED;
-	private static final Color COLOR_SLOT_ITEM = Color.LIGHTGRAY;
 	private static final Color COLOR_EXPORT_AREA = Color.RED;
 
-	public void drawExportArea(GraphicsContext g, Rectangle2D area)
+	public static void drawExportArea(GraphicsContext g, Rectangle2D area)
 	{
 		g.setStroke(COLOR_EXPORT_AREA);
 		g.setLineWidth(EXPORT_LINE_WIDTH);
@@ -61,7 +58,7 @@ public class Renderer
 				area.getWidth(), area.getHeight());
 	}
 
-	public void drawCursor(GraphicsContext g, ViewPort v, Vector2fc mouse)
+	public static void drawCursor(GraphicsContext g, ViewPort v, Vector2fc mouse)
 	{
 		Vector2dc offset = ViewPort.getScreenPos(v,
 				(int) Math.floor(mouse.x()),
@@ -76,7 +73,7 @@ public class Renderer
 		g.restore();
 	}
 
-	public void drawDungeon(LayeredCanvasPane canvas, ViewPort v, Dungeon dungeon)
+	public static void drawDungeon(LayeredCanvas canvas, ViewPort v, Dungeon dungeon, boolean draft)
 	{
 		GraphicsContext solids = canvas.getCanvas(LAYER_SOLID).getGraphicsContext2D();
 		GraphicsContext shadows = canvas.getCanvas(LAYER_SHADOW).getGraphicsContext2D();
@@ -108,7 +105,7 @@ public class Renderer
 					renderer.item = chunk.items.get(i, j);
 
 					//Background Pass
-					this.drawTile(renderer.solid ? solids : floors,
+					drawTile(renderer.solid ? solids : floors,
 							renderer, dungeon.getBlockTile(renderer.region),
 							offset.x(), offset.y(),
 							v.getUnitScale(), v.getUnitScale());
@@ -127,7 +124,7 @@ public class Renderer
 							g = floors;
 						}
 
-						this.drawTile(g,
+						drawTile(g,
 								renderer, tile,
 								offset.x(), offset.y(),
 								v.getUnitScale(), v.getUnitScale());
@@ -136,17 +133,19 @@ public class Renderer
 			}
 		}
 
-		this.drawShadow(canvas.getCanvas(LAYER_SOLID), v.getUnitScale(), shadows);
+		if (!draft)
+		{
+			SnapshotParameters params = new SnapshotParameters();
+			params.setFill(Color.TRANSPARENT);
+			WritableImage image = canvas.getCanvas(LAYER_SOLID).snapshot(params, null);
+			drawShadow(image, v.getUnitScale(), shadows);
+		}
 	}
 
-	public void drawShadow(Canvas src, double scale, GraphicsContext dst)
+	public static void drawShadow(Image image, double scale, GraphicsContext dst)
 	{
 		final double shadowSize = scale * SHADOW_SIZE;
 		final double shadowBlur = scale * SHADOW_BLUR;
-
-		SnapshotParameters params = new SnapshotParameters();
-		params.setFill(Color.TRANSPARENT);
-		WritableImage image = src.snapshot(params, null);
 
 		GaussianBlur blur = new GaussianBlur(shadowBlur);
 		dst.drawImage(image, shadowSize * 2 / 3, shadowSize);
@@ -160,7 +159,7 @@ public class Renderer
 		dst.applyEffect(colorAdjust);
 	}
 
-	public void drawTile(GraphicsContext g, DungeonTileRenderer renderer, DungeonTile tile, double x, double y, double width, double height)
+	public static void drawTile(GraphicsContext g, DungeonTileRenderer renderer, DungeonTile tile, double x, double y, double width, double height)
 	{
 		renderer.tile = tile;
 
@@ -171,19 +170,7 @@ public class Renderer
 		g.restore();
 	}
 
-	public void drawSlot(GraphicsContext g, int mode, double x, double y, double width, double height)
-	{
-		g.save();
-		g.setFill(COLOR_CURSOR);
-		g.fillRect(x, y, width, height);
-		g.setLineWidth(SLOT_LINE_WIDTH);
-		g.setStroke(mode == 0 ? COLOR_SLOT_BLOCK :
-				mode == 1 ? COLOR_SLOT_AIR : COLOR_SLOT_ITEM);
-		g.strokeRoundRect(x, y, width, height, 5, 5);
-		g.restore();
-	}
-
-	public void drawGrid(GraphicsContext g, ViewPort v)
+	public static void drawGrid(GraphicsContext g, ViewPort v)
 	{
 		double dx = v.getX() % v.getUnitScale();
 		double dy = v.getY() % v.getUnitScale();

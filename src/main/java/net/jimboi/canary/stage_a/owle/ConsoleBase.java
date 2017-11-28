@@ -1,10 +1,13 @@
 package net.jimboi.canary.stage_a.owle;
 
-import net.jimboi.boron.base_ab.asset.Asset;
-import net.jimboi.boron.base_ab.sprite.TextureAtlas;
+import net.jimboi.canary.stage_a.base.renderer.SimpleRenderer;
+import net.jimboi.canary.stage_a.smuc.RasterizedView;
 
+import org.bstone.asset.Asset;
+import org.bstone.asset.AssetManager;
 import org.bstone.input.TextHandler;
 import org.bstone.input.event.ActionEvent;
+import org.bstone.sprite.textureatlas.TextureAtlas;
 import org.bstone.transform.Transform;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -20,8 +23,8 @@ public class ConsoleBase
 {
 	private final Console console;
 	private final Transform transform;
-	private final RasterView view;
-	private final RasterView background;
+	private final RasterizedView view;
+	private final RasterizedView background;
 	private final Matrix4f backgroundOffset;
 
 	private TextHandler textHandler;
@@ -33,12 +36,16 @@ public class ConsoleBase
 		this.console = console;
 		this.transform = transform;
 
-		this.view = new RasterView(width, height, textureAtlas);
-		this.background = new RasterView(width, height, textureAtlas);
+		this.view = new RasterizedView(width, height).setTextureAtlas(textureAtlas);
+		this.background = new RasterizedView(width, height).setTextureAtlas(textureAtlas);
 		this.backgroundOffset = new Matrix4f().translate(0.0625F, -0.0625F, 0);
 
-		this.view.clear((byte) 0, 0xFFFFFF);
-		this.background.clear((byte) 0, 0x888888);
+		this.view.forEach((vector2ic, character, integer) ->
+				this.view.draw(vector2ic.x(), vector2ic.y(), 'A', 0xFFFFFF));
+		this.background.forEach((vector2ic, character, integer) ->
+				this.background.draw(vector2ic.x(), vector2ic.y(), 'A', 0x888888));
+		//this.view.clear((byte) 0, 0xFFFFFF);
+		//this.background.clear((byte) 0, 0x888888);
 
 		Console.getConsole().getInputEngine().getDefaultContext()
 				.registerEvent("newline",
@@ -46,6 +53,12 @@ public class ConsoleBase
 		this.textHandler = Console.getConsole().getInputEngine().getText();
 
 		this.initialize();
+	}
+
+	public void load(AssetManager assets)
+	{
+		this.background.load(assets);
+		this.view.load(assets);
 	}
 
 	public void initialize()
@@ -57,15 +70,6 @@ public class ConsoleBase
 
 	public void terminate()
 	{
-		try
-		{
-			this.view.close();
-			this.background.close();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
 
 	public void update()
@@ -89,7 +93,7 @@ public class ConsoleBase
 	}
 
 	private final Matrix4f _MAT = new Matrix4f();
-	public void render(ConsoleProgramRenderer renderer)
+	public void render(SimpleRenderer renderer)
 	{
 		for(ViewComponent component : this.components)
 		{
@@ -100,12 +104,18 @@ public class ConsoleBase
 		float mouseY = Console.getConsole().getInputEngine().getDefaultContext().getRange("mousey").getRange();
 
 		Vector2f vec = this.console.screenSpace.getPoint2DFromScreen(mouseX, mouseY, new Vector2f());
-		this.view.setPixelType((int)Math.floor(vec.x()), (int)Math.floor(vec.y()), (byte) 'X');
+		this.view.glyph((int)Math.floor(vec.x()), (int)Math.floor(vec.y()), 'X');
 
-		this.background.setPixelTypes(this.view);
+		for(int i = 0; i < this.view.getGlyphs().array().length; ++i)
+		{
+			this.background.getGlyphs().array()[i] = this.view.getGlyphs().array()[i];
+		}
 
 		this.transform.getTransformation(_MAT);
-		this.view.doRender(_MAT, renderer);
-		this.background.doRender(_MAT.mul(this.backgroundOffset), renderer);
+
+		this.view.update();
+		this.background.update();
+		renderer.draw(this.view.getMesh(), this.view.getMaterial(), _MAT);
+		renderer.draw(this.view.getMesh(), this.view.getMaterial(), _MAT.mul(this.backgroundOffset));
 	}
 }

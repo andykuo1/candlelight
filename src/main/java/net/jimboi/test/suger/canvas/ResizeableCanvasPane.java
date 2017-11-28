@@ -6,11 +6,11 @@ import javafx.scene.layout.Pane;
 /**
  * Created by Andy on 11/9/17.
  */
-public class CanvasPane extends Pane
+public class ResizeableCanvasPane extends Pane
 {
 	private final Canvas canvas;
 
-	public CanvasPane(double width, double height)
+	public ResizeableCanvasPane(double width, double height)
 	{
 		this.canvas = new Canvas(width, height);
 		this.getChildren().add(this.canvas);

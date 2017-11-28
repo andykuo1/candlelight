@@ -1,5 +1,7 @@
 package org.bstone.application.game;
 
+import org.bstone.input.InputContext;
+import org.bstone.input.InputListener;
 import org.bstone.render.RenderEngine;
 import org.bstone.render.RenderService;
 import org.bstone.tick.TickEngine;
@@ -9,7 +11,7 @@ import org.qsilver.poma.Poma;
 /**
  * Created by Andy on 10/17/17.
  */
-public interface Game
+public interface Game extends InputListener
 {
 	default void onFirstUpdate(TickEngine tickEngine) {}
 	default void onLastUpdate(TickEngine tickEngine) {}
@@ -20,6 +22,9 @@ public interface Game
 	default void onRenderLoad(RenderEngine renderEngine) {}
 	default void onRenderUnload(RenderEngine renderEngine) {}
 	default void onRenderUpdate(RenderEngine renderEngine, double delta) {}
+
+	@Override
+	default void onInputUpdate(InputContext context) {}
 
 	class Tick extends TickService
 	{

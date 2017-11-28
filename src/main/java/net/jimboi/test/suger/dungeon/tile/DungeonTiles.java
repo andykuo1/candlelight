@@ -28,4 +28,20 @@ public class DungeonTiles
 	public static final DungeonTile STAIRS = DungeonTile.register(6, new TileItemStairs()
 			.setStairPaint(new ImagePattern(new Image("dungeon/tex9.jpg"))));
 			//.setStairPaint(Color.SLATEGRAY.brighter())
+	public static final DungeonTile SMALL_FURNITURE = DungeonTile.register(7, new TileItemFurniture(0.4)
+			//.setMainPaint(Color.AQUA.brighter())
+			//.setOutlinePaint(Color.SADDLEBROWN.darker().darker()));
+			.setMainPaint(Color.ALICEBLUE.darker())
+			.setOutlinePaint(Color.ALICEBLUE.darker().darker()));
+	public static final DungeonTile LARGE_FURNITURE = DungeonTile.register(8, new TileItemFurniture(0.7)
+			//.setMainPaint(Color.AQUA.brighter())
+			//.setOutlinePaint(Color.SADDLEBROWN.darker().darker()));
+			.setMainPaint(Color.ALICEBLUE.darker())
+			.setOutlinePaint(Color.ALICEBLUE.darker().darker()));
+	public static final DungeonTile TILED_FLOOR = DungeonTile.register(9, new TileBlock()
+			.setBlockPaint(new ImagePattern(new Image("dungeon/tex1.jpg"))));
+	public static final DungeonTile SLATE_DIRT = DungeonTile.register(10, new TileBlock()
+			.setBlockPaint(new ImagePattern(new Image("dungeon/tex5.jpg"))));
+	public static final DungeonTile GOLD_DIRT = DungeonTile.register(11, new TileBlock()
+			.setBlockPaint(new ImagePattern(new Image("dungeon/tex8.jpg"))));
 }

@@ -1,6 +1,6 @@
 package net.jimboi.test.suger.baron;
 
-import net.jimboi.test.suger.canvas.LayeredCanvasPane;
+import net.jimboi.test.suger.canvas.ResizeableLayeredCanvasPane;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
@@ -17,9 +17,9 @@ import javafx.stage.Stage;
  */
 public class Baron
 {
-	public static void initialize(ViewPort view, InputHandler input, RenderHandler render, WorldHandler world, Stage primaryStage) throws Exception
+	public static void initialize(ViewPort view, InputHandler input, RenderHandler render, Stage primaryStage) throws Exception
 	{
-		final LayeredCanvasPane canvasPane = new LayeredCanvasPane(
+		final ResizeableLayeredCanvasPane canvasPane = new ResizeableLayeredCanvasPane(
 				render.getNumOfLayers(), 640, 480);
 
 		canvasPane.setFocusTraversable(true);
@@ -39,14 +39,12 @@ public class Baron
 				input.onInput(event.getCode()));
 
 		final BorderPane root = new BorderPane(canvasPane);
-
 		final AnimationTimer timer = new AnimationTimer()
 		{
 			@Override
 			public void handle(long now)
 			{
-				world.onUpdate();
-				render.onDraw(canvasPane, view);
+				render.onDraw(primaryStage, canvasPane, view);
 			}
 		};
 
@@ -56,7 +54,7 @@ public class Baron
 		primaryStage.setTitle("Application");
 		primaryStage.show();
 
-		world.onCreate();
+		render.onLoad(primaryStage, canvasPane, view);
 
 		timer.start();
 	}
