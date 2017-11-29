@@ -24,6 +24,8 @@ import java.util.stream.Stream;
  */
 public class InputContext
 {
+	//FIXME: This still misses some input
+	//FIXME: This always polls no matter whether anything is dirty
 	private final Map<String, StateEvent> states = new HashMap<>();
 	private final Map<String, ActionEvent> actions = new HashMap<>();
 	private final Map<String, RangeEvent> ranges = new HashMap<>();
