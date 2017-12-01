@@ -100,10 +100,15 @@ public class Application implements Runnable
 			throw new IllegalStateException("cannot start application without a framework - must set framework before running");
 		}
 
-		//Create application
 		try
 		{
+			//Create application
+			System.out.println("Creating Application...");
 			this.framework.onApplicationCreate(this);
+
+			//Start application
+			System.out.println("Starting Application...");
+			this.framework.onApplicationStart(this);
 		}
 		catch(Exception e)
 		{
@@ -111,11 +116,8 @@ public class Application implements Runnable
 			return;
 		}
 
-		//Start application
 		try
 		{
-			this.framework.onApplicationStart(this);
-
 			//Main loop
 			while (this.running)
 			{
@@ -143,9 +145,14 @@ public class Application implements Runnable
 					}
 				}
 				this.currentIndex = -1;
-			}
 
+				throw new IllegalStateException("BOO!");
+			}
+		}
+		finally
+		{
 			//Stop application
+			System.out.println("Stopping Application...");
 			for (int i = this.engines.size() - 1; i >= 0; --i)
 			{
 				Engine engine = this.engines.get(i);
@@ -155,10 +162,9 @@ public class Application implements Runnable
 			this.engines.clear();
 
 			this.framework.onApplicationStop(this);
-		}
-		finally
-		{
+
 			//Destroy application
+			System.out.println("Destroying Application...");
 			this.framework.onApplicationDestroy(this);
 		}
 	}
