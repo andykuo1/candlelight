@@ -1,19 +1,18 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main.component;
 
-import org.bstone.entity.EntityManager;
-import org.bstone.living.LivingManager;
-import org.bstone.livingentity.LivingEntity;
+import org.bstone.gameobject.GameObjectManager;
 
 /**
  * Created by Andy on 9/3/17.
  */
 public abstract class SystemLiving extends System
 {
-	protected final LivingManager<LivingEntity> livingManager;
+	protected final GameObjectManager gameObjectManager;
 
-	public SystemLiving(EntityManager entityManager, LivingManager<LivingEntity> livingManager)
+	public SystemLiving(GameObjectManager gameObjectManager)
 	{
-		super(entityManager);
-		this.livingManager = livingManager;
+		super(gameObjectManager.getEntityManager());
+
+		this.gameObjectManager = gameObjectManager;
 	}
 }

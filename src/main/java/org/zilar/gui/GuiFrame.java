@@ -1,69 +1,38 @@
-package net.jimboi.canary.stage_a.smuc.gui;
+package org.zilar.gui;
 
 import org.bstone.window.view.ViewPort;
 
+import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 /**
  * Created by Andy on 11/28/17.
  */
-public class GuiManager
+public final class GuiFrame extends GuiBase
 {
-	private final ViewPort viewport;
-	private final GuiFrame frame;
-
-	private List<GuiBase> elements = new LinkedList<>();
+	private ViewPort viewport;
+	private GuiBase focusElement;
 
 	private float cursorX;
 	private float cursorY;
 	private boolean cursorAction;
 
-	private GuiBase focusElement;
-
-	public GuiManager(ViewPort viewport)
+	public GuiFrame(ViewPort viewport)
 	{
 		this.viewport = viewport;
-		this.frame = new GuiFrame();
-		this.frame.manager = this;
 	}
 
-	public void addElement(GuiBase element)
-	{
-		if (this.elements.contains(element)) throw new IllegalArgumentException("element already belongs to manager");
-
-		this.elements.add(element);
-	}
-
-	public void removeElement(GuiBase element)
-	{
-		if (!this.elements.contains(element)) throw new IllegalArgumentException("element is does not belong to manager");
-
-		this.elements.remove(element);
-
-		Queue<GuiBase> guis = new LinkedList<>();
-		for(GuiBase guiBase : element.getChildren())
-		{
-			guis.add(guiBase);
-			while(!guis.isEmpty())
-			{
-				GuiBase gui = guis.poll();
-				this.elements.remove(gui);
-
-				for (GuiBase child : gui.getChildren())
-				{
-					guis.add(child);
-				}
-			}
-		}
-	}
-
+	@Override
 	public void update()
 	{
-		//Should update on resize also
-		this.frame.updateScreenSize(this.viewport.getWidth(), this.viewport.getHeight());
-		this.frame.update();
+		if (this.screenW != this.viewport.getWidth() || this.screenH != this.viewport.getHeight())
+		{
+			this.screenW = this.viewport.getWidth();
+			this.screenH = this.viewport.getHeight();
+
+			super.update();
+		}
 
 		GuiBase focus = this.getElementAt(this.cursorX, this.cursorY);
 
@@ -92,7 +61,7 @@ public class GuiManager
 		GuiBase result = null;
 
 		Queue<GuiBase> guis = new LinkedList<>();
-		for(GuiBase guiBase : this.frame.getChildren())
+		for(GuiBase guiBase : this.getChildren())
 		{
 			guis.add(guiBase);
 			while(!guis.isEmpty())
@@ -122,7 +91,7 @@ public class GuiManager
 		T result = null;
 
 		Queue<GuiBase> guis = new LinkedList<>();
-		for(GuiBase guiBase : this.frame.getChildren())
+		for(GuiBase guiBase : this.getChildren())
 		{
 			guis.add(guiBase);
 			while(!guis.isEmpty())
@@ -157,18 +126,13 @@ public class GuiManager
 		this.cursorAction = action;
 	}
 
-	public GuiFrame getFrame()
-	{
-		return this.frame;
-	}
-
 	public ViewPort getViewport()
 	{
 		return this.viewport;
 	}
 
-	public Iterable<GuiBase> getElements()
+	public Iterator<GuiBase> getElements()
 	{
-		return this.elements;
+		return new GuiIterator(this);
 	}
 }

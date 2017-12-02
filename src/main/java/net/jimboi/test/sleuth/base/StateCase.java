@@ -6,7 +6,7 @@ import net.jimboi.test.sleuth.cluedo.Room;
 import net.jimboi.test.sleuth.cluedo.RoomType;
 
 import org.bstone.console.Console;
-import org.bstone.console.ConsoleUtil;
+import org.bstone.console.ConsoleStyle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,31 +54,31 @@ public class StateCase extends GameState
 	@Override
 	protected void onScreenStart(Console con)
 	{
-		ConsoleUtil.title(con, "Case");
+		ConsoleStyle.title(con, "Case");
 
 		if (!DATA.contains("room"))
 		{
-			ConsoleUtil.message(con, "You arrive at the Crime Scene.");
+			ConsoleStyle.message(con, "You arrive at the Crime Scene.");
 		}
 		else
 		{
-			ConsoleUtil.message(con, "You are in the " + DATA.get("room").toString());
+			ConsoleStyle.message(con, "You are in the " + DATA.get("room").toString());
 		}
-		ConsoleUtil.newline(con);
+		ConsoleStyle.newline(con);
 
-		ConsoleUtil.divider(con, "- ");
-		ConsoleUtil.newline(con);
+		ConsoleStyle.divider(con, "- ");
+		ConsoleStyle.newline(con);
 
-		ConsoleUtil.button(con, "Look Around", this::lookAround);
-		ConsoleUtil.newline(con);
-		ConsoleUtil.button(con, "Check Inventory", this::checkInventory);
-		ConsoleUtil.newline(con);
-		ConsoleUtil.button(con, "Check Notes", this::checkNotes);
-		ConsoleUtil.newline(con);
-		ConsoleUtil.button(con, "Back", this::back);
-		ConsoleUtil.newline(con);
+		ConsoleStyle.button(con, "Look Around", this::lookAround);
+		ConsoleStyle.newline(con);
+		ConsoleStyle.button(con, "Check Inventory", this::checkInventory);
+		ConsoleStyle.newline(con);
+		ConsoleStyle.button(con, "Check Notes", this::checkNotes);
+		ConsoleStyle.newline(con);
+		ConsoleStyle.button(con, "Back", this::back);
+		ConsoleStyle.newline(con);
 
-		ConsoleUtil.newline(con);
+		ConsoleStyle.newline(con);
 
 		VenueLayout venue = DATA.get("venue");
 		Room room = DATA.get("room");
@@ -96,10 +96,10 @@ public class StateCase extends GameState
 				}
 				else
 				{
-					ConsoleUtil.button(con, "Go to " + other,
+					ConsoleStyle.button(con, "Go to " + other,
 							() -> this.moveToRoom(con, other));
 				}
-				ConsoleUtil.newline(con);
+				ConsoleStyle.newline(con);
 			}
 		}
 	}
@@ -109,43 +109,43 @@ public class StateCase extends GameState
 		DATA.put("room", room);
 
 		con.clear();
-		ConsoleUtil.message(con, "BAM! Gone to " + room.type);
-		ConsoleUtil.newline(con);
-		ConsoleUtil.button(con, "Back", this::restart);
+		ConsoleStyle.message(con, "BAM! Gone to " + room.type);
+		ConsoleStyle.newline(con);
+		ConsoleStyle.button(con, "Back", this::restart);
 	}
 
 	private void lookAround(Console con)
 	{
-		ConsoleUtil.divider(con, "- ");
-		ConsoleUtil.newline(con);
+		ConsoleStyle.divider(con, "- ");
+		ConsoleStyle.newline(con);
 
 		con.setTypeWriterMode(false);
 		for(Actor actor : DATA.<Iterable<Actor>>get("actors"))
 		{
-			ConsoleUtil.message(con, actor.toString());
-			ConsoleUtil.newline(con);
+			ConsoleStyle.message(con, actor.toString());
+			ConsoleStyle.newline(con);
 		}
 		con.setTypeWriterMode(true);
 
-		ConsoleUtil.message(con, "Nothing interesting.");
-		ConsoleUtil.newline(con);
+		ConsoleStyle.message(con, "Nothing interesting.");
+		ConsoleStyle.newline(con);
 	}
 
 	private void checkInventory(Console con)
 	{
-		ConsoleUtil.divider(con, "- ");
-		ConsoleUtil.newline(con);
+		ConsoleStyle.divider(con, "- ");
+		ConsoleStyle.newline(con);
 
-		ConsoleUtil.message(con, "Nothing interesting.");
-		ConsoleUtil.newline(con);
+		ConsoleStyle.message(con, "Nothing interesting.");
+		ConsoleStyle.newline(con);
 	}
 
 	private void checkNotes(Console con)
 	{
-		ConsoleUtil.divider(con, "- ");
-		ConsoleUtil.newline(con);
+		ConsoleStyle.divider(con, "- ");
+		ConsoleStyle.newline(con);
 
-		ConsoleUtil.message(con, "Nothing interesting.");
-		ConsoleUtil.newline(con);
+		ConsoleStyle.message(con, "Nothing interesting.");
+		ConsoleStyle.newline(con);
 	}
 }

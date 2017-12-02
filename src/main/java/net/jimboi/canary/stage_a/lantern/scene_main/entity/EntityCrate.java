@@ -18,7 +18,7 @@ import org.bstone.transform.Transform3;
 public class EntityCrate extends EntityBase
 {
 	@Override
-	public void onEntityCreate(EntityManager entityManager)
+	protected void onEntitySetup(EntityManager entityManager)
 	{
 		final AssetManager assets = Lantern.getLantern().getAssetManager();
 
@@ -32,9 +32,9 @@ public class EntityCrate extends EntityBase
 	}
 
 	@Override
-	public void onLivingUpdate()
+	protected void onUpdate()
 	{
-		super.onLivingUpdate();
+		super.onUpdate();
 
 		ComponentTransform componentTransform = this.getComponent(ComponentTransform.class);
 		componentTransform.transform.rotation.rotate(0, 0.001F, 0);

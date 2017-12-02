@@ -5,7 +5,7 @@ import net.jimboi.test.conworld.action.Action;
 import net.jimboi.test.conworld.world.World;
 
 import org.bstone.console.Console;
-import org.bstone.console.ConsoleUtil;
+import org.bstone.console.ConsoleStyle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,27 +33,27 @@ public class TurnView extends View
 	{
 		this.actor.onTurnStart(this.world);
 
-		ConsoleUtil.title(console, "Turn: " + this.actor.getName());
+		ConsoleStyle.title(console, "Turn: " + this.actor.getName());
 
 		this.actor.getActions(this.actions);
 		for(Action action : this.actions)
 		{
-			ConsoleUtil.button(console, action.getName(), () -> {
+			ConsoleStyle.button(console, action.getName(), () -> {
 				if (this.actor.canUseAction(action))
 				{
 					action.execute(this.world, this.actor);
 				}
 				else
 				{
-					ConsoleUtil.message(console, "Not enough action points!");
+					ConsoleStyle.message(console, "Not enough action points!");
 				}
 			});
 		}
 		this.actions.clear();
 
-		ConsoleUtil.button(console,  "End Turn", this.world::nextTurn);
+		ConsoleStyle.button(console,  "End Turn", this.world::nextTurn);
 
-		ConsoleUtil.title(console, "Log");
+		ConsoleStyle.title(console, "Log");
 	}
 
 	@Override

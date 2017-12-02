@@ -4,7 +4,7 @@ import net.jimboi.test.conworld.acor.Actor;
 import net.jimboi.test.conworld.acor.Stats;
 
 import org.bstone.console.Console;
-import org.bstone.console.ConsoleUtil;
+import org.bstone.console.ConsoleStyle;
 
 /**
  * Created by Andy on 8/30/17.
@@ -29,14 +29,14 @@ public class StatView extends View
 	@Override
 	protected void initialize(Console console)
 	{
-		ConsoleUtil.title(console, this.actor.getName());
+		ConsoleStyle.title(console, this.actor.getName());
 
-		ConsoleUtil.button(console, "Refresh", this::refresh);
+		ConsoleStyle.button(console, "Refresh", this::refresh);
 
 		final Stats stats = this.actor.getStats();
 		for(String stat : stats)
 		{
-			ConsoleUtil.message(console, stat + " = " + stats.get(stat));
+			ConsoleStyle.message(console, stat + " = " + stats.get(stat));
 		}
 	}
 

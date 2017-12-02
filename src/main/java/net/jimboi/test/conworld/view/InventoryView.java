@@ -4,7 +4,7 @@ import net.jimboi.test.conworld.acor.Actor;
 import net.jimboi.test.conworld.item.ItemStack;
 
 import org.bstone.console.Console;
-import org.bstone.console.ConsoleUtil;
+import org.bstone.console.ConsoleStyle;
 
 /**
  * Created by Andy on 8/30/17.
@@ -29,13 +29,13 @@ public class InventoryView extends View
 	@Override
 	protected void initialize(Console console)
 	{
-		ConsoleUtil.title(console, this.actor.getName());
+		ConsoleStyle.title(console, this.actor.getName());
 
-		ConsoleUtil.button(console, "Refresh", this::refresh);
+		ConsoleStyle.button(console, "Refresh", this::refresh);
 
 		for(ItemStack itemstack : this.actor.getItems())
 		{
-			ConsoleUtil.message(console, itemstack.getStackSize() + "x " + itemstack.getItem().getName());
+			ConsoleStyle.message(console, itemstack.getStackSize() + "x " + itemstack.getItem().getName());
 		}
 	}
 

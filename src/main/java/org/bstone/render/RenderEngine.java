@@ -2,6 +2,7 @@ package org.bstone.render;
 
 import org.bstone.application.Application;
 import org.bstone.application.Engine;
+import org.bstone.scheduler.Scheduler;
 import org.bstone.service.ServiceManager;
 import org.bstone.tick.TickCounter;
 import org.bstone.window.Window;
@@ -14,6 +15,7 @@ public class RenderEngine extends Engine
 	private final Window window;
 
 	private final ServiceManager<RenderEngine, RenderService> services;
+	private final Scheduler scheduler;
 
 	private final TickCounter frameCounter;
 	private final FrameHandler frameHandler;
@@ -23,6 +25,7 @@ public class RenderEngine extends Engine
 		this.window = window;
 
 		this.services = new ServiceManager<>(this);
+		this.scheduler = new Scheduler();
 
 		this.frameHandler = frameHandler;
 
@@ -35,6 +38,7 @@ public class RenderEngine extends Engine
 		this.frameCounter.reset();
 
 		this.services.beginServices();
+		this.scheduler.process();
 		this.services.endServices();
 
 		return true;
@@ -67,6 +71,7 @@ public class RenderEngine extends Engine
 			app.stop();
 		}
 
+		this.scheduler.process();
 		this.services.endServices();
 	}
 
@@ -74,6 +79,7 @@ public class RenderEngine extends Engine
 	protected void onStop(Application app)
 	{
 		this.services.beginServices();
+		this.scheduler.process();
 		this.services.endServices();
 
 		this.services.destroy();
@@ -92,5 +98,10 @@ public class RenderEngine extends Engine
 	public final ServiceManager<RenderEngine, RenderService> getRenderServices()
 	{
 		return this.services;
+	}
+
+	public final Scheduler getScheduler()
+	{
+		return this.scheduler;
 	}
 }

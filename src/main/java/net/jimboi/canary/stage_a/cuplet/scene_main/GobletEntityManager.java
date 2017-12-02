@@ -3,8 +3,8 @@ package net.jimboi.canary.stage_a.cuplet.scene_main;
 import net.jimboi.canary.stage_a.base.collisionbox.CollisionBoxManager;
 import net.jimboi.canary.stage_a.base.collisionbox.collider.BoxCollider;
 
-import org.bstone.livingentity.LivingEntity;
-import org.bstone.livingentity.LivingEntityManager;
+import org.bstone.gameobject.GameObject;
+import org.bstone.gameobject.GameObjectManager;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * Created by Andy on 8/9/17.
  */
-public class GobletEntityManager extends LivingEntityManager
+public class GobletEntityManager extends GameObjectManager
 {
 	private final CollisionBoxManager boundingManager;
 	private Set<BoxCollider> colliders;
@@ -40,24 +40,24 @@ public class GobletEntityManager extends LivingEntityManager
 	}
 
 	@Override
-	public void onLivingCreate(LivingEntity living)
+	protected void onGameObjectCreate(GameObject gameObject)
 	{
-		super.onLivingCreate(living);
+		super.onGameObjectCreate(gameObject);
 
-		if (living instanceof BoxCollider)
+		if (gameObject instanceof BoxCollider)
 		{
-			this.colliders.add((BoxCollider) living);
+			this.colliders.add((BoxCollider) gameObject);
 		}
 	}
 
 	@Override
-	public void onLivingDestroy(LivingEntity living)
+	protected void onGameObjectDestroy(GameObject gameObject)
 	{
-		super.onLivingDestroy(living);
+		super.onGameObjectDestroy(gameObject);
 
-		if (living instanceof BoxCollider)
+		if (gameObject instanceof BoxCollider)
 		{
-			this.colliders.remove(living);
+			this.colliders.remove(gameObject);
 		}
 	}
 

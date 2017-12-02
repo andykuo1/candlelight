@@ -2,47 +2,44 @@ package net.jimboi.canary.stage_a.cuplet.scene_main.component;
 
 import net.jimboi.canary.stage_a.cuplet.scene_main.GobletEntityManager;
 
-import org.bstone.living.LivingManager;
-import org.bstone.livingentity.LivingEntity;
+import org.bstone.gameobject.GameObject;
 import org.bstone.transform.Transform3;
 
 /**
  * Created by Andy on 9/3/17.
  */
-public class SystemMotion extends SystemLiving implements LivingManager.OnLateUpdateLivingsListener<LivingEntity>
+public class SystemMotion extends SystemLiving
 {
 	public SystemMotion(GobletEntityManager entityManager)
 	{
-		super(entityManager.getEntityManager(), entityManager.getLivingManager());
+		super(entityManager);
 	}
 
 	@Override
 	public void start()
 	{
-		this.livingManager.onLateUpdateLivings.addListener(this);
 	}
 
 	@Override
 	public void stop()
 	{
-		this.livingManager.onLateUpdateLivings.deleteListener(this);
 	}
 
-	@Override
-	public void onLateUpdateLivings(LivingManager<LivingEntity> livingManager)
+	//OnLateUpdate
+	public void update()
 	{
-		for(LivingEntity living : livingManager.getLivings())
+		for(GameObject obj : this.gameObjectManager.getGameObjects())
 		{
-			ComponentMotion componentMotion = living.getComponent(ComponentMotion.class);
+			ComponentMotion componentMotion = obj.getComponent(ComponentMotion.class);
 			if (componentMotion != null)
 			{
-				ComponentTransform componentTransform = living.getComponent(ComponentTransform.class);
+				ComponentTransform componentTransform = obj.getComponent(ComponentTransform.class);
 				Transform3 transform = componentTransform.getTransform();
 
 				componentMotion.updateMotion();
 				componentMotion.applyMotion(transform);
 
-				ComponentBounding componentBounding = living.getComponent(ComponentBounding.class);
+				ComponentBounding componentBounding = obj.getComponent(ComponentBounding.class);
 				if (componentBounding != null)
 				{
 					componentBounding.getBoundingBox().setCenter(transform.posX(), transform.posY());

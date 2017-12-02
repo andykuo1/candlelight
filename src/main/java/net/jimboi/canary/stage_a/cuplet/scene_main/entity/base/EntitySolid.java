@@ -24,9 +24,9 @@ public class EntitySolid extends EntityBase implements BoxCollider
 	}
 
 	@Override
-	public void onEntityCreate(EntityManager entityManager)
+	protected void onEntitySetup(EntityManager entityManager)
 	{
-		super.onEntityCreate(entityManager);
+		super.onEntitySetup(entityManager);
 
 		this.addComponent(new ComponentBounding(this.boundingBox));
 	}

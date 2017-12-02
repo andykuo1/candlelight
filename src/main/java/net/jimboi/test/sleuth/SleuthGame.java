@@ -8,7 +8,7 @@ import net.jimboi.test.sleuth.cluedo.VenueFactory;
 import net.jimboi.test.sleuth.data.BodyPart;
 
 import org.bstone.console.Console;
-import org.bstone.console.ConsoleUtil;
+import org.bstone.console.ConsoleStyle;
 
 import java.util.Random;
 
@@ -45,8 +45,8 @@ public class SleuthGame
 
 	public void run()
 	{
-		ConsoleUtil.title(CONSOLE, "Welcome to Sleuth!");
-		ConsoleUtil.message(CONSOLE, "Commands:");
+		ConsoleStyle.title(CONSOLE, "Welcome to Sleuth!");
+		ConsoleStyle.message(CONSOLE, "Commands:");
 
 		CONSOLE.print(" ");
 		CONSOLE.beginAttributes().setActionLink(() -> {
@@ -80,53 +80,53 @@ public class SleuthGame
 		}).printEnd("new_venue");
 		CONSOLE.println(" - Generates a new venue.");
 
-		ConsoleUtil.newline(CONSOLE);
+		ConsoleStyle.newline(CONSOLE);
 
-		ConsoleUtil.message(CONSOLE, " > Find Clues");
-		ConsoleUtil.message(CONSOLE, "    - Investigate your surroundings");
-		ConsoleUtil.message(CONSOLE, "    - Interrogate the suspects");
-		ConsoleUtil.message(CONSOLE, " > Expose Lies");
-		ConsoleUtil.message(CONSOLE, "    - Show contradictions from ANY to TRUTH");
-		ConsoleUtil.message(CONSOLE, " > Establish Connections");
-		ConsoleUtil.message(CONSOLE, "    - Mind Palace it up.");
-		ConsoleUtil.message(CONSOLE, "    - Draw conclusions from Investigation");
-		ConsoleUtil.message(CONSOLE, "    - Make Evidence");
-		ConsoleUtil.message(CONSOLE, " > Follow Leads");
-		ConsoleUtil.message(CONSOLE, "    - Prove Evidence");
-		ConsoleUtil.message(CONSOLE, " > Make Deductions");
-		ConsoleUtil.message(CONSOLE, " > Confrontation");
+		ConsoleStyle.message(CONSOLE, " > Find Clues");
+		ConsoleStyle.message(CONSOLE, "    - Investigate your surroundings");
+		ConsoleStyle.message(CONSOLE, "    - Interrogate the suspects");
+		ConsoleStyle.message(CONSOLE, " > Expose Lies");
+		ConsoleStyle.message(CONSOLE, "    - Show contradictions from ANY to TRUTH");
+		ConsoleStyle.message(CONSOLE, " > Establish Connections");
+		ConsoleStyle.message(CONSOLE, "    - Mind Palace it up.");
+		ConsoleStyle.message(CONSOLE, "    - Draw conclusions from Investigation");
+		ConsoleStyle.message(CONSOLE, "    - Make Evidence");
+		ConsoleStyle.message(CONSOLE, " > Follow Leads");
+		ConsoleStyle.message(CONSOLE, "    - Prove Evidence");
+		ConsoleStyle.message(CONSOLE, " > Make Deductions");
+		ConsoleStyle.message(CONSOLE, " > Confrontation");
 
-		ConsoleUtil.newline(CONSOLE);
+		ConsoleStyle.newline(CONSOLE);
 	}
 
 	private static void generateCluedo(Random rand)
 	{
-		ConsoleUtil.divider(CONSOLE, "=-");
-		ConsoleUtil.newline(CONSOLE);
+		ConsoleStyle.divider(CONSOLE, "=-");
+		ConsoleStyle.newline(CONSOLE);
 
-		ConsoleUtil.button(CONSOLE, "Game of Opportunity", () -> {
+		ConsoleStyle.button(CONSOLE, "Game of Opportunity", () -> {
 			GameOfOpportunity game = new GameOfOpportunity();
 			game.start(CONSOLE, rand);
 		});
-		ConsoleUtil.button(CONSOLE, "Game of Motive", () -> {
+		ConsoleStyle.button(CONSOLE, "Game of Motive", () -> {
 			GameOfMotive game = new GameOfMotive();
 			game.start(CONSOLE, rand);
 		});
 
-		ConsoleUtil.newline(CONSOLE);
+		ConsoleStyle.newline(CONSOLE);
 	}
 
 	private static void generateVenue(Random rand)
 	{
-		ConsoleUtil.divider(CONSOLE, "=-");
+		ConsoleStyle.divider(CONSOLE, "=-");
 		int people = 1 + rand.nextInt(6);
-		ConsoleUtil.message(CONSOLE, "People: " + people);
+		ConsoleStyle.message(CONSOLE, "People: " + people);
 		Venue venue = VenueFactory.create(rand, people);
 		for(Room room : venue.rooms)
 		{
-			ConsoleUtil.message(CONSOLE, " - " + room.toString());
+			ConsoleStyle.message(CONSOLE, " - " + room.toString());
 		}
-		ConsoleUtil.newline(CONSOLE);
+		ConsoleStyle.newline(CONSOLE);
 	}
 
 	private static void generateCrimeCase(Random rand)
@@ -142,7 +142,7 @@ public class SleuthGame
 	{
 		crimeCase.print(CONSOLE);
 
-		ConsoleUtil.title(CONSOLE, "Scene #" + rand.nextInt(100));
+		ConsoleStyle.title(CONSOLE, "Scene #" + rand.nextInt(100));
 
 		//Generate Crime Scene
 		//Weapon
@@ -151,10 +151,10 @@ public class SleuthGame
 		//Pre Crime is generated.
 		//The Murderer is now able to deal the killing blow to victim.
 
-		ConsoleUtil.message(CONSOLE, "PRE-CRIME");
-		ConsoleUtil.message(CONSOLE, " - The murderer runs into the crime scene.");
+		ConsoleStyle.message(CONSOLE, "PRE-CRIME");
+		ConsoleStyle.message(CONSOLE, " - The murderer runs into the crime scene.");
 
-		ConsoleUtil.message(CONSOLE, "COMMIT-CRIME");
+		ConsoleStyle.message(CONSOLE, "COMMIT-CRIME");
 		//COMMIT MURDER
 		int proficiency = 10; //skills, attributes, strength, intelligence
 		int accuracy = 10; //nervousness, stress
@@ -165,18 +165,18 @@ public class SleuthGame
 		do
 		{
 			//STRIKE WITH WEAPON
-			ConsoleUtil.message(CONSOLE, " - The murderer used " + crimeCase.mean + " to kill " + crimeCase.victim.name + ".");
+			ConsoleStyle.message(CONSOLE, " - The murderer used " + crimeCase.mean + " to kill " + crimeCase.victim.name + ".");
 			BodyPart part = BodyPart.values()[rand.nextInt(BodyPart.values().length)];
-			ConsoleUtil.message(CONSOLE, " - The murderer stabbed the " + part + " of victim.");
+			ConsoleStyle.message(CONSOLE, " - The murderer stabbed the " + part + " of victim.");
 			//weapon.use(crimeCase.murderer, crimeCase.victim, environment);
 			//UPDATE ENVIRONMENT
-			ConsoleUtil.message(CONSOLE, " - The area is sprayed with blood.");
+			ConsoleStyle.message(CONSOLE, " - The area is sprayed with blood.");
 			// - Update all sounds, people in the area, lights, smells, etc.
 			// - Increase stress as well, if not natural killer
 			//EVALUATE STATE
 			// - let the user evaluate his situation
 			// - Calculate the stress and add it.
-			ConsoleUtil.message(CONSOLE, " - The murderer is under further stress.");
+			ConsoleStyle.message(CONSOLE, " - The murderer is under further stress.");
 			int newStress = 0;
 			//if nervous, or too stressed, then strikeagain = false;
 			if (!testStressResolve(crimeCase.murderer, newStress))
@@ -184,13 +184,13 @@ public class SleuthGame
 				break;
 			}
 
-			ConsoleUtil.message(CONSOLE, " - The murderer checks out the victim's health.");
+			ConsoleStyle.message(CONSOLE, " - The murderer checks out the victim's health.");
 			//otherwise, be logical and complete the mission
 			strikeagain = !isVictimDead(crimeCase.victim); // Should be based on perception and skills
-			ConsoleUtil.message(CONSOLE, " - The murderer thinks the victim is " + (strikeagain ? "not " : "") + "dead.");
+			ConsoleStyle.message(CONSOLE, " - The murderer thinks the victim is " + (strikeagain ? "not " : "") + "dead.");
 			if (painLevel > 0)
 			{
-				ConsoleUtil.message(CONSOLE,  " - either way, the murderer wants to keep stabbing.");
+				ConsoleStyle.message(CONSOLE,  " - either way, the murderer wants to keep stabbing.");
 				//They want to inflict pain, so just straight up keep merc'n 'em.
 				strikeagain = rand.nextInt(painLevel) != 0;
 			}
@@ -198,13 +198,13 @@ public class SleuthGame
 		while(strikeagain);
 
 		//Now if shock, the person needs to rest.
-		ConsoleUtil.message(CONSOLE, " - the murderer is in shock.");
+		ConsoleStyle.message(CONSOLE, " - the murderer is in shock.");
 		//Otherwise, Post Crime is generated.
 
-		ConsoleUtil.message(CONSOLE, "POST-CRIME");
-		ConsoleUtil.message(CONSOLE, " - The murderer flees the crime scene.");
+		ConsoleStyle.message(CONSOLE, "POST-CRIME");
+		ConsoleStyle.message(CONSOLE, " - The murderer flees the crime scene.");
 
-		ConsoleUtil.newline(CONSOLE);
+		ConsoleStyle.newline(CONSOLE);
 	}
 
 	private static boolean testStressResolve(Actor actor, int newStress)

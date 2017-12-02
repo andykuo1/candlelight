@@ -1,4 +1,4 @@
-package net.jimboi.canary.stage_a.smuc.gui;
+package org.zilar.gui;
 
 import net.jimboi.canary.stage_a.base.MaterialProperty;
 
@@ -13,6 +13,8 @@ import org.joml.Vector4f;
 import org.joml.Vector4fc;
 import org.lwjgl.opengl.GL11;
 import org.qsilver.ResourceLocation;
+
+import java.util.Iterator;
 
 /**
  * Created by Andy on 11/28/17.
@@ -36,13 +38,13 @@ public class GuiRenderer
 		assets.registerResourceLocation("fragment_shader.gui",
 				new ResourceLocation("gui:gui.fsh"));
 		assets.registerResourceLocation("mesh.gui",
-				new ResourceLocation("base:rect.obj"));
+				new ResourceLocation("gui:rect.obj"));
 
 		this.program = assets.getAsset("program", "gui");
 		this.mesh = assets.getAsset("mesh", "gui");
 	}
 
-	public void render(GuiFrame frame, Iterable<GuiBase> guis)
+	public void render(GuiFrame frame, Iterator<GuiBase> iter)
 	{
 		Program program = this.program.get();
 		program.bind();
@@ -51,8 +53,9 @@ public class GuiRenderer
 			mesh.bind();
 
 			Matrix4f transformation = new Matrix4f();
-			for(GuiBase gui : guis)
+			while(iter.hasNext())
 			{
+				GuiBase gui = iter.next();
 				if (gui.isVisible())
 				{
 					float x = gui.getScreenX() / frame.getScreenWidth();

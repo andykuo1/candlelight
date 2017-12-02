@@ -30,9 +30,9 @@ public class EntityAlertable extends EntityHurtable
 	}
 
 	@Override
-	public void onEntityCreate(EntityManager entityManager)
+	protected void onEntitySetup(EntityManager entityManager)
 	{
-		super.onEntityCreate(entityManager);
+		super.onEntitySetup(entityManager);
 
 		this.addComponent(new ComponentMotion());
 	}
@@ -58,9 +58,9 @@ public class EntityAlertable extends EntityHurtable
 	}
 
 	@Override
-	public void onLivingUpdate()
+	protected void onUpdate()
 	{
-		super.onLivingUpdate();
+		super.onUpdate();
 
 		EntityPlayer entityPlayer = this.getWorld().getPlayer();
 		TileMap tilemap = this.world.getRoom(this.transform.posX(), this.transform.posY());

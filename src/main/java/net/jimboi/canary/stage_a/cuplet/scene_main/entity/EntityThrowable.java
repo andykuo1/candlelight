@@ -50,9 +50,9 @@ public class EntityThrowable extends EntitySolid
 	}
 
 	@Override
-	public void onEntityCreate(EntityManager entityManager)
+	protected void onEntitySetup(EntityManager entityManager)
 	{
-		super.onEntityCreate(entityManager);
+		super.onEntitySetup(entityManager);
 
 		ComponentMotion componentMotion = this.addComponent(new ComponentMotion());
 
@@ -62,9 +62,9 @@ public class EntityThrowable extends EntitySolid
 	}
 
 	@Override
-	public void onLivingLateUpdate()
+	protected void onLateUpdate()
 	{
-		super.onLivingLateUpdate();
+		super.onLateUpdate();
 
 		if (this.falling)
 		{

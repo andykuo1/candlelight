@@ -23,18 +23,18 @@ public class EntityRat extends EntityAlertable
 	}
 
 	@Override
-	public void onEntityCreate(EntityManager entityManager)
+	protected void onEntitySetup(EntityManager entityManager)
 	{
-		super.onEntityCreate(entityManager);
+		super.onEntitySetup(entityManager);
 
 		this.getComponent(ComponentMotion.class).setFriction(0.3F);
 		this.getComponent(ComponentDamageable.class).setMaxHealth(1);
 	}
 
 	@Override
-	public void onLivingUpdate()
+	protected void onUpdate()
 	{
-		super.onLivingUpdate();
+		super.onUpdate();
 	}
 
 	@Override

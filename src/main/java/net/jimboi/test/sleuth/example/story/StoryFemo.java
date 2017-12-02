@@ -1,14 +1,14 @@
 package net.jimboi.test.sleuth.example.story;
 
 import net.jimboi.test.sleuth.PrintableStruct;
-import net.jimboi.test.sleuth.example.ConsoleBoard;
 import net.jimboi.test.sleuth.example.story.venue.Entrance;
 import net.jimboi.test.sleuth.example.story.venue.Room;
 import net.jimboi.test.sleuth.example.story.venue.Venue;
 import net.jimboi.test.sleuth.example.story.venue.VenueBuilder;
 
 import org.bstone.console.Console;
-import org.bstone.console.ConsoleUtil;
+import org.bstone.console.ConsoleStyle;
+import org.bstone.console.board.ConsoleBoard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,29 +106,29 @@ public class StoryFemo extends ConsoleBoard
 	@Override
 	public void onStart(Console con)
 	{
-		ConsoleUtil.title(con, "The Story of Richard Femo");
+		ConsoleStyle.title(con, "The Story of Richard Femo");
 
-		ConsoleUtil.message(con, "You arrive at the crime scene.");
-		ConsoleUtil.newline(con);
+		ConsoleStyle.message(con, "You arrive at the crime scene.");
+		ConsoleStyle.newline(con);
 
-		ConsoleUtil.button(con, "Approach", () -> this.next(con, this::theVenue));
-		ConsoleUtil.button(con, "Exit", con::quit);
+		ConsoleStyle.button(con, "Approach", () -> this.next(con, this::theVenue));
+		ConsoleStyle.button(con, "Exit", con::quit);
 	}
 
 	private void theVenue(Console con)
 	{
-		ConsoleUtil.title(con, this.venue.getName());
+		ConsoleStyle.title(con, this.venue.getName());
 
 		Room currentRoom = this.roomlog.peek();
 		if (currentRoom == this.venue.getOutside())
 		{
-			ConsoleUtil.message(con, "You are outside.");
+			ConsoleStyle.message(con, "You are outside.");
 		}
 		else
 		{
-			ConsoleUtil.message(con, "You are at the " + currentRoom.getName() + ".");
+			ConsoleStyle.message(con, "You are at the " + currentRoom.getName() + ".");
 		}
-		ConsoleUtil.newline(con);
+		ConsoleStyle.newline(con);
 
 		for(Entrance entrance : this.venue.getAvailableEntrances(currentRoom))
 		{
@@ -137,19 +137,19 @@ public class StoryFemo extends ConsoleBoard
 			{
 				continue;
 			}
-			ConsoleUtil.button(con, room.getName(), () -> this.goToRoom(con, room));
+			ConsoleStyle.button(con, room.getName(), () -> this.goToRoom(con, room));
 		}
 
 		if (this.roomlog.size() > 1)
 		{
-			ConsoleUtil.button(con, "Back", () -> {
+			ConsoleStyle.button(con, "Back", () -> {
 				this.roomlog.pop();
 				this.goToRoom(con, this.roomlog.peek());
 			});
 		}
 		else
 		{
-			ConsoleUtil.button(con, "Leave", () -> this.back(con));
+			ConsoleStyle.button(con, "Leave", () -> this.back(con));
 		}
 	}
 
@@ -158,32 +158,32 @@ public class StoryFemo extends ConsoleBoard
 		con.clear();
 		if (this.roomlog.peek() == room)
 		{
-			ConsoleUtil.message(con, "You go back to the " + room.getName() + "...");
+			ConsoleStyle.message(con, "You go back to the " + room.getName() + "...");
 		}
 		else
 		{
-			ConsoleUtil.message(con, "You go to the " + room.getName() + "...");
+			ConsoleStyle.message(con, "You go to the " + room.getName() + "...");
 			this.roomlog.push(room);
 		}
-		ConsoleUtil.newline(con);
+		ConsoleStyle.newline(con);
 		this.refresh(con);
 	}
 
 	private void lookAround(Console con)
 	{
-		ConsoleUtil.title(con, "Mansion");
+		ConsoleStyle.title(con, "Mansion");
 	}
 
 	public void openInventory(Console con)
 	{
-		ConsoleUtil.title(con, "Inventory");
+		ConsoleStyle.title(con, "Inventory");
 
 		for(int i = 0; i < this.inventory.size(); ++i)
 		{
 			if (i == 0)
 			{
-				ConsoleUtil.message(con, "Equipped:");
-				ConsoleUtil.newline(con);
+				ConsoleStyle.message(con, "Equipped:");
+				ConsoleStyle.newline(con);
 			}
 
 			String item = this.inventory.get(i);
@@ -191,8 +191,8 @@ public class StoryFemo extends ConsoleBoard
 			int index = i;
 			if (item == null)
 			{
-				ConsoleUtil.button(con,
-						ConsoleUtil.repeatUntil("-", con.getMaxLength() - 4),
+				ConsoleStyle.button(con,
+						ConsoleStyle.repeatUntil("-", con.getMaxLength() - 4),
 						() -> {
 					this.moveItem(0, index);
 					this.refresh(con);
@@ -200,8 +200,8 @@ public class StoryFemo extends ConsoleBoard
 			}
 			else
 			{
-				ConsoleUtil.button(con,
-						ConsoleUtil.paddingUntil(item + " ", "-", con.getMaxLength() - 4),
+				ConsoleStyle.button(con,
+						ConsoleStyle.paddingUntil(item + " ", "-", con.getMaxLength() - 4),
 						() -> {
 					this.moveItem(index, 0);
 					this.refresh(con);
@@ -210,15 +210,15 @@ public class StoryFemo extends ConsoleBoard
 
 			if (i == 0)
 			{
-				ConsoleUtil.message(con, "Pocketed:");
-				ConsoleUtil.newline(con);
+				ConsoleStyle.message(con, "Pocketed:");
+				ConsoleStyle.newline(con);
 			}
 		}
 
-		ConsoleUtil.divider(con, "- ");
-		ConsoleUtil.newline(con);
+		ConsoleStyle.divider(con, "- ");
+		ConsoleStyle.newline(con);
 
-		ConsoleUtil.button(con, "Back", this::back);
+		ConsoleStyle.button(con, "Back", this::back);
 	}
 
 	public void moveItem(int from, int to)

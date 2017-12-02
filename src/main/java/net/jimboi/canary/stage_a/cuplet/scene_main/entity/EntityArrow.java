@@ -33,9 +33,9 @@ public class EntityArrow extends EntitySolid
 	}
 
 	@Override
-	public void onEntityCreate(EntityManager entityManager)
+	protected void onEntitySetup(EntityManager entityManager)
 	{
-		super.onEntityCreate(entityManager);
+		super.onEntitySetup(entityManager);
 
 		ComponentMotion componentMotion = this.addComponent(new ComponentMotion());
 		componentMotion.setMotion(this.dx, this.dy);
@@ -43,9 +43,9 @@ public class EntityArrow extends EntitySolid
 	}
 
 	@Override
-	public void onLivingUpdate()
+	protected void onUpdate()
 	{
-		super.onLivingUpdate();
+		super.onUpdate();
 
 		this.ageTicks.tick();
 		if (this.ageTicks.isComplete())
@@ -55,9 +55,9 @@ public class EntityArrow extends EntitySolid
 	}
 
 	@Override
-	public void onLivingLateUpdate()
+	protected void onLateUpdate()
 	{
-		super.onLivingLateUpdate();
+		super.onLateUpdate();
 
 		ComponentMotion.onLivingLateUpdate(this);
 	}

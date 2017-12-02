@@ -1,9 +1,6 @@
 package net.jimboi.canary.stage_a.smuc;
 
 import net.jimboi.canary.stage_a.base.TextureAtlasBuilder;
-import net.jimboi.canary.stage_a.smuc.gui.GuiManager;
-import net.jimboi.canary.stage_a.smuc.gui.GuiPanel;
-import net.jimboi.canary.stage_a.smuc.gui.GuiRenderer;
 import net.jimboi.canary.stage_a.smuc.screen.ScreenManager;
 
 import org.bstone.application.Application;
@@ -12,6 +9,9 @@ import org.bstone.input.InputContext;
 import org.bstone.render.RenderEngine;
 import org.bstone.util.Direction;
 import org.qsilver.ResourceLocation;
+import org.zilar.gui.GuiFrame;
+import org.zilar.gui.GuiPanel;
+import org.zilar.gui.GuiRenderer;
 
 /**
  * Created by Andy on 11/21/17.
@@ -30,9 +30,9 @@ public class Smuc extends GameEngine
 
 	private Console console;
 	private ScreenManager screenManager;
-	private GuiManager guiManager;
-	private GuiRenderer guiRenderer;
+	private GuiFrame frame;
 	private GuiPanel panel;
+	private GuiRenderer guiRenderer;
 
 	@Override
 	public void onRenderLoad(RenderEngine renderEngine)
@@ -66,43 +66,33 @@ public class Smuc extends GameEngine
 
 		this.screenManager = new ScreenManager();
 
-		//ViewPort viewport = new ViewPort(0, 0, 200, 200);
-
-		this.guiManager = new GuiManager(this.window.getCurrentViewPort());
-		this.panel = new GuiPanel(this.guiManager);
+		this.frame = new GuiFrame(this.window.getCurrentViewPort());
+		this.panel = new GuiPanel();
 		panel.setOffset(10, 10);
 		panel.setSize(100, 50);
 		//panel.setRelativeHeight(0.5F);
 		panel.setRelativeWidth(0.5F);
 		this.panel.setAnchorDirection(Direction.NORTHEAST);
-		this.guiManager.getFrame().addGui(panel);
+		this.frame.addGui(this.panel);
 
 		this.guiRenderer = new GuiRenderer();
 		this.guiRenderer.load(this.assetManager);
 	}
 
-	private int i = 0;
-
 	@Override
 	public void onRenderUpdate(RenderEngine renderEngine, double delta)
 	{
-		if (++this.i > 20)
-		{
-			//this.panel.setAnchorDirection(Direction.getClockwise(this.panel.getAnchorDirection()));
-			this.i = 0;
-		}
-
 		this.screenManager.render(this.console.getView());
 		this.console.render();
 
-		this.guiManager.update();
-		this.guiRenderer.render(this.guiManager.getFrame(), this.guiManager.getElements());
+		this.frame.update();
+		this.guiRenderer.render(this.frame, this.frame.getElements());
 	}
 
 	@Override
 	public void onInputUpdate(InputContext context)
 	{
-		this.guiManager.setCursorPosition(this.input.getRange("mousex").getRange(), this.input.getRange("mousey").getRange());
-		this.guiManager.setCursorAction(this.input.getAction("mouseleft").isReleasedAndConsume());
+		this.frame.setCursorPosition(this.input.getRange("mousex").getRange(), this.input.getRange("mousey").getRange());
+		this.frame.setCursorAction(this.input.getAction("mouseleft").isReleasedAndConsume());
 	}
 }

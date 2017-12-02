@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 /**
  * Created by Andy on 8/29/17.
  */
-public class ConsoleUtil
+public class ConsoleStyle
 {
 	public static void title(Console con, String title)
 	{

@@ -1,4 +1,4 @@
-package net.jimboi.canary.stage_a.smuc.gui;
+package org.zilar.gui;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -8,7 +8,6 @@ import java.util.List;
  */
 public class GuiBase
 {
-	protected GuiManager manager;
 	protected GuiBase parent;
 	protected List<GuiBase> children = new LinkedList<>();
 	protected int offsetDepth = 1;
@@ -24,16 +23,6 @@ public class GuiBase
 
 	protected boolean visible = true;
 	protected boolean enabled = true;
-
-	public GuiBase(GuiManager manager)
-	{
-		this.manager = manager;
-
-		if (this.manager != null)
-		{
-			this.manager.addElement(this);
-		}
-	}
 
 	public GuiBase setVisible(boolean visible)
 	{
@@ -141,10 +130,5 @@ public class GuiBase
 	public int getScreenDepth()
 	{
 		return this.screenDepth;
-	}
-
-	public GuiManager getManager()
-	{
-		return this.manager;
 	}
 }

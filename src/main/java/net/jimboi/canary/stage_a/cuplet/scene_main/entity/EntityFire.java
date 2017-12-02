@@ -35,9 +35,9 @@ public class EntityFire extends GobletEntity implements IDamageSource
 	}
 
 	@Override
-	public void onLivingUpdate()
+	protected void onUpdate()
 	{
-		super.onLivingUpdate();
+		super.onUpdate();
 
 		this.ageTicks.tick();
 

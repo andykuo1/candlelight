@@ -1,95 +1,54 @@
 package org.bstone.living;
 
-import org.bstone.util.listener.Listenable;
-
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Andy on 8/12/17.
  */
-public class LivingManager<L extends ILiving>
+public class LivingManager
 {
-	public interface OnLivingCreateListener<L extends ILiving>
-	{
-		void onLivingCreate(L living);
-	}
-
-	public interface OnLivingDestroyListener<L extends ILiving>
-	{
-		void onLivingDestroy(L living);
-	}
-
-	public interface OnUpdateLivingsListener<L extends ILiving>
-	{
-		void onUpdateLivings(LivingManager<L> livingManager);
-	}
-
-	public interface OnLateUpdateLivingsListener<L extends ILiving>
-	{
-		void onLateUpdateLivings(LivingManager<L> livingManager);
-	}
-
-	@SuppressWarnings("unchecked")
-	public final Listenable<OnLivingCreateListener<L>> onLivingCreate
-			= new Listenable<>((listener, objects) -> listener.onLivingCreate((L) objects[0]));
-	@SuppressWarnings("unchecked")
-	public final Listenable<OnLivingDestroyListener<L>> onLivingDestroy
-			= new Listenable<>(((listener, objects) -> listener.onLivingDestroy((L) objects[0])));
-	@SuppressWarnings("unchecked")
-	public final Listenable<OnUpdateLivingsListener<L>> onUpdateLivings
-			= new Listenable<>(((listener, objects) -> listener.onUpdateLivings((LivingManager<L>) objects[0])));
-	@SuppressWarnings("unchecked")
-	public final Listenable<OnLateUpdateLivingsListener<L>> onLateUpdateLivings
-			= new Listenable<>(((listener, objects) -> listener.onLateUpdateLivings((LivingManager<L>) objects[0])));
-
-	private int NEXT_LIVING_ID = 0;
-
-	private final List<L> createQueue = new ArrayList<>();
-	private final List<L> createCache = new ArrayList<>();
-	private final Map<Integer, L> livings = new HashMap<>();
+	private final List<Living> createQueue = new ArrayList<>();
+	private final List<Living> createCache = new ArrayList<>();
+	private final Set<Living> livings = new HashSet<>();
 	private volatile boolean cached = false;
 
 	public void update()
 	{
-		this.flush(false);
+		this.flushCreatedLivings();
 
-		for(L living : this.livings.values())
+		for(Living living : this.livings)
 		{
 			if (!living.isDead())
 			{
-				living.onLivingUpdate();
+				living.onUpdate();
 			}
 		}
-		this.onUpdateLivings.notifyListeners(this);
+		this.onUpdate();
 
-		Iterator<L> livings = this.livings.values().iterator();
+		Iterator<Living> livings = this.livings.iterator();
 		while(livings.hasNext())
 		{
-			L living = livings.next();
+			Living living = livings.next();
 			if (!living.isDead())
 			{
-				living.onLivingLateUpdate();
+				living.onLateUpdate();
 			}
 			else
 			{
-				living.onLivingDestroy();
-
-				this.onLivingDestroy.notifyListeners(living);
+				living.onDestroy();
+				this.onLivingDestroy(living);
 
 				livings.remove();
-
-				living.setLivingManager(null);
-				living.setLivingID(-1);
 			}
 		}
-		this.onLateUpdateLivings.notifyListeners(this);
+		this.onLateUpdate();
 	}
 
-	public L addLiving(L living)
+	public Living addLiving(Living living)
 	{
 		if (this.cached)
 		{
@@ -102,23 +61,18 @@ public class LivingManager<L extends ILiving>
 		return living;
 	}
 
-	public void flush(boolean doDestroy)
+	public void flushCreatedLivings()
 	{
 		while(!this.createQueue.isEmpty())
 		{
 			this.cached = true;
 
-			for(L living : this.createQueue)
+			for(Living living : this.createQueue)
 			{
-				int id = this.getNextAvailableLivingID();
-				living.setLivingID(id);
-				living.setLivingManager(this);
+				this.livings.add(living);
 
-				this.livings.put(living.getLivingID(), living);
-
-				living.onLivingCreate(this);
-
-				this.onLivingCreate.notifyListeners(living);
+				living.onCreate(this);
+				this.onLivingCreate(living);
 			}
 			this.createQueue.clear();
 
@@ -127,24 +81,20 @@ public class LivingManager<L extends ILiving>
 			this.createQueue.addAll(this.createCache);
 			this.createCache.clear();
 		}
+	}
 
-		if (doDestroy)
+	public void flushDestroyedLivings()
+	{
+		Iterator<Living> livings = this.livings.iterator();
+		while(livings.hasNext())
 		{
-			Iterator<L> livings = this.livings.values().iterator();
-			while(livings.hasNext())
+			Living living = livings.next();
+			if (living.isDead())
 			{
-				L living = livings.next();
-				if (living.isDead())
-				{
-					living.onLivingDestroy();
+				living.onDestroy();
+				this.onLivingDestroy(living);
 
-					this.onLivingDestroy.notifyListeners(living);
-
-					livings.remove();
-
-					living.setLivingManager(null);
-					living.setLivingID(-1);
-				}
+				livings.remove();
 			}
 		}
 	}
@@ -156,13 +106,24 @@ public class LivingManager<L extends ILiving>
 		this.livings.clear();
 	}
 
-	public Iterable<L> getLivings()
+	public Iterable<Living> getLivings()
 	{
-		return this.livings.values();
+		return this.livings;
 	}
 
-	public int getNextAvailableLivingID()
+	protected void onLivingCreate(Living living)
 	{
-		return NEXT_LIVING_ID++;
+	}
+
+	protected void onLivingDestroy(Living living)
+	{
+	}
+
+	protected void onUpdate()
+	{
+	}
+
+	protected void onLateUpdate()
+	{
 	}
 }

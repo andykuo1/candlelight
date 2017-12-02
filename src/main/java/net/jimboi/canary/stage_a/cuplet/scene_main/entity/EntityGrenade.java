@@ -25,9 +25,9 @@ public class EntityGrenade extends EntityThrowable
 	}
 
 	@Override
-	public void onLivingUpdate()
+	protected void onUpdate()
 	{
-		super.onLivingUpdate();
+		super.onUpdate();
 
 		this.ageTicks.tick();
 		if (this.ageTicks.isComplete())

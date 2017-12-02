@@ -8,7 +8,7 @@ import net.jimboi.test.conworld.view.ActorSelectorView;
 import net.jimboi.test.conworld.world.World;
 
 import org.bstone.console.Console;
-import org.bstone.console.ConsoleUtil;
+import org.bstone.console.ConsoleStyle;
 
 /**
  * Created by Andy on 8/30/17.
@@ -31,11 +31,11 @@ public class ActionAttack extends Action
 					final Console console = world.getCurrentConsole();
 					final ItemSword item = (ItemSword) this.itemstack.getItem();
 
-					ConsoleUtil.message(console,  "Attacked " + actor.getName() + " with a " + item.getName() + "!");
+					ConsoleStyle.message(console,  "Attacked " + actor.getName() + " with a " + item.getName() + "!");
 					int damage = item.getDamage();
 					actor.applyDamage(new DamageSourceItem(owner, this.itemstack), damage);
 
-					ConsoleUtil.message(console, "Dealt " + damage + " damage!");
+					ConsoleStyle.message(console, "Dealt " + damage + " damage!");
 
 					owner.onUseAction(this);
 				}).create();

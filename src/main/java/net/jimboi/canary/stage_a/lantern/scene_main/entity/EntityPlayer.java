@@ -16,7 +16,7 @@ import org.bstone.transform.Transform3;
 public class EntityPlayer extends EntityBase
 {
 	@Override
-	public void onEntityCreate(EntityManager entityManager)
+	protected void onEntitySetup(EntityManager entityManager)
 	{
 		final AssetManager assets = Lantern.getLantern().getAssetManager();
 

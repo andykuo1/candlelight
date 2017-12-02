@@ -2,37 +2,36 @@ package net.jimboi.canary.stage_a.cuplet.scene_main.component;
 
 import net.jimboi.canary.stage_a.cuplet.scene_main.GobletEntityManager;
 
-import org.bstone.living.LivingManager;
-import org.bstone.livingentity.LivingEntity;
+import org.bstone.gameobject.GameObject;
 
 /**
  * Created by Andy on 9/3/17.
  */
-public class SystemDamageable extends SystemLiving implements LivingManager.OnUpdateLivingsListener<LivingEntity>
+public class SystemDamageable extends SystemLiving
 {
 	public SystemDamageable(GobletEntityManager entityManager)
 	{
-		super(entityManager.getEntityManager(), entityManager.getLivingManager());
+		super(entityManager);
 	}
 
 	@Override
 	public void start()
 	{
-		this.livingManager.onUpdateLivings.addListener(this);
 	}
 
 	@Override
 	public void stop()
 	{
-		this.livingManager.onUpdateLivings.deleteListener(this);
 	}
 
-	@Override
-	public void onUpdateLivings(LivingManager<LivingEntity> livingManager)
+	//OnUpdate
+	public void update()
 	{
-		for(LivingEntity living : livingManager.getLivings())
+		for(GameObject obj : this.gameObjectManager.getGameObjects())
 		{
-			ComponentDamageable componentDamageable = living.getComponent(ComponentDamageable.class);
+			if (obj.isDead()) continue;
+
+			ComponentDamageable componentDamageable = obj.getComponent(ComponentDamageable.class);
 			if (componentDamageable != null)
 			{
 				if (componentDamageable.isBeingDamaged())

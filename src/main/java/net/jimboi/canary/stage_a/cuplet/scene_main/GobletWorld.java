@@ -18,7 +18,7 @@ import net.jimboi.canary.stage_a.cuplet.scene_main.tile.TileMapModelManager;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tile.Tiles;
 
 import org.bstone.asset.AssetManager;
-import org.bstone.livingentity.LivingEntity;
+import org.bstone.gameobject.GameObject;
 import org.bstone.material.Material;
 import org.bstone.mogli.Mesh;
 import org.bstone.sprite.textureatlas.SubTexture;
@@ -149,11 +149,13 @@ public class GobletWorld
 	{
 		this.cameraController.update(1);
 		this.entityManager.update();
+		this.damageableSystem.update();
+		this.motionSystem.update();
 	}
 
 	public void spawnEntity(GobletEntity entity)
 	{
-		this.entityManager.addLivingEntity(entity);
+		this.entityManager.addGameObject(entity);
 	}
 
 	public Transform3 createTransform(Transform3c transform)
@@ -202,12 +204,12 @@ public class GobletWorld
 	{
 		GobletEntity nearest = null;
 		float distance = -1F;
-		Iterable<LivingEntity> livings = this.entityManager.getLivingEntities();
-		for(LivingEntity living : livings)
+		Iterable<GameObject> objects = this.entityManager.getGameObjects();
+		for(GameObject obj : objects)
 		{
-			if (entity.isAssignableFrom(living.getClass()))
+			if (entity.isAssignableFrom(obj.getClass()))
 			{
-				GobletEntity gobletEntity = (GobletEntity) living;
+				GobletEntity gobletEntity = (GobletEntity) obj;
 				float f = gobletEntity.getTransform().position3().distanceSquared(x, y, 0);
 				if (nearest == null || f < distance)
 				{

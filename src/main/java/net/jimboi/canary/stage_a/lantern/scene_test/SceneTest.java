@@ -5,10 +5,10 @@ import net.jimboi.canary.stage_a.lantern.scene_test.entity.EntityCrate;
 import net.jimboi.canary.stage_a.lantern.scene_test.entity.EntityPlayer;
 
 import org.bstone.camera.PerspectiveCamera;
+import org.bstone.gameobject.GameObjectManager;
 import org.bstone.input.InputContext;
 import org.bstone.input.InputEngine;
 import org.bstone.input.adapter.InputAdapter;
-import org.bstone.livingentity.LivingEntityManager;
 import org.bstone.scene.Scene;
 import org.bstone.scene.SceneManager;
 import org.bstone.transform.Transform3;
@@ -21,7 +21,7 @@ import org.lwjgl.glfw.GLFW;
  */
 public class SceneTest extends Scene
 {
-	public final LivingEntityManager livings;
+	public final GameObjectManager livings;
 
 	public final PerspectiveCamera camera;
 
@@ -32,7 +32,7 @@ public class SceneTest extends Scene
 
 	public SceneTest()
 	{
-		this.livings = new LivingEntityManager();
+		this.livings = new GameObjectManager();
 
 		this.camera = new PerspectiveCamera(0, 0, 0, 640, 480);
 	}
@@ -87,8 +87,8 @@ public class SceneTest extends Scene
 		this.controller = new FirstPersonCameraHandler(this.camera);
 
 		EntityPlayer player = new EntityPlayer(new Transform3());
-		this.livings.addLivingEntity(player);
-		this.livings.addLivingEntity(new EntityCrate(new Transform3().setPosition(1, 0, 5)));
+		this.livings.addGameObject(player);
+		this.livings.addGameObject(new EntityCrate(new Transform3().setPosition(1, 0, 5)));
 
 		this.controller.setTarget(player.getTransform());
 		this.input.addListener(0, this.controller);
@@ -116,7 +116,7 @@ public class SceneTest extends Scene
 		return this.camera;
 	}
 
-	public LivingEntityManager getLivings()
+	public GameObjectManager getLivings()
 	{
 		return this.livings;
 	}

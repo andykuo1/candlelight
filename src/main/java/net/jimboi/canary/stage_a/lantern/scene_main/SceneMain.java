@@ -13,10 +13,10 @@ import net.jimboi.canary.stage_a.lantern.scene_main.entity.EntityPlayer;
 import org.bstone.asset.AssetManager;
 import org.bstone.camera.Camera;
 import org.bstone.camera.PerspectiveCamera;
+import org.bstone.gameobject.GameObjectManager;
 import org.bstone.input.InputContext;
 import org.bstone.input.InputEngine;
 import org.bstone.input.adapter.InputAdapter;
-import org.bstone.livingentity.LivingEntityManager;
 import org.bstone.scene.Scene;
 import org.bstone.scene.SceneManager;
 import org.bstone.util.grid.IntMap;
@@ -36,7 +36,7 @@ import java.util.Set;
 public class SceneMain extends Scene
 {
 	private CollisionBoxManager collisionManager;
-	private LivingEntityManager entityManager;
+	private GameObjectManager entityManager;
 
 	private Set<BoxCollider> colliders;
 
@@ -55,7 +55,7 @@ public class SceneMain extends Scene
 		final InputContext context = inputs.getDefaultContext();
 
 		this.collisionManager = new CollisionBoxManager();
-		this.entityManager = new LivingEntityManager();
+		this.entityManager = new GameObjectManager();
 
 		this.colliders = new HashSet<>();
 
@@ -116,9 +116,9 @@ public class SceneMain extends Scene
 			assets.cacheResource("mesh", "dungeon", ModelUtil.createStaticMesh(mesh));
 		}
 
-		this.player = this.entityManager.addLivingEntity(new EntityPlayer());
+		this.player = this.entityManager.addGameObject(new EntityPlayer());
 
-		this.entityManager.addLivingEntity(new EntityCrate());
+		this.entityManager.addGameObject(new EntityCrate());
 	}
 
 	@Override
@@ -145,7 +145,7 @@ public class SceneMain extends Scene
 		this.entityManager.clear();
 	}
 
-	public LivingEntityManager getEntityManager()
+	public GameObjectManager getEntityManager()
 	{
 		return this.entityManager;
 	}

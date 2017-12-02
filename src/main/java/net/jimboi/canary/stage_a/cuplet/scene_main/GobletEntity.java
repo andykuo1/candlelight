@@ -1,14 +1,14 @@
 package net.jimboi.canary.stage_a.cuplet.scene_main;
 
 import net.jimboi.canary.stage_a.cuplet.basicobject.ComponentRenderable;
-import net.jimboi.canary.stage_a.cuplet.basicobject.LivingEntityBase;
+import net.jimboi.canary.stage_a.cuplet.basicobject.GameObjectBase;
 
 import org.bstone.transform.Transform3;
 
 /**
  * Created by Andy on 8/9/17.
  */
-public class GobletEntity extends LivingEntityBase
+public class GobletEntity extends GameObjectBase
 {
 	protected final GobletWorld world;
 

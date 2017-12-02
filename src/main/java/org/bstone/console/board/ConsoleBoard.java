@@ -1,4 +1,4 @@
-package net.jimboi.test.sleuth.example;
+package org.bstone.console.board;
 
 import org.bstone.console.Console;
 
@@ -7,13 +7,13 @@ import java.util.Stack;
 /**
  * Created by Andy on 10/7/17.
  */
-public abstract class ConsoleBoard
+public class ConsoleBoard
 {
 	protected final Blackboard data = new Blackboard();
 	private final Stack<ConsoleState> states = new Stack<>();
 	private ConsoleState currentState = this::onStart;
 
-	public abstract void onStart(Console con);
+	public void onStart(Console con) {}
 
 	public final void start(Console con)
 	{
@@ -36,18 +36,40 @@ public abstract class ConsoleBoard
 	{
 		if (this.currentState != state && this.currentState != null)
 		{
+			this.currentState.end(con);
 			this.states.push(this.currentState);
 			this.currentState = null;
 		}
 
 		this.currentState = state;
-		this.render(con, this.currentState);
+		if (!this.currentState.begin(con, this))
+		{
+			this.back(con);
+		}
+		else
+		{
+			this.render(con, this.currentState);
+		}
 	}
 
 	public final void back(Console con)
 	{
-		this.currentState = this.states.pop();
-		this.render(con, this.currentState);
+		if (this.states.isEmpty())
+		{
+			con.quit();
+		}
+		else
+		{
+			this.currentState = this.states.pop();
+			if (!this.currentState.begin(con, this))
+			{
+				this.back(con);
+			}
+			else
+			{
+				this.render(con, this.currentState);
+			}
+		}
 	}
 
 	protected final void render(Console con, ConsoleState state)

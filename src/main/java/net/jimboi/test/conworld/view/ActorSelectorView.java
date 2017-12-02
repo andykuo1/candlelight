@@ -4,7 +4,7 @@ import net.jimboi.test.conworld.acor.Actor;
 import net.jimboi.test.conworld.world.World;
 
 import org.bstone.console.Console;
-import org.bstone.console.ConsoleUtil;
+import org.bstone.console.ConsoleStyle;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -30,13 +30,13 @@ public class ActorSelectorView extends View
 	@Override
 	protected void initialize(Console console)
 	{
-		ConsoleUtil.title(console, "Select Actor");
+		ConsoleStyle.title(console, "Select Actor");
 
 		for(Actor actor : this.world.actors)
 		{
 			if (this.filter.test(actor))
 			{
-				ConsoleUtil.button(console, actor.getName(), () ->
+				ConsoleStyle.button(console, actor.getName(), () ->
 				{
 					this.callback.accept(actor);
 					this.destroy();

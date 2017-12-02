@@ -1,8 +1,7 @@
 package net.jimboi.test.sleuth.base;
 
-import net.jimboi.test.sleuth.example.Blackboard;
-
 import org.bstone.console.Console;
+import org.bstone.console.board.Blackboard;
 
 /**
  * Created by Andy on 10/7/17.

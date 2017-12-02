@@ -1,4 +1,4 @@
-package net.jimboi.canary.stage_a.smuc.gui;
+package org.zilar.gui;
 
 import org.bstone.util.Direction;
 import org.joml.Vector2f;
@@ -22,11 +22,6 @@ public class Gui extends GuiBase
 
 	protected boolean isVerticallyCentered;
 	protected boolean isHorizontallyCentered;
-
-	public Gui(GuiManager manager)
-	{
-		super(manager);
-	}
 
 	public Gui setAnchorDirection(Direction direction)
 	{

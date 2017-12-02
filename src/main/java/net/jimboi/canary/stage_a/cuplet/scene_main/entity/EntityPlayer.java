@@ -50,10 +50,9 @@ public class EntityPlayer extends EntityHurtable implements InputListener
 		this.speed = 0.03F;
 	}
 
-	@Override
-	public void onEntityCreate(EntityManager entityManager)
+	protected void onEntitySetup(EntityManager entityManager)
 	{
-		super.onEntityCreate(entityManager);
+		super.onEntitySetup(entityManager);
 
 		ComponentMotion componentMotion = this.addComponent(new ComponentMotion());
 		componentMotion.setFriction(0.3F);
@@ -66,9 +65,9 @@ public class EntityPlayer extends EntityHurtable implements InputListener
 	}
 
 	@Override
-	public void onEntityDestroy()
+	protected void onEntityDelete()
 	{
-		super.onEntityDestroy();
+		super.onEntityDelete();
 
 		Cuplet.getCuplet().getInputEngine().getDefaultContext().removeListener(this);
 	}
@@ -175,9 +174,9 @@ public class EntityPlayer extends EntityHurtable implements InputListener
 	}
 
 	@Override
-	public void onLivingUpdate()
+	protected void onUpdate()
 	{
-		super.onLivingUpdate();
+		super.onUpdate();
 
 		InputContext ctx = Cuplet.getCuplet().getInputEngine().getDefaultContext();
 		float mousex = ctx.getRange("mousex").getRange();

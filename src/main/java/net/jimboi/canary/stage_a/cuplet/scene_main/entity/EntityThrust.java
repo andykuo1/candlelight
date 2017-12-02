@@ -31,9 +31,9 @@ public class EntityThrust extends EntitySolid implements IDamageSource
 	}
 
 	@Override
-	public void onLivingUpdate()
+	protected void onUpdate()
 	{
-		super.onLivingUpdate();
+		super.onUpdate();
 
 		this.ageTicks.tick();
 

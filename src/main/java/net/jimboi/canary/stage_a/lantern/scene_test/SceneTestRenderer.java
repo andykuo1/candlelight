@@ -6,7 +6,7 @@ import net.jimboi.canary.stage_a.lantern.Lantern;
 
 import org.bstone.asset.Asset;
 import org.bstone.asset.AssetManager;
-import org.bstone.livingentity.LivingEntity;
+import org.bstone.gameobject.GameObject;
 import org.bstone.material.Material;
 import org.bstone.mogli.Bitmap;
 import org.bstone.mogli.Mesh;
@@ -69,7 +69,7 @@ public class SceneTestRenderer extends SceneRenderer
 	{
 		final SceneTest scene = (SceneTest) Lantern.getLantern().getSceneManager().getCurrentScene();
 		this.renderer.bind(scene.getCamera().view(), scene.getCamera().projection());
-		for(LivingEntity entity : scene.getLivings().getLivingEntities())
+		for(GameObject entity : scene.getLivings().getGameObjects())
 		{
 			if (entity instanceof EntityBase)
 			{

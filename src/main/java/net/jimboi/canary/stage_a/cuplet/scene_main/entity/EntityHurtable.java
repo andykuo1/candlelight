@@ -9,7 +9,7 @@ import net.jimboi.canary.stage_a.cuplet.scene_main.entity.base.EntitySolid;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tick.TickCounter;
 
 import org.bstone.entity.EntityManager;
-import org.bstone.living.LivingManager;
+import org.bstone.gameobject.GameObjectManager;
 import org.bstone.material.Material;
 import org.bstone.transform.Transform3;
 import org.bstone.util.ColorUtil;
@@ -34,15 +34,15 @@ public class EntityHurtable extends EntitySolid implements IBurnable
 	}
 
 	@Override
-	public void onEntityCreate(EntityManager entityManager)
+	protected void onEntitySetup(EntityManager entityManager)
 	{
-		super.onEntityCreate(entityManager);
+		super.onEntitySetup(entityManager);
 
 		this.addComponent(new ComponentDamageable());
 	}
 
 	@Override
-	public void onLivingCreate(LivingManager livingManager)
+	protected void onCreate(GameObjectManager gameObjectManager)
 	{
 		ComponentDamageable componentDamageable = this.getComponent(ComponentDamageable.class);
 		componentDamageable.onDamageTick = this::onDamageTick;
@@ -57,7 +57,7 @@ public class EntityHurtable extends EntitySolid implements IBurnable
 	}
 
 	@Override
-	public void onLivingUpdate()
+	protected void onUpdate()
 	{
 		if (!this.fireTicks.isComplete())
 		{

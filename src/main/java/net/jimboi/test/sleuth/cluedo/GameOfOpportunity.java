@@ -5,7 +5,7 @@ import net.jimboi.test.sleuth.ActorFactory;
 import net.jimboi.test.sleuth.data.Time;
 
 import org.bstone.console.Console;
-import org.bstone.console.ConsoleUtil;
+import org.bstone.console.ConsoleStyle;
 import org.bstone.util.pair.Pair;
 
 import java.util.HashSet;
@@ -170,27 +170,27 @@ public class GameOfOpportunity extends Cluedo
 	private void main(Console console, Random rand)
 	{
 		console.clear();
-		ConsoleUtil.title(console, "Cluedo");
-		ConsoleUtil.message(console, "Welcome Detective. What would you like to do first?");
+		ConsoleStyle.title(console, "Cluedo");
+		ConsoleStyle.message(console, "Welcome Detective. What would you like to do first?");
 
-		ConsoleUtil.newline(console);
+		ConsoleStyle.newline(console);
 
 		console.print(" > ").beginAttributes().setActionLink(() -> lookAround(console, rand)).printlnEnd("Look Around");
 		console.print(" > ").beginAttributes().setActionLink(() -> quit(console, rand)).printlnEnd("Give Me the Answer");
 
-		ConsoleUtil.newline(console);
+		ConsoleStyle.newline(console);
 
-		ConsoleUtil.message(console, this.venue.rooms.toString());
+		ConsoleStyle.message(console, this.venue.rooms.toString());
 
-		ConsoleUtil.newline(console);
+		ConsoleStyle.newline(console);
 
-		ConsoleUtil.divider(console, "- ");
+		ConsoleStyle.divider(console, "- ");
 	}
 
 	private void lookAround(Console console, Random rand)
 	{
-		ConsoleUtil.message(console, "You look around the " + this.victim.location + ".");
-		ConsoleUtil.newline(console);
+		ConsoleStyle.message(console, "You look around the " + this.victim.location + ".");
+		ConsoleStyle.newline(console);
 
 		console.print("You see ").beginAttributes().setActionLink(() -> this.inspectBody(console, rand)).printEnd(this.victim.name).println(" is dead.");
 		for(Actor actor : this.suspects)
@@ -198,26 +198,26 @@ public class GameOfOpportunity extends Cluedo
 			console.print("You see ").beginAttributes().setActionLink(() -> this.talkTo(console, rand, actor)).printEnd(actor.name).println(".");
 		}
 
-		ConsoleUtil.divider(console, "- ");
+		ConsoleStyle.divider(console, "- ");
 	}
 
 	private void quit(Console console, Random rand)
 	{
-		ConsoleUtil.message(console, "You decide to get the answer.");
-		ConsoleUtil.newline(console);
+		ConsoleStyle.message(console, "You decide to get the answer.");
+		ConsoleStyle.newline(console);
 
-		ConsoleUtil.message(console,  this.murderer.name + " was the murderer!");
+		ConsoleStyle.message(console,  this.murderer.name + " was the murderer!");
 
-		ConsoleUtil.divider(console, "- ");
+		ConsoleStyle.divider(console, "- ");
 		console.print(" > ").beginAttributes().setActionLink(() -> main(console, rand)).printlnEnd("Back");
 	}
 
 	private void talkTo(Console console, Random rand, Actor actor)
 	{
-		ConsoleUtil.message(console, "You talk to " + actor.name + ".");
-		ConsoleUtil.newline(console);
+		ConsoleStyle.message(console, "You talk to " + actor.name + ".");
+		ConsoleStyle.newline(console);
 
-		ConsoleUtil.message(console, "Hello. What do you want?");
+		ConsoleStyle.message(console, "Hello. What do you want?");
 
 		console.print(" > ").beginAttributes().setActionLink(() -> this.showMemoryOf(console, rand, actor, this.victim)).printEnd("What can you tell me about the victim?").println();
 		console.print(" > ").beginAttributes().setActionLink(() -> this.showMemoryAt(console, rand, actor, this.timeOfDeath)).printEnd("What happened at " + this.timeOfDeath.getHour() + "?").println();
@@ -229,40 +229,40 @@ public class GameOfOpportunity extends Cluedo
 		//What happened at the crime?
 		//What do you know(think) about this person?
 
-		ConsoleUtil.divider(console, "- ");
+		ConsoleStyle.divider(console, "- ");
 	}
 
 	private void inspectBody(Console console, Random rand)
 	{
-		ConsoleUtil.message(console, "You inspect the body of " + this.victim.name + ".");
-		ConsoleUtil.newline(console);
+		ConsoleStyle.message(console, "You inspect the body of " + this.victim.name + ".");
+		ConsoleStyle.newline(console);
 
-		ConsoleUtil.message(console, "You find the victim's body in the " + this.victim.location + ".");
-		ConsoleUtil.message(console, "You find the murder weapon!");
-		ConsoleUtil.message(console, "Anyone could have used it...");
-		ConsoleUtil.message(console, "But you now know the time of death.");
-		ConsoleUtil.message(console, this.timeOfDeath.toString());
+		ConsoleStyle.message(console, "You find the victim's body in the " + this.victim.location + ".");
+		ConsoleStyle.message(console, "You find the murder weapon!");
+		ConsoleStyle.message(console, "Anyone could have used it...");
+		ConsoleStyle.message(console, "But you now know the time of death.");
+		ConsoleStyle.message(console, this.timeOfDeath.toString());
 
-		ConsoleUtil.divider(console, "- ");
+		ConsoleStyle.divider(console, "- ");
 		console.print(" > ").beginAttributes().setActionLink(() -> main(console, rand)).printlnEnd("Back");
 	}
 
 	private void showMemory(Console console, Random rand, Actor actor)
 	{
-		ConsoleUtil.newline(console);
+		ConsoleStyle.newline(console);
 
 		for(Pair<Time, String> entry : actor.memories.data)
 		{
-			ConsoleUtil.message(console, entry.getSecond());
+			ConsoleStyle.message(console, entry.getSecond());
 		}
 
-		ConsoleUtil.divider(console, "- ");
+		ConsoleStyle.divider(console, "- ");
 		console.print(" > ").beginAttributes().setActionLink(() -> main(console, rand)).printlnEnd("Back");
 	}
 
 	private void showMemoryOf(Console console,  Random rand, Actor actor, Actor target)
 	{
-		ConsoleUtil.newline(console);
+		ConsoleStyle.newline(console);
 
 		Set<Time> times = new TreeSet<>();
 		for(Pair<Time, String> entry : actor.memories.data)
@@ -275,28 +275,28 @@ public class GameOfOpportunity extends Cluedo
 
 		if (times.isEmpty())
 		{
-			ConsoleUtil.message(console, "Sorry, I don't think I ever saw that person.");
+			ConsoleStyle.message(console, "Sorry, I don't think I ever saw that person.");
 		}
 		else
 		{
-			ConsoleUtil.message(console, "Yeah, I remember.");
+			ConsoleStyle.message(console, "Yeah, I remember.");
 
 			for (Pair<Time, String> entry : actor.memories.data)
 			{
 				if (times.contains(entry.getFirst()))
 				{
-					ConsoleUtil.message(console, entry.getSecond());
+					ConsoleStyle.message(console, entry.getSecond());
 				}
 			}
 		}
 
-		ConsoleUtil.divider(console, "- ");
+		ConsoleStyle.divider(console, "- ");
 		console.print(" > ").beginAttributes().setActionLink(() -> main(console, rand)).printlnEnd("Back");
 	}
 
 	private void showMemoryAt(Console console, Random rand, Actor actor, Time time)
 	{
-		ConsoleUtil.newline(console);
+		ConsoleStyle.newline(console);
 
 		boolean dirty = false;
 
@@ -307,20 +307,20 @@ public class GameOfOpportunity extends Cluedo
 				if (!dirty)
 				{
 					dirty = true;
-					ConsoleUtil.message(console, "Yeah, I remember.");
+					ConsoleStyle.message(console, "Yeah, I remember.");
 				}
 
 				String memory = entry.getSecond();
-				ConsoleUtil.message(console, memory);
+				ConsoleStyle.message(console, memory);
 			}
 		}
 
 		if (!dirty)
 		{
-			ConsoleUtil.message(console, "Sorry, I don't remember anything at " + time.getHour() + ".");
+			ConsoleStyle.message(console, "Sorry, I don't remember anything at " + time.getHour() + ".");
 		}
 
-		ConsoleUtil.divider(console, "- ");
+		ConsoleStyle.divider(console, "- ");
 		console.print(" > ").beginAttributes().setActionLink(() -> main(console, rand)).printlnEnd("Back");
 	}
 }

@@ -1,4 +1,4 @@
-package net.jimboi.test.sleuth.example;
+package org.bstone.console.board;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -3,6 +3,7 @@ package org.bstone.tick;
 import org.bstone.application.Application;
 import org.bstone.application.Engine;
 import org.bstone.render.FrameHandler;
+import org.bstone.scheduler.Scheduler;
 import org.bstone.service.ServiceManager;
 
 /**
@@ -21,6 +22,7 @@ public class TickEngine extends Engine implements FrameHandler
 	private double timeDelta;
 
 	private final ServiceManager<TickEngine, TickService> services;
+	private final Scheduler scheduler;
 
 	private final TickCounter updateCounter;
 
@@ -30,6 +32,7 @@ public class TickEngine extends Engine implements FrameHandler
 		this.limitFrameRate = limitFrameRate;
 
 		this.services = new ServiceManager<>(this);
+		this.scheduler = new Scheduler();
 
 		this.updateCounter = new TickCounter();
 	}
@@ -43,6 +46,7 @@ public class TickEngine extends Engine implements FrameHandler
 		this.timeLatency = 0;
 
 		this.services.beginServices();
+		this.scheduler.process();
 		this.services.endServices();
 
 		return true;
@@ -70,6 +74,7 @@ public class TickEngine extends Engine implements FrameHandler
 		}
 
 		this.services.forEach(TickService::onLateUpdate);
+		this.scheduler.process();
 		this.services.endServices();
 
 		this.timeDelta = this.timeLatency / this.timeStep;
@@ -79,6 +84,7 @@ public class TickEngine extends Engine implements FrameHandler
 	protected void onStop(Application app)
 	{
 		this.services.beginServices();
+		this.scheduler.process();
 		this.services.endServices();
 
 		this.services.destroy();
@@ -110,5 +116,10 @@ public class TickEngine extends Engine implements FrameHandler
 	public final ServiceManager<TickEngine, TickService> getTickServices()
 	{
 		return this.services;
+	}
+
+	public final Scheduler getScheduler()
+	{
+		return this.scheduler;
 	}
 }

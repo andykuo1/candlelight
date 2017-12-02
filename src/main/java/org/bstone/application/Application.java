@@ -88,6 +88,14 @@ public class Application implements Runnable
 		return this;
 	}
 
+	/**
+	 * Start running the Application on the current thread
+	 */
+	public void start()
+	{
+		this.run();
+	}
+
 	@Override
 	public void run()
 	{
@@ -145,8 +153,6 @@ public class Application implements Runnable
 					}
 				}
 				this.currentIndex = -1;
-
-				throw new IllegalStateException("BOO!");
 			}
 		}
 		finally

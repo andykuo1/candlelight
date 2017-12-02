@@ -30,9 +30,9 @@ public class EntitySlash extends EntitySolid implements IDamageSource
 	}
 
 	@Override
-	public void onLivingUpdate()
+	public void onUpdate()
 	{
-		super.onLivingUpdate();
+		super.onUpdate();
 
 		this.ageTicks.tick();
 

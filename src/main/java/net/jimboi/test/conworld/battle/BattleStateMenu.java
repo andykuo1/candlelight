@@ -7,7 +7,7 @@ import net.jimboi.test.conworld.view.StatView;
 import net.jimboi.test.conworld.world.World;
 
 import org.bstone.console.Console;
-import org.bstone.console.ConsoleUtil;
+import org.bstone.console.ConsoleStyle;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,9 +32,9 @@ public class BattleStateMenu extends BattleState
 	{
 		final Console console = BattleMain.getConsole();
 
-		ConsoleUtil.title(console, "Battle View");
+		ConsoleStyle.title(console, "Battle View");
 
-		ConsoleUtil.button(console, "View Stats", () -> {
+		ConsoleStyle.button(console, "View Stats", () -> {
 			new ActorSelectorView(this.world,
 					(actor) -> true,
 					(actor) -> {
@@ -53,7 +53,7 @@ public class BattleStateMenu extends BattleState
 					}).create();
 		});
 
-		ConsoleUtil.button(console, "View Inventory", () -> {
+		ConsoleStyle.button(console, "View Inventory", () -> {
 			new ActorSelectorView(this.world,
 					(actor) -> true,
 					(actor) -> {
@@ -72,8 +72,8 @@ public class BattleStateMenu extends BattleState
 					}).create();
 		});
 
-		ConsoleUtil.button(console, "Next Round", this.world::nextTurn);
+		ConsoleStyle.button(console, "Next Round", this.world::nextTurn);
 
-		ConsoleUtil.button(console, "End Battle", BattleMain::stop);
+		ConsoleStyle.button(console, "End Battle", BattleMain::stop);
 	}
 }
