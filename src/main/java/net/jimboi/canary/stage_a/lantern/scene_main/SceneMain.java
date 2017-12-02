@@ -119,6 +119,8 @@ public class SceneMain extends Scene
 		this.player = this.entityManager.addGameObject(new EntityPlayer());
 
 		this.entityManager.addGameObject(new EntityCrate());
+
+		this.entityManager.flushCreatedObjects();
 	}
 
 	@Override
