@@ -1,46 +1,10 @@
 package net.jimboi.canary.stage_a.pong;
 
-import org.bstone.entity.EntityManager;
-import org.bstone.entity.IEntity;
+import org.bstone.entity.Entity;
 
 /**
  * Created by Andy on 12/1/17.
  */
-public class Ball implements IEntity
+public class Ball extends Entity
 {
-	@Override
-	public void onEntityCreate(EntityManager entityManager)
-	{
-
-	}
-
-	@Override
-	public void onEntityDestroy()
-	{
-
-	}
-
-	@Override
-	public void setEntityManager(EntityManager entityManager)
-	{
-
-	}
-
-	@Override
-	public void setEntityID(int id)
-	{
-
-	}
-
-	@Override
-	public EntityManager getEntityManager()
-	{
-		return null;
-	}
-
-	@Override
-	public int getEntityID()
-	{
-		return 0;
-	}
 }
