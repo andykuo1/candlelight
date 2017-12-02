@@ -164,28 +164,7 @@ public class Window
 			this.onWindowSizeChanged.notifyListeners(this.width, this.height, prevW, prevH);
 		});
 
-		// Get the thread stack and push a new frame
-		try (MemoryStack stack = MemoryStack.stackPush())
-		{
-			IntBuffer pWidth = stack.mallocInt(1); // int*
-			IntBuffer pHeight = stack.mallocInt(1); // int*
-
-			// Get the window size passed to glfwCreateWindow
-			GLFW.glfwGetWindowSize(handle, pWidth, pHeight);
-
-			this.width = pWidth.get(0);
-			this.height = pHeight.get(0);
-
-			// Get the resolution of the primary monitor
-			GLFWVidMode vidmode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
-
-			// Center the window
-			GLFW.glfwSetWindowPos(
-					this.handle,
-					(vidmode.width() - this.width) / 2,
-					(vidmode.height() - this.height) / 2
-			);
-		} // the stack frame is popped automatically
+		this.setWindowPositionCentered();
 
 		// Make the OpenGL context current
 		GLFW.glfwMakeContextCurrent(this.handle);
@@ -253,6 +232,32 @@ public class Window
 	public void setWindowPosition(int x, int y)
 	{
 		GLFW.glfwSetWindowPos(this.handle, x, y);
+	}
+
+	public void setWindowPositionCentered()
+	{
+		// Get the thread stack and push a new frame
+		try (MemoryStack stack = MemoryStack.stackPush())
+		{
+			IntBuffer pWidth = stack.mallocInt(1); // int*
+			IntBuffer pHeight = stack.mallocInt(1); // int*
+
+			// Get the window size passed to glfwCreateWindow
+			GLFW.glfwGetWindowSize(this.handle, pWidth, pHeight);
+
+			this.width = pWidth.get(0);
+			this.height = pHeight.get(0);
+
+			// Get the resolution of the primary monitor
+			GLFWVidMode vidmode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+
+			// Center the window
+			GLFW.glfwSetWindowPos(
+					this.handle,
+					(vidmode.width() - this.width) / 2,
+					(vidmode.height() - this.height) / 2
+			);
+		} // the stack frame is popped automatically
 	}
 
 	public boolean shouldCloseWindow()

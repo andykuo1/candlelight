@@ -1,4 +1,4 @@
-package net.jimboi.canary.stage_a.pong;
+package net.jimboi.canary.stage_a.pong.component;
 
 import net.jimboi.canary.stage_a.base.Model;
 

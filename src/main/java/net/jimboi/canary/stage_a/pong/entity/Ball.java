@@ -1,4 +1,7 @@
-package net.jimboi.canary.stage_a.pong;
+package net.jimboi.canary.stage_a.pong.entity;
+
+import net.jimboi.canary.stage_a.pong.component.ComponentRenderable;
+import net.jimboi.canary.stage_a.pong.component.ComponentTransform;
 
 import org.bstone.entity.Entity;
 

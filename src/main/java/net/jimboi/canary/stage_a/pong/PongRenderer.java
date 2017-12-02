@@ -3,6 +3,8 @@ package net.jimboi.canary.stage_a.pong;
 import net.jimboi.canary.stage_a.base.Model;
 import net.jimboi.canary.stage_a.base.ModelManager;
 import net.jimboi.canary.stage_a.base.renderer.SimpleRenderer;
+import net.jimboi.canary.stage_a.pong.component.ComponentRenderable;
+import net.jimboi.canary.stage_a.pong.component.ComponentTransform;
 
 import org.bstone.application.game.GameAssets;
 import org.bstone.asset.AssetManager;

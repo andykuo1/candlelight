@@ -1,6 +1,9 @@
 package net.jimboi.canary.stage_a.pong;
 
 import net.jimboi.canary.stage_a.lantern.scene_main.cameracontroller.FirstPersonCameraController;
+import net.jimboi.canary.stage_a.pong.component.ComponentTransform;
+import net.jimboi.canary.stage_a.pong.entity.Ball;
+import net.jimboi.canary.stage_a.pong.entity.Paddle;
 
 import org.bstone.application.Application;
 import org.bstone.application.game.GameEngine;
@@ -16,8 +19,9 @@ import org.bstone.scene.SceneManager;
  */
 public class Pong extends Scene
 {
-	public static final int WINDOW_WIDTH = 640;
+	public static final int WINDOW_WIDTH = 480;
 	public static final int WINDOW_HEIGHT = 480;
+
 	protected EntityManager entityManager = new EntityManager();
 	protected PerspectiveCamera camera;
 	private FirstPersonCameraController controller;
@@ -25,6 +29,9 @@ public class Pong extends Scene
 	@Override
 	protected void onSceneCreate(SceneManager sceneManager)
 	{
+		ENGINE.getWindow().setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		ENGINE.getWindow().setWindowPositionCentered();
+
 		final InputEngine inputs = ENGINE.getInputEngine();
 
 		GameInputs.loadBaseInputs(inputs);
