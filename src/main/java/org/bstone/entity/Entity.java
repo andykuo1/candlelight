@@ -8,7 +8,7 @@ public class Entity
 	EntityManager entityManager;
 	int id;
 
-	protected void onEntitySetup(EntityManager entityManager)
+	protected void onEntitySetup()
 	{
 	}
 

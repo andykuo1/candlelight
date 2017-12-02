@@ -6,7 +6,6 @@ import net.jimboi.canary.stage_a.cuplet.basicobject.ComponentRenderable;
 import net.jimboi.canary.stage_a.cuplet.scene_main.GobletWorld;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentBounding;
 
-import org.bstone.entity.EntityManager;
 import org.bstone.transform.Transform3;
 
 /**
@@ -24,9 +23,9 @@ public class EntitySolid extends EntityBase implements BoxCollider
 	}
 
 	@Override
-	protected void onEntitySetup(EntityManager entityManager)
+	protected void onEntitySetup()
 	{
-		super.onEntitySetup(entityManager);
+		super.onEntitySetup();
 
 		this.addComponent(new ComponentBounding(this.boundingBox));
 	}

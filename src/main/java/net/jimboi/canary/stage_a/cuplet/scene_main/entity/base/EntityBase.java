@@ -7,7 +7,6 @@ import net.jimboi.canary.stage_a.cuplet.scene_main.GobletWorld;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentBounding;
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentTransform;
 
-import org.bstone.entity.EntityManager;
 import org.bstone.transform.Transform3;
 import org.bstone.util.ColorUtil;
 
@@ -26,9 +25,9 @@ public class EntityBase extends GobletEntity
 	}
 
 	@Override
-	protected void onEntitySetup(EntityManager entityManager)
+	protected void onEntitySetup()
 	{
-		super.onEntitySetup(entityManager);
+		super.onEntitySetup();
 
 		this.addComponent(new ComponentTransform(this.transform));
 	}

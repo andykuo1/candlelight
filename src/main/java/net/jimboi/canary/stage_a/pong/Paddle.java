@@ -3,9 +3,9 @@ package net.jimboi.canary.stage_a.pong;
 import org.bstone.entity.Entity;
 
 /**
- * Created by Andy on 12/1/17.
+ * Created by Andy on 12/2/17.
  */
-public class Ball extends Entity
+public class Paddle extends Entity
 {
 	@Override
 	protected void onEntitySetup()
@@ -13,6 +13,6 @@ public class Ball extends Entity
 		super.onEntitySetup();
 
 		this.addComponent(new ComponentTransform());
-		this.addComponent(new ComponentRenderable("ball"));
+		this.addComponent(new ComponentRenderable("paddle"));
 	}
 }

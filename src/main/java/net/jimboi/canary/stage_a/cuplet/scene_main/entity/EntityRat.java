@@ -7,7 +7,6 @@ import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentDamageable
 import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentMotion;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tile.TileMap;
 
-import org.bstone.entity.EntityManager;
 import org.bstone.transform.Transform3;
 
 /**
@@ -23,9 +22,9 @@ public class EntityRat extends EntityAlertable
 	}
 
 	@Override
-	protected void onEntitySetup(EntityManager entityManager)
+	protected void onEntitySetup()
 	{
-		super.onEntitySetup(entityManager);
+		super.onEntitySetup();
 
 		this.getComponent(ComponentMotion.class).setFriction(0.3F);
 		this.getComponent(ComponentDamageable.class).setMaxHealth(1);

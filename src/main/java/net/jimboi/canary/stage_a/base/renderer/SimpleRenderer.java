@@ -20,7 +20,8 @@ import org.lwjgl.opengl.GL11;
  */
 public class SimpleRenderer extends AbstractRenderer
 {
-	private static final Vector4fc DEFAULT_PROPERTY_COLOR = new Vector4f(1, 1, 1, 0);
+	private static final Vector4fc DEFAULT_PROPERTY_TEXTURE_COLOR = new Vector4f(1, 1, 1, 0);
+	private static final Vector4fc DEFAULT_PROPERTY_COLOR = new Vector4f(1, 1, 1, 1);
 	private static final Vector2fc DEFAULT_PROPERTY_SPRITE_OFFSET = new Vector2f();
 	private static final Vector2fc DEFAULT_PROPERTY_SPRITE_SCALE = new Vector2f(1, 1);
 	private static final boolean DEFAULT_PROPERTY_TRANSPARENCY = true;
@@ -60,10 +61,9 @@ public class SimpleRenderer extends AbstractRenderer
 
 		mesh.bind();
 		{
-			material.applyOrDefault(MaterialProperty.COLOR, program, DEFAULT_PROPERTY_COLOR);
-
 			boolean flag = material.apply(MaterialProperty.TEXTURE, program);
 
+			material.applyOrDefault(MaterialProperty.COLOR, program, flag ? DEFAULT_PROPERTY_TEXTURE_COLOR : DEFAULT_PROPERTY_COLOR);
 			material.applyOrDefault(MaterialProperty.SPRITE_OFFSET, program, DEFAULT_PROPERTY_SPRITE_OFFSET);
 			material.applyOrDefault(MaterialProperty.SPRITE_SCALE, program, DEFAULT_PROPERTY_SPRITE_SCALE);
 			material.applyOrDefault(MaterialProperty.TRANSPARENCY, program, DEFAULT_PROPERTY_TRANSPARENCY);

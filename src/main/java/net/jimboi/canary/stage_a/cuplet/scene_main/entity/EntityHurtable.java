@@ -8,7 +8,6 @@ import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentDamageable
 import net.jimboi.canary.stage_a.cuplet.scene_main.entity.base.EntitySolid;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tick.TickCounter;
 
-import org.bstone.entity.EntityManager;
 import org.bstone.gameobject.GameObjectManager;
 import org.bstone.material.Material;
 import org.bstone.transform.Transform3;
@@ -34,9 +33,9 @@ public class EntityHurtable extends EntitySolid implements IBurnable
 	}
 
 	@Override
-	protected void onEntitySetup(EntityManager entityManager)
+	protected void onEntitySetup()
 	{
-		super.onEntitySetup(entityManager);
+		super.onEntitySetup();
 
 		this.addComponent(new ComponentDamageable());
 	}

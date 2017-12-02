@@ -25,7 +25,7 @@ public class EntityManager
 			this.addComponentToEntity(entity, component);
 		}
 
-		entity.onEntitySetup(this);
+		entity.onEntitySetup();
 		this.onEntityAdd(entity);
 
 		return entity;
@@ -163,7 +163,8 @@ public class EntityManager
 		return dst;
 	}
 
-	public Collection<Entity> getEntitiesWith(Class<? extends Component>[] types, Collection<Entity> dst)
+	@SafeVarargs
+	public final Collection<Entity> getEntitiesWith(Collection<Entity> dst, Class<? extends Component>... types)
 	{
 		boolean flag = false;
 		for(Class<? extends Component> componentType : this.components.keySet())
@@ -193,7 +194,8 @@ public class EntityManager
 		return dst;
 	}
 
-	public Collection<Entity> getEntitiesWithAny(Class<? extends Component>[] types, Collection<Entity> dst)
+	@SafeVarargs
+	public final Collection<Entity> getEntitiesWithAny(Collection<Entity> dst, Class<? extends Component>... types)
 	{
 		for(Class<? extends Component> componentType : this.components.keySet())
 		{

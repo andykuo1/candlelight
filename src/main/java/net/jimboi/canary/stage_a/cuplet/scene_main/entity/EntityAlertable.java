@@ -10,7 +10,6 @@ import net.jimboi.canary.stage_a.cuplet.scene_main.entity.base.EntityBase;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tick.TickCounter;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tile.TileMap;
 
-import org.bstone.entity.EntityManager;
 import org.bstone.transform.Transform3;
 
 /**
@@ -30,9 +29,9 @@ public class EntityAlertable extends EntityHurtable
 	}
 
 	@Override
-	protected void onEntitySetup(EntityManager entityManager)
+	protected void onEntitySetup()
 	{
-		super.onEntitySetup(entityManager);
+		super.onEntitySetup();
 
 		this.addComponent(new ComponentMotion());
 	}

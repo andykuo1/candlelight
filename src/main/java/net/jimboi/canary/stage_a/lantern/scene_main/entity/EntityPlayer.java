@@ -7,7 +7,6 @@ import net.jimboi.canary.stage_a.lantern.scene_main.component.ComponentRenderabl
 import net.jimboi.canary.stage_a.lantern.scene_main.component.ComponentTransform;
 
 import org.bstone.asset.AssetManager;
-import org.bstone.entity.EntityManager;
 import org.bstone.transform.Transform3;
 
 /**
@@ -16,7 +15,7 @@ import org.bstone.transform.Transform3;
 public class EntityPlayer extends EntityBase
 {
 	@Override
-	protected void onEntitySetup(EntityManager entityManager)
+	protected void onEntitySetup()
 	{
 		final AssetManager assets = Lantern.getLantern().getAssetManager();
 

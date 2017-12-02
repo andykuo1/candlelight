@@ -8,7 +8,6 @@ import net.jimboi.canary.stage_a.cuplet.scene_main.entity.base.EntitySolid;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tick.TickCounter;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tile.TileMap;
 
-import org.bstone.entity.EntityManager;
 import org.bstone.transform.Transform3;
 
 /**
@@ -33,9 +32,9 @@ public class EntityArrow extends EntitySolid
 	}
 
 	@Override
-	protected void onEntitySetup(EntityManager entityManager)
+	protected void onEntitySetup()
 	{
-		super.onEntitySetup(entityManager);
+		super.onEntitySetup();
 
 		ComponentMotion componentMotion = this.addComponent(new ComponentMotion());
 		componentMotion.setMotion(this.dx, this.dy);

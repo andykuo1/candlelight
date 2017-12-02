@@ -10,7 +10,6 @@ import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentMotion;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tick.TickCounter;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tile.TileMap;
 
-import org.bstone.entity.EntityManager;
 import org.bstone.input.InputContext;
 import org.bstone.input.InputListener;
 import org.bstone.transform.Transform3;
@@ -50,9 +49,9 @@ public class EntityPlayer extends EntityHurtable implements InputListener
 		this.speed = 0.03F;
 	}
 
-	protected void onEntitySetup(EntityManager entityManager)
+	protected void onEntitySetup()
 	{
-		super.onEntitySetup(entityManager);
+		super.onEntitySetup();
 
 		ComponentMotion componentMotion = this.addComponent(new ComponentMotion());
 		componentMotion.setFriction(0.3F);

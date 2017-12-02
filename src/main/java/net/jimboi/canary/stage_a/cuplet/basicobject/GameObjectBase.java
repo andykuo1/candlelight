@@ -18,9 +18,9 @@ public class GameObjectBase extends GameObject
 	}
 
 	@Override
-	protected void onEntitySetup(org.bstone.entity.EntityManager entityManager)
+	protected void onEntitySetup()
 	{
-		super.onEntitySetup(entityManager);
+		super.onEntitySetup();
 
 		this.addComponent(new ComponentTransform3(this.transform));
 		this.addComponent(this.renderable);
