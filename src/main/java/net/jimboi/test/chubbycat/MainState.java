@@ -3,10 +3,10 @@ package net.jimboi.test.chubbycat;
 import net.jimboi.test.chubbycat.client.ChatClient;
 import net.jimboi.test.chubbycat.server.ChatServer;
 
-import org.bstone.console.Console;
-import org.bstone.console.ConsoleStyle;
-import org.bstone.console.board.ConsoleBoard;
-import org.bstone.console.board.ConsoleState;
+import org.zilar.console.Console;
+import org.zilar.console.ConsoleStyle;
+import org.zilar.console.board.ConsoleBoard;
+import org.zilar.console.board.ConsoleState;
 
 /**
  * Created by Andy on 11/29/17.

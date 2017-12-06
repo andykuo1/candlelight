@@ -2,8 +2,8 @@ package net.jimboi.test.sleuth.example;
 
 import net.jimboi.test.sleuth.example.story.StoryFemo;
 
-import org.bstone.console.Console;
-import org.bstone.console.board.ConsoleBoard;
+import org.zilar.console.Console;
+import org.zilar.console.board.ConsoleBoard;
 
 /**
  * Created by Andy on 10/6/17.

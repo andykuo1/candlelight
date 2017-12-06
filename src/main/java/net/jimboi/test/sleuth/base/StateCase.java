@@ -5,8 +5,8 @@ import net.jimboi.test.sleuth.ActorFactory;
 import net.jimboi.test.sleuth.cluedo.Room;
 import net.jimboi.test.sleuth.cluedo.RoomType;
 
-import org.bstone.console.Console;
-import org.bstone.console.ConsoleStyle;
+import org.zilar.console.Console;
+import org.zilar.console.ConsoleStyle;
 
 import java.util.ArrayList;
 import java.util.List;

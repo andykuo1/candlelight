@@ -6,7 +6,7 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * Main entry point for any windowed application.
+ * Main entry point for any application.
  */
 public class Application implements Runnable
 {

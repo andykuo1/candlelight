@@ -6,8 +6,8 @@ import net.jimboi.test.sleuth.data.Season;
 import net.jimboi.test.sleuth.data.WeekDay;
 import net.jimboi.test.sleuth.util.WeightedSet;
 
-import org.bstone.console.Console;
-import org.bstone.console.ConsoleStyle;
+import org.zilar.console.Console;
+import org.zilar.console.ConsoleStyle;
 
 import java.util.Random;
 

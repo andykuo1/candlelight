@@ -14,7 +14,16 @@ public enum RelationshipStatus
 	FRIEND,
 	COUPLE,
 	NEIGHBOR,
-	EMPLOYEE,
 	EMPLOYER,
+	EMPLOYEE,
 	STRANGER;
+
+	public static RelationshipStatus getOtherStatus(RelationshipStatus status)
+	{
+		return status == PARENT ? CHILD
+				: status == CHILD ? PARENT
+				: status == EMPLOYER ? EMPLOYEE
+				: status == EMPLOYEE ? EMPLOYER
+				: status;
+	}
 }

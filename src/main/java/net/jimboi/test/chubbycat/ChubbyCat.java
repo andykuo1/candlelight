@@ -1,7 +1,7 @@
 package net.jimboi.test.chubbycat;
 
-import org.bstone.console.Console;
-import org.bstone.console.SimpleConsole;
+import org.zilar.console.Console;
+import org.zilar.console.SimpleConsole;
 
 /**
  * Created by Andy on 11/29/17.

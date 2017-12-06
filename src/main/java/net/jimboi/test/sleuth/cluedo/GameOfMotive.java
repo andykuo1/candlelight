@@ -4,8 +4,8 @@ import net.jimboi.test.sleuth.Actor;
 import net.jimboi.test.sleuth.ActorFactory;
 import net.jimboi.test.sleuth.Motive;
 
-import org.bstone.console.Console;
-import org.bstone.console.ConsoleStyle;
+import org.zilar.console.Console;
+import org.zilar.console.ConsoleStyle;
 
 import java.awt.Color;
 import java.util.HashSet;

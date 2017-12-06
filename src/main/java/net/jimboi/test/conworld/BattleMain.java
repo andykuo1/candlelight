@@ -3,7 +3,7 @@ package net.jimboi.test.conworld;
 import net.jimboi.test.conworld.battle.BattleState;
 import net.jimboi.test.conworld.world.World;
 
-import org.bstone.console.Console;
+import org.zilar.console.Console;
 
 import java.util.Stack;
 

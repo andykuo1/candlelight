@@ -6,8 +6,8 @@ import net.jimboi.test.conworld.view.InventoryView;
 import net.jimboi.test.conworld.view.StatView;
 import net.jimboi.test.conworld.world.World;
 
-import org.bstone.console.Console;
-import org.bstone.console.ConsoleStyle;
+import org.zilar.console.Console;
+import org.zilar.console.ConsoleStyle;
 
 import java.util.HashSet;
 import java.util.Set;

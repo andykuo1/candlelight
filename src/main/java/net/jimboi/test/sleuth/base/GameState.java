@@ -1,7 +1,7 @@
 package net.jimboi.test.sleuth.base;
 
-import org.bstone.console.Console;
-import org.bstone.console.board.Blackboard;
+import org.zilar.console.Console;
+import org.zilar.console.board.Blackboard;
 
 /**
  * Created by Andy on 10/7/17.

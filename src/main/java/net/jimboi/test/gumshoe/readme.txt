@@ -29,9 +29,12 @@ Creating a Murder Mystery Game
         - Do's and Don't's
     - 2 Big Secret
         - A motive for murder
-        - Knowledge of another character
+        - Could be Knowledge of another character
     - 1 Small Secret
         - An embarrassment
+            - A revelation to someone that distorts one's social image
+        - A shame/guilt
+            - moral image
 
 Small secrets must be compatible with personalities
 Secrets must be discoverable, somehow.
@@ -55,6 +58,11 @@ On the nose names :P
     - Hooks into history of Secrets
         - Raises questions
         - 5 or 6 per character
+    - Hooks
+        - About someone
+        - Allude to secrets
+            -
+        - Reveal relevant history
 
 7) The Killer
     - Map of the Venue

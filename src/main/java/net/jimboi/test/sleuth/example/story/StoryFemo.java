@@ -6,9 +6,9 @@ import net.jimboi.test.sleuth.example.story.venue.Room;
 import net.jimboi.test.sleuth.example.story.venue.Venue;
 import net.jimboi.test.sleuth.example.story.venue.VenueBuilder;
 
-import org.bstone.console.Console;
-import org.bstone.console.ConsoleStyle;
-import org.bstone.console.board.ConsoleBoard;
+import org.zilar.console.Console;
+import org.zilar.console.ConsoleStyle;
+import org.zilar.console.board.ConsoleBoard;
 
 import java.util.ArrayList;
 import java.util.List;

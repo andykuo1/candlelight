@@ -3,7 +3,7 @@ package net.jimboi.test.chubbycat.server;
 import net.jimboi.test.chubbycat.ChubbyCat;
 import net.jimboi.test.chubbycat.message.Message;
 
-import org.bstone.console.Console;
+import org.zilar.console.Console;
 
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;

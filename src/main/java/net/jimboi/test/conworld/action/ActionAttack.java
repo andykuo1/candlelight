@@ -7,8 +7,8 @@ import net.jimboi.test.conworld.item.ItemSword;
 import net.jimboi.test.conworld.view.ActorSelectorView;
 import net.jimboi.test.conworld.world.World;
 
-import org.bstone.console.Console;
-import org.bstone.console.ConsoleStyle;
+import org.zilar.console.Console;
+import org.zilar.console.ConsoleStyle;
 
 /**
  * Created by Andy on 8/30/17.

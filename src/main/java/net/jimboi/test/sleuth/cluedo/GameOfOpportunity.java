@@ -4,9 +4,9 @@ import net.jimboi.test.sleuth.Actor;
 import net.jimboi.test.sleuth.ActorFactory;
 import net.jimboi.test.sleuth.data.Time;
 
-import org.bstone.console.Console;
-import org.bstone.console.ConsoleStyle;
 import org.bstone.util.pair.Pair;
+import org.zilar.console.Console;
+import org.zilar.console.ConsoleStyle;
 
 import java.util.HashSet;
 import java.util.Random;

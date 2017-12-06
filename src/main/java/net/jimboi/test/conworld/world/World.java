@@ -5,7 +5,7 @@ import net.jimboi.test.conworld.acor.Actor;
 import net.jimboi.test.conworld.battle.BattleStateMenu;
 import net.jimboi.test.conworld.view.TurnView;
 
-import org.bstone.console.Console;
+import org.zilar.console.Console;
 
 import java.util.HashSet;
 import java.util.Iterator;

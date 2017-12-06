@@ -1,0 +1,33 @@
+You walk up to the Mansion.
+
+You enter the room.
+
+Mansion:
+- LivingRoom
+- Kitchen
+- Closet
+- Stairs
+- DiningRoom
+- Bedroom
+- MasterBedroom
+
+There are 4 suspects.
+And a Victim, stabbed to death.
+There is a bloody knife on the floor.
+
+You ask everyone, they were gathered here for a party.
+
+Then, the lights went out, a scream.
+
+As far as everyone could tell, everyone was in that room at that moment.
+
+Bob
+Jerry
+June
+Jack
+
+There is blood on Jerry and June.
+Bob and Jack do not have any blood on their shirt.
+
+
+
