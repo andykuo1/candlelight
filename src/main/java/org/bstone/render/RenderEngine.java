@@ -1,7 +1,6 @@
 package org.bstone.render;
 
-import org.bstone.application.Application;
-import org.bstone.application.Engine;
+import org.bstone.application.kernel.Engine;
 import org.bstone.scheduler.Scheduler;
 import org.bstone.service.ServiceManager;
 import org.bstone.tick.TickCounter;
@@ -10,7 +9,7 @@ import org.bstone.window.Window;
 /**
  * An engine that handles the rendering of the application
  */
-public class RenderEngine extends Engine
+public class RenderEngine implements Engine
 {
 	private final Window window;
 
@@ -33,7 +32,7 @@ public class RenderEngine extends Engine
 	}
 
 	@Override
-	protected boolean onStart(Application app)
+	public boolean initialize()
 	{
 		this.frameCounter.reset();
 
@@ -45,7 +44,7 @@ public class RenderEngine extends Engine
 	}
 
 	@Override
-	protected void onUpdate(Application app)
+	public void update()
 	{
 		this.services.beginServices();
 
@@ -66,17 +65,12 @@ public class RenderEngine extends Engine
 
 		this.window.poll();
 
-		if (this.window.shouldCloseWindow())
-		{
-			app.stop();
-		}
-
 		this.scheduler.process();
 		this.services.endServices();
 	}
 
 	@Override
-	protected void onStop(Application app)
+	public void terminate()
 	{
 		this.services.beginServices();
 		this.scheduler.process();

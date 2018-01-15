@@ -5,6 +5,8 @@ import org.joml.Matrix4f;
 import org.qsilver.poma.Poma;
 
 /**
+ * A camera with a perspective projection. The forward vector is inverted, as by standard.
+ *
  * Created by Andy on 4/6/17.
  */
 public class PerspectiveCamera extends Camera

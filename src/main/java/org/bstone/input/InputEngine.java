@@ -1,7 +1,6 @@
 package org.bstone.input;
 
-import org.bstone.application.Application;
-import org.bstone.application.Engine;
+import org.bstone.application.kernel.Engine;
 import org.bstone.util.pair.Pair;
 import org.bstone.window.Window;
 
@@ -12,7 +11,7 @@ import java.util.Queue;
 /**
  * Created by Andy on 10/12/17.
  */
-public class InputEngine extends Engine
+public class InputEngine implements Engine
 {
 	private final Window window;
 
@@ -31,7 +30,7 @@ public class InputEngine extends Engine
 	}
 
 	@Override
-	protected boolean onStart(Application app)
+	public boolean initialize()
 	{
 		this.defaultContext = new InputContext(this);
 
@@ -43,7 +42,7 @@ public class InputEngine extends Engine
 	}
 
 	@Override
-	protected void onUpdate(Application app)
+	public void update()
 	{
 		//Usually called at the end of everything... but this is the same effect
 		this.keyboard.poll();
@@ -61,7 +60,7 @@ public class InputEngine extends Engine
 	}
 
 	@Override
-	protected void onStop(Application app)
+	public void terminate()
 	{
 		this.contexts.clear();
 

@@ -5,6 +5,8 @@ import org.joml.Matrix4f;
 import org.qsilver.poma.Poma;
 
 /**
+ * A camera with an orthographic projection.
+ *
  * Created by Andy on 5/22/17.
  */
 public class OrthographicCamera extends Camera

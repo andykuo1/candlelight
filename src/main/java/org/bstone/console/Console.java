@@ -1,11 +1,11 @@
 package org.bstone.console;
 
+import org.bstone.console.action.ActionLink;
+import org.bstone.console.action.ActionLinkEvent;
 import org.bstone.console.internal.ConsoleCloseException;
 import org.bstone.console.internal.InternalConsoleHandler;
-import org.bstone.console.program.ActionLink;
-import org.bstone.console.program.ActionLinkEvent;
-import org.bstone.console.program.ConsoleBoard;
-import org.bstone.console.program.ConsoleProgram;
+import org.bstone.console.state.ConsoleState;
+import org.bstone.console.state.ConsoleStateMachine;
 import org.bstone.console.style.StyleBuilder;
 import org.qsilver.ResourceLocation;
 
@@ -60,7 +60,7 @@ public class Console
 
 	private volatile boolean running = false;
 
-	private final ConsoleBoard board;
+	private final ConsoleStateMachine states;
 
 	public Console(String name)
 	{
@@ -142,19 +142,19 @@ public class Console
 		this.infoStyle = new StyleBuilder(this.defaultStyle).color(Color.LIGHT_GRAY).setFormatter(o -> "[" + o + "]");
 		this.linkStyle = new StyleBuilder(this.defaultStyle).color(Color.BLUE).underline(true);
 
-		this.board = new ConsoleBoard();
+		this.states = new ConsoleStateMachine();
 	}
 
 	//******************************
 	//  Console program management
 	//******************************
 
-	public void start(ConsoleProgram program)
+	public void start(ConsoleState program)
 	{
 		this.running = true;
 		try
 		{
-			this.board.next(this, program);
+			this.states.next(this, program);
 
 			while (this.running)
 			{
@@ -199,8 +199,20 @@ public class Console
 		this.focus();
 
 		String response;
-		while ((response = this.input.poll()) == null || !validator.apply(response))
+		while ((response = this.input.poll()) == null)
 		{
+			try
+			{
+				if (validator.apply(response))
+				{
+					break;
+				}
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+
 			this.handler.doLoopSleep(10);
 		}
 		return response;
@@ -219,6 +231,35 @@ public class Console
 
 			this.canActionEvent = false;
 			e.action.execute(e);
+		}
+		this.canActionEvent = prev;
+	}
+
+	public synchronized void waitForNewInputEvent(Function<String, Boolean> response)
+	{
+		this.input.flush();
+		this.focus();
+
+		boolean prev = this.canActionEvent;
+		this.canActionEvent = true;
+		{
+			String res;
+			ActionLinkEvent e;
+			while(true)
+			{
+				if((e = this.actionEvents.poll()) != null)
+				{
+					this.canActionEvent = false;
+					e.action.execute(e);
+					break;
+				}
+				else if((res = this.input.poll()) != null && response.apply(res))
+				{
+					break;
+				}
+
+				this.handler.doLoopSleep(100);
+			}
 		}
 		this.canActionEvent = prev;
 	}
@@ -319,9 +360,9 @@ public class Console
 		return this.command;
 	}
 
-	public ConsoleBoard board()
+	public ConsoleStateMachine states()
 	{
-		return this.board;
+		return this.states;
 	}
 
 	public boolean isRunning()

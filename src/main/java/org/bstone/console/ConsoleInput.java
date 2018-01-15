@@ -100,6 +100,7 @@ public class ConsoleInput
 	public void setCurrentText(String text)
 	{
 		this.field.setText(text);
+		this.field.grabFocus();
 	}
 
 	public String getCurrentText()

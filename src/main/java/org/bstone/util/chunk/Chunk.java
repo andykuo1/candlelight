@@ -1,6 +1,6 @@
 package org.bstone.util.chunk;
 
-import net.jimboi.test.suger.dungeon.DungeonChunk;
+import net.jimboi.test.tilemapper.suger.dungeon.DungeonChunk;
 
 import org.joml.Vector2f;
 import org.joml.Vector2i;

@@ -1,7 +1,6 @@
 package org.bstone.tick;
 
-import org.bstone.application.Application;
-import org.bstone.application.Engine;
+import org.bstone.application.kernel.Engine;
 import org.bstone.render.FrameHandler;
 import org.bstone.scheduler.Scheduler;
 import org.bstone.service.ServiceManager;
@@ -9,7 +8,7 @@ import org.bstone.service.ServiceManager;
 /**
  * An engine that handles fixed updating of the application
  */
-public class TickEngine extends Engine implements FrameHandler
+public class TickEngine implements Engine, FrameHandler
 {
 	private boolean dirty = true;
 
@@ -38,7 +37,7 @@ public class TickEngine extends Engine implements FrameHandler
 	}
 
 	@Override
-	protected boolean onStart(Application app)
+	public boolean initialize()
 	{
 		this.updateCounter.reset();
 
@@ -53,7 +52,7 @@ public class TickEngine extends Engine implements FrameHandler
 	}
 
 	@Override
-	protected void onUpdate(Application app)
+	public void update()
 	{
 		final double current = System.nanoTime();
 		final double elapsed = current - this.timePrevious;
@@ -81,7 +80,7 @@ public class TickEngine extends Engine implements FrameHandler
 	}
 
 	@Override
-	protected void onStop(Application app)
+	public void terminate()
 	{
 		this.services.beginServices();
 		this.scheduler.process();

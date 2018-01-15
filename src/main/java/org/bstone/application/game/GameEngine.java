@@ -104,6 +104,11 @@ public class GameEngine implements Framework, Game
 	@Override
 	public void onApplicationUpdate(Application app)
 	{
+		if (this.window.shouldCloseWindow())
+		{
+			app.stop();
+		}
+
 		this.assetManager.update();
 
 		if (System.currentTimeMillis() - this.timeCounter > 1000)

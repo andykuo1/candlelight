@@ -1,7 +1,7 @@
 package org.bstone.console;
 
+import org.bstone.console.action.ActionLink;
 import org.bstone.console.internal.InternalConsoleListener;
-import org.bstone.console.program.ActionLink;
 
 import java.util.StringTokenizer;
 

@@ -7,22 +7,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.function.BiFunction;
-import java.util.function.BiPredicate;
-import java.util.function.Function;
 
 /**
  * Created by Andy on 9/26/17.
  */
-public class AStar<N, C extends Comparable<C>>
+public abstract class AStar<N, C extends Comparable<C>>
 {
-	protected final BiFunction<C, C, C> fscore;
-	protected final BiFunction<N, N, C> gscore;
-	protected final BiFunction<N, N, C> hscore;
-	protected final Function<N, Iterable<N>> inext;
-
-	protected final BiPredicate<N, N> isend;
-
 	private final Queue<N> opened = new LinkedList<>();
 	private final Queue<N> closed = new LinkedList<>();
 
@@ -30,18 +20,11 @@ public class AStar<N, C extends Comparable<C>>
 	private final Map<N, C> gmap = new SmallMap<>();
 	private final Map<N, C> fmap = new SmallMap<>();
 
-	public AStar(BiFunction<C, C, C> fscore,
-	             BiFunction<N, N, C> gscore,
-	             BiFunction<N, N, C> hscore,
-	             Function<N, Iterable<N>> inext,
-	             BiPredicate<N, N> isend)
-	{
-		this.fscore = fscore;
-		this.gscore = gscore;
-		this.hscore = hscore;
-		this.inext = inext;
-		this.isend = isend;
-	}
+	protected abstract C getFScore(C value, C other);
+	protected abstract C getGScore(N node, N other);
+	protected abstract C getHScore(N node, N end);
+	protected abstract Iterable<N> getAvailableNodes(N node);
+	protected abstract boolean isEndNode(N node, N end);
 
 	public final List<N> search(N start, N end)
 	{
@@ -51,8 +34,8 @@ public class AStar<N, C extends Comparable<C>>
 			opened.add(start);
 
 			//Initialization...
-			gmap.put(start, gscore.apply(start, start));
-			fmap.put(start, hscore.apply(start, end));
+			gmap.put(start, getGScore(start, start));
+			fmap.put(start, getHScore(start, end));
 
 			N node = null;
 			while (!opened.isEmpty())
@@ -73,14 +56,14 @@ public class AStar<N, C extends Comparable<C>>
 				}
 
 				//If reached the end...
-				if (isend.test(node, end))
+				if (isEndNode(node, end))
 					break;
 
 				opened.remove(node);
 				closed.add(node);
 
 				//For all neighboring nodes...
-				for(N next : inext.apply(node))
+				for(N next : getAvailableNodes(node))
 				{
 					if (closed.contains(next)) continue;
 
@@ -90,7 +73,7 @@ public class AStar<N, C extends Comparable<C>>
 					}
 
 					//Possible g score for next node
-					C gnext = fscore.apply(gmap.get(node), gscore.apply(node, next));
+					C gnext = getFScore(gmap.get(node), getGScore(node, next));
 
 					//if already in opened set, then check if it is shorter...
 					C gcurr = gmap.get(next);
@@ -102,12 +85,12 @@ public class AStar<N, C extends Comparable<C>>
 					//Save the path...
 					parents.put(next, node);
 					gmap.put(next, gnext);
-					fmap.put(next, fscore.apply(gnext, hscore.apply(next, end)));
+					fmap.put(next, getFScore(gnext, getHScore(next, end)));
 				}
 			}
 
 			//Could not find a path...
-			if (node == null || !isend.test(node, end))
+			if (node == null || !isEndNode(node, end))
 			{
 				throw new IllegalArgumentException("cannot find path!");
 			}

@@ -7,6 +7,8 @@ import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 
 /**
+ * The viewport representation of the rendered space in a window. It contains the view, projection, and transformation matrices that describe the viewport in the world.
+ *
  * Created by Andy on 5/19/17.
  */
 public abstract class Camera

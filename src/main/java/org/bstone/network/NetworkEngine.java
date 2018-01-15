@@ -1,7 +1,6 @@
 package org.bstone.network;
 
-import org.bstone.application.Application;
-import org.bstone.application.Engine;
+import org.bstone.application.kernel.Engine;
 import org.bstone.network.handler.Server;
 import org.bstone.network.packet.PacketRegistry;
 import org.bstone.network.pipeline.PacketDecoder;
@@ -32,7 +31,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 /**
  * Created by Andy on 12/1/17.
  */
-public class NetworkEngine extends Engine
+public class NetworkEngine implements Engine
 {
 	private final List<ChannelFuture> endpoints = new ArrayList<>();
 	private final List<NetworkDispatcher> dispatchers = new ArrayList<>();
@@ -47,14 +46,14 @@ public class NetworkEngine extends Engine
 	}
 
 	@Override
-	protected boolean onStart(Application app)
+	public boolean initialize()
 	{
 		this.server.initialize();
 		return true;
 	}
 
 	@Override
-	protected void onUpdate(Application app)
+	public void update()
 	{
 		Iterator<NetworkDispatcher> iter = this.dispatchers.iterator();
 
@@ -81,7 +80,7 @@ public class NetworkEngine extends Engine
 	}
 
 	@Override
-	protected void onStop(Application app)
+	public void terminate()
 	{
 		this.server.terminate();
 		this.closeEndpoints();

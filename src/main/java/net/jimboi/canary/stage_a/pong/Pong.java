@@ -77,6 +77,6 @@ public class Pong extends Scene
 		APPLICATION.setFramework(ENGINE = new GameEngine());
 		ENGINE.getSceneManager().registerScene("init", Pong.class, PongRenderer.class);
 		ENGINE.getSceneManager().setNextScene("init");
-		APPLICATION.start();
+		APPLICATION.startOnCurrentThread();
 	}
 }

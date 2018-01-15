@@ -1,10 +1,10 @@
 package org.bstone.console.style;
 
 import org.bstone.console.Console;
+import org.bstone.console.action.ActionLink;
 import org.bstone.util.function.Procedure;
 
 import java.awt.Color;
-import java.util.function.Consumer;
 
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
@@ -58,7 +58,7 @@ public class ConsoleStyle
 		pane.setCaretColor(foreground);
 	}
 
-	public static void title(Console con, String title)
+	public static void title(Console con, Object title)
 	{
 		double d = con.writer().getTypeDelay();
 		con.writer().setTypeDelay(0);
@@ -66,30 +66,20 @@ public class ConsoleStyle
 		con.print(" ");
 		con.println(title);
 		divider(con, "-=");
-		con.writer().setTypeDelay(30);
+		con.writer().setTypeDelay(d * 20);
 		con.println(" ");
 		con.writer().setTypeDelay(d);
 	}
 
-	public static void button(Console con, String label, Consumer<Console> handler)
+	public static void button(Console con, Object label, Procedure handler)
 	{
-		button(con, label, () -> handler.accept(con));
+		button(con, label, e -> handler.apply());
 	}
 
-	public static void button(Console con, String label, Procedure handler)
+	public static void button(Console con, Object label, ActionLink handler)
 	{
 		con.print(" > ");
-		con.link(label, e -> handler.apply());
-		con.println();
-	}
-
-	public static void message(Console con, String msg)
-	{
-		con.println(msg);
-	}
-
-	public static void newline(Console con)
-	{
+		con.link(label, handler);
 		con.println();
 	}
 

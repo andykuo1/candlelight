@@ -1,4 +1,4 @@
-package org.bstone.console.program;
+package org.bstone.console.action;
 
 import org.bstone.console.Console;
 

@@ -53,6 +53,11 @@ public class ConsoleCommand
 				System.err.println("COMMAND USAGE: " + COMMAND_CHAR + cmd.toLowerCase() + " " + command.getUsage());
 			}
 		}
+		else
+		{
+			Toolkit.getDefaultToolkit().beep();
+			System.err.println("COMMAND ERROR: invalid command");
+		}
 	}
 
 	public Command getCommand(String command)

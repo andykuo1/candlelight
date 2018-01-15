@@ -1,4 +1,4 @@
-package org.bstone.console.program;
+package org.bstone.console.action;
 
 /**
  * Created by Andy on 12/3/17.

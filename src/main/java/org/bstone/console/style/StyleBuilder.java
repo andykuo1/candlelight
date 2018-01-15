@@ -1,7 +1,7 @@
 package org.bstone.console.style;
 
 import org.bstone.console.ConsoleWriter;
-import org.bstone.console.program.ActionLink;
+import org.bstone.console.action.ActionLink;
 
 import java.awt.Color;
 import java.util.function.Function;
