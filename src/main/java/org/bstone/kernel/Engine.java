@@ -1,4 +1,4 @@
-package org.bstone.application.kernel;
+package org.bstone.kernel;
 
 /**
  * Created by Andy on 1/15/18.

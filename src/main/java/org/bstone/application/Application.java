@@ -1,6 +1,6 @@
 package org.bstone.application;
 
-import org.bstone.application.kernel.Kernel;
+import org.bstone.kernel.Kernel;
 
 /**
  * Main entry point for any application.

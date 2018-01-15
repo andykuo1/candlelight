@@ -1,4 +1,4 @@
-package org.bstone.application.kernel;
+package org.bstone.kernel;
 
 import java.util.LinkedList;
 import java.util.List;

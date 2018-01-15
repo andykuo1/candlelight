@@ -1,6 +1,6 @@
 package org.bstone.render;
 
-import org.bstone.application.kernel.Engine;
+import org.bstone.kernel.Engine;
 import org.bstone.scheduler.Scheduler;
 import org.bstone.service.ServiceManager;
 import org.bstone.tick.TickCounter;
@@ -17,18 +17,21 @@ public class RenderEngine implements Engine
 	private final Scheduler scheduler;
 
 	private final TickCounter frameCounter;
-	private final FrameHandler frameHandler;
 
-	public RenderEngine(Window window, FrameHandler frameHandler)
+	private final boolean limitFrameRate;
+	private double prevFrameTime;
+	private boolean dirty = true;
+
+	public RenderEngine(Window window, boolean limitFrameRate)
 	{
 		this.window = window;
 
 		this.services = new ServiceManager<>(this);
 		this.scheduler = new Scheduler();
 
-		this.frameHandler = frameHandler;
-
 		this.frameCounter = new TickCounter();
+
+		this.limitFrameRate = limitFrameRate;
 	}
 
 	@Override
@@ -48,18 +51,19 @@ public class RenderEngine implements Engine
 	{
 		this.services.beginServices();
 
-		if (this.frameHandler.shouldRenderCurrentFrame())
+		if (this.dirty || !this.limitFrameRate)
 		{
 			this.window.clearScreenBuffer();
 			{
-				double delta = this.frameHandler.getElapsedFrameTime();
+				final double frameTime = System.nanoTime();
+				final double delta = frameTime - this.prevFrameTime;
+				this.prevFrameTime = frameTime;
 
 				this.services.forEach(renderService -> renderService.onRenderUpdate(this, delta));
 			}
 			this.window.updateScreenBuffer();
 
-			this.frameHandler.onFrameRendered();
-
+			this.dirty = false;
 			this.frameCounter.tick();
 		}
 
@@ -92,6 +96,11 @@ public class RenderEngine implements Engine
 	public final ServiceManager<RenderEngine, RenderService> getRenderServices()
 	{
 		return this.services;
+	}
+
+	public void markDirty()
+	{
+		this.dirty = true;
 	}
 
 	public final Scheduler getScheduler()

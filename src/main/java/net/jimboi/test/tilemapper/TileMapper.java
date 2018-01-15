@@ -1,7 +1,7 @@
 package net.jimboi.test.tilemapper;
 
-import org.bstone.input.InputEngine;
-import org.bstone.tick.TickEngine;
+import org.bstone.tick.TickHandler;
+import org.bstone.tick.Tickable;
 import org.bstone.window.Window;
 
 /**
@@ -11,6 +11,11 @@ public class TileMapper
 {
 	public void onStart()
 	{
+	}
+
+	public void onUpdate()
+	{
+
 	}
 
 	public void onRender()
@@ -33,12 +38,45 @@ public class TileMapper
 
 	}
 
+	private static boolean dirtyFrame = true;
+
 	public static void main(String[] args)
 	{
-		Window window = new Window();
-		TileMapper mapper = new TileMapper();
+		Window.initializeGLFW();
 
-		InputEngine inputs = new InputEngine(window);
-		TickEngine loop = new TickEngine(60, false);
+		Window window = new Window().setSize(640, 480).setTitle("TileMapper");
+		TileMapper mapper = new TileMapper();
+		TickHandler tick = new TickHandler(60, new Tickable()
+		{
+			@Override
+			public void onFixedUpdate()
+			{
+				mapper.onUpdate();
+				dirtyFrame = true;
+			}
+		});
+		window.show();
+
+		tick.initialize();
+		while(true)
+		{
+			window.clearScreenBuffer();
+			tick.update();
+			if (dirtyFrame)
+			{
+				mapper.onRender();
+				dirtyFrame = false;
+			}
+			window.updateScreenBuffer();
+			window.poll();
+
+			if (window.shouldWindowClose())
+			{
+				break;
+			}
+		}
+		tick.terminate();
+
+		Window.terminateGLFW();
 	}
 }

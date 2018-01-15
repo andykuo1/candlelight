@@ -1,18 +1,14 @@
 package org.bstone.tick;
 
-import org.bstone.application.kernel.Engine;
-import org.bstone.render.FrameHandler;
+import org.bstone.kernel.Engine;
 import org.bstone.scheduler.Scheduler;
 import org.bstone.service.ServiceManager;
 
 /**
  * An engine that handles fixed updating of the application
  */
-public class TickEngine implements Engine, FrameHandler
+public class TickEngine implements Engine
 {
-	private boolean dirty = true;
-
-	private final boolean limitFrameRate;
 	private final double timeStep;//nanoseconds per tick
 
 	private double timePrevious;
@@ -25,10 +21,9 @@ public class TickEngine implements Engine, FrameHandler
 
 	private final TickCounter updateCounter;
 
-	public TickEngine(int ticksPerSecond, boolean limitFrameRate)
+	public TickEngine(int ticksPerSecond)
 	{
 		this.timeStep = 1000000000D / ticksPerSecond;
-		this.limitFrameRate = limitFrameRate;
 
 		this.services = new ServiceManager<>(this);
 		this.scheduler = new Scheduler();
@@ -69,7 +64,6 @@ public class TickEngine implements Engine, FrameHandler
 
 			this.timeLatency -= this.timeStep;
 			this.updateCounter.tick();
-			this.dirty = true;
 		}
 
 		this.services.forEach(TickService::onLateUpdate);
@@ -94,31 +88,13 @@ public class TickEngine implements Engine, FrameHandler
 		return this.updateCounter;
 	}
 
-	@Override
-	public boolean shouldRenderCurrentFrame()
-	{
-		return this.dirty || !this.limitFrameRate;
-	}
-
-	@Override
-	public double getElapsedFrameTime()
+	public double getElapsedTickTime()
 	{
 		return this.timeDelta;
-	}
-
-	@Override
-	public void onFrameRendered()
-	{
-		this.dirty = false;
 	}
 
 	public final ServiceManager<TickEngine, TickService> getTickServices()
 	{
 		return this.services;
-	}
-
-	public final Scheduler getScheduler()
-	{
-		return this.scheduler;
 	}
 }

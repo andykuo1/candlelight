@@ -1,6 +1,6 @@
 package org.bstone.input;
 
-import org.bstone.application.kernel.Engine;
+import org.bstone.kernel.Engine;
 import org.bstone.util.pair.Pair;
 import org.bstone.window.Window;
 

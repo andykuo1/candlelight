@@ -1,6 +1,6 @@
 package org.bstone.window;
 
-import org.bstone.application.kernel.Engine;
+import org.bstone.kernel.Engine;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;

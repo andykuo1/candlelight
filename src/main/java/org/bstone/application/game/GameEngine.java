@@ -16,6 +16,7 @@ import org.bstone.resource.TextureAtlasLoader;
 import org.bstone.resource.TextureLoader;
 import org.bstone.scene.SceneManager;
 import org.bstone.tick.TickEngine;
+import org.bstone.tick.TickService;
 import org.bstone.util.parser.json.JSONFormatParser;
 import org.bstone.window.Window;
 import org.lwjgl.opengl.GL20;
@@ -46,8 +47,8 @@ public class GameEngine implements Framework, Game
 	{
 		this.window = new Window();
 		this.inputEngine = new InputEngine(this.window);
-		this.tickEngine = new TickEngine(60, true);
-		this.renderEngine = new RenderEngine(this.window, this.tickEngine);
+		this.tickEngine = new TickEngine(60);
+		this.renderEngine = new RenderEngine(this.window, true);
 		this.assetManager = new AssetManager();
 		this.sceneManager = new SceneManager(this.renderEngine.getRenderServices());
 	}
@@ -73,6 +74,38 @@ public class GameEngine implements Framework, Game
 
 		this.renderEngine.getRenderServices().startService("framework", new Game.Render(this));
 		this.tickEngine.getTickServices().startService("framework", new Game.Tick(this));
+		this.tickEngine.getTickServices().startService("frametick", new TickService()
+		{
+			@Override
+			protected void onFirstUpdate(TickEngine tickEngine)
+			{
+
+			}
+
+			@Override
+			protected void onLastUpdate(TickEngine tickEngine)
+			{
+
+			}
+
+			@Override
+			protected void onEarlyUpdate()
+			{
+
+			}
+
+			@Override
+			protected void onFixedUpdate()
+			{
+				GameEngine.this.renderEngine.markDirty();
+			}
+
+			@Override
+			protected void onLateUpdate()
+			{
+
+			}
+		});
 
 		app.startEngine(this.inputEngine);
 

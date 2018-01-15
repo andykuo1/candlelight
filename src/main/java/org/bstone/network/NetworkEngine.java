@@ -1,6 +1,6 @@
 package org.bstone.network;
 
-import org.bstone.application.kernel.Engine;
+import org.bstone.kernel.Engine;
 import org.bstone.network.handler.Server;
 import org.bstone.network.packet.PacketRegistry;
 import org.bstone.network.pipeline.PacketDecoder;
