@@ -5,5 +5,5 @@ package org.bstone.tick;
  */
 public interface Tickable
 {
-	void onFixedUpdate();
+	void tick();
 }

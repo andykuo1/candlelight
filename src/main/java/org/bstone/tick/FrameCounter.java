@@ -3,29 +3,23 @@ package org.bstone.tick;
 /**
  * Created by Andy on 1/15/18.
  */
-public class FrameCounter extends TickService
+public class FrameCounter
 {
-	long timeCounter = 0;
-	@Override
-	protected void onFirstUpdate(TickEngine tickEngine)
-	{
+	private final TickCounter updateCounter;
+	private final TickCounter frameCounter;
+	private long timeCounter = 0;
 
+	public FrameCounter()
+	{
+		this.updateCounter = new TickCounter();
+		this.frameCounter = new TickCounter();
+
+		this.timeCounter = System.currentTimeMillis();
+		this.updateCounter.reset();
+		this.frameCounter.reset();
 	}
 
-	@Override
-	protected void onLastUpdate(TickEngine tickEngine)
-	{
-
-	}
-
-	@Override
-	protected void onEarlyUpdate()
-	{
-
-	}
-
-	@Override
-	protected void onFixedUpdate()
+	public void poll()
 	{
 		if (System.currentTimeMillis() - this.timeCounter > 1000)
 		{
@@ -33,17 +27,31 @@ public class FrameCounter extends TickService
 
 			System.out.print("[");
 			{
-				//System.out.print("UPS: " + this.tickEngine.getUpdateCounter().get());
+				System.out.print("UPS: " + this.updateCounter.get());
 				System.out.print(" || ");
-				//System.out.print("FPS: " + this.renderEngine.getFrameCounter().get());
+				System.out.print("FPS: " + this.frameCounter.get());
 			}
 			System.out.println("]");
 		}
 	}
 
-	@Override
-	protected void onLateUpdate()
+	public void tick()
 	{
+		this.updateCounter.tick();
+	}
 
+	public void frame()
+	{
+		this.frameCounter.tick();
+	}
+
+	public final TickCounter getUpdateCounter()
+	{
+		return this.updateCounter;
+	}
+
+	public final TickCounter getFrameCounter()
+	{
+		return this.frameCounter;
 	}
 }

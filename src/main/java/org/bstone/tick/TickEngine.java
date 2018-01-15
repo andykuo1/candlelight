@@ -1,7 +1,6 @@
 package org.bstone.tick;
 
 import org.bstone.kernel.Engine;
-import org.bstone.service.ServiceManager;
 
 /**
  * An engine that handles fixed updating of the application
@@ -15,29 +14,27 @@ public class TickEngine implements Engine
 
 	private double timeDelta;
 
-	private final ServiceManager<TickEngine, TickService> services;
-
-	private final TickCounter updateCounter;
+	private Tickable tickable;
 
 	public TickEngine(int ticksPerSecond)
 	{
 		this.timeStep = 1000000000D / ticksPerSecond;
+	}
 
-		this.services = new ServiceManager<>(this);
-
-		this.updateCounter = new TickCounter();
+	public TickEngine setTickable(Tickable tickable)
+	{
+		this.tickable = tickable;
+		return this;
 	}
 
 	@Override
 	public boolean initialize()
 	{
-		this.updateCounter.reset();
+		if (this.tickable == null)
+			throw new IllegalStateException("missing tickable");
 
 		this.timePrevious = System.nanoTime();
 		this.timeLatency = 0;
-
-		this.services.beginServices();
-		this.services.endServices();
 
 		return true;
 	}
@@ -51,19 +48,11 @@ public class TickEngine implements Engine
 		this.timePrevious = current;
 		this.timeLatency += elapsed;
 
-		this.services.beginServices();
-		this.services.forEach(TickService::onEarlyUpdate);
-
 		while(this.timeLatency >= this.timeStep)
 		{
-			this.services.forEach(TickService::onFixedUpdate);
-
+			this.tickable.tick();
 			this.timeLatency -= this.timeStep;
-			this.updateCounter.tick();
 		}
-
-		this.services.forEach(TickService::onLateUpdate);
-		this.services.endServices();
 
 		this.timeDelta = this.timeLatency / this.timeStep;
 	}
@@ -71,15 +60,6 @@ public class TickEngine implements Engine
 	@Override
 	public void terminate()
 	{
-		this.services.beginServices();
-		this.services.endServices();
-
-		this.services.destroy();
-	}
-
-	public final TickCounter getUpdateCounter()
-	{
-		return this.updateCounter;
 	}
 
 	public double getElapsedTickTime()
@@ -87,8 +67,8 @@ public class TickEngine implements Engine
 		return this.timeDelta;
 	}
 
-	public final ServiceManager<TickEngine, TickService> getTickServices()
+	public final Tickable getTickable()
 	{
-		return this.services;
+		return this.tickable;
 	}
 }

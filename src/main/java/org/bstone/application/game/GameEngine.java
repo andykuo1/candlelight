@@ -8,6 +8,7 @@ import org.bstone.input.InputEngine;
 import org.bstone.json.JSONObject;
 import org.bstone.json.JSONString;
 import org.bstone.render.RenderEngine;
+import org.bstone.render.RenderService;
 import org.bstone.resource.BitmapLoader;
 import org.bstone.resource.MeshLoader;
 import org.bstone.resource.ProgramLoader;
@@ -15,8 +16,10 @@ import org.bstone.resource.ShaderLoader;
 import org.bstone.resource.TextureAtlasLoader;
 import org.bstone.resource.TextureLoader;
 import org.bstone.scene.SceneManager;
+import org.bstone.tick.FrameCounter;
 import org.bstone.tick.TickEngine;
 import org.bstone.tick.TickService;
+import org.bstone.tick.TickServiceManager;
 import org.bstone.util.parser.json.JSONFormatParser;
 import org.bstone.window.Window;
 import org.lwjgl.opengl.GL20;
@@ -41,16 +44,20 @@ public class GameEngine implements Framework, Game
 	protected final AssetManager assetManager;
 	protected final SceneManager sceneManager;
 
-	private double timeCounter;
+	private FrameCounter frameCounter;
 
 	public GameEngine()
 	{
 		this.window = new Window();
 		this.inputEngine = new InputEngine(this.window);
 		this.tickEngine = new TickEngine(60);
-		this.renderEngine = new RenderEngine(this.window, true);
+		this.tickEngine.setTickable(new TickServiceManager(this.tickEngine));
+
+		this.renderEngine = new RenderEngine(this.window, 60, true);
 		this.assetManager = new AssetManager();
 		this.sceneManager = new SceneManager(this.renderEngine.getRenderServices());
+
+		this.frameCounter = new FrameCounter();
 	}
 
 	@Override
@@ -73,8 +80,28 @@ public class GameEngine implements Framework, Game
 		this.assetManager.registerLoader("mesh", new MeshLoader());
 
 		this.renderEngine.getRenderServices().startService("framework", new Game.Render(this));
-		this.tickEngine.getTickServices().startService("framework", new Game.Tick(this));
-		this.tickEngine.getTickServices().startService("frametick", new TickService()
+		this.renderEngine.getRenderServices().startService("frame", new RenderService()
+		{
+			@Override
+			protected void onRenderLoad(RenderEngine renderEngine)
+			{
+
+			}
+
+			@Override
+			protected void onRenderUnload(RenderEngine renderEngine)
+			{
+
+			}
+
+			@Override
+			protected void onRenderUpdate(RenderEngine renderEngine, double delta)
+			{
+				GameEngine.this.frameCounter.frame();
+			}
+		});
+		((TickServiceManager) this.tickEngine.getTickable()).startService("framework", new Game.Tick(this));
+		((TickServiceManager) this.tickEngine.getTickable()).startService("tick", new TickService()
 		{
 			@Override
 			protected void onFirstUpdate(TickEngine tickEngine)
@@ -97,6 +124,7 @@ public class GameEngine implements Framework, Game
 			@Override
 			protected void onFixedUpdate()
 			{
+				GameEngine.this.frameCounter.tick();
 				GameEngine.this.renderEngine.markDirty();
 			}
 
@@ -114,14 +142,13 @@ public class GameEngine implements Framework, Game
 
 		app.startEngine(this.renderEngine);
 		app.startEngine(this.tickEngine);
-
-		this.timeCounter = System.currentTimeMillis();
 	}
 
 	@Override
 	public void onApplicationStop(Application app)
 	{
-		this.tickEngine.getTickServices().stopService("framework");
+		((TickServiceManager) this.tickEngine.getTickable()).stopService("framework");
+		((TickServiceManager) this.tickEngine.getTickable()).stopService("frametick");
 		this.renderEngine.getRenderServices().stopService("framework");
 
 		this.sceneManager.destroy();
@@ -143,19 +170,7 @@ public class GameEngine implements Framework, Game
 		}
 
 		this.assetManager.update();
-
-		if (System.currentTimeMillis() - this.timeCounter > 1000)
-		{
-			this.timeCounter += 1000;
-
-			System.out.print("[");
-			{
-				System.out.print("UPS: " + this.tickEngine.getUpdateCounter().get());
-				System.out.print(" || ");
-				System.out.print("FPS: " + this.renderEngine.getFrameCounter().get());
-			}
-			System.out.println("]");
-		}
+		this.frameCounter.poll();
 	}
 
 	@Override
