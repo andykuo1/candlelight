@@ -1,0 +1,85 @@
+100: Criminal enterprise
+    - Committed for Material Gain (money, goods, territory, favors)
+101: Contract murder (third party)
+    - Absence of relationship
+    - Hitman
+    - Premeditation
+102: Gang-motivated murder
+    - organizations of anitsocial behavior
+    - of rival gangs
+103: Criminal competition
+    - Over control of territory
+104: Kidnap murder
+    - abducted for ransom
+    - negotiations
+105: Product tampering
+106: Drug murder
+107: Insurance-related death
+107.01: Individual profit
+107.02: Commercial profit
+108: Felony murder
+108.01: Indiscriminate murder
+108.02: Situational murder
+120: Personal cause homicide
+121: Erotomania-motivated murder
+122: Domestic homicide
+122.01: Spontaneous domestic homicide
+122.02: Staged domestic homicide
+122.03: Neonaticide
+123: Argument/conflict murder
+123.01: Argument murder
+123.02: Conflict murder
+124: Authority murder
+125: Revenge
+126: Nonspecific motive murder
+127: Extremist homicide
+127.01: Political
+127.02: Religious
+127.03: Socioeconomic
+128: “Mercy/hero” homicide
+128.01: “Mercy” homicide
+128.02: “Hero” homicide
+129: Hostage murder
+130: Sexual homicide
+131: Organized
+132: Disorganized
+133: Mixed
+134: Sadistic murder
+135: Elder female sexual homicide
+140: Group cause homicide
+141: Cult
+142: Extremist homicide
+142.01: Political
+142.02: Religious
+143: Group excitement
+
+
+
+
+
+To keep a secret
+Revenge
+Frustration/hate
+Money/Greed
+Sex/Jealousy
+Property Dispute
+Personal Vendetta
+Political
+Class Conflict
+Narcotics
+Other Felonies
+Urge to Protect
+
+murder for gain
+revenge
+elimination
+jealousy
+lust of killing
+conviction
+
+the accidental (the drunken driver involved in a fatal accident)
+the situational (he steals and maybe murders to get food)
+the irresponsible (the idiot)
+the neurotic (he murders because of a covert hatred of his father)
+the psychoid (unfathomable and unpredictable)
+the professional

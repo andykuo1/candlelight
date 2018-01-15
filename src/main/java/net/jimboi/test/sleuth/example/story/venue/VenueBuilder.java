@@ -67,22 +67,45 @@ public final class VenueBuilder
 
 		Venue venue = new Venue(this.name, rooms, entrances);
 
-		AStar<Room, Integer> astar = new AStar<Room, Integer>(
-				(integer, integer2) -> integer + integer2,
-				(room, room2) -> room2.equals(room) ? 0 : 1,
-				(room, goal) -> 1,
-				room -> {
-					List<Room> list = new ArrayList<>();
-					if (room == null) return list;
+		AStar<Room, Integer> astar = new AStar<Room, Integer>()
+		{
+			@Override
+			protected Integer getFScore(Integer value, Integer other)
+			{
+				return value + other;
+			}
 
-					for(Entrance entrance : venue.getAvailableEntrances(room))
-					{
-						list.add(entrance.getDestination(room));
-					}
-					return list;
-				},
-				(room, goal) -> goal.equals(room)
-		);
+			@Override
+			protected Integer getGScore(Room node, Room other)
+			{
+				return other.equals(node) ? 0 : 1;
+			}
+
+			@Override
+			protected Integer getHScore(Room node, Room end)
+			{
+				return 1;
+			}
+
+			@Override
+			protected Iterable<Room> getAvailableNodes(Room node)
+			{
+				List<Room> list = new ArrayList<>();
+				if (node == null) return list;
+
+				for(Entrance entrance : venue.getAvailableEntrances(node))
+				{
+					list.add(entrance.getDestination(node));
+				}
+				return list;
+			}
+
+			@Override
+			protected boolean isEndNode(Room node, Room end)
+			{
+				return end.equals(node);
+			}
+		};
 
 		Room outside = venue.getOutside();
 		for(Room other : venue.getRooms())

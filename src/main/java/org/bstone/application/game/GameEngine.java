@@ -61,7 +61,7 @@ public class GameEngine implements Framework, Game
 	@Override
 	public void onApplicationStart(Application app)
 	{
-		this.window.create("Application", 640, 480);
+		this.window.setSize(640, 480).setTitle("Application").show();
 
 		this.assetManager.registerLoader("bitmap", new BitmapLoader());
 		this.assetManager.registerLoader("texture", new TextureLoader(this.assetManager));
@@ -104,7 +104,7 @@ public class GameEngine implements Framework, Game
 	@Override
 	public void onApplicationUpdate(Application app)
 	{
-		if (this.window.shouldCloseWindow())
+		if (this.window.shouldWindowClose())
 		{
 			app.stop();
 		}

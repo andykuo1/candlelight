@@ -45,7 +45,7 @@ public class SceneTest extends Scene
 		final InputEngine inputEngine = Lantern.getLantern().getInputEngine();
 		this.input = Lantern.getLantern().getInputEngine().getDefaultContext();
 
-		this.screenSpace = new ScreenSpace(Lantern.getLantern().getWindow().getCurrentViewPort(),
+		this.screenSpace = new ScreenSpace(Lantern.getLantern().getWindow().getView().getCurrentViewPort(),
 				this.camera, Direction.CENTER, Direction.NORTHEAST);
 
 		this.input.registerEvent("mousex",

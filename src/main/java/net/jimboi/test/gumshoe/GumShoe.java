@@ -32,7 +32,6 @@ public class GumShoe implements ConsoleState
 	private static String[] PERSONALITY;
 	private static String[] SECRETS_MINOR;
 	private static String[] SECRETS_MAJOR;
-	private static String[] GOALS;
 
 	@Override
 	public void render(Console con)
@@ -112,6 +111,7 @@ public class GumShoe implements ConsoleState
 			suspect.set("personality", personalities);
 		}
 
+		/*
 		//Generate Goals
 		for(Body suspect : suspects)
 		{
@@ -122,6 +122,7 @@ public class GumShoe implements ConsoleState
 			}
 			suspect.set("goals", goals);
 		}
+		*/
 
 		//Generate Secrets
 		for(Body suspect : suspects)
@@ -225,7 +226,7 @@ public class GumShoe implements ConsoleState
 		PERSONALITY = loadFromFile("personality.txt");
 		SECRETS_MAJOR = loadFromFile("secrets_major.txt");
 		SECRETS_MINOR = loadFromFile("secrets_minor.txt");
-		GOALS = loadFromFile("goals.txt");
+		//GOALS = loadFromFile("goals.txt");
 
 		CONSOLE = new SimpleConsole(480, 640, new GumShoe());
 		Console.setDarkMode(CONSOLE);

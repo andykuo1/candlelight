@@ -35,6 +35,11 @@ public class Time implements Comparable<Time>
 		this(0, 0, 0, 0, hours);
 	}
 
+	public Time()
+	{
+		this(0);
+	}
+
 	public Time(Time time)
 	{
 		this.set(time);
@@ -66,6 +71,11 @@ public class Time implements Comparable<Time>
 		return this;
 	}
 
+	public Time set(int hours)
+	{
+		return this.set(0, 0, 0, 0, hours);
+	}
+
 	public Time set(Time time)
 	{
 		this.year = time.year;
@@ -74,6 +84,11 @@ public class Time implements Comparable<Time>
 		this.day = time.day;
 		this.hour = time.hour;
 		return this;
+	}
+
+	public Time add(int hours, Time dst)
+	{
+		return dst.set(0, 0, 0, 0, this.getTotalHours() + hours);
 	}
 
 	public Time add(Time offset, Time dst)
@@ -132,17 +147,17 @@ public class Time implements Comparable<Time>
 	@Override
 	public boolean equals(Object obj)
 	{
-		Time o = (Time) obj;
-		return this.year == o.year &&
-				this.season == o.season &&
-				this.week == o.week &&
-				this.day == o.day &&
-				this.hour == o.hour;
-	}
+		if (obj instanceof Time)
+		{
+			Time o = (Time) obj;
+			return this.year == o.year &&
+					this.season == o.season &&
+					this.week == o.week &&
+					this.day == o.day &&
+					this.hour == o.hour;
+		}
 
-	public String getCanonicalString()
-	{
-		return "HOUR " + this.hour + " OF " + this.day + " IN WEEK " + this.week + " OF " + this.season + " IN YEAR " + this.year;
+		return false;
 	}
 
 	@Override

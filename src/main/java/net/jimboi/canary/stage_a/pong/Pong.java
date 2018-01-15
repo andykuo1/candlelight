@@ -29,8 +29,8 @@ public class Pong extends Scene
 	@Override
 	protected void onSceneCreate(SceneManager sceneManager)
 	{
-		ENGINE.getWindow().setWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-		ENGINE.getWindow().setWindowPositionCentered();
+		ENGINE.getWindow().setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		ENGINE.getWindow().makeWindowCentered();
 
 		final InputEngine inputs = ENGINE.getInputEngine();
 

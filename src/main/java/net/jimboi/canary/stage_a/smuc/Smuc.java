@@ -37,7 +37,7 @@ public class Smuc extends GameEngine
 	@Override
 	public void onRenderLoad(RenderEngine renderEngine)
 	{
-		renderEngine.getWindow().setWindowSize(480, 640);
+		renderEngine.getWindow().setSize(480, 640);
 
 		this.assetManager.registerResourceLocation("program.simple",
 				new ResourceLocation("gordo:program_simple.res"));
@@ -59,14 +59,14 @@ public class Smuc extends GameEngine
 		this.input.registerEvent("mousey", this.inputEngine.getMouse().getCursorY()::getRange);
 		this.input.registerEvent("mouseleft", this.inputEngine.getMouse().getButton(0)::getAction);
 
-		this.console = new Console(this.window.getCurrentViewPort(),
+		this.console = new Console(this.window.getView().getCurrentViewPort(),
 				this.assetManager,
 				this.assetManager.getAsset("texture_atlas", "font"),
 				this.assetManager.getAsset("program", "simple"));
 
 		this.screenManager = new ScreenManager();
 
-		this.frame = new GuiFrame(this.window.getCurrentViewPort());
+		this.frame = new GuiFrame(this.window.getView().getCurrentViewPort());
 		this.panel = new GuiPanel();
 		panel.setOffset(10, 10);
 		panel.setSize(100, 50);

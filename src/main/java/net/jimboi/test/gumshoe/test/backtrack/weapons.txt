@@ -1,0 +1,5 @@
+Pistol
+Dagger
+Lead Pipe
+Candlestick
+Rope

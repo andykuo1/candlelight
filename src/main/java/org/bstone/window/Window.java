@@ -1,7 +1,7 @@
 package org.bstone.window;
 
 import org.bstone.util.listener.Listenable;
-import org.bstone.window.view.ViewPort;
+import org.bstone.window.view.View;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
@@ -13,23 +13,13 @@ import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
 import java.nio.IntBuffer;
-import java.util.Stack;
 
 /**
  * Created by Andy on 4/6/17.
  */
 public class Window
 {
-	public final Listenable onWindowSizeChanged = new Listenable(this);
-	public final Listenable onViewPortChanged = new Listenable(this);
-
-	public static void setCurrentWindowContext(Window window)
-	{
-		GLFW.glfwMakeContextCurrent(window.handle);
-	}
-
 	private static boolean initGLFW = false;
-
 	public static void initializeGLFW()
 	{
 		if (initGLFW)
@@ -74,67 +64,111 @@ public class Window
 		GLFW.glfwSetErrorCallback(null).free();
 	}
 
-	private final Stack<ViewPort> viewports = new Stack<>();
-	private final ViewPort defaultViewPort = new ViewPort(0, 0, this.width, this.height){
-		@Override
-		public void setWidth(int width)
-		{
-			throw new UnsupportedOperationException("Cannot change default viewport size!");
-		}
+	public static void setCurrentWindowContext(Window window)
+	{
+		GLFW.glfwMakeContextCurrent(window.handle);
+	}
 
-		@Override
-		public void setHeight(int height)
-		{
-			throw new UnsupportedOperationException("Cannot change default viewport size!");
-		}
+	public final Listenable onWindowSizeChanged = new Listenable(this);
+	public final Listenable onWindowPosChanged = new Listenable(this);
 
-		@Override
-		public int getX()
-		{
-			return 0;
-		}
+	private String title = "Window";
+	private int width = 640;
+	private int height = 480;
+	private int x;
+	private int y;
 
-		@Override
-		public int getY()
-		{
-			return 0;
-		}
-
-		@Override
-		public int getWidth()
-		{
-			return Window.this.width;
-		}
-
-		@Override
-		public int getHeight()
-		{
-			return Window.this.height;
-		}
-	};
-
-	private int width;
-	private int height;
+	private View view;
 
 	private long handle;
 
-	public void create(String title, int width, int height)
+	public Window()
 	{
-		this.width = width;
-		this.height = height;
+		this.handle = -1;
+	}
+
+	public Window setResizeable(boolean resizeable)
+	{
+		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE,
+				resizeable ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
+		return this;
+	}
+
+	public Window setPosition(int x, int y)
+	{
+		if (this.handle == -1)
+		{
+			this.x = x;
+			this.y = y;
+		}
+		else
+		{
+			GLFW.glfwSetWindowPos(this.handle, x, y);
+		}
+		return this;
+	}
+
+	public Window setSize(int width, int height)
+	{
+		if (this.handle == -1)
+		{
+			this.width = width;
+			this.height = height;
+		}
+		else
+		{
+			GLFW.glfwSetWindowSize(this.handle, width, height);
+		}
+		return this;
+	}
+
+	public Window setTitle(String title)
+	{
+		if (this.handle == -1)
+		{
+			this.title = title;
+		}
+		else
+		{
+			GLFW.glfwSetWindowTitle(this.handle, this.title = title);
+		}
+		return this;
+	}
+
+	public void show()
+	{
+		if (this.handle == -1)
+		{
+			this.createWindow();
+		}
+
+		GLFW.glfwShowWindow(this.handle);
+		GLFW.glfwFocusWindow(this.handle);
+	}
+
+	public void hide()
+	{
+		if (this.handle == -1)
+			throw new IllegalStateException("window not yet initialized!");
+
+		GLFW.glfwHideWindow(this.handle);
+	}
+
+	protected void createWindow()
+	{
+		// the window will stay hidden after creation
+		GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
 
 		// Configure GLFW
-		GLFW.glfwDefaultWindowHints(); // optional, the current window hints are already the default
-		GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE); // the window will stay hidden after creation
-		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_TRUE); // the window will be resizable
-
 		GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, 3);
 		GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, 2);
 		GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_FORWARD_COMPAT, GLFW.GLFW_TRUE);
-		GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
+		GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE,
+				GLFW.GLFW_OPENGL_CORE_PROFILE);
 
 		// Create the window
-		this.handle = GLFW.glfwCreateWindow(this.width, this.height, title, MemoryUtil.NULL, MemoryUtil.NULL);
+		this.handle = GLFW.glfwCreateWindow(this.width, this.height, this.title,
+				MemoryUtil.NULL, MemoryUtil.NULL);
 		if (this.handle == MemoryUtil.NULL)
 		{
 			throw new RuntimeException("Failed to create the GLFW window");
@@ -155,19 +189,24 @@ public class Window
 			});
 		});
 
-		this.setWindowPositionCentered();
+		//Setup a position callback
+		GLFW.glfwSetWindowPosCallback(this.handle, (window, xpos, ypos) -> {
+			int prevX = this.x;
+			int prevY = this.y;
+			this.x = xpos;
+			this.y = ypos;
+			this.onWindowPosChanged.notifyListeners(new int[]{
+					this.x, this.y, prevX, prevY
+			});
+		});
+
+		this.makeWindowCentered();
 
 		// Make the OpenGL context current
 		GLFW.glfwMakeContextCurrent(this.handle);
 
 		// Enable v-sync
 		GLFW.glfwSwapInterval(1);
-
-		// Make the window visible
-		GLFW.glfwShowWindow(this.handle);
-
-		//Focus the window
-		GLFW.glfwFocusWindow(this.handle);
 
 		// This line is critical for LWJGL's interoperation with GLFW's
 		// OpenGL context, or any context that is managed externally.
@@ -185,7 +224,33 @@ public class Window
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 
 		//Set current viewport
-		this.setCurrentViewPort(this.defaultViewPort);
+		this.view = new View(this);
+	}
+
+	public void makeWindowCentered()
+	{
+		// Get the thread stack and push a new frame
+		try (MemoryStack stack = MemoryStack.stackPush())
+		{
+			IntBuffer pWidth = stack.mallocInt(1); // int*
+			IntBuffer pHeight = stack.mallocInt(1); // int*
+
+			// Get the window size passed to glfwCreateWindow
+			GLFW.glfwGetWindowSize(this.handle, pWidth, pHeight);
+
+			this.width = pWidth.get(0);
+			this.height = pHeight.get(0);
+
+			// Get the resolution of the primary monitor
+			GLFWVidMode vidmode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+
+			// Center the window
+			GLFW.glfwSetWindowPos(
+					this.handle,
+					this.x = ((vidmode.width() - this.width) / 2),
+					this.y = ((vidmode.height() - this.height) / 2)
+			);
+		} // the stack frame is popped automatically
 	}
 
 	public void clearScreenBuffer()
@@ -210,124 +275,29 @@ public class Window
 		GLFW.glfwDestroyWindow(this.handle);
 	}
 
-	public void setWindowTitle(String title)
-	{
-		GLFW.glfwSetWindowTitle(this.handle, title);
-	}
-
-	public void setWindowSize(int width, int height)
-	{
-		GLFW.glfwSetWindowSize(this.handle, width, height);
-	}
-
-	public void setWindowPosition(int x, int y)
-	{
-		GLFW.glfwSetWindowPos(this.handle, x, y);
-	}
-
-	public void setWindowPositionCentered()
-	{
-		// Get the thread stack and push a new frame
-		try (MemoryStack stack = MemoryStack.stackPush())
-		{
-			IntBuffer pWidth = stack.mallocInt(1); // int*
-			IntBuffer pHeight = stack.mallocInt(1); // int*
-
-			// Get the window size passed to glfwCreateWindow
-			GLFW.glfwGetWindowSize(this.handle, pWidth, pHeight);
-
-			this.width = pWidth.get(0);
-			this.height = pHeight.get(0);
-
-			// Get the resolution of the primary monitor
-			GLFWVidMode vidmode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
-
-			// Center the window
-			GLFW.glfwSetWindowPos(
-					this.handle,
-					(vidmode.width() - this.width) / 2,
-					(vidmode.height() - this.height) / 2
-			);
-		} // the stack frame is popped automatically
-	}
-
-	public boolean shouldCloseWindow()
+	public boolean shouldWindowClose()
 	{
 		return GLFW.glfwWindowShouldClose(this.handle);
 	}
 
-	public ViewPort getCurrentViewPort()
+	public View getView()
 	{
-		return this.viewports.peek();
+		return this.view;
 	}
 
-	public void setCurrentViewPort(ViewPort viewport)
+	public String getTitle()
 	{
-		ViewPort prev = !this.viewports.empty() ? this.viewports.peek() : null;
-		this.viewports.push(viewport);
-
-		this.updateViewPort(viewport);
-
-		this.onViewPortChanged.notifyListeners(new Object[]{
-				viewport, prev
-		});
+		return this.title;
 	}
 
-	public ViewPort removeCurrentViewPort()
+	public int getX()
 	{
-		if (this.viewports.size() <= 1)
-		{
-			throw new IllegalStateException("Window must have at least 1 viewport!");
-		}
-
-		ViewPort prev = this.viewports.pop();
-		ViewPort viewport = this.viewports.peek();
-
-		this.updateViewPort(viewport);
-
-		this.onViewPortChanged.notifyListeners(new Object[]{
-				viewport, prev
-		});
-
-		return prev;
+		return this.x;
 	}
 
-	public ViewPort removeViewPort(ViewPort viewport)
+	public int getY()
 	{
-		if (this.viewports.peek() == viewport)
-		{
-			return this.removeCurrentViewPort();
-		}
-		else
-		{
-			return this.viewports.remove(viewport) ? viewport : null;
-		}
-	}
-
-	public void resetViewPort()
-	{
-		this.viewports.clear();
-		this.setCurrentViewPort(this.defaultViewPort);
-	}
-
-	private void updateViewPort(ViewPort viewport)
-	{
-		if (viewport == this.defaultViewPort)
-		{
-			//This is a fix (hack?) for Mac's weird hack to scale windows for compatibility
-			try (MemoryStack stack = MemoryStack.stackPush())
-			{
-				IntBuffer pWidth = stack.mallocInt(1);
-				IntBuffer pHeight = stack.mallocInt(1);
-
-				GLFW.glfwGetFramebufferSize(this.handle, pWidth, pHeight);
-				GL11.glViewport(0, 0, pWidth.get(0), pHeight.get(0));
-			}
-		}
-		else
-		{
-			GL11.glViewport(viewport.getX(), viewport.getY(), viewport.getWidth(), viewport.getHeight());
-		}
+		return this.y;
 	}
 
 	public int getWidth()

@@ -90,7 +90,7 @@ public final class FBO implements AutoCloseable
 
 			if (window != null)
 			{
-				window.setCurrentViewPort(this.viewport);
+				window.getView().setCurrentViewPort(this.viewport);
 			}
 		}
 		else
@@ -111,7 +111,7 @@ public final class FBO implements AutoCloseable
 
 			if (window != null)
 			{
-				window.removeViewPort(this.viewport);
+				window.getView().removeViewPort(this.viewport);
 			}
 		}
 		else

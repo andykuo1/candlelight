@@ -1,14 +1,16 @@
 package net.jimboi.test.gumshoe.test.opportunity;
 
-import net.jimboi.test.gumshoe.test.exploration.Exploration;
-import net.jimboi.test.gumshoe.test.exploration.Explorer;
-import net.jimboi.test.gumshoe.test.venue.EntranceType;
-import net.jimboi.test.gumshoe.test.venue.RoomType;
-import net.jimboi.test.gumshoe.test.venue.VenueBuilder;
-import net.jimboi.test.gumshoe.test.venue.VenueLayout;
+import net.jimboi.test.gumshoe.test.opportunity.exploration.Exploration;
+import net.jimboi.test.gumshoe.test.opportunity.exploration.Explorer;
+import net.jimboi.test.gumshoe.test.opportunity.inspection.Inspection;
+import net.jimboi.test.gumshoe.test.opportunity.inspection.Inspector;
+import net.jimboi.test.gumshoe.test.opportunity.inspection.simulation.Simulation;
+import net.jimboi.test.gumshoe.test.venue.layout.EntranceType;
+import net.jimboi.test.gumshoe.test.venue.layout.VenueBuilder;
+import net.jimboi.test.gumshoe.test.venue.layout.VenueLayout;
 
 import org.bstone.console.Console;
-import org.bstone.console.program.ConsoleProgram;
+import org.bstone.console.state.ConsoleState;
 import org.bstone.console.style.ConsoleStyle;
 
 /**
@@ -41,42 +43,66 @@ public class Opportunity extends Exploration
 	{
 		con.println("Building Venue...");
 		VenueBuilder vb = new VenueBuilder();
-		vb.getRoot().add("livingRoom", EntranceType.DOOR);
-		vb.getRoot().add("livingRoom", EntranceType.WINDOW);
-		vb.getRoot().add("kitchen", EntranceType.WINDOW);
-		vb.get("livingRoom").add("diningRoom", EntranceType.HALL);
-		vb.get("diningRoom").add("kitchen", EntranceType.HALL);
-		vb.get("livingRoom").add("kitchen", EntranceType.HALL);
-		vb.get("livingRoom").add("bathroom", EntranceType.DOOR);
+		vb.getRoot().add("Foyer", EntranceType.DOOR);
+		vb.get("Foyer").add("Hallway", EntranceType.HALL);
+		vb.get("Foyer").add("Lounge", EntranceType.HALL);
+		vb.get("Hallway").add("DiningRoom", EntranceType.HALL);
+		vb.get("Hallway").add("Kitchen", EntranceType.DOOR);
+		vb.get("Hallway").add("StudyRoom", EntranceType.DOOR);
+		vb.get("Hallway").add("Bathroom", EntranceType.DOOR);
+		vb.get("StudyRoom").add("Conservatory", EntranceType.DOOR);
+		vb.get("StudyRoom").add("Library", EntranceType.DOOR);
+		vb.get("Lounge").add("BilliardRoom", EntranceType.DOOR);
+		vb.get("Lounge").add("DiningRoom", EntranceType.DOOR);
+		vb.get("Kitchen").add("Kitchen", EntranceType.DOOR);
 
-		vb.get("livingRoom").setType(RoomType.LIVING_ROOM);
-		vb.get("diningRoom").setType(RoomType.DINING_ROOM);
-		vb.get("kitchen").setType(RoomType.KITCHEN);
-		vb.get("bathroom").setType(RoomType.BATHROOM);
+		con.println("...decorating rooms...");
+		vb.get("Foyer");
+		vb.get("Hallway");
+		vb.get("Kitchen");
+		vb.get("StudyRoom");
+		vb.get("DiningRoom");
+		vb.get("Library");
+		vb.get("Lounge");
+		vb.get("Conservatory");
+		vb.get("BilliardRoom");
+		vb.get("Bathroom");
+
 		VenueLayout venue = vb.bake();
 
+		ConsoleState program = new Inspection();//new Exploration();
+
 		con.println("Creating explorer...");
-		this.setExplorer(new Explorer(venue));
+		Exploration exploration = (Exploration) program;
+		exploration.setExplorer(new Explorer(venue));
+
+		con.println("Creating inspector...");
+		Inspection inspection = (Inspection) program;
+		inspection.setInspector(new Inspector(venue));
+
+		con.println("Simulating...");
+		Simulation simulation = new Simulation(inspection.getInspector().getVenue());
+		simulation.run();
 
 		con.println("Ready!");
-
-		next(con, this::main2);
+		next(con, program);
 	}
 
 	public void main2(Console con)
 	{
 		ConsoleStyle.title(con, "The Mansion");
 
+		con.println("You have arrived in the " + this.getExplorer().getCurrentRoom() + ".");
 		this.printAvailablePaths(con);
 		con.waitForNewActionEvent();
 
 		next(con, this::main2);
 	}
 
-	private static void next(Console con, ConsoleProgram prog)
+	private static void next(Console con, ConsoleState prog)
 	{
 		con.waitForContinue();
-		con.board().next(con, prog);
+		con.states().next(con, prog);
 	}
 
 	private static void quit(Console con)
@@ -90,7 +116,7 @@ public class Opportunity extends Exploration
 	{
 		Console console = new Console("Opportunity");
 		ConsoleStyle.setDarkMode(console);
-		console.writer().setTypeDelay(0.5);
+		console.writer().setTypeDelay(0.1);
 		console.start(new Opportunity());
 		System.exit(0);
 	}

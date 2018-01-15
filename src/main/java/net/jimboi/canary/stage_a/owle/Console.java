@@ -63,7 +63,7 @@ public class Console extends GameEngine implements Game
 	@Override
 	public void onRenderLoad(RenderEngine renderEngine)
 	{
-		this.window.setWindowSize(480, 640);
+		this.window.setSize(480, 640);
 
 		final int width = 16;
 		final int height = 16;
@@ -72,7 +72,7 @@ public class Console extends GameEngine implements Game
 		final int dist = 20;
 
 		this.camera = new OrthographicCamera(halfWidth, halfHeight, dist, this.getWindow().getWidth(), this.getWindow().getHeight());
-		this.screenSpace = new ScreenSpace(this.getWindow().getCurrentViewPort(), this.camera, Direction.CENTER, Direction.NORTHEAST);
+		this.screenSpace = new ScreenSpace(this.getWindow().getView().getCurrentViewPort(), this.camera, Direction.CENTER, Direction.NORTHEAST);
 
 		this.getInputEngine().getDefaultContext()
 				.registerEvent("mousex",

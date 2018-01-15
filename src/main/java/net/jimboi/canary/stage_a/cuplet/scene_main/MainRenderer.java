@@ -54,7 +54,7 @@ public class MainRenderer extends SceneRenderer
 
 		//Camera
 		this.camera = new OrthographicCamera(window.getWidth(), window.getHeight());
-		this.screenSpace = new ScreenSpace(window.getCurrentViewPort(), this.camera, Direction.CENTER, Direction.NORTHEAST);
+		this.screenSpace = new ScreenSpace(window.getView().getCurrentViewPort(), this.camera, Direction.CENTER, Direction.NORTHEAST);
 
 		//Assets
 		assets.registerResourceLocation("bitmap.font", new ResourceLocation("base:font.png"));

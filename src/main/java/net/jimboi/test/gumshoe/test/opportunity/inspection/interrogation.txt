@@ -1,0 +1,165 @@
+Initial sim-style conversation to determine Friendship levels.
+
+Query systems
+- Integrity (based on relationship and traits)
+- Gets all memories
+- But only shows the most recent relevant memories (3)
+- "I don't remember anything about _____" (this is also a clue)
+- "I don't know anything about that."
+    - can be used as a contradiction
+- "I don't want to talk about ______" (there are memories, but too low relationship)
+
+- Certain words are associated to guilt.
+    - If so, can cause harm to interrogation if used indiscriminately
+
+- If player can chain relevant questions that have no Guilt,
+    it becomes easier to ask questions with Guilt
+
+Example:
+    Ask about... cars.
+        "I remember: At backyard - 3:10, I heard a car drive by."
+    Anything else?...
+        "That is all I remember about cars (keep list)"
+        or
+        "There is something else, but I can't remember." (if reached limit of most recent)
+    Describe..."I heard a car drive by" (for time and location, source, etc.)
+        "It was at 3:10, in my backyard."
+
+PROBLEMS:
+    What if more than MAX memories all have the same keywords?
+        - Should display all of them as 1 memory.
+    How to determine Guilt of a query?
+        - Determined by goal/secret.
+
+Memories:
+    Time of Conception
+    Location of Conception
+    Source of Memory(THIRD or FIRST)
+    Content = (subject)(action)[object]
+
+Everyone should keep a real, simulated memory bank.
+Deceivers will construct filters to alter the query system.
+- Can omit memories
+- Can change content
+- Can also create memories with keyword to hide other memories.
+
+
+What determines these omissions?
+- Traits
+    - Liar
+    - Forgetful
+    - Secretive
+- Goals
+    - Get away with murder
+    - Hide affair
+- Circumstance(Blackmail)
+
+- Protect Self
+- Protect Goal
+- Protect Image
+- Protect Relationship
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Sim-style Conversations
+- The user sets the topic
+- The avatar talks to the person
+- Depending on the environment, traits, etc, determines the outcome
+- The outcome is abstracted to points
+    - Relationship
+    - Guilt
+    - Nervousness
+    - etc
+
+Talk about... (probing)
+    - General conversation where the topics are based on learned skills.
+        - Can have avatars learn / read about certain skills / activities
+            - Can research topics related to the scenario for temporary boost
+        - Can trigger general or specific responses, based on content and context
+        - i.e. weather, cars, sports, etc.
+        - The avatar will synthesize and translate the conversation.
+Ask about... (interrogate)
+    - what/how
+        - cause, judgement, property
+        - properties of an object, describe
+        + what about ... (subject)(action)[object]
+        + describe ... (object)[time]
+    - why
+        - goals, expectations, requests
+        - cause and effect
+        + why did ... (subject)(action)[object]
+    - which/who
+        - identification
+        + which is ... (object)
+        + who is ... (object)
+    - where
+        - location
+        + where ... (object)[time]
+        + where did .... (subject)(action)[object]
+    - when
+        - time
+        + when will ... (subject)(action)[object]
+        + when was ... (subject)(action)[object]
+    - have
+        - yes/no
+        + did ... (subject)(action)[object]
+    - is
+        - verification (permission, clarification)
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Closed
+    - Respond with Yes/No or short phrase
+    - Give Facts
+    - Quick and Easy
+        - Use first word to signal
+            (i.e. "do", "would", "are", "will", "if")
+    - Keeps control
+
+    Convert Opinion -> Closed
+        - Add Tag Question
+            (i.e. "isn't it?", "don't you?", "can't they?")
+
+Free-Narrative
+    - Name a time and place, then let retelling.
+    - Do not interrupt
+    - Steady mild interest
+    - Listen for:
+        - Degree of collaboration
+        - Contradictions
+        - Indicators of Preference, Needs and Motivators
+
+Direct
+    - About specific items
+    - Avoid implied Guilt
+    - About clear answers
+
+Cross
+    - Ask multiple questions at different times about the same
+    - Look for contradiction or support
+    - Can appear unintelligent or confused
+Review
+    - State understanding and ask for agreement
+    - Deceptive by asking for agreement on something wrong
+    - Body Language and Duper's Delight
+
+Probing...
+
+Opened
+- Rambling
+- (i.e. "who", "what", "when", "which", "where", why", "how", "describe")
+
+Repetition
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+What - determination of cause, judgement, attribute
+Why - goals, expectations, requests
+Where - location/process
+Which - identify object
+When - time of event
+Who - identity person or group
+
+How - procedure/quanity
+Have - yes/no
+
+Is - verification, permission, clarification

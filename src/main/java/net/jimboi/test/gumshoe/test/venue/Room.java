@@ -1,34 +1,41 @@
 package net.jimboi.test.gumshoe.test.venue;
 
-import java.util.Collection;
+import net.jimboi.test.gumshoe.test.opportunity.inspection.ItemContainer;
+import net.jimboi.test.gumshoe.test.venue.layout.Location;
 
 /**
- * Created by Andy on 9/23/17.
+ * Created by Andy on 12/21/17.
  */
 public class Room
 {
-	private final VenueLayout venue;
-	public final String id;
+	protected final Venue venue;
+	protected final Location location;
 
-	Room(VenueLayout venue, String id)
+	private ItemContainer container = new ItemContainer();
+
+	public Room(Venue venue, Location location)
 	{
 		this.venue = venue;
-		this.id = id;
+		this.location = location;
 	}
 
-	public Collection<Entrance> getEntrances(Collection<Entrance> dst)
+	public ItemContainer getContainer()
 	{
-		return this.venue.getAvailableEntrances(this, dst);
+		return this.container;
 	}
 
-	public VenueLayout getVenue()
+	public final Venue getVenue()
 	{
 		return this.venue;
 	}
 
-	@Override
-	public String toString()
+	public final Location getLocation()
 	{
-		return "room:" + this.id;
+		return this.location;
+	}
+
+	public String getName()
+	{
+		return this.location.id.toUpperCase();
 	}
 }

@@ -16,44 +16,61 @@ public class GOAPPlanner extends AStar<Environment, Integer>
 
 	public GOAPPlanner(Function<Environment, Iterable<Action>> actions)
 	{
-		super(
-				(integer, integer2) -> integer + integer2,
-				(state, state2) ->
-				{
-					if (state2 instanceof ActionSnapshot)
-					{
-						Action action = ((ActionSnapshot) state2).getAction();
-						if (action == null) return 0;
-						return action.evaluateCosts(state);
-					}
-					else
-					{
-						return state.equals(state2) ? 0 : 1;
-					}
-				},
-				(state, goal) -> goal.getEstimatedRemainingActionCost(state),
-				state ->
-				{
-					List<Environment> states = new ArrayList<>();
-					ActionSnapshot snapshot = null;
-
-					for(Action action : actions.apply(state))
-					{
-						if (action.isSupportedConditions(state))
-						{
-							if (snapshot == null) snapshot = new ActionSnapshot(state);
-							if (snapshot.process(action))
-							{
-								states.add(snapshot);
-								snapshot = null;
-							}
-						}
-					}
-					return states;
-				},
-				(state, goal) -> goal.isSatisfiedActionState(state));
-
 		this.actions = actions;
+	}
+
+	@Override
+	protected Integer getFScore(Integer value, Integer other)
+	{
+		return value + other;
+	}
+
+	@Override
+	protected Integer getGScore(Environment node, Environment other)
+	{
+		if (other instanceof ActionSnapshot)
+		{
+			Action action = ((ActionSnapshot) other).getAction();
+			if (action == null) return 0;
+			return action.evaluateCosts(node);
+		}
+		else
+		{
+			return node.equals(other) ? 0 : 1;
+		}
+	}
+
+	@Override
+	protected Integer getHScore(Environment node, Environment end)
+	{
+		return end.getEstimatedRemainingActionCost(node);
+	}
+
+	@Override
+	protected Iterable<Environment> getAvailableNodes(Environment node)
+	{
+		List<Environment> states = new ArrayList<>();
+		ActionSnapshot snapshot = null;
+
+		for(Action action : actions.apply(node))
+		{
+			if (action.isSupportedConditions(node))
+			{
+				if (snapshot == null) snapshot = new ActionSnapshot(node);
+				if (snapshot.process(action))
+				{
+					states.add(snapshot);
+					snapshot = null;
+				}
+			}
+		}
+		return states;
+	}
+
+	@Override
+	protected boolean isEndNode(Environment node, Environment end)
+	{
+		return end.isSatisfiedActionState(node);
 	}
 
 	public List<Action> plan(Environment initial, Environment goal)
