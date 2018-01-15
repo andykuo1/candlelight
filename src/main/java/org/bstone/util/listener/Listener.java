@@ -5,5 +5,5 @@ package org.bstone.util.listener;
  */
 public interface Listener
 {
-	void update(Object[] args);
+	void update(Listenable l, Object arg);
 }

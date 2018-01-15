@@ -13,12 +13,7 @@ import org.joml.Matrix4fc;
  */
 public abstract class Camera
 {
-	public interface OnCameraChangedListener
-	{
-		void onCameraChanged(Camera camera);
-	}
-
-	public final Listenable<OnCameraChangedListener> onCameraChanged = new Listenable<>((listener, objects) -> listener.onCameraChanged((Camera) objects[0]));
+	public final Listenable onCameraChanged = new Listenable(this);
 
 	private boolean dirty;
 

@@ -20,19 +20,8 @@ import java.util.Stack;
  */
 public class Window
 {
-	public interface OnWindowSizeChanged
-	{
-		void onWindowSizeChanged(int width, int height, int prevWidth, int prevHeight);
-	}
-
-	public interface OnViewPortChanged
-	{
-		void onViewPortChanged(ViewPort viewport, ViewPort prevViewPort);
-	}
-
-	public final Listenable<OnWindowSizeChanged> onWindowSizeChanged = new Listenable<>(((listener, objects) -> listener.onWindowSizeChanged((Integer) objects[0], (Integer) objects[1], (Integer) objects[2], (Integer) objects[3])));
-
-	public final Listenable<OnViewPortChanged> onViewPortChanged = new Listenable<>(((listener, objects) -> listener.onViewPortChanged((ViewPort) objects[0], (ViewPort) objects[1])));
+	public final Listenable onWindowSizeChanged = new Listenable(this);
+	public final Listenable onViewPortChanged = new Listenable(this);
 
 	public static void setCurrentWindowContext(Window window)
 	{
@@ -161,7 +150,9 @@ public class Window
 			int prevH = this.height;
 			this.width = w;
 			this.height = h;
-			this.onWindowSizeChanged.notifyListeners(this.width, this.height, prevW, prevH);
+			this.onWindowSizeChanged.notifyListeners(new int[]{
+					this.width, this.height, prevW, prevH
+			});
 		});
 
 		this.setWindowPositionCentered();
@@ -277,7 +268,9 @@ public class Window
 
 		this.updateViewPort(viewport);
 
-		this.onViewPortChanged.notifyListeners(viewport, prev);
+		this.onViewPortChanged.notifyListeners(new Object[]{
+				viewport, prev
+		});
 	}
 
 	public ViewPort removeCurrentViewPort()
@@ -292,7 +285,9 @@ public class Window
 
 		this.updateViewPort(viewport);
 
-		this.onViewPortChanged.notifyListeners(viewport, prev);
+		this.onViewPortChanged.notifyListeners(new Object[]{
+				viewport, prev
+		});
 
 		return prev;
 	}

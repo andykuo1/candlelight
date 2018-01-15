@@ -1,12 +1,11 @@
 package org.bstone.util.listener;
 
 import java.util.Vector;
-import java.util.function.BiConsumer;
 
 /**
  * Created by Andy on 5/22/17.
  */
-public class Listenable<T>
+public class Listenable
 {
 	public enum Phase
 	{
@@ -15,18 +14,18 @@ public class Listenable<T>
 		LATE;
 	}
 
-	private Vector<T> early;
-	private Vector<T> main;
-	private Vector<T> late;
-	private BiConsumer<T, Object[]> notifyFunction;
+	private final Object handler;
+	private final Vector<Listener> early;
+	private final Vector<Listener> main;
+	private final Vector<Listener> late;
 
 	/** Construct an Listenable with zero Listeners. */
-	public Listenable(BiConsumer<T, Object[]> notifyFunction)
+	public Listenable(Object handler)
 	{
-		early = new Vector<>();
-		main = new Vector<>();
-		late = new Vector<>();
-		this.notifyFunction = notifyFunction;
+		this.early = new Vector<>();
+		this.main = new Vector<>();
+		this.late = new Vector<>();
+		this.handler = handler;
 	}
 
 	/**
@@ -35,27 +34,27 @@ public class Listenable<T>
 	 * The order in which notifications will be delivered to multiple
 	 * listeners is specified by phase.
 	 *
-	 * @param o a listener to be added.
+	 * @param l a listener to be added.
 	 * @param phase the phase to listen to
 	 *
-	 * @throws NullPointerException if the parameter o is null.
+	 * @throws NullPointerException if the parameter l is null.
 	 */
-	public synchronized void addListener(T o, Phase phase)
+	public synchronized void addListener(Listener l, Phase phase)
 	{
-		if (o == null) throw new NullPointerException();
-		if (main.contains(o) || early.contains(o) || late.contains(o)) return;
+		if (l == null) throw new NullPointerException();
+		if (main.contains(l) || early.contains(l) || late.contains(l)) return;
 
 		switch (phase)
 		{
 			case EARLY:
-				early.addElement(o);
+				early.addElement(l);
 				break;
 			case LATE:
-				late.addElement(o);
+				late.addElement(l);
 				break;
 			case DEFAULT:
 			default:
-				main.addElement(o);
+				main.addElement(l);
 				break;
 		}
 	}
@@ -66,16 +65,16 @@ public class Listenable<T>
 	 * The order in which notifications will be delivered to multiple
 	 * listeners is not specified.
 	 *
-	 * @param o a listener to be added.
+	 * @param l a listener to be added.
 	 *
-	 * @throws NullPointerException if the parameter o is null.
+	 * @throws NullPointerException if the parameter l is null.
 	 */
-	public synchronized void addListener(T o)
+	public synchronized void addListener(Listener l)
 	{
-		if (o == null) throw new NullPointerException();
-		if (!main.contains(o))
+		if (l == null) throw new NullPointerException();
+		if (!main.contains(l))
 		{
-			main.addElement(o);
+			main.addElement(l);
 		}
 	}
 
@@ -83,21 +82,21 @@ public class Listenable<T>
 	 * Deletes a listener from the set of listeners of this object.
 	 * Passing <CODE>null</CODE> to this method will have no effect.
 	 *
-	 * @param o the listener to be deleted.
+	 * @param l the listener to be deleted.
 	 */
-	public synchronized void deleteListener(T o)
+	public synchronized void deleteListener(Listener l)
 	{
-		if (main.contains(o))
+		if (main.contains(l))
 		{
-			main.removeElement(o);
+			main.removeElement(l);
 		}
-		else if (early.contains(o))
+		else if (early.contains(l))
 		{
-			early.removeElement(o);
+			early.removeElement(l);
 		}
-		else if (late.contains(o))
+		else if (late.contains(l))
 		{
-			late.removeElement(o);
+			late.removeElement(l);
 		}
 	}
 
@@ -107,20 +106,20 @@ public class Listenable<T>
 	 * Each listener has its <code>update</code> method called with two
 	 * arguments: this observable object and the <code>arg</code> argument.
 	 *
-	 * @param args any object.
+	 * @param arg any object.
 	 */
 	@SuppressWarnings("unchecked")
-	public void notifyListeners(Object... args)
+	public void notifyListeners(Object arg)
 	{
 	    /*
 	     * a temporary array buffer, used as a snapshot of the state of
          * current Listeners.
          */
-		Object[] arrLocal;
+		Listener[] arrLocal;
 
 		synchronized (this)
 		{
-			arrLocal = new Object[this.countListeners()];
+			arrLocal = new Listener[this.countListeners()];
 			int j = 0;
 			for(int i = late.size() - 1; i >= 0; --i)
 			{
@@ -138,8 +137,16 @@ public class Listenable<T>
 
 		for (int i = arrLocal.length - 1; i >= 0; i--)
 		{
-			this.notifyFunction.accept((T) arrLocal[i], args);
+			arrLocal[i].update(this, arg);
 		}
+	}
+
+	/**
+	 * Notify all of its listeners without an argument
+	 */
+	public void notifyListeners()
+	{
+		this.notifyListeners(null);
 	}
 
 	/**
@@ -160,5 +167,10 @@ public class Listenable<T>
 	public synchronized int countListeners()
 	{
 		return main.size() + early.size() + late.size();
+	}
+
+	public Object getHandler()
+	{
+		return this.handler;
 	}
 }
