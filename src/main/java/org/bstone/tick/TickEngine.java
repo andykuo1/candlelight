@@ -1,7 +1,6 @@
 package org.bstone.tick;
 
 import org.bstone.kernel.Engine;
-import org.bstone.scheduler.Scheduler;
 import org.bstone.service.ServiceManager;
 
 /**
@@ -17,7 +16,6 @@ public class TickEngine implements Engine
 	private double timeDelta;
 
 	private final ServiceManager<TickEngine, TickService> services;
-	private final Scheduler scheduler;
 
 	private final TickCounter updateCounter;
 
@@ -26,7 +24,6 @@ public class TickEngine implements Engine
 		this.timeStep = 1000000000D / ticksPerSecond;
 
 		this.services = new ServiceManager<>(this);
-		this.scheduler = new Scheduler();
 
 		this.updateCounter = new TickCounter();
 	}
@@ -40,7 +37,6 @@ public class TickEngine implements Engine
 		this.timeLatency = 0;
 
 		this.services.beginServices();
-		this.scheduler.process();
 		this.services.endServices();
 
 		return true;
@@ -67,7 +63,6 @@ public class TickEngine implements Engine
 		}
 
 		this.services.forEach(TickService::onLateUpdate);
-		this.scheduler.process();
 		this.services.endServices();
 
 		this.timeDelta = this.timeLatency / this.timeStep;
@@ -77,7 +72,6 @@ public class TickEngine implements Engine
 	public void terminate()
 	{
 		this.services.beginServices();
-		this.scheduler.process();
 		this.services.endServices();
 
 		this.services.destroy();
