@@ -50,21 +50,9 @@ public interface Game extends InputListener
 		}
 
 		@Override
-		protected void onEarlyUpdate()
-		{
-			this.game.onEarlyUpdate();
-		}
-
-		@Override
 		protected void onFixedUpdate()
 		{
 			this.game.onFixedUpdate();
-		}
-
-		@Override
-		protected void onLateUpdate()
-		{
-			this.game.onLateUpdate();
 		}
 
 		public final Game getGame()

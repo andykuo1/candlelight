@@ -23,9 +23,5 @@ public abstract class TickService implements Service<TickEngine>
 
 	protected abstract void onLastUpdate(TickEngine tickEngine);
 
-	protected abstract void onEarlyUpdate();
-
 	protected abstract void onFixedUpdate();
-
-	protected abstract void onLateUpdate();
 }

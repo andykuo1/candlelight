@@ -1,6 +1,7 @@
 package org.bstone.application.game;
 
 import org.bstone.application.Application;
+import org.bstone.application.FrameCounter;
 import org.bstone.application.Framework;
 import org.bstone.asset.AssetManager;
 import org.bstone.input.InputContext;
@@ -16,7 +17,6 @@ import org.bstone.resource.ShaderLoader;
 import org.bstone.resource.TextureAtlasLoader;
 import org.bstone.resource.TextureLoader;
 import org.bstone.scene.SceneManager;
-import org.bstone.tick.FrameCounter;
 import org.bstone.tick.TickEngine;
 import org.bstone.tick.TickService;
 import org.bstone.tick.TickServiceManager;
@@ -116,32 +116,20 @@ public class GameEngine implements Framework, Game
 			}
 
 			@Override
-			protected void onEarlyUpdate()
-			{
-
-			}
-
-			@Override
 			protected void onFixedUpdate()
 			{
 				GameEngine.this.frameCounter.tick();
 				GameEngine.this.renderEngine.markDirty();
 			}
-
-			@Override
-			protected void onLateUpdate()
-			{
-
-			}
 		});
+
+		app.startEngine(this.renderEngine);
+		app.startEngine(this.tickEngine);
 
 		app.startEngine(this.inputEngine);
 
 		this.input = this.inputEngine.getDefaultContext();
 		this.input.addListener(0, this);
-
-		app.startEngine(this.renderEngine);
-		app.startEngine(this.tickEngine);
 	}
 
 	@Override

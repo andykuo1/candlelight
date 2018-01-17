@@ -1,4 +1,6 @@
-package org.bstone.tick;
+package org.bstone.application;
+
+import org.bstone.tick.TickCounter;
 
 /**
  * Created by Andy on 1/15/18.
