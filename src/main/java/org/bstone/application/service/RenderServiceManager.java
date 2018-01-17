@@ -1,11 +1,13 @@
-package org.bstone.render;
+package org.bstone.application.service;
 
+import org.bstone.render.RenderEngine;
+import org.bstone.render.RenderFramework;
 import org.bstone.service.ServiceManager;
 
 /**
  * Created by Andy on 1/17/18.
  */
-public class RenderServiceManager extends ServiceManager<RenderEngine, RenderService> implements Renderable
+public class RenderServiceManager extends ServiceManager<RenderEngine, RenderService> implements RenderFramework
 {
 	public RenderServiceManager(RenderEngine handler)
 	{

@@ -1,7 +1,7 @@
 package org.bstone.scene;
 
+import org.bstone.application.service.RenderService;
 import org.bstone.render.RenderEngine;
-import org.bstone.render.RenderService;
 import org.bstone.service.ServiceManager;
 import org.bstone.util.pair.Pair;
 

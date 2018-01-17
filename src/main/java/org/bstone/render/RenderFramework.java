@@ -3,7 +3,7 @@ package org.bstone.render;
 /**
  * Created by Andy on 1/17/18.
  */
-public interface Renderable
+public interface RenderFramework
 {
 	default void load() {}
 	default void unload() {}

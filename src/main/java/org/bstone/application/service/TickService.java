@@ -1,6 +1,7 @@
-package org.bstone.tick;
+package org.bstone.application.service;
 
 import org.bstone.service.Service;
+import org.bstone.tick.TickEngine;
 
 /**
  * Created by Andy on 11/4/17.

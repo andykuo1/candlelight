@@ -1,6 +1,6 @@
 package net.jimboi.test.pye;
 
-import org.bstone.tick.TickCounter;
+import org.bstone.util.Counter;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -95,8 +95,8 @@ public class PyeGame
 		inputables.remove(inputable);
 	}
 
-	private static TickCounter updates;
-	private static TickCounter frames;
+	private static Counter updates;
+	private static Counter frames;
 
 	private static volatile boolean running = false;
 
@@ -194,8 +194,8 @@ public class PyeGame
 		double timeCounter;
 
 		//Initialization
-		updates = new TickCounter();
-		frames = new TickCounter();
+		updates = new Counter();
+		frames = new Counter();
 
 		instance = new PyeGame();
 
@@ -222,7 +222,7 @@ public class PyeGame
 				timeLatency -= FRAMETIME_STEP;
 				dirty = true;
 
-				updates.tick();
+				updates.next();
 			}
 			timeDelta = timeLatency / FRAMETIME_STEP;
 
@@ -233,7 +233,7 @@ public class PyeGame
 				frame.repaint();
 				dirty = false;
 
-				frames.tick();
+				frames.next();
 			}
 
 			//Update / Frame counters
@@ -241,7 +241,7 @@ public class PyeGame
 			{
 				timeCounter += 1000;
 
-				System.out.println("[UPS: " + updates.get() + " || FPS: " + frames.get() + "]");
+				System.out.println("[UPS: " + updates.poll() + " || FPS: " + frames.poll() + "]");
 			}
 		}
 

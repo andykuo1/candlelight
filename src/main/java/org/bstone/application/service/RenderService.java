@@ -1,5 +1,6 @@
-package org.bstone.render;
+package org.bstone.application.service;
 
+import org.bstone.render.RenderEngine;
 import org.bstone.service.Service;
 
 /**

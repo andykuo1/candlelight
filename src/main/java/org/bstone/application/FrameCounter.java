@@ -1,37 +1,37 @@
 package org.bstone.application;
 
-import org.bstone.tick.TickCounter;
+import org.bstone.util.Counter;
 
 /**
  * Created by Andy on 1/15/18.
  */
 public class FrameCounter
 {
-	private final TickCounter updateCounter;
-	private final TickCounter frameCounter;
-	private long timeCounter = 0;
+	private final Counter updates;
+	private final Counter frames;
+	private long time = 0;
 
 	public FrameCounter()
 	{
-		this.updateCounter = new TickCounter();
-		this.frameCounter = new TickCounter();
+		this.updates = new Counter();
+		this.frames = new Counter();
 
-		this.timeCounter = System.currentTimeMillis();
-		this.updateCounter.reset();
-		this.frameCounter.reset();
+		this.time = System.currentTimeMillis();
+		this.updates.reset();
+		this.frames.reset();
 	}
 
 	public void poll()
 	{
-		if (System.currentTimeMillis() - this.timeCounter > 1000)
+		if (System.currentTimeMillis() - this.time > 1000)
 		{
-			this.timeCounter += 1000;
+			this.time += 1000;
 
 			System.out.print("[");
 			{
-				System.out.print("UPS: " + this.updateCounter.get());
+				System.out.print("UPS: " + this.updates.poll());
 				System.out.print(" || ");
-				System.out.print("FPS: " + this.frameCounter.get());
+				System.out.print("FPS: " + this.frames.poll());
 			}
 			System.out.println("]");
 		}
@@ -39,21 +39,21 @@ public class FrameCounter
 
 	public void tick()
 	{
-		this.updateCounter.tick();
+		this.updates.next();
 	}
 
 	public void frame()
 	{
-		this.frameCounter.tick();
+		this.frames.next();
 	}
 
-	public final TickCounter getUpdateCounter()
+	public final Counter getUpdates()
 	{
-		return this.updateCounter;
+		return this.updates;
 	}
 
-	public final TickCounter getFrameCounter()
+	public final Counter getFrames()
 	{
-		return this.frameCounter;
+		return this.frames;
 	}
 }

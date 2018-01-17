@@ -1,11 +1,11 @@
 package org.bstone.application.game;
 
+import org.bstone.application.service.RenderService;
+import org.bstone.application.service.TickService;
 import org.bstone.input.InputContext;
 import org.bstone.input.InputListener;
 import org.bstone.render.RenderEngine;
-import org.bstone.render.RenderService;
 import org.bstone.tick.TickEngine;
-import org.bstone.tick.TickService;
 import org.qsilver.poma.Poma;
 
 /**

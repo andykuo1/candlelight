@@ -10,7 +10,7 @@ public class RenderEngine implements Engine
 {
 	private final Window window;
 
-	private Renderable renderable;
+	private RenderFramework renderable;
 
 	private final boolean limitFrameRate;
 	private final double timeStep;
@@ -26,7 +26,7 @@ public class RenderEngine implements Engine
 		this.timeStep = 1000000000D / framesPerSecond;
 	}
 
-	public RenderEngine setRenderable(Renderable renderable)
+	public RenderEngine setRenderable(RenderFramework renderable)
 	{
 		this.renderable = renderable;
 		return this;
@@ -35,6 +35,9 @@ public class RenderEngine implements Engine
 	@Override
 	public boolean initialize()
 	{
+		if (this.renderable == null)
+			throw new IllegalStateException("missing renderable");
+
 		this.timePrevious = System.nanoTime();
 
 		this.renderable.load();
@@ -87,7 +90,7 @@ public class RenderEngine implements Engine
 		return this.window;
 	}
 
-	public final Renderable getRenderable()
+	public final RenderFramework getRenderable()
 	{
 		return this.renderable;
 	}
