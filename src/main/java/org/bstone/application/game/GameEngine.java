@@ -10,6 +10,7 @@ import org.bstone.json.JSONObject;
 import org.bstone.json.JSONString;
 import org.bstone.render.RenderEngine;
 import org.bstone.render.RenderService;
+import org.bstone.render.RenderServiceManager;
 import org.bstone.resource.BitmapLoader;
 import org.bstone.resource.MeshLoader;
 import org.bstone.resource.ProgramLoader;
@@ -50,12 +51,15 @@ public class GameEngine implements Framework, Game
 	{
 		this.window = new Window();
 		this.inputEngine = new InputEngine(this.window);
+
 		this.tickEngine = new TickEngine(60);
 		this.tickEngine.setTickable(new TickServiceManager(this.tickEngine));
 
 		this.renderEngine = new RenderEngine(this.window, 60, true);
+		this.renderEngine.setRenderable(new RenderServiceManager(this.renderEngine));
+
 		this.assetManager = new AssetManager();
-		this.sceneManager = new SceneManager(this.renderEngine.getRenderServices());
+		this.sceneManager = new SceneManager(this.getRenderServices());
 
 		this.frameCounter = new FrameCounter();
 	}
@@ -79,8 +83,8 @@ public class GameEngine implements Framework, Game
 		this.assetManager.registerLoader("fragment_shader", new ShaderLoader(GL20.GL_FRAGMENT_SHADER));
 		this.assetManager.registerLoader("mesh", new MeshLoader());
 
-		this.renderEngine.getRenderServices().startService("framework", new Game.Render(this));
-		this.renderEngine.getRenderServices().startService("frame", new RenderService()
+		this.getRenderServices().startService("framework", new Game.Render(this));
+		this.getRenderServices().startService("frame", new RenderService()
 		{
 			@Override
 			protected void onRenderLoad(RenderEngine renderEngine)
@@ -95,13 +99,13 @@ public class GameEngine implements Framework, Game
 			}
 
 			@Override
-			protected void onRenderUpdate(RenderEngine renderEngine, double delta)
+			protected void onRenderUpdate(RenderEngine renderEngine)
 			{
 				GameEngine.this.frameCounter.frame();
 			}
 		});
-		((TickServiceManager) this.tickEngine.getTickable()).startService("framework", new Game.Tick(this));
-		((TickServiceManager) this.tickEngine.getTickable()).startService("tick", new TickService()
+		this.getTickServices().startService("framework", new Game.Tick(this));
+		this.getTickServices().startService("tick", new TickService()
 		{
 			@Override
 			protected void onFirstUpdate(TickEngine tickEngine)
@@ -123,21 +127,22 @@ public class GameEngine implements Framework, Game
 			}
 		});
 
-		app.startEngine(this.renderEngine);
-		app.startEngine(this.tickEngine);
-
 		app.startEngine(this.inputEngine);
 
 		this.input = this.inputEngine.getDefaultContext();
 		this.input.addListener(0, this);
+
+		app.startEngine(this.renderEngine);
+		app.startEngine(this.tickEngine);
 	}
 
 	@Override
 	public void onApplicationStop(Application app)
 	{
-		((TickServiceManager) this.tickEngine.getTickable()).stopService("framework");
-		((TickServiceManager) this.tickEngine.getTickable()).stopService("frametick");
-		this.renderEngine.getRenderServices().stopService("framework");
+		this.getTickServices().stopService("framework");
+		this.getTickServices().stopService("tick");
+		this.getRenderServices().stopService("framework");
+		this.getRenderServices().stopService("frame");
 
 		this.sceneManager.destroy();
 		this.assetManager.destroy();
@@ -177,9 +182,19 @@ public class GameEngine implements Framework, Game
 		return tickEngine;
 	}
 
+	public TickServiceManager getTickServices()
+	{
+		return (TickServiceManager) this.tickEngine.getTickable();
+	}
+
 	public RenderEngine getRenderEngine()
 	{
 		return renderEngine;
+	}
+
+	public RenderServiceManager getRenderServices()
+	{
+		return (RenderServiceManager) this.renderEngine.getRenderable();
 	}
 
 	public InputEngine getInputEngine()

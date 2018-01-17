@@ -51,7 +51,7 @@ public class PongRenderer extends SceneRenderer
 	}
 
 	@Override
-	protected void onRenderUpdate(RenderEngine renderEngine, double delta)
+	protected void onRenderUpdate(RenderEngine renderEngine)
 	{
 		Scene scene = Pong.ENGINE.getSceneManager().getCurrentScene();
 		Pong pong = (Pong) scene;

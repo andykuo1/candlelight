@@ -5,5 +5,8 @@ package org.bstone.tick;
  */
 public interface Tickable
 {
+	default void start() {}
+	default void stop() {}
+
 	void tick();
 }

@@ -92,7 +92,7 @@ public class SceneMainRenderer extends SceneRenderer
 	}
 
 	@Override
-	protected void onRenderUpdate(RenderEngine renderEngine, double delta)
+	protected void onRenderUpdate(RenderEngine renderEngine)
 	{
 		final AssetManager assets = Lantern.getLantern().getAssetManager();
 		final SceneMain scene = (SceneMain) Lantern.getLantern().getSceneManager().getCurrentScene();

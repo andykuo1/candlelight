@@ -80,7 +80,7 @@ public class Smuc extends GameEngine
 	}
 
 	@Override
-	public void onRenderUpdate(RenderEngine renderEngine, double delta)
+	public void onRenderUpdate(RenderEngine renderEngine)
 	{
 		this.screenManager.render(this.console.getView());
 		this.console.render();

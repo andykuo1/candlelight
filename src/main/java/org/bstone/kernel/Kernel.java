@@ -98,6 +98,7 @@ public class Kernel implements Runnable
 
 		try
 		{
+			System.out.println("Starting kernel...");
 			this.onKernelStart();
 
 			//Main loop
@@ -131,6 +132,7 @@ public class Kernel implements Runnable
 		}
 		finally
 		{
+			System.out.println("Stopping kernel...");
 			this.onKernelStop();
 
 			//Termination
@@ -189,5 +191,11 @@ public class Kernel implements Runnable
 	public boolean isRunning()
 	{
 		return this.running;
+	}
+
+	@Override
+	public String toString()
+	{
+		return super.toString() + ":" + this.thread.getName();
 	}
 }

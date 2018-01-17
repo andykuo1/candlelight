@@ -1,7 +1,6 @@
 package org.bstone.render;
 
 import org.bstone.kernel.Engine;
-import org.bstone.service.ServiceManager;
 import org.bstone.window.Window;
 
 /**
@@ -11,7 +10,7 @@ public class RenderEngine implements Engine
 {
 	private final Window window;
 
-	private final ServiceManager<RenderEngine, RenderService> services;
+	private Renderable renderable;
 
 	private final boolean limitFrameRate;
 	private final double timeStep;
@@ -23,10 +22,14 @@ public class RenderEngine implements Engine
 	{
 		this.window = window;
 
-		this.services = new ServiceManager<>(this);
-
 		this.limitFrameRate = limitFrameRate;
 		this.timeStep = 1000000000D / framesPerSecond;
+	}
+
+	public RenderEngine setRenderable(Renderable renderable)
+	{
+		this.renderable = renderable;
+		return this;
 	}
 
 	@Override
@@ -34,8 +37,7 @@ public class RenderEngine implements Engine
 	{
 		this.timePrevious = System.nanoTime();
 
-		this.services.beginServices();
-		this.services.endServices();
+		this.renderable.load();
 
 		return true;
 	}
@@ -43,8 +45,6 @@ public class RenderEngine implements Engine
 	@Override
 	public void update()
 	{
-		this.services.beginServices();
-
 		if (this.dirty || !this.limitFrameRate)
 		{
 			final double current = System.nanoTime();
@@ -54,7 +54,8 @@ public class RenderEngine implements Engine
 
 			this.window.clearScreenBuffer();
 			{
-				this.services.forEach(renderService -> renderService.onRenderUpdate(this, this.timeDelta));
+				this.renderable.render();
+
 				--this.timeDelta;
 			}
 			this.window.updateScreenBuffer();
@@ -63,27 +64,17 @@ public class RenderEngine implements Engine
 		}
 
 		this.window.poll();
-
-		this.services.endServices();
 	}
 
 	@Override
 	public void terminate()
 	{
-		this.services.beginServices();
-		this.services.endServices();
-
-		this.services.destroy();
+		this.renderable.unload();
 	}
 
-	public final Window getWindow()
+	public void markDirty()
 	{
-		return this.window;
-	}
-
-	public final ServiceManager<RenderEngine, RenderService> getRenderServices()
-	{
-		return this.services;
+		this.dirty = true;
 	}
 
 	public double getElapsedFrameTime()
@@ -91,8 +82,13 @@ public class RenderEngine implements Engine
 		return this.timeDelta;
 	}
 
-	public void markDirty()
+	public final Window getWindow()
 	{
-		this.dirty = true;
+		return this.window;
+	}
+
+	public final Renderable getRenderable()
+	{
+		return this.renderable;
 	}
 }

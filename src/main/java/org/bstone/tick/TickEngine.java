@@ -36,6 +36,8 @@ public class TickEngine implements Engine
 		this.timePrevious = System.nanoTime();
 		this.timeLatency = 0;
 
+		this.tickable.start();
+
 		return true;
 	}
 
@@ -60,6 +62,7 @@ public class TickEngine implements Engine
 	@Override
 	public void terminate()
 	{
+		this.tickable.stop();
 	}
 
 	public double getElapsedTickTime()

@@ -65,7 +65,7 @@ public class SceneTestRenderer extends SceneRenderer
 	}
 
 	@Override
-	protected void onRenderUpdate(RenderEngine renderEngine, double delta)
+	protected void onRenderUpdate(RenderEngine renderEngine)
 	{
 		final SceneTest scene = (SceneTest) Lantern.getLantern().getSceneManager().getCurrentScene();
 		this.renderer.bind(scene.getCamera().view(), scene.getCamera().projection());

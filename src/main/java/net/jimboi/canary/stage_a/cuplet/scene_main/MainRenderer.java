@@ -103,7 +103,7 @@ public class MainRenderer extends SceneRenderer
 	}
 
 	@Override
-	protected void onRenderUpdate(RenderEngine renderEngine, double delta)
+	protected void onRenderUpdate(RenderEngine renderEngine)
 	{
 		this.simpleRenderer.bind(this.camera.view(), this.camera.projection());
 		{

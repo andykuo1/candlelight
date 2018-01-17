@@ -15,13 +15,11 @@ public interface Game extends InputListener
 {
 	default void onFirstUpdate(TickEngine tickEngine) {}
 	default void onLastUpdate(TickEngine tickEngine) {}
-	default void onEarlyUpdate() {}
 	default void onFixedUpdate() {}
-	default void onLateUpdate() {}
 
 	default void onRenderLoad(RenderEngine renderEngine) {}
 	default void onRenderUnload(RenderEngine renderEngine) {}
-	default void onRenderUpdate(RenderEngine renderEngine, double delta) {}
+	default void onRenderUpdate(RenderEngine renderEngine) {}
 
 	@Override
 	default void onInputUpdate(InputContext context) {}
@@ -86,9 +84,9 @@ public interface Game extends InputListener
 		}
 
 		@Override
-		protected void onRenderUpdate(RenderEngine renderEngine, double delta)
+		protected void onRenderUpdate(RenderEngine renderEngine)
 		{
-			this.game.onRenderUpdate(renderEngine, delta);
+			this.game.onRenderUpdate(renderEngine);
 		}
 
 		public final Game getGame()

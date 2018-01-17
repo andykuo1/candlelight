@@ -106,7 +106,7 @@ public class Console extends GameEngine implements Game
 	}
 
 	@Override
-	public void onRenderUpdate(RenderEngine renderEngine, double delta)
+	public void onRenderUpdate(RenderEngine renderEngine)
 	{
 		this.consoleBase.update();
 

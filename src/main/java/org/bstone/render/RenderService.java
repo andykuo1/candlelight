@@ -23,5 +23,5 @@ public abstract class RenderService implements Service<RenderEngine>
 
 	protected abstract void onRenderUnload(RenderEngine renderEngine);
 
-	protected abstract void onRenderUpdate(RenderEngine renderEngine, double delta);
+	protected abstract void onRenderUpdate(RenderEngine renderEngine);
 }

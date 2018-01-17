@@ -13,6 +13,20 @@ public class TickServiceManager extends ServiceManager<TickEngine, TickService> 
 	}
 
 	@Override
+	public void start()
+	{
+		this.beginServices();
+		this.endServices();
+	}
+
+	@Override
+	public void stop()
+	{
+		this.beginServices();
+		this.endServices();
+	}
+
+	@Override
 	public void tick()
 	{
 		this.beginServices();
