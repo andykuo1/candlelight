@@ -10,34 +10,23 @@ public class RenderEngine implements Engine
 {
 	private final Window window;
 
-	private RenderFramework renderable;
+	private final RenderFramework renderable;
 
-	private final boolean limitFrameRate;
-	private final double timeStep;
+	private double timeStep;
 	private double timeDelta;
 	private double timePrevious;
-	private boolean dirty = true;
 
-	public RenderEngine(Window window, int framesPerSecond, boolean limitFrameRate)
+	public RenderEngine(Window window, RenderFramework renderable)
 	{
 		this.window = window;
 
-		this.limitFrameRate = limitFrameRate;
-		this.timeStep = 1000000000D / framesPerSecond;
-	}
-
-	public RenderEngine setRenderable(RenderFramework renderable)
-	{
 		this.renderable = renderable;
-		return this;
 	}
 
 	@Override
 	public boolean initialize()
 	{
-		if (this.renderable == null)
-			throw new IllegalStateException("missing renderable");
-
+		this.timeStep = 1000000000D / this.window.getRefreshRate();
 		this.timePrevious = System.nanoTime();
 
 		this.renderable.load();
@@ -48,23 +37,18 @@ public class RenderEngine implements Engine
 	@Override
 	public void update()
 	{
-		if (this.dirty || !this.limitFrameRate)
+		final double current = System.nanoTime();
+		final double elapsed = current - this.timePrevious;
+		this.timePrevious = current;
+		this.timeDelta = elapsed / this.timeStep;
+
+		this.window.clearScreenBuffer();
 		{
-			final double current = System.nanoTime();
-			final double elapsed = current - this.timePrevious;
-			this.timePrevious = current;
-			this.timeDelta = elapsed / this.timeStep;
+			this.renderable.render();
 
-			this.window.clearScreenBuffer();
-			{
-				this.renderable.render();
-
-				--this.timeDelta;
-			}
-			this.window.updateScreenBuffer();
-
-			this.dirty = false;
+			--this.timeDelta;
 		}
+		this.window.updateScreenBuffer();
 
 		this.window.poll();
 	}
@@ -73,11 +57,6 @@ public class RenderEngine implements Engine
 	public void terminate()
 	{
 		this.renderable.unload();
-	}
-
-	public void markDirty()
-	{
-		this.dirty = true;
 	}
 
 	public double getElapsedFrameTime()

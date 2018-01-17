@@ -19,13 +19,14 @@ public class ServiceManager<E, T extends Service<E>>
 
 	private final Queue<ServiceEntity> services = new LinkedList<>();
 
-	private final E handler;
+	private E handler;
 
 	private volatile boolean active = false;
 
-	public ServiceManager(E handler)
+	public synchronized ServiceManager<E, T> setHandler(E handler)
 	{
 		this.handler = handler;
+		return this;
 	}
 
 	public synchronized void startService(String id, T service)
@@ -109,6 +110,7 @@ public class ServiceManager<E, T extends Service<E>>
 				if (id.equals(entity.id))
 				{
 					entity.paused = true;
+					entity.service.pause(this.handler);
 					return;
 				}
 			}
@@ -130,6 +132,7 @@ public class ServiceManager<E, T extends Service<E>>
 				if (id.equals(entity.id))
 				{
 					entity.paused = false;
+					entity.service.resume(this.handler);
 					return;
 				}
 			}

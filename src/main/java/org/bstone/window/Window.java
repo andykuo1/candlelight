@@ -69,6 +69,11 @@ public class Window
 		GLFW.glfwMakeContextCurrent(window.handle);
 	}
 
+	public static GLFWVidMode getCurrentVideoMode()
+	{
+		return GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+	}
+
 	public final Listenable onWindowSizeChanged = new Listenable(this);
 	public final Listenable onWindowPosChanged = new Listenable(this);
 
@@ -77,6 +82,7 @@ public class Window
 	private int height = 480;
 	private int x;
 	private int y;
+	private boolean vsync = true;
 
 	private View view;
 
@@ -84,7 +90,7 @@ public class Window
 
 	public Window()
 	{
-		this.handle = -1;
+		this.handle = MemoryUtil.NULL;
 	}
 
 	public Window setResizeable(boolean resizeable)
@@ -96,7 +102,7 @@ public class Window
 
 	public Window setPosition(int x, int y)
 	{
-		if (this.handle == -1)
+		if (this.handle == MemoryUtil.NULL)
 		{
 			this.x = x;
 			this.y = y;
@@ -110,7 +116,7 @@ public class Window
 
 	public Window setSize(int width, int height)
 	{
-		if (this.handle == -1)
+		if (this.handle == MemoryUtil.NULL)
 		{
 			this.width = width;
 			this.height = height;
@@ -124,7 +130,7 @@ public class Window
 
 	public Window setTitle(String title)
 	{
-		if (this.handle == -1)
+		if (this.handle == MemoryUtil.NULL)
 		{
 			this.title = title;
 		}
@@ -135,9 +141,22 @@ public class Window
 		return this;
 	}
 
+	public Window setVSync(boolean vsync)
+	{
+		if (this.handle == MemoryUtil.NULL)
+		{
+			this.vsync = vsync;
+		}
+		else
+		{
+			GLFW.glfwSwapInterval((this.vsync = vsync) ? 1 : 0);
+		}
+		return this;
+	}
+
 	public void show()
 	{
-		if (this.handle == -1)
+		if (this.handle == MemoryUtil.NULL)
 		{
 			this.createWindow();
 		}
@@ -148,7 +167,7 @@ public class Window
 
 	public void hide()
 	{
-		if (this.handle == -1)
+		if (this.handle == MemoryUtil.NULL)
 			throw new IllegalStateException("window not yet initialized!");
 
 		GLFW.glfwHideWindow(this.handle);
@@ -206,7 +225,7 @@ public class Window
 		GLFW.glfwMakeContextCurrent(this.handle);
 
 		// Enable v-sync
-		GLFW.glfwSwapInterval(1);
+		GLFW.glfwSwapInterval(this.vsync ? 1 : 0);
 
 		// This line is critical for LWJGL's interoperation with GLFW's
 		// OpenGL context, or any context that is managed externally.
@@ -242,7 +261,7 @@ public class Window
 			this.height = pHeight.get(0);
 
 			// Get the resolution of the primary monitor
-			GLFWVidMode vidmode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+			GLFWVidMode vidmode = getCurrentVideoMode();
 
 			// Center the window
 			GLFW.glfwSetWindowPos(
@@ -278,6 +297,11 @@ public class Window
 	public boolean shouldWindowClose()
 	{
 		return GLFW.glfwWindowShouldClose(this.handle);
+	}
+
+	public int getRefreshRate()
+	{
+		return getCurrentVideoMode().refreshRate();
 	}
 
 	public View getView()

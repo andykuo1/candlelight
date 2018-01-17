@@ -9,11 +9,6 @@ import org.bstone.tick.Tickable;
  */
 public class TickServiceManager extends ServiceManager<TickEngine, TickService> implements Tickable
 {
-	public TickServiceManager(TickEngine handler)
-	{
-		super(handler);
-	}
-
 	@Override
 	public void start()
 	{

@@ -52,11 +52,11 @@ public class GameEngine implements Framework, Game
 		this.window = new Window();
 		this.inputEngine = new InputEngine(this.window);
 
-		this.tickEngine = new TickEngine(60);
-		this.tickEngine.setTickable(new TickServiceManager(this.tickEngine));
+		this.tickEngine = new TickEngine(60, new TickServiceManager());
+		this.getTickServices().setHandler(this.tickEngine);
 
-		this.renderEngine = new RenderEngine(this.window, 60, true);
-		this.renderEngine.setRenderable(new RenderServiceManager(this.renderEngine));
+		this.renderEngine = new RenderEngine(this.window, new RenderServiceManager());
+		this.getRenderServices().setHandler(this.renderEngine);
 
 		this.assetManager = new AssetManager();
 		this.sceneManager = new SceneManager(this.getRenderServices());
@@ -123,7 +123,6 @@ public class GameEngine implements Framework, Game
 			protected void onFixedUpdate()
 			{
 				GameEngine.this.frameCounter.tick();
-				GameEngine.this.renderEngine.markDirty();
 			}
 		});
 

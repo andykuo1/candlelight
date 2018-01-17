@@ -7,4 +7,8 @@ public interface Service<E>
 {
 	void start(E handler);
 	void stop(E handler);
+
+	default void pause(E handler) {}
+	default void resume(E handler) {}
+
 }

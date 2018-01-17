@@ -9,11 +9,6 @@ import org.bstone.service.ServiceManager;
  */
 public class RenderServiceManager extends ServiceManager<RenderEngine, RenderService> implements RenderFramework
 {
-	public RenderServiceManager(RenderEngine handler)
-	{
-		super(handler);
-	}
-
 	@Override
 	public void load()
 	{

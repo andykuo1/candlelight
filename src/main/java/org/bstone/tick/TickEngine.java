@@ -14,25 +14,17 @@ public class TickEngine implements Engine
 
 	private double timeDelta;
 
-	private Tickable tickable;
+	private final Tickable tickable;
 
-	public TickEngine(int ticksPerSecond)
+	public TickEngine(int ticksPerSecond, Tickable tickable)
 	{
 		this.timeStep = 1000000000D / ticksPerSecond;
-	}
-
-	public TickEngine setTickable(Tickable tickable)
-	{
 		this.tickable = tickable;
-		return this;
 	}
 
 	@Override
 	public boolean initialize()
 	{
-		if (this.tickable == null)
-			throw new IllegalStateException("missing tickable");
-
 		this.timePrevious = System.nanoTime();
 		this.timeLatency = 0;
 
