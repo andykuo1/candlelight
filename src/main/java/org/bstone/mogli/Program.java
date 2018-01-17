@@ -5,12 +5,14 @@ import org.joml.Matrix4fc;
 import org.joml.Vector2fc;
 import org.joml.Vector3fc;
 import org.joml.Vector4fc;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.system.MemoryStack;
 import org.qsilver.poma.Poma;
 
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -22,10 +24,25 @@ public final class Program implements AutoCloseable
 {
 	public static final Set<Program> PROGRAMS = new RefCountSet<>("Program");
 
-	private Shader[] shaders;
+	public static Program createShaderProgram(String vertexSource, String fragmentSource)
+	{
+		Program program = new Program();
+		try(Shader vertexShader = new Shader(vertexSource, GL20.GL_VERTEX_SHADER);
+		    Shader fragmentShader = new Shader(fragmentSource, GL20.GL_FRAGMENT_SHADER))
+		{
+			program.link(vertexShader, fragmentShader);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return program;
+	}
+
 	private int handle;
 
-	private final Map<String, Integer> uniformLocations = new HashMap<>();
+	private Attribute[] attribs;
+	private Map<String, Uniform> uniforms = new HashMap<>();
 
 	public Program()
 	{
@@ -50,12 +67,10 @@ public final class Program implements AutoCloseable
 
 	public Program link(Shader... shaders)
 	{
-		this.shaders = shaders;
-		for (int i = 0; i < this.shaders.length; ++i)
+		for (int i = 0; i < shaders.length; ++i)
 		{
-			GL20.glAttachShader(this.handle, this.shaders[i].handle());
+			GL20.glAttachShader(this.handle, shaders[i].handle());
 		}
-
 		GL20.glLinkProgram(this.handle);
 
 		int status = GL20.glGetProgrami(this.handle, GL20.GL_LINK_STATUS);
@@ -68,12 +83,63 @@ public final class Program implements AutoCloseable
 			throw new GLException(infolog);
 		}
 
-		for (int i = 0; i < this.shaders.length; ++i)
+		for (int i = 0; i < shaders.length; ++i)
 		{
-			GL20.glDetachShader(this.handle, this.shaders[i].handle());
+			GL20.glDetachShader(this.handle, shaders[i].handle());
+		}
+
+		this.attribs = this.fetchAttribs();
+		Uniform[] uniforms = this.fetchUniforms();
+		for(Uniform uniform : uniforms)
+		{
+			this.uniforms.put(uniform.name, uniform);
 		}
 
 		return this;
+	}
+
+	private Attribute[] fetchAttribs()
+	{
+		int len = GL20.glGetProgrami(this.handle, GL20.GL_ACTIVE_ATTRIBUTES);
+		int strlen = GL20.glGetProgrami(this.handle, GL20.GL_ACTIVE_ATTRIBUTE_MAX_LENGTH);
+
+		Attribute[] attribs = new Attribute[len];
+
+		IntBuffer sizeBuffer = BufferUtils.createIntBuffer(1);
+		IntBuffer typeBuffer = BufferUtils.createIntBuffer(1);
+		for(int i = 0; i < attribs.length; ++i)
+		{
+			String name = GL20.glGetActiveAttrib(this.handle, i, strlen, sizeBuffer, typeBuffer);
+			int location = GL20.glGetAttribLocation(this.handle, name);
+			attribs[i] = new Attribute(this, name, sizeBuffer.get(), typeBuffer.get(), location);
+
+			sizeBuffer.flip();
+			typeBuffer.flip();
+		}
+
+		return attribs;
+	}
+
+	private Uniform[] fetchUniforms()
+	{
+		int len = GL20.glGetProgrami(this.handle, GL20.GL_ACTIVE_UNIFORMS);
+		int strlen = GL20.glGetProgrami(this.handle, GL20.GL_ACTIVE_UNIFORM_MAX_LENGTH);
+
+		Uniform[] uniforms = new Uniform[len];
+
+		IntBuffer sizeBuffer = BufferUtils.createIntBuffer(1);
+		IntBuffer typeBuffer = BufferUtils.createIntBuffer(1);
+		for(int i = 0; i < uniforms.length; ++i)
+		{
+			String name = GL20.glGetActiveUniform(this.handle, i, strlen, sizeBuffer, typeBuffer);
+			int location = GL20.glGetUniformLocation(this.handle, name);
+			uniforms[i] = new Uniform(this, name, sizeBuffer.get(), typeBuffer.get(), location);
+
+			sizeBuffer.flip();
+			typeBuffer.flip();
+		}
+
+		return uniforms;
 	}
 
 	public Program validate()
@@ -114,27 +180,42 @@ public final class Program implements AutoCloseable
 		return GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM) == this.handle;
 	}
 
-	public int findUniformLocation(String uniformName)
+	public Attribute getAttribute(String name)
 	{
-		if (uniformName == null)
+		for(Attribute attrib : this.attribs)
 		{
-			throw new IllegalArgumentException("Missing uniform name!");
+			if (attrib.name.equals(name))
+			{
+				return attrib;
+			}
 		}
 
-		Integer location = this.uniformLocations.get(uniformName);
-		if (location == null)
+		return null;
+	}
+
+	public Uniform getUniform(String name)
+	{
+		Uniform uniform = this.uniforms.get(name);
+		if (uniform == null)
 		{
-			location = GL20.glGetUniformLocation(this.handle, uniformName);
+			throw new GLException("Could not find uniform with name: " + name);
+		}
+		return uniform;
+	}
+
+	public int findUniformLocation(String uniformName)
+	{
+		Uniform uniform = this.uniforms.get(uniformName);
+		if (uniform == null)
+		{
+			int location = GL20.glGetUniformLocation(this.handle, uniformName);
 			if (location < 0)
 			{
 				throw new GLException("Could not find uniform with name: " + uniformName);
 			}
-
-			this.uniformLocations.put(uniformName, location);
 			return location;
 		}
-
-		return location;
+		return uniform.location;
 	}
 
 	public void setUniform(String uniformName, int x)
