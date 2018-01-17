@@ -19,7 +19,7 @@ public class ModelUtil
 		vbo.bind();
 		{
 			vbo.putData(data, false, usage);
-			mesh.bindVertexArrayBuffer(location, size, stride, vbo);
+			mesh.setVertexArrayBuffer(location, size, stride, vbo);
 		}
 		vbo.unbind();
 	}
@@ -30,7 +30,7 @@ public class ModelUtil
 		ibo.bind();
 		{
 			ibo.putData(data, false, usage);
-			mesh.bindElementArrayBuffer(ibo);
+			mesh.setElementArrayBuffer(ibo);
 		}
 		ibo.unbind();
 	}
@@ -43,7 +43,7 @@ public class ModelUtil
 			VBO vbo = new VBO();
 			buffer = (FloatBuffer) MemoryUtil.memAllocFloat(data.length).put(data).flip();
 			vbo.putData(buffer, false, usage);
-			mesh.bindVertexArrayBuffer(location, size, stride, vbo);
+			mesh.setVertexArrayBuffer(location, size, stride, vbo);
 		}
 		finally
 		{
@@ -62,7 +62,7 @@ public class ModelUtil
 			VBO ibo = new VBO(GL15.GL_ELEMENT_ARRAY_BUFFER);
 			buffer = (IntBuffer) MemoryUtil.memAllocInt(data.length).put(data).flip();
 			ibo.putData(buffer, false, usage);
-			mesh.bindElementArrayBuffer(ibo);
+			mesh.setElementArrayBuffer(ibo);
 		}
 		finally
 		{

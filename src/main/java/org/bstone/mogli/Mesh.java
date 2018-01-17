@@ -53,7 +53,7 @@ public final class Mesh implements AutoCloseable
 		MESHES.remove(this);
 	}
 
-	public Mesh bindElementArrayBuffer(VBO buffer)
+	public Mesh setElementArrayBuffer(VBO buffer)
 	{
 		Poma.ASSERT(buffer.getTarget() == GL15.GL_ELEMENT_ARRAY_BUFFER);
 
@@ -81,7 +81,7 @@ public final class Mesh implements AutoCloseable
 		return this;
 	}
 
-	public Mesh bindVertexArrayBuffer(int location, int size, int stride, VBO buffer)
+	public Mesh setVertexArrayBuffer(int location, int size, int stride, VBO buffer)
 	{
 		GL30.glBindVertexArray(this.handle);
 		buffer.bind();

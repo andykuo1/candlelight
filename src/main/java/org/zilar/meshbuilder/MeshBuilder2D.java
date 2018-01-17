@@ -24,7 +24,7 @@ public class MeshBuilder2D
 				vbo.putData(FloatBuffer.wrap(verts), false, GL15.GL_STATIC_DRAW);
 			}
 			vbo.unbind();
-			mesh.bindVertexArrayBuffer(0, 2, 0, vbo);
+			mesh.setVertexArrayBuffer(0, 2, 0, vbo);
 		}
 		mesh.unbind();
 		return mesh;
@@ -47,7 +47,7 @@ public class MeshBuilder2D
 				vbo.putData(FloatBuffer.wrap(verts), false, GL15.GL_STATIC_DRAW);
 			}
 			vbo.unbind();
-			mesh.bindVertexArrayBuffer(0, 2, 0, vbo);
+			mesh.setVertexArrayBuffer(0, 2, 0, vbo);
 		}
 		mesh.unbind();
 		return mesh;

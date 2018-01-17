@@ -111,9 +111,8 @@ public final class Program implements AutoCloseable
 		{
 			String name = GL20.glGetActiveAttrib(this.handle, i, strlen, sizeBuffer, typeBuffer);
 			int location = GL20.glGetAttribLocation(this.handle, name);
-			attribs[i] = new Attribute(this, name, sizeBuffer.get(), typeBuffer.get(), location);
+			attribs[i] = new Attribute(this, name, typeBuffer.get(), location);
 
-			sizeBuffer.flip();
 			typeBuffer.flip();
 		}
 
@@ -133,9 +132,8 @@ public final class Program implements AutoCloseable
 		{
 			String name = GL20.glGetActiveUniform(this.handle, i, strlen, sizeBuffer, typeBuffer);
 			int location = GL20.glGetUniformLocation(this.handle, name);
-			uniforms[i] = new Uniform(this, name, sizeBuffer.get(), typeBuffer.get(), location);
+			uniforms[i] = new Uniform(this, name, typeBuffer.get(), location);
 
-			sizeBuffer.flip();
 			typeBuffer.flip();
 		}
 
