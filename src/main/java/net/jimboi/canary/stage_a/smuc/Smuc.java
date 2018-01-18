@@ -26,6 +26,7 @@ public class Smuc extends GameEngine
 		APP = new Application()
 				.setFramework(INST = new Smuc());
 		APP.run();
+		System.exit(0);
 	}
 
 	private Console console;

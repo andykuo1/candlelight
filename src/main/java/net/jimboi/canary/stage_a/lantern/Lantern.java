@@ -27,6 +27,7 @@ public class Lantern extends GameEngine
 		application = new Application()
 				.setFramework(instance = new Lantern());
 		application.run();
+		System.exit(0);
 	}
 
 	@Override

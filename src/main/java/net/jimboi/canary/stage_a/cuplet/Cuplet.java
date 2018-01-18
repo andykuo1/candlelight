@@ -29,6 +29,7 @@ public class Cuplet extends GameEngine implements InputListener
 		application = new Application()
 				.setFramework(instance = new Cuplet());
 		application.run();
+		System.exit(0);
 	}
 
 	protected static boolean DEBUG;

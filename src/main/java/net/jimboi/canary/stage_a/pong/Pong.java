@@ -78,5 +78,6 @@ public class Pong extends Scene
 		ENGINE.getSceneManager().registerScene("init", Pong.class, PongRenderer.class);
 		ENGINE.getSceneManager().setNextScene("init");
 		APPLICATION.startOnCurrentThread();
+		System.exit(0);
 	}
 }

@@ -41,6 +41,7 @@ public class Console extends GameEngine implements Game
 		APP = new Application()
 				.setFramework(INST = new Console());
 		APP.run();
+		System.exit(0);
 	}
 
 	public OrthographicCamera camera;
