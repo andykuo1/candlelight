@@ -1,5 +1,6 @@
 package org.bstone.poma;
 
+import org.bstone.poma.motivator.Poma;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.slf4j.helpers.FormattingTuple;
@@ -17,6 +18,11 @@ public class PomaLogger implements Logger
 	private static final SimpleDateFormat FULL_DATE_FORMAT = new SimpleDateFormat("YYYY/MM/dd HH:mm:ss");
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
 	private static final boolean USE_FULL_DATE = false;
+
+	static
+	{
+		Poma.startUp();
+	}
 
 	private final Thread thread = Thread.currentThread();
 	private final String name;
@@ -316,11 +322,6 @@ public class PomaLogger implements Logger
 	@Override
 	public void error(Marker marker, String msg, Throwable t) {}
 
-	public void precondition(boolean condition)
-	{
-
-	}
-
 	private void flog(Level level, String format, Object arg)
 	{
 		FormattingTuple tp = MessageFormatter.format(format, arg);
@@ -372,7 +373,12 @@ public class PomaLogger implements Logger
 			sb.append(getCallerStackTrace(1));
 		}
 
-		this.write(sb, t, level.error);
+		if (level == Level.ERROR)
+		{
+			Poma.error(sb, t);
+		}
+
+		this.write(sb, t, level.isErrorable());
 	}
 
 	private void write(StringBuffer sb, Throwable t, boolean error)
@@ -418,6 +424,11 @@ public class PomaLogger implements Logger
 		Level(boolean error)
 		{
 			this.error = error;
+		}
+
+		public boolean isErrorable()
+		{
+			return this.error;
 		}
 	}
 }

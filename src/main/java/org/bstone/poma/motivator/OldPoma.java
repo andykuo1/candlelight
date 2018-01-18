@@ -3,7 +3,7 @@ package org.bstone.poma.motivator;
 /**
  * Created by Andy on 6/10/17.
  */
-public final class PomaMotivator
+public final class OldPoma
 {
 	/*
 	private static final String PRINT_DIVIDER = "-=(*)=-";
