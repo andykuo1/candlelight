@@ -1,13 +1,15 @@
 package org.bstone;
 
 import org.bstone.util.small.SmallSet;
-import org.qsilver.poma.Poma;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by Andy on 6/10/17.
  */
 public class RefCountSet<T> extends SmallSet<T>
 {
+	private static final Logger LOG = LoggerFactory.getLogger(RefCountSet.class);
 	private static int TOTAL_REF_COUNT_SET;
 
 	private final String name;
@@ -25,7 +27,7 @@ public class RefCountSet<T> extends SmallSet<T>
 			++TOTAL_REF_COUNT_SET;
 		}
 
-		Poma.debug("Created ref-counted resource: " + this.name + "(" + this.size() + ") = " + t);
+		LOG.debug("Created ref-counted resource: " + this.name + "(" + this.size() + ") = " + t);
 
 		return super.add(t);
 	}
@@ -41,16 +43,16 @@ public class RefCountSet<T> extends SmallSet<T>
 		}
 		else
 		{
-			Poma.debug("Destroyed ref-counted resource: " + this.name + "(" + this.size() + ") = " + value);
+			LOG.debug("Destroyed ref-counted resource: " + this.name + "(" + this.size() + ") = " + value);
 
 			if (this.isEmpty())
 			{
-				Poma.debug("PASS: " + this.name + "(s) is destroyed!");
+				LOG.debug("PASS: " + this.name + "(s) is destroyed!");
 				--TOTAL_REF_COUNT_SET;
 
 				if (TOTAL_REF_COUNT_SET == 0)
 				{
-					Poma.warn("SUCCESS: All ref-counted resources are cleared!");
+					LOG.warn("SUCCESS: All ref-counted resources are cleared!");
 				}
 			}
 		}

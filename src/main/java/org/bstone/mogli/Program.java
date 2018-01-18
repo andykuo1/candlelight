@@ -9,7 +9,6 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.system.MemoryStack;
-import org.qsilver.poma.Poma;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -169,7 +168,6 @@ public final class Program implements AutoCloseable
 
 	public void unbind()
 	{
-		Poma.ASSERT(isInUse());
 		GL20.glUseProgram(0);
 	}
 

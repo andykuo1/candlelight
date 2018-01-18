@@ -6,13 +6,16 @@ import org.bstone.input.InputContext;
 import org.bstone.input.InputListener;
 import org.bstone.render.RenderEngine;
 import org.bstone.tick.TickEngine;
-import org.qsilver.poma.Poma;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by Andy on 10/17/17.
  */
 public interface Game extends InputListener
 {
+	Logger LOG = LoggerFactory.getLogger(Game.class);
+
 	default void onFirstUpdate(TickEngine tickEngine) {}
 	default void onLastUpdate(TickEngine tickEngine) {}
 	default void onFixedUpdate() {}
@@ -36,14 +39,14 @@ public interface Game extends InputListener
 		@Override
 		protected void onFirstUpdate(TickEngine handler)
 		{
-			Poma.info("Starting Game...");
+			LOG.info("Starting Game...");
 			this.game.onFirstUpdate(handler);
 		}
 
 		@Override
 		protected void onLastUpdate(TickEngine handler)
 		{
-			Poma.info("Stopping Game...");
+			LOG.info("Stopping Game...");
 			this.game.onLastUpdate(handler);
 		}
 
@@ -72,14 +75,14 @@ public interface Game extends InputListener
 		@Override
 		protected void onRenderLoad(RenderEngine renderEngine)
 		{
-			Poma.info("Loading Game...");
+			LOG.info("Loading Game...");
 			this.game.onRenderLoad(renderEngine);
 		}
 
 		@Override
 		protected void onRenderUnload(RenderEngine renderEngine)
 		{
-			Poma.info("Unloading Game...");
+			LOG.info("Unloading Game...");
 			this.game.onRenderUnload(renderEngine);
 		}
 

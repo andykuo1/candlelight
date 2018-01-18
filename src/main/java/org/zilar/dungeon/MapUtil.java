@@ -2,7 +2,6 @@ package org.zilar.dungeon;
 
 import org.bstone.util.grid.GridMap;
 import org.joml.Vector2i;
-import org.qsilver.poma.Poma;
 
 import java.util.function.Predicate;
 
@@ -14,10 +13,9 @@ public class MapUtil
 {
 	public static boolean contains(GridMap map, int x, int y, int w, int h, Object value)
 	{
-		Poma.ASSERT(w >= 0);
-		Poma.ASSERT(h >= 0);
-		Poma.ASSERT(x >= 0 && x < map.width() && y >= 0 && y < map.height());
-		Poma.ASSERT(map.width() - x >= w && map.height() - y >= h);
+		if (w < 0 || h < 0) throw new IllegalArgumentException("must be positive int");
+		if (!(x >= 0 && x < map.width() && y >= 0 && y < map.height())) throw new IllegalArgumentException("x or y is not within bounds");
+		if (!(map.width() - x >= w && map.height() - y >= h)) throw new IllegalArgumentException("w or h is not within bounds");
 
 		for (int i = 0; i < w; ++i)
 		{
@@ -35,10 +33,9 @@ public class MapUtil
 
 	public static <T> void fill(GridMap<T> map, int x, int y, int w, int h, T value)
 	{
-		Poma.ASSERT(w >= 0);
-		Poma.ASSERT(h >= 0);
-		Poma.ASSERT(x >= 0 && x < map.width() && y >= 0 && y < map.height());
-		Poma.ASSERT(map.width() - x >= w && map.height() - y >= h);
+		if (w < 0 || h < 0) throw new IllegalArgumentException("must be positive int");
+		if (!(x >= 0 && x < map.width() && y >= 0 && y < map.height())) throw new IllegalArgumentException("x or y is not within bounds");
+		if (!(map.width() - x >= w && map.height() - y >= h)) throw new IllegalArgumentException("w or h is not within bounds");
 
 		for (int i = 0; i < w; ++i)
 		{
@@ -51,7 +48,7 @@ public class MapUtil
 
 	public static <T> void set(GridMap<T> map, int x, int y, GridMap<T> values)
 	{
-		Poma.ASSERT(x >= 0 && x < map.width() && y >= 0 && y < map.height());
+		if (!(x >= 0 && x < map.width() && y >= 0 && y < map.height())) throw new IllegalArgumentException("x or y is not within bounds");
 
 		for (int i = 0; i < values.width(); ++i)
 		{
@@ -64,7 +61,7 @@ public class MapUtil
 
 	public static <T> void overlay(GridMap<T> map, int x, int y, GridMap<T> values)
 	{
-		Poma.ASSERT(x >= 0 && x < map.width() && y >= 0 && y < map.height());
+		if (!(x >= 0 && x < map.width() && y >= 0 && y < map.height())) throw new IllegalArgumentException("x or y is not within bounds");
 
 		for (int i = 0; i < values.width(); ++i)
 		{
@@ -81,10 +78,9 @@ public class MapUtil
 
 	public static <T> void replace(GridMap<T> map, int x, int y, int w, int h, T value, Predicate<T> canReplace)
 	{
-		Poma.ASSERT(w >= 0);
-		Poma.ASSERT(h >= 0);
-		Poma.ASSERT(x >= 0 && x < map.width() && y >= 0 && y < map.height());
-		Poma.ASSERT(map.width() - x >= w && map.height() - y >= h);
+		if (w < 0 || h < 0) throw new IllegalArgumentException("must be positive int");
+		if (!(x >= 0 && x < map.width() && y >= 0 && y < map.height())) throw new IllegalArgumentException("x or y is not within bounds");
+		if (!(map.width() - x >= w && map.height() - y >= h)) throw new IllegalArgumentException("w or h is not within bounds");
 
 		for (int i = 0; i < w; ++i)
 		{
@@ -101,10 +97,9 @@ public class MapUtil
 
 	public static <T> GridMap<T> copy(GridMap<T> map, int x, int y, int w, int h, GridMap<T> dst)
 	{
-		Poma.ASSERT(w >= 0);
-		Poma.ASSERT(h >= 0);
-		Poma.ASSERT(x >= 0 && x < map.width() && y >= 0 && y < map.height());
-		Poma.ASSERT(map.width() - x >= w && map.height() - y >= h);
+		if (w < 0 || h < 0) throw new IllegalArgumentException("must be positive int");
+		if (!(x >= 0 && x < map.width() && y >= 0 && y < map.height())) throw new IllegalArgumentException("x or y is not within bounds");
+		if (!(map.width() - x >= w && map.height() - y >= h)) throw new IllegalArgumentException("w or h is not within bounds");
 
 		for (int i = 0; i < dst.width(); ++i)
 		{

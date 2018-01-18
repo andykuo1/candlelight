@@ -2,7 +2,6 @@ package org.bstone.util;
 
 import org.joml.Vector2f;
 import org.joml.Vector2i;
-import org.qsilver.poma.Poma;
 
 /**Enum of cardinal directions*/
 public enum Direction
@@ -26,7 +25,10 @@ public enum Direction
 		/**Gets the next clockwise {@link Direction} of passed-in direction in only cardinals*/
 		public static Direction getClockwise(Direction direction)
 		{
-			Poma.ASSERT(equals(direction));
+			if (!equals(direction))
+			{
+				throw new IllegalArgumentException("not a valid Cardinal direction");
+			}
 
 			switch(direction)
 			{
@@ -41,7 +43,10 @@ public enum Direction
 		/**Gets the next count-clockwise {@link Direction} of passed-in direction in only cardinals*/
 		public static Direction getCounterClockwise(Direction direction)
 		{
-			Poma.ASSERT(equals(direction));
+			if (!equals(direction))
+			{
+				throw new IllegalArgumentException("not a valid Cardinal direction");
+			}
 
 			switch(direction)
 			{

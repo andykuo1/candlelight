@@ -4,7 +4,6 @@ import org.bstone.RefCountSet;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.qsilver.poma.Poma;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -55,7 +54,10 @@ public final class Mesh implements AutoCloseable
 
 	public Mesh setElementArrayBuffer(VBO buffer)
 	{
-		Poma.ASSERT(buffer.getTarget() == GL15.GL_ELEMENT_ARRAY_BUFFER);
+		if (buffer.getTarget() != GL15.GL_ELEMENT_ARRAY_BUFFER)
+		{
+			throw new IllegalArgumentException("buffer is not an element array");
+		}
 
 		GL30.glBindVertexArray(this.handle);
 		buffer.bind();

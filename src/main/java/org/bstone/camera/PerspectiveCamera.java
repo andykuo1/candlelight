@@ -2,7 +2,6 @@ package org.bstone.camera;
 
 import org.bstone.transform.InvertedTransform3;
 import org.joml.Matrix4f;
-import org.qsilver.poma.Poma;
 
 /**
  * A camera with a perspective projection. The forward vector is inverted, as by standard.
@@ -29,15 +28,18 @@ public class PerspectiveCamera extends Camera
 
 	public void setFieldOfView(float fov)
 	{
-		Poma.ASSERT(fov > 0 && fov < 180);
+		if (fov > 0 && fov < 180)
+		{
+			throw new IllegalArgumentException("field of view must be within 0 to 180 degrees");
+		}
 
 		this.fieldOfView = fov;
 	}
 
 	public void setClippingPlane(float nearPlane, float farPlane)
 	{
-		Poma.ASSERT(nearPlane > 0);
-		Poma.ASSERT(farPlane > nearPlane);
+		if (nearPlane <= 0) throw new IllegalArgumentException("z near plane must be > 0");
+		if (farPlane <= nearPlane) throw new IllegalArgumentException("z far plane must be > z near");
 
 		this.clippingNear = nearPlane;
 		this.clippingFar = farPlane;

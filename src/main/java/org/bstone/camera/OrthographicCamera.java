@@ -2,7 +2,6 @@ package org.bstone.camera;
 
 import org.bstone.transform.Transform3;
 import org.joml.Matrix4f;
-import org.qsilver.poma.Poma;
 
 /**
  * A camera with an orthographic projection.
@@ -42,8 +41,8 @@ public class OrthographicCamera extends Camera
 
 	public void setClippingPlane(float nearPlane, float farPlane)
 	{
-		Poma.ASSERT(nearPlane > 0);
-		Poma.ASSERT(farPlane > nearPlane);
+		if (nearPlane <= 0) throw new IllegalArgumentException("z near plane must be > 0");
+		if (farPlane <= nearPlane) throw new IllegalArgumentException("z far plane must be > z near");
 
 		this.nearBound = nearPlane;
 		this.farBound = farPlane;
