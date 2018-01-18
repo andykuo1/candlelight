@@ -18,7 +18,9 @@ class Util
 			.add("Boopity.")
 			.add("Bleep.")
 			.add("Burp.")
-			.add("Boo!");
+			.add("Boo!")
+			.add("Motivation!")
+			.add("MOTIVATION!");
 
 	static final NonDiminishingReturnSet WELLNESS = new NonDiminishingReturnSet()
 			.add("Good")
