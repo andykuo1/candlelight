@@ -1,12 +1,16 @@
 package org.bstone.application;
 
 import org.bstone.util.Counter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by Andy on 1/15/18.
  */
 public class FrameCounter
 {
+	private static final Logger LOG = LoggerFactory.getLogger(FrameCounter.class);
+
 	private final Counter updates;
 	private final Counter frames;
 	private long time = 0;
@@ -27,13 +31,7 @@ public class FrameCounter
 		{
 			this.time += 1000;
 
-			System.out.print("[");
-			{
-				System.out.print("UPS: " + this.updates.poll());
-				System.out.print(" || ");
-				System.out.print("FPS: " + this.frames.poll());
-			}
-			System.out.println("]");
+			LOG.info("(" + this.updates.poll() + "/" + this.frames.poll() + ")fps");
 		}
 	}
 

@@ -1,12 +1,16 @@
 package org.bstone.application;
 
 import org.bstone.kernel.Kernel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Main entry point for any application.
  */
 public class Application extends Kernel
 {
+	private static final Logger LOG = LoggerFactory.getLogger(Application.class);
+
 	public static Application createApplication()
 	{
 		return new Application();
@@ -40,9 +44,9 @@ public class Application extends Kernel
 	{
 		try
 		{
-			System.out.println("Creating Application...");
+			LOG.info("Creating Application...");
 			this.framework.onApplicationCreate(this);
-			System.out.println("Running Application...");
+			LOG.info("Running Application...");
 			super.run();
 		}
 		catch (Exception e)
@@ -51,7 +55,7 @@ public class Application extends Kernel
 		}
 		finally
 		{
-			System.out.println("Destroying Application...");
+			LOG.info("Destroying Application...");
 			this.framework.onApplicationDestroy(this);
 		}
 	}
@@ -59,7 +63,7 @@ public class Application extends Kernel
 	@Override
 	protected void onKernelStart()
 	{
-		System.out.println("Starting Application...");
+		LOG.info("Starting Application...");
 		this.framework.onApplicationStart(this);
 	}
 
@@ -72,7 +76,7 @@ public class Application extends Kernel
 	@Override
 	protected void onKernelStop()
 	{
-		System.out.println("Stopping Application...");
+		LOG.info("Stopping Application...");
 		this.framework.onApplicationStop(this);
 	}
 

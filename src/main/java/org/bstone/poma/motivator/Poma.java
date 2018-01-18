@@ -74,10 +74,14 @@ public class Poma
 
 	void onHeartBeat()
 	{
-		say("Beep.");
 		if (Util.RANDY.nextFloat() < 0.2)
 		{
-			say("That one was good.");
+			say(Util.NOISE.get(Util.RANDY));
+
+			if (Util.RANDY.nextFloat() < 0.3)
+			{
+				say("That one was good.");
+			}
 		}
 	}
 

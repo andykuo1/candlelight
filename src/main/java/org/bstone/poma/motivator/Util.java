@@ -10,6 +10,15 @@ class Util
 {
 	static final Random RANDY = new Random();
 
+	static final NonDiminishingReturnSet NOISE = new NonDiminishingReturnSet()
+			.add("Beep.")
+			.add("Boop.")
+			.add("Bloop.")
+			.add("Oogly Boogly.")
+			.add("Boopity.")
+			.add("Bleep.")
+			.add("Burp");
+
 	static final NonDiminishingReturnSet WELLNESS = new NonDiminishingReturnSet()
 			.add("Good")
 			.add("Ok, ")

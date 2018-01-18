@@ -11,6 +11,8 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.IntBuffer;
 
@@ -19,6 +21,8 @@ import java.nio.IntBuffer;
  */
 public class Window
 {
+	private static final Logger LOG = LoggerFactory.getLogger(Window.class);
+
 	private static boolean initGLFW = false;
 	public static void initializeGLFW()
 	{
@@ -31,11 +35,11 @@ public class Window
 			initGLFW = true;
 		}
 
-		System.out.println("OS " + System.getProperty("os.name"));
-		System.out.println("JAVA " + System.getProperty("java.version"));
-		System.out.println("LWJGL " + Version.getVersion());
-		System.out.println("GLFW " + GLFW.glfwGetVersionString());
-		System.out.println("JOML 1.9.2");
+		LOG.info("OS " + System.getProperty("os.name"));
+		LOG.info("JAVA " + System.getProperty("java.version"));
+		LOG.info("LWJGL " + Version.getVersion());
+		LOG.info("GLFW " + GLFW.glfwGetVersionString());
+		LOG.info("JOML 1.9.2");
 
 		// Setup an error callback. The default implementation
 		// will print the error message in System.err.
@@ -234,7 +238,7 @@ public class Window
 		// bindings available for use.
 		GL.createCapabilities();
 
-		System.out.println("OPENGL " + GL11.glGetString(GL11.GL_VERSION));
+		LOG.info("OPENGL " + GL11.glGetString(GL11.GL_VERSION));
 
 		// Set the clear color
 		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);

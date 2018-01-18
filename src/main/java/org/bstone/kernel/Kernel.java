@@ -1,5 +1,8 @@
 package org.bstone.kernel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -10,6 +13,8 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class Kernel implements Runnable
 {
+	private static final Logger LOG = LoggerFactory.getLogger(Kernel.class);
+
 	private Thread thread;
 
 	private List<KernelComponent> components = new LinkedList<>();
@@ -98,7 +103,7 @@ public class Kernel implements Runnable
 
 		try
 		{
-			System.out.println("Starting kernel...");
+			LOG.info("Starting kernel...");
 			this.onKernelStart();
 
 			//Main loop
@@ -132,7 +137,7 @@ public class Kernel implements Runnable
 		}
 		finally
 		{
-			System.out.println("Stopping kernel...");
+			LOG.info("Stopping kernel...");
 			this.onKernelStop();
 
 			//Termination
