@@ -4,14 +4,15 @@ import net.jimboi.canary.stage_a.base.TextureAtlasBuilder;
 import net.jimboi.canary.stage_a.smuc.screen.ScreenManager;
 
 import org.bstone.application.Application;
-import org.bstone.application.game.GameEngine;
-import org.bstone.input.InputContext;
 import org.bstone.render.RenderEngine;
 import org.bstone.util.Direction;
 import org.qsilver.ResourceLocation;
 import org.zilar.gui.GuiFrame;
 import org.zilar.gui.GuiPanel;
 import org.zilar.gui.GuiRenderer;
+import org.zilar.in.adapter.AxisRangeAdapter;
+import org.zilar.in.adapter.ButtonReleaseAdapter;
+import org.zilar.in.provider.Mouse;
 
 /**
  * Created by Andy on 11/21/17.
@@ -36,6 +37,18 @@ public class Smuc extends GameEngine
 	private GuiRenderer guiRenderer;
 
 	@Override
+	public void onFixedUpdate()
+	{
+		super.onFixedUpdate();
+
+		this.frame.setCursorPosition(
+				this.inputEngine.getRangeOrDefault("main", "mousex", 0),
+				this.inputEngine.getRangeOrDefault("main", "mousey", 0));
+		this.frame.setCursorAction(
+				this.inputEngine.getStateOrDefault("main", "mouseleft", false));
+	}
+
+	@Override
 	public void onRenderLoad(RenderEngine renderEngine)
 	{
 		renderEngine.getWindow().setSize(480, 640);
@@ -56,9 +69,9 @@ public class Smuc extends GameEngine
 		tab.addTileSheet(0, 0, 16, 16, 0, 0, 16, 16);
 		this.assetManager.cacheResource("texture_atlas", "font", tab.bake());
 
-		this.input.registerEvent("mousex", this.inputEngine.getMouse().getCursorX()::getRange);
-		this.input.registerEvent("mousey", this.inputEngine.getMouse().getCursorY()::getRange);
-		this.input.registerEvent("mouseleft", this.inputEngine.getMouse().getButton(0)::getAction);
+		this.inputEngine.registerRange("main", "mousex", new AxisRangeAdapter(this.getMouse(), false, Mouse.AXIS_CURSORX));
+		this.inputEngine.registerRange("main", "mousey", new AxisRangeAdapter(this.getMouse(), false, Mouse.AXIS_CURSORY));
+		this.inputEngine.registerAction("main", "mouseleft", new ButtonReleaseAdapter(this.getMouse(), Mouse.BUTTON_MOUSE_LEFT));
 
 		this.console = new Console(this.window.getView().getCurrentViewPort(),
 				this.assetManager,
@@ -88,12 +101,5 @@ public class Smuc extends GameEngine
 
 		this.frame.update();
 		this.guiRenderer.render(this.frame, this.frame.getElements());
-	}
-
-	@Override
-	public void onInputUpdate(InputContext context)
-	{
-		this.frame.setCursorPosition(this.input.getRange("mousex").getRange(), this.input.getRange("mousey").getRange());
-		this.frame.setCursorAction(this.input.getAction("mouseleft").isReleasedAndConsume());
 	}
 }

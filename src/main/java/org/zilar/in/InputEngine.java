@@ -2,6 +2,7 @@ package org.zilar.in;
 
 import org.bstone.kernel.Engine;
 import org.zilar.in.adapter.InputAdapter;
+import org.zilar.in.provider.InputProvider;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -81,16 +82,30 @@ public class InputEngine implements Engine
 		InputContext inputContext = this.contexts.get(context);
 		if (inputContext == null)
 		{
-			int priority = this.contextQueue.get(this.contextQueue.size()).getPriority() + 1;
+			int priority = this.contextQueue.isEmpty() ? 0 :
+					this.contextQueue.get(this.contextQueue.size()).getPriority() + 1;
 			this.setContextPriority(context, priority);
 			inputContext = this.contexts.get(context);
 		}
 		return inputContext;
 	}
 
-	public void registerInputAdapter(InputAdapter adapter)
+	public void registerState(String context, String intent, InputAdapter adapter)
 	{
-		this.adapters.put(adapter.getName(), adapter);
+		this.adapters.put(intent, adapter);
+		this.getContext(context).registerStateInput(intent);
+	}
+
+	public void registerAction(String context, String intent, InputAdapter adapter)
+	{
+		this.adapters.put(intent, adapter);
+		this.getContext(context).registerActionInput(intent);
+	}
+
+	public void registerRange(String context, String intent, InputAdapter adapter)
+	{
+		this.adapters.put(intent, adapter);
+		this.getContext(context).registerRangeInput(intent);
 	}
 
 	public InputAdapter getInputAdapter(String input)
@@ -98,27 +113,15 @@ public class InputEngine implements Engine
 		return this.adapters.get(input);
 	}
 
-	public void registerState(String context, String intent, InputAdapter adapter)
-	{
-		this.registerInputAdapter(adapter);
-		this.getContext(context).registerStateInput(intent);
-	}
-
-	public void registerAction(String context, String intent, InputAdapter adapter)
-	{
-		this.registerInputAdapter(adapter);
-		this.getContext(context).registerActionInput(intent);
-	}
-
-	public void registerRange(String context, String intent, InputAdapter adapter)
-	{
-		this.registerInputAdapter(adapter);
-		this.getContext(context).registerRangeInput(intent);
-	}
-
 	public Boolean getState(String context, String intent)
 	{
 		return this.getContext(context).getState(intent);
+	}
+
+	public boolean getStateOrDefault(String context, String intent, boolean defaultValue)
+	{
+		Boolean b = this.getState(context, intent);
+		return b != null ? b : defaultValue;
 	}
 
 	public Integer getAction(String context, String intent)
@@ -126,8 +129,20 @@ public class InputEngine implements Engine
 		return this.getContext(context).getAction(intent);
 	}
 
+	public int getActionOrDefault(String context, String intent, int defaultValue)
+	{
+		Integer i = this.getAction(context, intent);
+		return i != null ? i : defaultValue;
+	}
+
 	public Float getRange(String context, String intent)
 	{
 		return this.getContext(context).getRange(intent);
+	}
+
+	public float getRangeOrDefault(String context, String intent, float defaultValue)
+	{
+		Float f = this.getRange(context, intent);
+		return f != null ? f : defaultValue;
 	}
 }

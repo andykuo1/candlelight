@@ -1,14 +1,16 @@
 package org.zilar.in;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.zilar.in.handler.HandlerList;
+import org.zilar.in.handler.InputHandler;
+import org.zilar.in.provider.InputProvider;
 
 /**
  * Created by Andy on 1/22/18.
  */
 public class InputState
 {
-	private final Set<InputHandler> inputHandlers = new HashSet<>();
+	private final HandlerList<InputHandler> inputHandlers = new HandlerList<>();
+	private final InputProvider provider;
 
 	private final float[] prevAxes;
 	private final float[] axes;
@@ -16,8 +18,10 @@ public class InputState
 	private final int[] buttons;
 	private final boolean[] flags;
 
-	public InputState(int axisCount, int buttonCount)
+	public InputState(InputProvider provider, int axisCount, int buttonCount)
 	{
+		this.provider = provider;
+
 		this.prevAxes = new float[axisCount];
 		this.axes = new float[axisCount];
 
@@ -29,24 +33,12 @@ public class InputState
 
 	public InputState(InputState other)
 	{
-		this(other.axes.length, other.buttons.length);
+		this(other.provider, other.axes.length, other.buttons.length);
 
 		this.copy(other);
 	}
 
-	public InputState addInputHandler(InputHandler handler)
-	{
-		this.inputHandlers.add(handler);
-		return this;
-	}
-
-	public InputState removeInputHandler(InputHandler handler)
-	{
-		this.inputHandlers.remove(handler);
-		return this;
-	}
-
-	public Iterable<InputHandler> getInputHandlers()
+	public HandlerList<InputHandler> getInputHandlers()
 	{
 		return this.inputHandlers;
 	}
@@ -180,5 +172,10 @@ public class InputState
 		{
 			this.flags[i] = false;
 		}
+	}
+
+	public InputProvider getProvider()
+	{
+		return this.provider;
 	}
 }

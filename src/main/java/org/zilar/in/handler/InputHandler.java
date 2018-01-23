@@ -1,4 +1,6 @@
-package org.zilar.in;
+package org.zilar.in.handler;
+
+import org.zilar.in.InputState;
 
 /**
  * Created by Andy on 1/22/18.

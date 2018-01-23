@@ -1,7 +1,7 @@
 package org.zilar.in.adapter;
 
-import org.zilar.in.InputProvider;
 import org.zilar.in.InputState;
+import org.zilar.in.provider.InputProvider;
 
 /**
  * Created by Andy on 1/22/18.
@@ -10,9 +10,9 @@ public class ButtonStateAdapter extends InputAdapter
 {
 	private final int[] buttons;
 
-	public ButtonStateAdapter(String name, InputProvider provider, int... buttons)
+	public ButtonStateAdapter(InputProvider provider, int... buttons)
 	{
-		super(name, provider);
+		super(provider);
 		this.buttons = buttons;
 	}
 

@@ -1,7 +1,7 @@
 package org.zilar.in.adapter;
 
-import org.zilar.in.InputProvider;
 import org.zilar.in.InputState;
+import org.zilar.in.provider.InputProvider;
 
 /**
  * Created by Andy on 1/22/18.
@@ -10,9 +10,9 @@ public class AxisMotionAdapter extends InputAdapter
 {
 	private final int[] axes;
 
-	public AxisMotionAdapter(String name, InputProvider provider, int... axes)
+	public AxisMotionAdapter(InputProvider provider, int... axes)
 	{
-		super(name, provider);
+		super(provider);
 		this.axes = axes;
 	}
 

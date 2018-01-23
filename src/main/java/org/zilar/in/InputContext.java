@@ -1,10 +1,9 @@
 package org.zilar.in;
 
 import org.zilar.in.adapter.InputAdapter;
+import org.zilar.in.provider.InputProvider;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -18,10 +17,9 @@ public class InputContext implements Comparable<InputContext>
 	private final Set<String> actionInputs = new HashSet<>();
 	private final Set<String> rangeInputs = new HashSet<>();
 
-	private final Map<String, Boolean> states = new HashMap<>();
-	private final Map<String, Integer> actions = new HashMap<>();
-	private final Map<String, Float> ranges = new HashMap<>();
+	private final AdapterState adapterState = new AdapterState();
 
+	private boolean active = true;
 	private int priority = 0;
 
 	public InputContext(InputEngine inputEngine)
@@ -32,6 +30,12 @@ public class InputContext implements Comparable<InputContext>
 	public InputContext setPriority(int priority)
 	{
 		this.priority = priority;
+		return this;
+	}
+
+	public InputContext setActive(boolean active)
+	{
+		this.active = active;
 		return this;
 	}
 
@@ -52,27 +56,29 @@ public class InputContext implements Comparable<InputContext>
 
 	public Boolean getState(String intent)
 	{
-		return this.states.get(intent);
+		return this.active ? this.adapterState.getState(intent) : null;
 	}
 
 	public Integer getAction(String intent)
 	{
-		return this.actions.get(intent);
+		return this.active ? this.adapterState.getAction(intent) : null;
 	}
 
 	public Float getRange(String intent)
 	{
-		return this.ranges.get(intent);
+		return this.active ? this.adapterState.getRange(intent) : null;
 	}
 
 	public void poll(InputProvider provider, InputState inputState)
 	{
+		if (!this.active) return;
+
 		for(String intent : this.stateInputs)
 		{
 			InputAdapter adapter = this.inputEngine.getInputAdapter(intent);
 			if (adapter == null || !adapter.getProvider().equals(provider)) continue;
 			Boolean state = adapter.getState(inputState);
-			this.states.put(intent, state);
+			this.adapterState.setState(intent, state);
 		}
 
 		for(String intent : this.actionInputs)
@@ -80,7 +86,7 @@ public class InputContext implements Comparable<InputContext>
 			InputAdapter adapter = this.inputEngine.getInputAdapter(intent);
 			if (adapter == null || !adapter.getProvider().equals(provider)) continue;
 			Integer action = adapter.getAction(inputState);
-			this.actions.put(intent, action);
+			this.adapterState.setAction(intent, action);
 		}
 
 		for(String intent : this.rangeInputs)
@@ -88,7 +94,7 @@ public class InputContext implements Comparable<InputContext>
 			InputAdapter adapter = this.inputEngine.getInputAdapter(intent);
 			if (adapter == null || !adapter.getProvider().equals(provider)) continue;
 			Float range = adapter.getRange(inputState);
-			this.ranges.put(intent, range);
+			this.adapterState.setRange(intent, range);
 		}
 	}
 
@@ -103,6 +109,11 @@ public class InputContext implements Comparable<InputContext>
 	public int getPriority()
 	{
 		return this.priority;
+	}
+
+	public boolean isActive()
+	{
+		return this.active;
 	}
 
 	public InputEngine getInputEngine()

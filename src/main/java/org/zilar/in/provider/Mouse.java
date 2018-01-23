@@ -1,10 +1,11 @@
-package org.zilar.in;
+package org.zilar.in.provider;
 
 import org.bstone.window.Window;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWScrollCallbackI;
+import org.zilar.in.InputState;
 
 /**
  * Created by Andy on 1/22/18.
@@ -23,11 +24,13 @@ public class Mouse implements InputProvider
 	public static final int BUTTON_LAST = GLFW.GLFW_MOUSE_BUTTON_LAST;
 
 	private final Window window;
-	private final InputState inputState = new InputState(AXIS_LAST + 1, BUTTON_LAST + 1);
+	private final InputState inputState;
 
 	public Mouse(Window window)
 	{
 		this.window = window;
+
+		this.inputState = new InputState(this, AXIS_LAST + 1, BUTTON_LAST + 1);
 
 		GLFWMouseButtonCallbackI mouseButtonCallback = null;
 		GLFWScrollCallbackI scrollCallback = null;
@@ -84,7 +87,7 @@ public class Mouse implements InputProvider
 	protected void onMouseScroll(long handle, double xoffset, double yoffset)
 	{
 		this.inputState.moveAxis(AXIS_SCROLLX, (float) xoffset);
-		this.inputState.moveAxis(AXIS_SCROLLY, (float) xoffset);
+		this.inputState.moveAxis(AXIS_SCROLLY, (float) yoffset);
 	}
 
 	protected void onMousePosition(long handle, double xpos, double ypos)

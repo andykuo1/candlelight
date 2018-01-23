@@ -1,7 +1,7 @@
 package org.zilar.in.adapter;
 
-import org.zilar.in.InputProvider;
 import org.zilar.in.InputState;
+import org.zilar.in.provider.InputProvider;
 
 /**
  * Created by Andy on 1/22/18.
@@ -9,11 +9,13 @@ import org.zilar.in.InputState;
 public class AxisRangeAdapter extends InputAdapter
 {
 	private final int[] axes;
+	private final boolean consume;
 
-	public AxisRangeAdapter(String name, InputProvider provider, int... axes)
+	public AxisRangeAdapter(InputProvider provider, boolean consume, int... axes)
 	{
-		super(name, provider);
+		super(provider);
 		this.axes = axes;
+		this.consume = consume;
 	}
 
 	@Override
@@ -22,11 +24,11 @@ public class AxisRangeAdapter extends InputAdapter
 		for(int i = 0; i < this.axes.length; ++i)
 		{
 			int id = this.axes[i];
-			Float axis = inputState.getAxis(id);
-			if (axis != null)
+			Float change = inputState.getAxisChange(id);
+			if (change != null)
 			{
-				inputState.consumeAxis(id);
-				return axis != 0;
+				if (this.consume) inputState.consumeAxis(id);
+				return change != 0;
 			}
 		}
 		return null;
@@ -41,7 +43,7 @@ public class AxisRangeAdapter extends InputAdapter
 			Float change = inputState.getAxisChange(id);
 			if (change != null)
 			{
-				inputState.consumeAxis(id);
+				if (this.consume) inputState.consumeAxis(id);
 				return change > 0 ? 1 : change < 0 ? -1 : 0;
 			}
 		}
@@ -57,7 +59,7 @@ public class AxisRangeAdapter extends InputAdapter
 			Float axis = inputState.getAxis(id);
 			if (axis != null)
 			{
-				inputState.consumeAxis(id);
+				if (this.consume) inputState.consumeAxis(id);
 				return axis;
 			}
 		}
