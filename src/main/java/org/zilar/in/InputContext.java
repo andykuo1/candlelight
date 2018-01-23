@@ -1,6 +1,8 @@
 package org.zilar.in;
 
-import org.zilar.in.adapter.InputAdapter;
+import org.zilar.in.adapter.InputActionAdapter;
+import org.zilar.in.adapter.InputRangeAdapter;
+import org.zilar.in.adapter.InputStateAdapter;
 import org.zilar.in.provider.InputProvider;
 
 import java.util.HashSet;
@@ -75,24 +77,24 @@ public class InputContext implements Comparable<InputContext>
 
 		for(String intent : this.stateInputs)
 		{
-			InputAdapter adapter = this.inputEngine.getInputAdapter(intent);
-			if (adapter == null || !adapter.getProvider().equals(provider)) continue;
+			InputStateAdapter adapter = (InputStateAdapter) this.inputEngine.getInputAdapter(intent);
+			if (adapter == null) continue;
 			Boolean state = adapter.getState(inputState);
 			this.adapterState.setState(intent, state);
 		}
 
 		for(String intent : this.actionInputs)
 		{
-			InputAdapter adapter = this.inputEngine.getInputAdapter(intent);
-			if (adapter == null || !adapter.getProvider().equals(provider)) continue;
+			InputActionAdapter adapter = (InputActionAdapter) this.inputEngine.getInputAdapter(intent);
+			if (adapter == null) continue;
 			Integer action = adapter.getAction(inputState);
 			this.adapterState.setAction(intent, action);
 		}
 
 		for(String intent : this.rangeInputs)
 		{
-			InputAdapter adapter = this.inputEngine.getInputAdapter(intent);
-			if (adapter == null || !adapter.getProvider().equals(provider)) continue;
+			InputRangeAdapter adapter = (InputRangeAdapter) this.inputEngine.getInputAdapter(intent);
+			if (adapter == null) continue;
 			Float range = adapter.getRange(inputState);
 			this.adapterState.setRange(intent, range);
 		}

@@ -2,6 +2,8 @@ package org.zilar.in;
 
 import org.zilar.in.handler.HandlerList;
 import org.zilar.in.handler.InputHandler;
+import org.zilar.in.provider.AxisInput;
+import org.zilar.in.provider.ButtonInput;
 import org.zilar.in.provider.InputProvider;
 
 /**
@@ -14,8 +16,11 @@ public class InputState
 
 	private final float[] prevAxes;
 	private final float[] axes;
+
 	private final int[] prevButtons;
 	private final int[] buttons;
+
+	private final boolean[] changeFlags;
 	private final boolean[] flags;
 
 	public InputState(InputProvider provider, int axisCount, int buttonCount)
@@ -28,6 +33,7 @@ public class InputState
 		this.prevButtons = new int[buttonCount];
 		this.buttons = new int[buttonCount];
 
+		this.changeFlags = new boolean[this.axes.length + this.buttons.length];
 		this.flags = new boolean[this.axes.length + this.buttons.length];
 	}
 
@@ -50,6 +56,7 @@ public class InputState
 			this.prevAxes[i] = other.prevAxes[i];
 			this.axes[i] = other.axes[i];
 			this.flags[i] = other.flags[i];
+			this.changeFlags[i] = other.flags[i];
 		}
 
 		for(int i = 0; i < this.buttons.length && i < other.buttons.length; ++i)
@@ -57,6 +64,7 @@ public class InputState
 			this.prevButtons[i] = other.prevButtons[i];
 			this.buttons[i] = other.buttons[i];
 			this.flags[this.axes.length + i] = other.flags[other.axes.length + i];
+			this.changeFlags[this.axes.length + i] = other.flags[other.axes.length + i];
 		}
 	}
 
@@ -66,6 +74,7 @@ public class InputState
 
 		this.axes[id] += offset;
 		this.flags[id] = true;
+		this.changeFlags[id] = true;
 	}
 
 	public void setAxis(int id, float value)
@@ -74,6 +83,7 @@ public class InputState
 
 		this.axes[id] = value;
 		this.flags[id] = true;
+		this.changeFlags[id] = true;
 	}
 
 	protected boolean onAxisUpdate(int id, float newValue)
@@ -95,6 +105,7 @@ public class InputState
 
 		this.buttons[id] = 1;
 		this.flags[this.axes.length + id] = true;
+		this.changeFlags[this.axes.length + id] = true;
 	}
 
 	public void releaseButton(int id)
@@ -103,6 +114,7 @@ public class InputState
 
 		this.buttons[id] = 0;
 		this.flags[this.axes.length + id] = true;
+		this.changeFlags[this.axes.length + id] = true;
 	}
 
 	public void setButton(int id, int state)
@@ -111,6 +123,7 @@ public class InputState
 
 		this.buttons[id] = state;
 		this.flags[this.axes.length + id] = true;
+		this.changeFlags[this.axes.length + id] = true;
 	}
 
 	protected boolean onButtonUpdate(int id, int newValue)
@@ -131,14 +144,9 @@ public class InputState
 		return this.flags[id] ? this.axes[id] : null;
 	}
 
-	public Float getAxisPrevious(int id)
-	{
-		return this.flags[id] ? this.prevAxes[id] : null;
-	}
-
 	public Float getAxisChange(int id)
 	{
-		return this.flags[id] ? this.axes[id] - this.prevAxes[id] : null;
+		return this.changeFlags[id] ? this.axes[id] - this.prevAxes[id] : null;
 	}
 
 	public Integer getButton(int id)
@@ -146,14 +154,9 @@ public class InputState
 		return this.flags[this.axes.length + id] ? this.buttons[id] : null;
 	}
 
-	public Integer getButtonPrevious(int id)
-	{
-		return this.flags[this.axes.length + id] ? this.prevButtons[id] : null;
-	}
-
 	public Integer getButtonChange(int id)
 	{
-		return this.flags[this.axes.length + id] ? this.buttons[id] - this.prevButtons[id] : null;
+		return this.changeFlags[this.axes.length + id] ? this.buttons[id] - this.prevButtons[id] : null;
 	}
 
 	public void consumeAxis(int id)
@@ -161,9 +164,19 @@ public class InputState
 		this.flags[id] = false;
 	}
 
+	public void consumeAxisChange(int id)
+	{
+		this.changeFlags[id] = false;
+	}
+
 	public void consumeButton(int id)
 	{
 		this.flags[this.axes.length + id] = false;
+	}
+
+	public void consumeButtonChange(int id)
+	{
+		this.changeFlags[this.axes.length + id] = false;
 	}
 
 	public void consumeAll()
@@ -171,7 +184,18 @@ public class InputState
 		for(int i = 0; i < this.flags.length; ++i)
 		{
 			this.flags[i] = false;
+			this.changeFlags[i] = false;
 		}
+	}
+
+	public boolean contains(AxisInput axis)
+	{
+		return axis.getProvider().equals(this.provider);
+	}
+
+	public boolean contains(ButtonInput button)
+	{
+		return button.getProvider().equals(this.provider);
 	}
 
 	public InputProvider getProvider()

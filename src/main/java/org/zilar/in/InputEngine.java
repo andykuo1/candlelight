@@ -1,7 +1,10 @@
 package org.zilar.in;
 
 import org.bstone.kernel.Engine;
+import org.zilar.in.adapter.InputActionAdapter;
 import org.zilar.in.adapter.InputAdapter;
+import org.zilar.in.adapter.InputRangeAdapter;
+import org.zilar.in.adapter.InputStateAdapter;
 import org.zilar.in.provider.InputProvider;
 
 import java.util.HashMap;
@@ -90,22 +93,25 @@ public class InputEngine implements Engine
 		return inputContext;
 	}
 
-	public void registerState(String context, String intent, InputAdapter adapter)
+	public InputStateAdapter register(String context, String intent, InputStateAdapter adapter)
 	{
 		this.adapters.put(intent, adapter);
 		this.getContext(context).registerStateInput(intent);
+		return adapter;
 	}
 
-	public void registerAction(String context, String intent, InputAdapter adapter)
+	public InputActionAdapter register(String context, String intent, InputActionAdapter adapter)
 	{
 		this.adapters.put(intent, adapter);
 		this.getContext(context).registerActionInput(intent);
+		return adapter;
 	}
 
-	public void registerRange(String context, String intent, InputAdapter adapter)
+	public InputRangeAdapter register(String context, String intent, InputRangeAdapter adapter)
 	{
 		this.adapters.put(intent, adapter);
 		this.getContext(context).registerRangeInput(intent);
+		return adapter;
 	}
 
 	public InputAdapter getInputAdapter(String input)
