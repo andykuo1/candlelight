@@ -1,40 +1,41 @@
 package org.zilar.in;
 
 import org.bstone.kernel.Engine;
-import org.zilar.in.adapter.InputActionAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.zilar.in.adapter.InputAdapter;
-import org.zilar.in.adapter.InputRangeAdapter;
-import org.zilar.in.adapter.InputStateAdapter;
 import org.zilar.in.provider.InputProvider;
+import org.zilar.in.state.InputState;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Andy on 1/22/18.
  */
 public class InputEngine implements Engine
 {
+	private static final Logger LOG = LoggerFactory.getLogger(InputEngine.class);
+
 	private final Map<String, InputContext> contexts = new HashMap<>();
 	private final List<InputContext> contextQueue = new LinkedList<>();
 
 	private final Map<String, InputAdapter> adapters = new HashMap<>();
 
-	private final Set<InputProvider> providers = new HashSet<>();
+	private final InputState inputState = new InputState();
 
 	public InputEngine addProvider(InputProvider provider)
 	{
-		this.providers.add(provider);
+		this.inputState.addProvider(provider);
 		return this;
 	}
 
-	public void removeProvider(InputProvider provider)
+	public InputEngine removeProvider(InputProvider provider)
 	{
-		this.providers.remove(provider);
+		this.inputState.removeProvider(provider);
+		return this;
 	}
 
 	@Override
@@ -55,13 +56,9 @@ public class InputEngine implements Engine
 	@Override
 	public void update()
 	{
-		for(InputProvider provider : this.providers)
+		for (InputContext inputContext : this.contextQueue)
 		{
-			InputState inputState = provider.getInputState();
-			for (InputContext inputContext : this.contextQueue)
-			{
-				inputContext.poll(provider, inputState);
-			}
+			inputContext.poll(this.inputState);
 		}
 	}
 
@@ -86,31 +83,17 @@ public class InputEngine implements Engine
 		if (inputContext == null)
 		{
 			int priority = this.contextQueue.isEmpty() ? 0 :
-					this.contextQueue.get(this.contextQueue.size()).getPriority() + 1;
+					this.contextQueue.get(this.contextQueue.size() - 1).getPriority() + 1;
 			this.setContextPriority(context, priority);
 			inputContext = this.contexts.get(context);
 		}
 		return inputContext;
 	}
 
-	public InputStateAdapter register(String context, String intent, InputStateAdapter adapter)
+	public InputAdapter register(String context, String intent, InputAdapter adapter)
 	{
 		this.adapters.put(intent, adapter);
-		this.getContext(context).registerStateInput(intent);
-		return adapter;
-	}
-
-	public InputActionAdapter register(String context, String intent, InputActionAdapter adapter)
-	{
-		this.adapters.put(intent, adapter);
-		this.getContext(context).registerActionInput(intent);
-		return adapter;
-	}
-
-	public InputRangeAdapter register(String context, String intent, InputRangeAdapter adapter)
-	{
-		this.adapters.put(intent, adapter);
-		this.getContext(context).registerRangeInput(intent);
+		this.getContext(context).registerInput(intent);
 		return adapter;
 	}
 

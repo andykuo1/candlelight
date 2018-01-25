@@ -11,6 +11,8 @@ import org.bstone.application.service.TickServiceManager;
 import org.bstone.asset.AssetManager;
 import org.bstone.json.JSONObject;
 import org.bstone.json.JSONString;
+import org.bstone.newinput.device.Keyboard;
+import org.bstone.newinput.device.Mouse;
 import org.bstone.render.RenderEngine;
 import org.bstone.resource.BitmapLoader;
 import org.bstone.resource.MeshLoader;
@@ -25,8 +27,8 @@ import org.bstone.window.Window;
 import org.lwjgl.opengl.GL20;
 import org.qsilver.ResourceLocation;
 import org.zilar.in.InputEngine;
-import org.zilar.in.provider.Keyboard;
-import org.zilar.in.provider.Mouse;
+import org.zilar.in.provider.KeyboardHandler;
+import org.zilar.in.provider.MouseHandler;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -39,8 +41,12 @@ public class GameEngine implements Framework, Game
 {
 	protected final Window window;
 	protected final InputEngine inputEngine;
+
 	protected Mouse mouse;
 	protected Keyboard keyboard;
+
+	protected MouseHandler mouseHandler;
+	protected KeyboardHandler keyboardHandler;
 	//protected final InputEngine inputEngine;
 	//protected InputContext input;
 
@@ -81,9 +87,14 @@ public class GameEngine implements Framework, Game
 	{
 		this.window.setSize(640, 480).setTitle("Application").show();
 
-		this.mouse = new Mouse(this.window);
-		this.keyboard = new Keyboard(this.window);
-		this.inputEngine.addProvider(this.mouse).addProvider(this.keyboard);
+		this.mouse = new Mouse(this.window, null);
+		this.keyboard = new Keyboard(this.window, null);
+
+		this.mouseHandler = new MouseHandler();
+		this.mouse.addEventListener(this.mouseHandler);
+		this.keyboardHandler = new KeyboardHandler();
+		this.keyboard.addEventListener(this.keyboardHandler);
+		this.inputEngine.addProvider(this.mouseHandler).addProvider(this.keyboardHandler);
 
 		this.assetManager.registerLoader("bitmap", new BitmapLoader());
 		this.assetManager.registerLoader("texture", new TextureLoader(this.assetManager));
@@ -207,14 +218,14 @@ public class GameEngine implements Framework, Game
 		return inputEngine;
 	}
 
-	public Mouse getMouse()
+	public MouseHandler getMouse()
 	{
-		return this.mouse;
+		return this.mouseHandler;
 	}
 
-	public Keyboard getKeyboard()
+	public KeyboardHandler getKeyboard()
 	{
-		return this.keyboard;
+		return this.keyboardHandler;
 	}
 
 	public AssetManager getAssetManager()

@@ -1,15 +1,13 @@
-package org.zilar.in;
+package org.zilar.in.state;
 
 import org.zilar.in.handler.HandlerList;
 import org.zilar.in.handler.InputHandler;
-import org.zilar.in.provider.AxisInput;
-import org.zilar.in.provider.ButtonInput;
 import org.zilar.in.provider.InputProvider;
 
 /**
- * Created by Andy on 1/22/18.
+ * Created by Andy on 1/23/18.
  */
-public class InputState
+public class RawInputState
 {
 	private final HandlerList<InputHandler> inputHandlers = new HandlerList<>();
 	private final InputProvider provider;
@@ -20,10 +18,10 @@ public class InputState
 	private final int[] prevButtons;
 	private final int[] buttons;
 
-	private final boolean[] changeFlags;
+	private final boolean[] motionFlags;
 	private final boolean[] flags;
 
-	public InputState(InputProvider provider, int axisCount, int buttonCount)
+	public RawInputState(InputProvider provider, int axisCount, int buttonCount)
 	{
 		this.provider = provider;
 
@@ -33,11 +31,11 @@ public class InputState
 		this.prevButtons = new int[buttonCount];
 		this.buttons = new int[buttonCount];
 
-		this.changeFlags = new boolean[this.axes.length + this.buttons.length];
+		this.motionFlags = new boolean[this.axes.length + this.buttons.length];
 		this.flags = new boolean[this.axes.length + this.buttons.length];
 	}
 
-	public InputState(InputState other)
+	public RawInputState(RawInputState other)
 	{
 		this(other.provider, other.axes.length, other.buttons.length);
 
@@ -49,14 +47,14 @@ public class InputState
 		return this.inputHandlers;
 	}
 
-	public void copy(InputState other)
+	public void copy(RawInputState other)
 	{
 		for(int i = 0; i < this.axes.length && i < other.axes.length; ++i)
 		{
 			this.prevAxes[i] = other.prevAxes[i];
 			this.axes[i] = other.axes[i];
 			this.flags[i] = other.flags[i];
-			this.changeFlags[i] = other.flags[i];
+			this.motionFlags[i] = other.flags[i];
 		}
 
 		for(int i = 0; i < this.buttons.length && i < other.buttons.length; ++i)
@@ -64,17 +62,17 @@ public class InputState
 			this.prevButtons[i] = other.prevButtons[i];
 			this.buttons[i] = other.buttons[i];
 			this.flags[this.axes.length + i] = other.flags[other.axes.length + i];
-			this.changeFlags[this.axes.length + i] = other.flags[other.axes.length + i];
+			this.motionFlags[this.axes.length + i] = other.flags[other.axes.length + i];
 		}
 	}
 
-	public void moveAxis(int id, float offset)
+	public void offsetAxis(int id, float offset)
 	{
 		if (!this.onAxisUpdate(id, this.axes[id] + offset)) return;
 
 		this.axes[id] += offset;
 		this.flags[id] = true;
-		this.changeFlags[id] = true;
+		this.motionFlags[id] = true;
 	}
 
 	public void setAxis(int id, float value)
@@ -83,7 +81,7 @@ public class InputState
 
 		this.axes[id] = value;
 		this.flags[id] = true;
-		this.changeFlags[id] = true;
+		this.motionFlags[id] = true;
 	}
 
 	protected boolean onAxisUpdate(int id, float newValue)
@@ -105,7 +103,7 @@ public class InputState
 
 		this.buttons[id] = 1;
 		this.flags[this.axes.length + id] = true;
-		this.changeFlags[this.axes.length + id] = true;
+		this.motionFlags[this.axes.length + id] = true;
 	}
 
 	public void releaseButton(int id)
@@ -114,7 +112,7 @@ public class InputState
 
 		this.buttons[id] = 0;
 		this.flags[this.axes.length + id] = true;
-		this.changeFlags[this.axes.length + id] = true;
+		this.motionFlags[this.axes.length + id] = true;
 	}
 
 	public void setButton(int id, int state)
@@ -123,7 +121,7 @@ public class InputState
 
 		this.buttons[id] = state;
 		this.flags[this.axes.length + id] = true;
-		this.changeFlags[this.axes.length + id] = true;
+		this.motionFlags[this.axes.length + id] = true;
 	}
 
 	protected boolean onButtonUpdate(int id, int newValue)
@@ -144,9 +142,9 @@ public class InputState
 		return this.flags[id] ? this.axes[id] : null;
 	}
 
-	public Float getAxisChange(int id)
+	public Float getAxisMotion(int id)
 	{
-		return this.changeFlags[id] ? this.axes[id] - this.prevAxes[id] : null;
+		return this.motionFlags[id] ? this.axes[id] - this.prevAxes[id] : null;
 	}
 
 	public Integer getButton(int id)
@@ -154,9 +152,9 @@ public class InputState
 		return this.flags[this.axes.length + id] ? this.buttons[id] : null;
 	}
 
-	public Integer getButtonChange(int id)
+	public Integer getButtonMotion(int id)
 	{
-		return this.changeFlags[this.axes.length + id] ? this.buttons[id] - this.prevButtons[id] : null;
+		return this.motionFlags[this.axes.length + id] ? this.buttons[id] - this.prevButtons[id] : null;
 	}
 
 	public void consumeAxis(int id)
@@ -166,7 +164,7 @@ public class InputState
 
 	public void consumeAxisChange(int id)
 	{
-		this.changeFlags[id] = false;
+		this.motionFlags[id] = false;
 	}
 
 	public void consumeButton(int id)
@@ -176,7 +174,7 @@ public class InputState
 
 	public void consumeButtonChange(int id)
 	{
-		this.changeFlags[this.axes.length + id] = false;
+		this.motionFlags[this.axes.length + id] = false;
 	}
 
 	public void consumeAll()
@@ -184,18 +182,8 @@ public class InputState
 		for(int i = 0; i < this.flags.length; ++i)
 		{
 			this.flags[i] = false;
-			this.changeFlags[i] = false;
+			this.motionFlags[i] = false;
 		}
-	}
-
-	public boolean contains(AxisInput axis)
-	{
-		return axis.getProvider().equals(this.provider);
-	}
-
-	public boolean contains(ButtonInput button)
-	{
-		return button.getProvider().equals(this.provider);
 	}
 
 	public InputProvider getProvider()

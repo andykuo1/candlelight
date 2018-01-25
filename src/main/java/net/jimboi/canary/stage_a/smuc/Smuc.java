@@ -4,6 +4,7 @@ import net.jimboi.canary.stage_a.base.TextureAtlasBuilder;
 import net.jimboi.canary.stage_a.smuc.screen.ScreenManager;
 
 import org.bstone.application.Application;
+import org.bstone.newinput.device.Mouse;
 import org.bstone.render.RenderEngine;
 import org.bstone.util.Direction;
 import org.qsilver.ResourceLocation;
@@ -11,8 +12,7 @@ import org.zilar.gui.GuiFrame;
 import org.zilar.gui.GuiPanel;
 import org.zilar.gui.GuiRenderer;
 import org.zilar.in.adapter.newadapt.AxisAdapter;
-import org.zilar.in.adapter.newadapt.ButtonActionAdapter;
-import org.zilar.in.provider.Mouse;
+import org.zilar.in.adapter.newadapt.ButtonAdapter;
 
 /**
  * Created by Andy on 11/21/17.
@@ -71,7 +71,7 @@ public class Smuc extends GameEngine
 
 		this.inputEngine.register("main", "mousex", new AxisAdapter(this.getMouse().getAxis(Mouse.AXIS_CURSORX)));
 		this.inputEngine.register("main", "mousey", new AxisAdapter(this.getMouse().getAxis(Mouse.AXIS_CURSORY)));
-		this.inputEngine.register("main", "mouseleft", new ButtonActionAdapter(this.getMouse().getButton(Mouse.BUTTON_MOUSE_LEFT)));
+		this.inputEngine.register("main", "mouseleft", new ButtonAdapter(this.getMouse().getButton(Mouse.BUTTON_MOUSE_LEFT)));
 
 		this.console = new Console(this.window.getView().getCurrentViewPort(),
 				this.assetManager,

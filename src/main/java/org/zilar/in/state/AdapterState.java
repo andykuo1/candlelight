@@ -1,4 +1,4 @@
-package org.zilar.in;
+package org.zilar.in.state;
 
 import java.util.HashMap;
 import java.util.Map;

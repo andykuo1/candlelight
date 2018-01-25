@@ -1,16 +1,18 @@
 package org.zilar.in.adapter.newadapt;
 
-import org.zilar.in.InputState;
 import org.zilar.in.adapter.InputRangeAdapter;
 import org.zilar.in.adapter.InputStateAdapter;
+import org.zilar.in.state.InputState;
 
 /**
  * Created by Andy on 1/23/18.
  */
-public class VirtualAxisAdapter extends InputRangeAdapter
+public class VirtualAxisAdapter implements InputRangeAdapter
 {
 	private final InputStateAdapter pos;
 	private final InputStateAdapter neg;
+
+	private float range;
 
 	public VirtualAxisAdapter(InputStateAdapter pos, InputStateAdapter neg)
 	{
@@ -19,14 +21,18 @@ public class VirtualAxisAdapter extends InputRangeAdapter
 	}
 
 	@Override
-	public Float getRange(InputState inputState)
+	public void update(InputState inputState)
 	{
-		Boolean positive = this.pos.getState(inputState);
-		Boolean negative = this.neg.getState(inputState);
+		boolean positive = this.pos.getState();
+		boolean negative = this.neg.getState();
 
-		Float f = null;
-		if (positive != null && positive) f = 1F;
-		if (negative != null && negative) f = f == null ? -1 : f - 1F;
-		return f;
+		if (positive) this.range = 1F;
+		if (negative) this.range -= 1F;
+	}
+
+	@Override
+	public float getRange()
+	{
+		return this.range;
 	}
 }

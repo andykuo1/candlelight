@@ -1,16 +1,18 @@
 package org.zilar.in.adapter.newadapt;
 
-import org.zilar.in.InputState;
 import org.zilar.in.adapter.InputRangeAdapter;
-import org.zilar.in.provider.AxisInput;
+import org.zilar.in.input.AxisInput;
+import org.zilar.in.state.InputState;
 
 /**
  * Created by Andy on 1/23/18.
  */
-public class AxisAdapter extends InputRangeAdapter
+public class AxisAdapter implements InputRangeAdapter
 {
 	private final AxisInput[] inputs;
 	private boolean consume;
+
+	private float range;
 
 	public AxisAdapter(AxisInput...inputs)
 	{
@@ -24,26 +26,36 @@ public class AxisAdapter extends InputRangeAdapter
 	}
 
 	@Override
-	public Float getRange(InputState inputState)
+	public void update(InputState inputState)
 	{
-		Float range = null;
+		Float f = null;
 		for(AxisInput input : this.inputs)
 		{
 			if (inputState.contains(input))
 			{
-				Float axis = inputState.getAxis(input.getID());
+				Float axis = inputState.get(input);
 				if (axis != null)
 				{
 					if (this.consume)
 					{
-						inputState.consumeAxis(input.getID());
+						inputState.consume(input);
 					}
 
-					if (range == null) range = axis;
-					else range += axis;
+					if (f == null) f = axis;
+					else f += axis;
 				}
 			}
 		}
-		return range;
+
+		if (f != null)
+		{
+			this.range = f;
+		}
+	}
+
+	@Override
+	public float getRange()
+	{
+		return this.range;
 	}
 }

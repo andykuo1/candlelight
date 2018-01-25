@@ -1,9 +1,10 @@
 package org.zilar.in;
 
 import org.zilar.in.adapter.InputActionAdapter;
+import org.zilar.in.adapter.InputAdapter;
 import org.zilar.in.adapter.InputRangeAdapter;
 import org.zilar.in.adapter.InputStateAdapter;
-import org.zilar.in.provider.InputProvider;
+import org.zilar.in.state.InputState;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,11 +16,12 @@ public class InputContext implements Comparable<InputContext>
 {
 	private final InputEngine inputEngine;
 
-	private final Set<String> stateInputs = new HashSet<>();
-	private final Set<String> actionInputs = new HashSet<>();
-	private final Set<String> rangeInputs = new HashSet<>();
+	private final Set<String> inputIntents = new HashSet<>();
+	//private final Set<String> stateInputs = new HashSet<>();
+	//private final Set<String> actionInputs = new HashSet<>();
+	//private final Set<String> rangeInputs = new HashSet<>();
 
-	private final AdapterState adapterState = new AdapterState();
+	//private final AdapterState adapterState = new AdapterState();
 
 	private boolean active = true;
 	private int priority = 0;
@@ -41,62 +43,35 @@ public class InputContext implements Comparable<InputContext>
 		return this;
 	}
 
-	public void registerStateInput(String intent)
+	public void registerInput(String intent)
 	{
-		this.stateInputs.add(intent);
-	}
-
-	public void registerActionInput(String intent)
-	{
-		this.actionInputs.add(intent);
-	}
-
-	public void registerRangeInput(String intent)
-	{
-		this.rangeInputs.add(intent);
+		this.inputIntents.add(intent);
 	}
 
 	public Boolean getState(String intent)
 	{
-		return this.active ? this.adapterState.getState(intent) : null;
+		return this.active && this.inputIntents.contains(intent) ? ((InputStateAdapter) this.inputEngine.getInputAdapter(intent)).getState() : null;
 	}
 
 	public Integer getAction(String intent)
 	{
-		return this.active ? this.adapterState.getAction(intent) : null;
+		return this.active && this.inputIntents.contains(intent) ? ((InputActionAdapter) this.inputEngine.getInputAdapter(intent)).getAction() : null;
 	}
 
 	public Float getRange(String intent)
 	{
-		return this.active ? this.adapterState.getRange(intent) : null;
+		return this.active && this.inputIntents.contains(intent) ? ((InputRangeAdapter) this.inputEngine.getInputAdapter(intent)).getRange() : null;
 	}
 
-	public void poll(InputProvider provider, InputState inputState)
+	public void poll(InputState inputState)
 	{
 		if (!this.active) return;
 
-		for(String intent : this.stateInputs)
+		for(String intent : this.inputIntents)
 		{
-			InputStateAdapter adapter = (InputStateAdapter) this.inputEngine.getInputAdapter(intent);
+			InputAdapter adapter = this.inputEngine.getInputAdapter(intent);
 			if (adapter == null) continue;
-			Boolean state = adapter.getState(inputState);
-			this.adapterState.setState(intent, state);
-		}
-
-		for(String intent : this.actionInputs)
-		{
-			InputActionAdapter adapter = (InputActionAdapter) this.inputEngine.getInputAdapter(intent);
-			if (adapter == null) continue;
-			Integer action = adapter.getAction(inputState);
-			this.adapterState.setAction(intent, action);
-		}
-
-		for(String intent : this.rangeInputs)
-		{
-			InputRangeAdapter adapter = (InputRangeAdapter) this.inputEngine.getInputAdapter(intent);
-			if (adapter == null) continue;
-			Float range = adapter.getRange(inputState);
-			this.adapterState.setRange(intent, range);
+			adapter.update(inputState);
 		}
 	}
 

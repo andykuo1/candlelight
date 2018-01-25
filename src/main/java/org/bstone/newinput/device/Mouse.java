@@ -1,16 +1,21 @@
-package org.zilar.in.provider;
+package org.bstone.newinput.device;
 
+import org.bstone.newinput.device.event.InputEvent;
+import org.bstone.newinput.device.event.InputEventListener;
 import org.bstone.window.Window;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWScrollCallbackI;
-import org.zilar.in.InputState;
+import org.zilar.in2.InputEngine;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Andy on 1/22/18.
  */
-public class Mouse implements InputProvider
+public class Mouse implements InputDevice
 {
 	public static final int AXIS_CURSORX = 0;
 	public static final int AXIS_CURSORY = 1;
@@ -24,13 +29,16 @@ public class Mouse implements InputProvider
 	public static final int BUTTON_LAST = GLFW.GLFW_MOUSE_BUTTON_LAST;
 
 	private final Window window;
-	private final InputState inputState;
+	private final InputEngine inputEngine;
 
-	public Mouse(Window window)
+	private final List<InputEventListener> listeners = new ArrayList<>();
+
+	private boolean locked;
+
+	public Mouse(Window window, InputEngine inputEngine)
 	{
 		this.window = window;
-
-		this.inputState = new InputState(this, AXIS_LAST + 1, BUTTON_LAST + 1);
+		this.inputEngine = inputEngine;
 
 		GLFWMouseButtonCallbackI mouseButtonCallback = null;
 		GLFWScrollCallbackI scrollCallback = null;
@@ -68,15 +76,42 @@ public class Mouse implements InputProvider
 		}
 	}
 
+	public Mouse addEventListener(InputEventListener listener)
+	{
+		//TODO: Should be prioritized...
+		this.listeners.add(listener);
+		return this;
+	}
+
+	public Mouse removeEventListener(InputEventListener listener)
+	{
+		this.listeners.remove(listener);
+		return this;
+	}
+
+	@Override
+	public void fireEvent(InputEvent event)
+	{
+		for(InputEventListener listener : this.listeners)
+		{
+			if (listener.onInputEvent(event))
+			{
+				return;
+			}
+		}
+
+		if (this.inputEngine != null) this.inputEngine.queueEvent(event);
+	}
+
 	protected void onMouseButton(long handle, int button, int action, int mods)
 	{
 		if (action == GLFW.GLFW_RELEASE)
 		{
-			this.inputState.releaseButton(button);
+			this.fireEvent(InputEvent.getButtonReleaseEvent(this, button));
 		}
 		else if (action == GLFW.GLFW_PRESS)
 		{
-			this.inputState.pressButton(button);
+			this.fireEvent(InputEvent.getButtonPressEvent(this, button));
 		}
 		else
 		{
@@ -86,19 +121,28 @@ public class Mouse implements InputProvider
 
 	protected void onMouseScroll(long handle, double xoffset, double yoffset)
 	{
-		this.inputState.moveAxis(AXIS_SCROLLX, (float) xoffset);
-		this.inputState.moveAxis(AXIS_SCROLLY, (float) yoffset);
+		this.fireEvent(InputEvent.getAxisEvent(this, AXIS_SCROLLX, (float) xoffset));
+		this.fireEvent(InputEvent.getAxisEvent(this, AXIS_SCROLLY, (float) yoffset));
 	}
 
 	protected void onMousePosition(long handle, double xpos, double ypos)
 	{
-		this.inputState.setAxis(AXIS_CURSORX, (float) xpos);
-		this.inputState.setAxis(AXIS_CURSORY, (float) ypos);
+		this.fireEvent(InputEvent.getAxisEvent(this, AXIS_CURSORX, (float) xpos));
+		this.fireEvent(InputEvent.getAxisEvent(this, AXIS_CURSORY, (float) ypos));
 	}
 
-	public InputState getInputState()
+	public void setCursorMode(boolean locked)
 	{
-		return this.inputState;
+		//TODO: this needs to be called on the input thread, NOT THE MAIN!
+		if (this.locked == locked) return;
+		this.locked = locked;
+
+		GLFW.glfwSetInputMode(this.window.handle(), GLFW.GLFW_CURSOR, this.locked ? GLFW.GLFW_CURSOR_DISABLED : GLFW.GLFW_CURSOR_NORMAL);
+	}
+
+	public boolean getCursorMode()
+	{
+		return this.locked;
 	}
 
 	public Window getWindow()
