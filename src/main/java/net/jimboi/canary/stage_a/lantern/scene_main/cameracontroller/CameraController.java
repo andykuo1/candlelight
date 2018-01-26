@@ -1,6 +1,7 @@
 package net.jimboi.canary.stage_a.lantern.scene_main.cameracontroller;
 
 import org.bstone.camera.Camera;
+import org.bstone.input.InputEngine;
 import org.bstone.transform.Transform3;
 
 /**
@@ -15,15 +16,15 @@ public abstract class CameraController
 		this.camera = camera;
 	}
 
-	public final void update()
+	public final void update(InputEngine inputEngine)
 	{
-		if (this.onUpdate(this.camera, (Transform3) this.camera.transform()))
+		if (this.onUpdate(this.camera, (Transform3) this.camera.transform(), inputEngine))
 		{
 			this.camera.markDirty();
 		}
 	}
 
-	protected abstract boolean onUpdate(Camera camera, Transform3 cameraTransform);
+	protected abstract boolean onUpdate(Camera camera, Transform3 cameraTransform, InputEngine inputEngine);
 
 	public final Camera getCamera()
 	{

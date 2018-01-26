@@ -8,8 +8,9 @@ import org.bstone.application.service.RenderServiceManager;
 import org.bstone.application.service.TickService;
 import org.bstone.application.service.TickServiceManager;
 import org.bstone.asset.AssetManager;
-import org.bstone.input.InputContext;
 import org.bstone.input.InputEngine;
+import org.bstone.input.device.Keyboard;
+import org.bstone.input.device.Mouse;
 import org.bstone.json.JSONObject;
 import org.bstone.json.JSONString;
 import org.bstone.render.RenderEngine;
@@ -37,7 +38,9 @@ public class GameEngine implements Framework, Game
 {
 	protected final Window window;
 	protected final InputEngine inputEngine;
-	protected InputContext input;
+
+	protected Mouse mouse;
+	protected Keyboard keyboard;
 
 	protected final RenderEngine renderEngine;
 	protected final TickEngine tickEngine;
@@ -50,7 +53,7 @@ public class GameEngine implements Framework, Game
 	public GameEngine()
 	{
 		this.window = new Window();
-		this.inputEngine = new InputEngine(this.window);
+		this.inputEngine = new InputEngine();
 
 		this.tickEngine = new TickEngine(60, new TickServiceManager());
 		this.getTickServices().setHandler(this.tickEngine);
@@ -74,6 +77,11 @@ public class GameEngine implements Framework, Game
 	public void onApplicationStart(Application app)
 	{
 		this.window.setSize(640, 480).setTitle("Application").show();
+
+		this.mouse = new Mouse(this.window, this.inputEngine);
+		this.keyboard = new Keyboard(this.window, this.inputEngine);
+
+		this.inputEngine.addContext("main");
 
 		this.assetManager.registerLoader("bitmap", new BitmapLoader());
 		this.assetManager.registerLoader("texture", new TextureLoader(this.assetManager));
@@ -123,14 +131,11 @@ public class GameEngine implements Framework, Game
 			protected void onFixedUpdate()
 			{
 				GameEngine.this.frameCounter.tick();
+				GameEngine.this.inputEngine.poll();
 			}
 		});
 
 		app.startEngine(this.inputEngine);
-
-		this.input = this.inputEngine.getDefaultContext();
-		this.input.addListener(0, this);
-
 		app.startEngine(this.renderEngine);
 		app.startEngine(this.tickEngine);
 	}
@@ -199,6 +204,16 @@ public class GameEngine implements Framework, Game
 	public InputEngine getInputEngine()
 	{
 		return inputEngine;
+	}
+
+	public Mouse getMouse()
+	{
+		return this.mouse;
+	}
+
+	public Keyboard getKeyboard()
+	{
+		return this.keyboard;
 	}
 
 	public AssetManager getAssetManager()

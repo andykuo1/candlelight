@@ -2,8 +2,12 @@ package net.jimboi.canary.stage_a.cuplet.scene_main;
 
 import net.jimboi.canary.stage_a.cuplet.Cuplet;
 
-import org.bstone.input.InputContext;
 import org.bstone.input.InputEngine;
+import org.bstone.input.adapter.AxisAdapter;
+import org.bstone.input.adapter.ButtonDownAdapter;
+import org.bstone.input.adapter.ButtonPressAdapter;
+import org.bstone.input.adapter.ButtonReleaseAdapter;
+import org.bstone.input.device.Mouse;
 import org.bstone.scene.Scene;
 import org.bstone.scene.SceneManager;
 import org.lwjgl.glfw.GLFW;
@@ -25,46 +29,41 @@ public class MainScene extends Scene
 	protected void onSceneCreate(SceneManager sceneManager)
 	{
 		final InputEngine input = Cuplet.getCuplet().getInputEngine();
-		final InputContext ctx = input.getDefaultContext();
-		ctx.registerEvent("mousex",
-				input.getMouse().getCursorX()::getRange);
-		ctx.registerEvent("mousey",
-				input.getMouse().getCursorY()::getRange);
-		ctx.registerEvent("mouseleft",
-				input.getMouse().getButton(GLFW.GLFW_MOUSE_BUTTON_LEFT)::getAction);
-		ctx.registerEvent("mouseright",
-				input.getMouse().getButton(GLFW.GLFW_MOUSE_BUTTON_RIGHT)::getAction);
-		ctx.registerEvent("mousescroll",
-				input.getMouse().getScrollY()::getRange);
 
-		ctx.registerEvent("left",
-				input.getKeyboard().getButton(GLFW.GLFW_KEY_A)::getState,
-				input.getKeyboard().getButton(GLFW.GLFW_KEY_LEFT)::getState);
-		ctx.registerEvent("right",
-				input.getKeyboard().getButton(GLFW.GLFW_KEY_D)::getState,
-				input.getKeyboard().getButton(GLFW.GLFW_KEY_RIGHT)::getState);
-		ctx.registerEvent("up",
-				input.getKeyboard().getButton(GLFW.GLFW_KEY_W)::getState,
-				input.getKeyboard().getButton(GLFW.GLFW_KEY_UP)::getState);
-		ctx.registerEvent("down",
-				input.getKeyboard().getButton(GLFW.GLFW_KEY_S)::getState,
-				input.getKeyboard().getButton(GLFW.GLFW_KEY_DOWN)::getState);
+		input.registerInput("main", "mousex", new AxisAdapter(input.getMouse().getAxis(Mouse.AXIS_CURSORX)));
+		input.registerInput("main", "mousey", new AxisAdapter(input.getMouse().getAxis(Mouse.AXIS_CURSORY)));
 
-		ctx.registerEvent("rollleft",
-				input.getKeyboard().getButton(GLFW.GLFW_KEY_A)::getAction,
-				input.getKeyboard().getButton(GLFW.GLFW_KEY_LEFT)::getAction);
-		ctx.registerEvent("rollright",
-				input.getKeyboard().getButton(GLFW.GLFW_KEY_D)::getAction,
-				input.getKeyboard().getButton(GLFW.GLFW_KEY_RIGHT)::getAction);
-		ctx.registerEvent("rollup",
-				input.getKeyboard().getButton(GLFW.GLFW_KEY_W)::getAction,
-				input.getKeyboard().getButton(GLFW.GLFW_KEY_UP)::getAction);
-		ctx.registerEvent("rolldown",
-				input.getKeyboard().getButton(GLFW.GLFW_KEY_S)::getAction,
-				input.getKeyboard().getButton(GLFW.GLFW_KEY_DOWN)::getAction);
+		input.registerInput("main", "fireleft", new ButtonPressAdapter(input.getMouse().getButton(Mouse.BUTTON_MOUSE_LEFT)));
+		input.registerInput("main", "fireright", new ButtonPressAdapter(input.getMouse().getButton(Mouse.BUTTON_MOUSE_RIGHT)));
+		input.registerInput("main", "mousescroll", new AxisAdapter(input.getMouse().getAxis(Mouse.AXIS_SCROLLY)));
 
-		ctx.registerEvent("action",
-				input.getKeyboard().getButton(GLFW.GLFW_KEY_F)::getAction);
+		input.registerInput("main", "left",
+				new ButtonDownAdapter(input.getKeyboard().getButton(GLFW.GLFW_KEY_A)),
+				new ButtonDownAdapter(input.getKeyboard().getButton(GLFW.GLFW_KEY_LEFT)));
+		input.registerInput("main", "right",
+				new ButtonDownAdapter(input.getKeyboard().getButton(GLFW.GLFW_KEY_D)),
+				new ButtonDownAdapter(input.getKeyboard().getButton(GLFW.GLFW_KEY_RIGHT)));
+		input.registerInput("main", "up",
+				new ButtonDownAdapter(input.getKeyboard().getButton(GLFW.GLFW_KEY_W)),
+				new ButtonDownAdapter(input.getKeyboard().getButton(GLFW.GLFW_KEY_UP)));
+		input.registerInput("main", "down",
+				new ButtonDownAdapter(input.getKeyboard().getButton(GLFW.GLFW_KEY_S)),
+				new ButtonDownAdapter(input.getKeyboard().getButton(GLFW.GLFW_KEY_DOWN)));
+
+		input.registerInput("main", "rollLeft",
+				new ButtonPressAdapter(input.getKeyboard().getButton(GLFW.GLFW_KEY_A)),
+				new ButtonPressAdapter(input.getKeyboard().getButton(GLFW.GLFW_KEY_LEFT)));
+		input.registerInput("main", "rollRight",
+				new ButtonPressAdapter(input.getKeyboard().getButton(GLFW.GLFW_KEY_D)),
+				new ButtonPressAdapter(input.getKeyboard().getButton(GLFW.GLFW_KEY_RIGHT)));
+		input.registerInput("main", "rollUp",
+				new ButtonPressAdapter(input.getKeyboard().getButton(GLFW.GLFW_KEY_W)),
+				new ButtonPressAdapter(input.getKeyboard().getButton(GLFW.GLFW_KEY_UP)));
+		input.registerInput("main", "rollDown",
+				new ButtonPressAdapter(input.getKeyboard().getButton(GLFW.GLFW_KEY_S)),
+				new ButtonPressAdapter(input.getKeyboard().getButton(GLFW.GLFW_KEY_DOWN)));
+
+		input.registerInput("main", "action", new ButtonReleaseAdapter(input.getKeyboard().getButton(GLFW.GLFW_KEY_F)));
 	}
 
 	@Override

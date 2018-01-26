@@ -4,15 +4,15 @@ import net.jimboi.canary.stage_a.base.TextureAtlasBuilder;
 import net.jimboi.canary.stage_a.smuc.screen.ScreenManager;
 
 import org.bstone.application.Application;
-import org.bstone.newinput.device.Mouse;
+import org.bstone.input.adapter.AxisAdapter;
+import org.bstone.input.adapter.ButtonReleaseAdapter;
+import org.bstone.input.device.Mouse;
 import org.bstone.render.RenderEngine;
 import org.bstone.util.Direction;
 import org.qsilver.ResourceLocation;
 import org.zilar.gui.GuiFrame;
 import org.zilar.gui.GuiPanel;
 import org.zilar.gui.GuiRenderer;
-import org.zilar.in4.adapter.AxisAdapter;
-import org.zilar.in4.adapter.ButtonReleaseAdapter;
 
 /**
  * Created by Andy on 11/21/17.

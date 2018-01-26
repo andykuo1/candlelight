@@ -3,9 +3,7 @@ package net.jimboi.canary.stage_a.lantern.scene_test;
 import net.jimboi.canary.stage_a.lantern.Lantern;
 
 import org.bstone.camera.Camera;
-import org.bstone.input.InputContext;
 import org.bstone.input.InputEngine;
-import org.bstone.input.InputListener;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
@@ -17,7 +15,7 @@ import org.qsilver.util.MathUtil;
 /**
  * Created by Andy on 10/20/17.
  */
-public class FirstPersonCameraHandler implements InputListener
+public class FirstPersonCameraHandler
 {
 	public static final float MAX_PITCH = Transform.DEG2RAD * 80F;
 
@@ -61,8 +59,10 @@ public class FirstPersonCameraHandler implements InputListener
 	private static final Vector3f _RIGHT = new Vector3f();
 	private static final Vector3f _FORWARD = new Vector3f();
 
-	public void update()
+	public void update(InputEngine input)
 	{
+		this.updateInput(input);
+
 		if (this.target == null) return;
 
 		Transform3 cameraTransform = (Transform3) this.camera.transform();
@@ -121,18 +121,7 @@ public class FirstPersonCameraHandler implements InputListener
 		this.camera.markDirty();
 	}
 
-	@Override
-	public void onInputStart(InputEngine input, InputContext context)
-	{
-	}
-
-	@Override
-	public void onInputStop(InputEngine input, InputContext context)
-	{
-	}
-
-	@Override
-	public void onInputUpdate(InputContext context)
+	public void updateInput(InputEngine input)
 	{
 		if (this.target == null) return;
 
@@ -143,8 +132,8 @@ public class FirstPersonCameraHandler implements InputListener
 		{
 			//Update camera rotation
 			Vector2fc mouse = new Vector2f(
-					context.getRange("mousex").getMotion(),
-					context.getRange("mousey").getMotion()
+					input.getRange("lookx"),
+					input.getRange("looky")
 			);
 
 			float rotx = mouse.x() * this.sensitivity;
@@ -155,22 +144,22 @@ public class FirstPersonCameraHandler implements InputListener
 			this.pitch = MathUtil.clamp(this.pitch, -MAX_PITCH, MAX_PITCH);
 		}
 
-		if (context.getAction("mouselock").isPressedAndConsume())
+		if (input.getAction("mouselock"))
 		{
 			Lantern.getLantern().getInputEngine().getMouse().setCursorMode(!mouseLocked);
 		}
 
 		//Move
 		this.forward = 0;
-		this.forward += context.getRange("forward").getRangeAndConsume();
+		this.forward += input.getRange("forward");
 
 		this.up = 0;
-		this.up += context.getRange("up").getRangeAndConsume();
+		this.up += input.getRange("up");
 
 		this.right = 0;
-		this.right += context.getRange("right").getRangeAndConsume();
+		this.right += input.getRange("right");
 
-		this.sprint = context.getState("sprint").isDownAndConsume();
+		this.sprint = input.getState("sprint");
 	}
 
 	public void setSensitivity(float sensitivity)

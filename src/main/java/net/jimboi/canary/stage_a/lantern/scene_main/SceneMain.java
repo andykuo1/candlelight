@@ -10,17 +10,15 @@ import net.jimboi.canary.stage_a.lantern.scene_main.dungeon.Dungeon;
 import net.jimboi.canary.stage_a.lantern.scene_main.entity.EntityCrate;
 import net.jimboi.canary.stage_a.lantern.scene_main.entity.EntityPlayer;
 
+import org.bstone.application.game.GameInputs;
 import org.bstone.asset.AssetManager;
 import org.bstone.camera.Camera;
 import org.bstone.camera.PerspectiveCamera;
 import org.bstone.gameobject.GameObjectManager;
-import org.bstone.input.InputContext;
 import org.bstone.input.InputEngine;
-import org.bstone.input.adapter.InputAdapter;
 import org.bstone.scene.Scene;
 import org.bstone.scene.SceneManager;
 import org.bstone.util.grid.IntMap;
-import org.lwjgl.glfw.GLFW;
 import org.zilar.dungeon.DungeonBuilder;
 import org.zilar.dungeon.DungeonData;
 import org.zilar.dungeon.maze.MazeDungeonBuilder;
@@ -52,7 +50,6 @@ public class SceneMain extends Scene
 	protected void onSceneCreate(SceneManager sceneManager)
 	{
 		final InputEngine inputs = Lantern.getLantern().getInputEngine();
-		final InputContext context = inputs.getDefaultContext();
 
 		this.collisionManager = new CollisionBoxManager();
 		this.entityManager = new GameObjectManager();
@@ -61,49 +58,8 @@ public class SceneMain extends Scene
 
 		this.camera = new PerspectiveCamera(0, 0, 10, 640, 480);
 		this.cameraController = new FirstPersonCameraController((PerspectiveCamera) this.camera);
-		context.addListener(0, this.cameraController);
 
-		context.registerEvent("mousex", inputs.getMouse().getCursorX()::getRange);
-		context.registerEvent("mousey", inputs.getMouse().getCursorY()::getRange);
-
-		context.registerEvent("mouseleft", inputs.getMouse().getButton(GLFW.GLFW_MOUSE_BUTTON_LEFT)::getAction);
-		context.registerEvent("mouseright", inputs.getMouse().getButton(GLFW.GLFW_MOUSE_BUTTON_RIGHT)::getAction);
-
-		context.registerEvent("mouselock", inputs.getKeyboard().getButton(GLFW.GLFW_KEY_P)::getAction);
-
-		context.registerEvent("exit", inputs.getKeyboard().getButton(GLFW.GLFW_KEY_ESCAPE)::getState);
-
-		context.registerEvent("forward",
-				InputAdapter.asRange(
-						inputs.getKeyboard().getButton(GLFW.GLFW_KEY_W)::getState,
-						inputs.getKeyboard().getButton(GLFW.GLFW_KEY_S)::getState
-				),
-				InputAdapter.asRange(
-						inputs.getKeyboard().getButton(GLFW.GLFW_KEY_UP)::getState,
-						inputs.getKeyboard().getButton(GLFW.GLFW_KEY_DOWN)::getState
-				));
-
-		context.registerEvent("up",
-				InputAdapter.asRange(
-						inputs.getKeyboard().getButton(GLFW.GLFW_KEY_SPACE)::getState,
-						inputs.getKeyboard().getButton(GLFW.GLFW_KEY_E)::getState
-				));
-
-		context.registerEvent("right",
-				InputAdapter.asRange(
-						inputs.getKeyboard().getButton(GLFW.GLFW_KEY_D)::getState,
-						inputs.getKeyboard().getButton(GLFW.GLFW_KEY_A)::getState
-				),
-				InputAdapter.asRange(
-						inputs.getKeyboard().getButton(GLFW.GLFW_KEY_RIGHT)::getState,
-						inputs.getKeyboard().getButton(GLFW.GLFW_KEY_LEFT)::getState
-				));
-
-		context.registerEvent("sprint",
-				inputs.getKeyboard().getButton(GLFW.GLFW_KEY_LEFT_SHIFT)::getState);
-
-		context.registerEvent("action",
-				inputs.getKeyboard().getButton(GLFW.GLFW_KEY_F)::getState);
+		GameInputs.loadBaseInputs(inputs);
 
 		DungeonBuilder db = new MazeDungeonBuilder(0, 45, 45);
 		DungeonData data = db.bake();
@@ -126,7 +82,7 @@ public class SceneMain extends Scene
 	@Override
 	protected void onSceneUpdate()
 	{
-		this.cameraController.update();
+		this.cameraController.update(Lantern.getLantern().getInputEngine());
 		this.cameraController.updateTransform(this.player.getComponent(ComponentTransform.class).transform);
 
 		this.colliders.clear();
@@ -140,10 +96,6 @@ public class SceneMain extends Scene
 	@Override
 	protected void onSceneDestroy()
 	{
-		final InputContext context = Lantern.getLantern().getInputEngine().getDefaultContext();
-
-		context.removeListener(this.cameraController);
-
 		this.entityManager.clear();
 	}
 

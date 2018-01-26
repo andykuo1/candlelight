@@ -1,93 +1,16 @@
 package org.bstone.input.adapter;
 
+import org.bstone.input.InputState;
+import org.bstone.input.device.event.InputEvent;
+
 /**
- * Created by Andy on 10/29/17.
+ * Created by Andy on 1/26/18.
  */
-public interface InputAdapter<T extends Comparable<T>>
+public interface InputAdapter
 {
-	T poll();
+	//Returns true if will consume event, should also write intent to dst.
+	//Otherwise, dst should not be altered!
+	boolean processInput(String intent, InputEvent event, InputState dst);
 
-	static IState asState(IAction action)
-	{
-		return () -> {
-			Integer i = action.poll();
-			if (i != null)
-			{
-				return i > 0;
-			}
-			return null;
-		};
-	}
-
-	static IAction asAction(IState state)
-	{
-		return () -> {
-			Boolean b = state.poll();
-			if (b != null)
-			{
-				return b ? 1 : 0;
-			}
-			return null;
-		};
-	}
-
-	static IRange asPositiveRange(IAction action)
-	{
-		return () -> {
-			Integer i = action.poll();
-			if (i != null)
-			{
-				return (Float) (float) i;
-			}
-			return null;
-		};
-	}
-
-	static IRange asPositiveRange(IState state)
-	{
-		return () -> {
-			Boolean b = state.poll();
-			if (b != null)
-			{
-				return b ? 1F : 0F;
-			}
-			return null;
-		};
-	}
-
-	static IRange asNegativeRange(IAction action)
-	{
-		return () -> {
-			Integer i = action.poll();
-			if (i != null)
-			{
-				return (Float) (float) -i;
-			}
-			return null;
-		};
-	}
-
-	static IRange asNegativeRange(IState state)
-	{
-		return () -> {
-			Boolean b = state.poll();
-			if (b != null)
-			{
-				return b ? -1F : 0F;
-			}
-			return null;
-		};
-	}
-
-	static IRange asRange(IState positive, IState negative)
-	{
-		return () -> {
-			Boolean p = positive.poll();
-			Boolean n = negative.poll();
-			float f = 0;
-			if (p != null && p) f += 1;
-			if (n != null && n) f -= 1;
-			return f;
-		};
-	}
+	default void poll(String intent, InputState dst) {}
 }

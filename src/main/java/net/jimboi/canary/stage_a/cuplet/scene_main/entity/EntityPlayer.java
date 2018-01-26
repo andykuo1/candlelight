@@ -10,8 +10,7 @@ import net.jimboi.canary.stage_a.cuplet.scene_main.component.ComponentMotion;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tick.TickCounter;
 import net.jimboi.canary.stage_a.cuplet.scene_main.tile.TileMap;
 
-import org.bstone.input.InputContext;
-import org.bstone.input.InputListener;
+import org.bstone.input.InputEngine;
 import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
@@ -20,7 +19,7 @@ import org.qsilver.util.MathUtil;
 /**
  * Created by Andy on 8/9/17.
  */
-public class EntityPlayer extends EntityHurtable implements InputListener
+public class EntityPlayer extends EntityHurtable
 {
 	private Vector2f direction = new Vector2f();
 	private Vector2f mousePos = new Vector2f();
@@ -35,10 +34,6 @@ public class EntityPlayer extends EntityHurtable implements InputListener
 	private int maxRollingCooldownTicks = 15;
 
 	private int rollingInputDir = -1;
-
-	private boolean fireLeft = false;
-	private boolean fireRight = false;
-	private boolean action = false;
 
 	public EntityPlayer(GobletWorld world, Transform3 transform)
 	{
@@ -59,16 +54,12 @@ public class EntityPlayer extends EntityHurtable implements InputListener
 		ComponentDamageable componentDamageable  = this.getComponent(ComponentDamageable.class);
 		componentDamageable.canTakeDamageFrom = (damageSource) -> !this.rolling;
 		componentDamageable.setMaxHealth(100);
-
-		Cuplet.getCuplet().getInputEngine().getDefaultContext().addListener(0, this);
 	}
 
 	@Override
 	protected void onEntityDelete()
 	{
 		super.onEntityDelete();
-
-		Cuplet.getCuplet().getInputEngine().getDefaultContext().removeListener(this);
 	}
 
 	@Override
@@ -76,48 +67,6 @@ public class EntityPlayer extends EntityHurtable implements InputListener
 	{
 		if (this.rolling) return false;
 		return super.canSetFire(x, y, strength);
-	}
-
-	@Override
-	public void onInputUpdate(InputContext context)
-	{
-		if (!this.rolling)
-		{
-			if (context.getAction("rollleft").isPressedAndConsume())
-			{
-				this.updateRollInput(-1, 0, 0);
-			}
-
-			if (context.getAction("rollright").isPressedAndConsume())
-			{
-				this.updateRollInput(1, 0, 1);
-			}
-
-			if (context.getAction("rollup").isPressedAndConsume())
-			{
-				this.updateRollInput(0, 1, 2);
-			}
-
-			if (context.getAction("rolldown").isPressedAndConsume())
-			{
-				this.updateRollInput(0, -1, 3);
-			}
-		}
-
-		if (context.getAction("mouseright").isReleasedAndConsume())
-		{
-			this.fireRight = true;
-		}
-
-		if (context.getAction("mouseleft").isReleasedAndConsume())
-		{
-			this.fireLeft = true;
-		}
-
-		if (context.getAction("action").isReleasedAndConsume())
-		{
-			this.action = true;
-		}
 	}
 
 	private void roll(float dx, float dy)
@@ -177,10 +126,31 @@ public class EntityPlayer extends EntityHurtable implements InputListener
 	{
 		super.onUpdate();
 
-		InputContext ctx = Cuplet.getCuplet().getInputEngine().getDefaultContext();
-		float mousex = ctx.getRange("mousex").getRange();
-		float mousey = ctx.getRange("mousey").getRange();
-		Vector2fc mouse = ((MainRenderer) Cuplet.getCuplet().getSceneManager().getCurrentRenderer()).getScreenSpace().getPoint2DFromScreen(mousex, mousey, this.mousePos);
+		InputEngine input = Cuplet.getCuplet().getInputEngine();
+
+		if (!this.rolling)
+		{
+			if (input.getAction("rollLeft"))
+			{
+				this.updateRollInput(-1, 0, 0);
+			}
+			else if (input.getAction("rollRight"))
+			{
+				this.updateRollInput(1, 0, 1);
+			}
+			else if (input.getAction("rollUp"))
+			{
+				this.updateRollInput(0, 1, 2);
+			}
+			else if (input.getAction("rollDown"))
+			{
+				this.updateRollInput(0, -1, 3);
+			}
+		}
+
+		float mouseX = input.getRange("mousex");
+		float mouseY = input.getRange("mousey");
+		Vector2fc mouse = ((MainRenderer) Cuplet.getCuplet().getSceneManager().getCurrentRenderer()).getScreenSpace().getPoint2DFromScreen(mouseX, mouseY, this.mousePos);
 		mouse.sub(this.transform.posX(), this.transform.posY(), this.direction);
 		this.transform.rotation.rotationZ((float) Math.atan2(this.direction.y(), this.direction.x()));
 
@@ -189,39 +159,33 @@ public class EntityPlayer extends EntityHurtable implements InputListener
 		if (!this.rolling)
 		{
 			final ComponentMotion componentMotion = this.getComponent(ComponentMotion.class);
-			if (ctx.getState("left").isDown())
+			if (input.getState("left"))
 			{
 				componentMotion.addMotion(-this.speed, 0);
 			}
-
-			if (ctx.getState("right").isDown())
+			if (input.getState("right"))
 			{
 				componentMotion.addMotion(this.speed, 0);
 			}
-
-			if (ctx.getState("up").isDown())
+			if (input.getState("up"))
 			{
 				componentMotion.addMotion(0, this.speed);
 			}
-
-			if (ctx.getState("down").isDown())
+			if (input.getState("down"))
 			{
 				componentMotion.addMotion(0, -this.speed);
 			}
 
-			if (this.fireRight)
+			if (input.getAction("fireright"))
 			{
-				this.fireRight = false;
 				this.direction.normalize().mul(0.8F);
 				Transform3 transform = this.transform.derive3();
 				transform.position.add(this.direction.x(), this.direction.y(), 0);
 
 				this.world.spawnEntity(this.world.getRandom().nextBoolean() ? new EntitySlash(this.world, transform, this) : new EntityThrust(this.world, transform, this));
-
-				this.fireRight = false;
 			}
 
-			if (this.fireLeft)
+			if (input.getAction("fireleft"))
 			{
 				float dist = this.direction.length();
 				if (dist < 1F)
@@ -237,14 +201,11 @@ public class EntityPlayer extends EntityHurtable implements InputListener
 
 					this.world.spawnEntity(new EntityGrenade(this.world, this.world.createTransform(this.transform), this.direction.x(), this.direction.y(), zSpeed, Explosions.getRandomExplosion(this.world.getRandom())));
 				}
-
-				this.fireLeft = false;
 			}
 
-			if (this.action)
+			if (input.getAction("action"))
 			{
 				System.out.println("ACTION!");
-				this.action = false;
 			}
 		}
 	}

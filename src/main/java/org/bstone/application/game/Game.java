@@ -2,8 +2,6 @@ package org.bstone.application.game;
 
 import org.bstone.application.service.RenderService;
 import org.bstone.application.service.TickService;
-import org.bstone.input.InputContext;
-import org.bstone.input.InputListener;
 import org.bstone.render.RenderEngine;
 import org.bstone.tick.TickEngine;
 import org.slf4j.Logger;
@@ -12,7 +10,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by Andy on 10/17/17.
  */
-public interface Game extends InputListener
+public interface Game
 {
 	Logger LOG = LoggerFactory.getLogger(Game.class);
 
@@ -23,9 +21,6 @@ public interface Game extends InputListener
 	default void onRenderLoad(RenderEngine renderEngine) {}
 	default void onRenderUnload(RenderEngine renderEngine) {}
 	default void onRenderUpdate(RenderEngine renderEngine) {}
-
-	@Override
-	default void onInputUpdate(InputContext context) {}
 
 	class Tick extends TickService
 	{

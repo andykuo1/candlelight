@@ -2,8 +2,7 @@ package net.jimboi.canary.stage_a.lantern.scene_main.cameracontroller;
 
 import org.bstone.camera.Camera;
 import org.bstone.camera.PerspectiveCamera;
-import org.bstone.input.InputContext;
-import org.bstone.input.InputListener;
+import org.bstone.input.InputEngine;
 import org.bstone.transform.Transform;
 import org.bstone.transform.Transform3;
 import org.joml.Vector2f;
@@ -14,16 +13,8 @@ import org.qsilver.util.MathUtil;
 /**
  * Created by Andy on 11/3/17.
  */
-public class FirstPersonCameraController extends CameraController implements InputListener
+public class FirstPersonCameraController extends CameraController
 {
-	public static final String INPUT_LOOK_X = "mousex";
-	public static final String INPUT_LOOK_Y = "mousey";
-	public static final String INPUT_LOOK_LOCK = "mouselock";
-	public static final String INPUT_FORWARD = "forward";
-	public static final String INPUT_UP = "up";
-	public static final String INPUT_RIGHT = "right";
-	public static final String INPUT_SPRINT = "sprint";
-
 	public static final float MAX_PITCH = Transform.DEG2RAD * 80F;
 
 	protected float sensitivity = 0.01F;
@@ -56,8 +47,10 @@ public class FirstPersonCameraController extends CameraController implements Inp
 	private static final Vector3f _FORWARD = new Vector3f();
 
 	@Override
-	protected boolean onUpdate(Camera camera, Transform3 cameraTransform)
+	protected boolean onUpdate(Camera camera, Transform3 cameraTransform, InputEngine inputEngine)
 	{
+		this.updateInput(inputEngine);
+
 		//Look
 		cameraTransform.setYaw(this.yaw);
 		Vector3f right = cameraTransform.getRight(_RIGHT);
@@ -104,18 +97,17 @@ public class FirstPersonCameraController extends CameraController implements Inp
 		return true;
 	}
 
-	@Override
-	public void onInputUpdate(InputContext context)
+	public void updateInput(InputEngine input)
 	{
 		//Look
-		boolean mouseLocked = context.getInputEngine().getMouse().getCursorMode();
+		boolean mouseLocked = input.getMouse().getCursorMode();
 
 		if (mouseLocked)
 		{
 			//Update camera rotation
 			Vector2fc mouse = new Vector2f(
-					context.getRange(INPUT_LOOK_X).getMotion(),
-					context.getRange(INPUT_LOOK_Y).getMotion()
+					input.getRange("lookx"),
+					input.getRange("looky")
 			);
 
 			float rotx = mouse.x() * this.sensitivity;
@@ -126,17 +118,17 @@ public class FirstPersonCameraController extends CameraController implements Inp
 			this.pitch = MathUtil.clamp(this.pitch, -MAX_PITCH, MAX_PITCH);
 		}
 
-		if (context.getAction(INPUT_LOOK_LOCK).isPressedAndConsume())
+		if (input.getAction("mouselock"))
 		{
-			context.getInputEngine().getMouse().setCursorMode(!mouseLocked);
+			input.getMouse().setCursorMode(!mouseLocked);
 		}
 
 		//Move
-		this.forward = context.getRange(INPUT_FORWARD).getRangeAndConsume();
-		this.up = context.getRange(INPUT_UP).getRangeAndConsume();
-		this.right = context.getRange(INPUT_RIGHT).getRangeAndConsume();
+		this.forward = input.getRange("forward");
+		this.up = input.getRange("up");
+		this.right = input.getRange("right");
 
-		this.sprint = context.getState(INPUT_SPRINT).isDown();
+		this.sprint = input.getState("sprint");
 	}
 
 	public void updateTransform(Transform3 transform)

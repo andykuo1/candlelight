@@ -5,16 +5,15 @@ import net.jimboi.canary.stage_a.cuplet.scene_main.MainScene;
 
 import org.bstone.application.Application;
 import org.bstone.application.game.GameEngine;
-import org.bstone.input.InputContext;
 import org.bstone.input.InputEngine;
-import org.bstone.input.InputListener;
+import org.bstone.input.adapter.ButtonReleaseAdapter;
 import org.bstone.tick.TickEngine;
 import org.lwjgl.glfw.GLFW;
 
 /**
  * Created by Andy on 10/29/17.
  */
-public class Cuplet extends GameEngine implements InputListener
+public class Cuplet extends GameEngine
 {
 	private static Cuplet instance;
 	private static Application application;
@@ -45,26 +44,20 @@ public class Cuplet extends GameEngine implements InputListener
 		this.sceneManager.registerScene("init", MainScene.class, MainRenderer.class);
 
 		final InputEngine input = this.getInputEngine();
-		input.getDefaultContext().registerEvent("_debug", input.getKeyboard().getButton(GLFW.GLFW_KEY_P)::getAction);
-		input.getDefaultContext().addListener(0, this);
+		input.registerInput("main", "debug", new ButtonReleaseAdapter(input.getKeyboard().getButton(GLFW.GLFW_KEY_P)));
 
 		this.sceneManager.setNextScene("init");
 	}
 
 	@Override
-	public void onInputUpdate(InputContext context)
+	public void onFixedUpdate()
 	{
-		final InputEngine input = this.getInputEngine();
-		if (input.getDefaultContext().getAction("_debug").isPressedAndConsume())
+		super.onFixedUpdate();
+
+		if (this.getInputEngine().getAction("debug"))
 		{
 			DEBUG = !DEBUG;
 		}
-	}
-
-	@Override
-	public void onLastUpdate(TickEngine tickEngine)
-	{
-		this.getInputEngine().getDefaultContext().removeListener(this);
 	}
 
 	public final Application getApplication()

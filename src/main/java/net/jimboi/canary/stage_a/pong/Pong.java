@@ -43,19 +43,17 @@ public class Pong extends Scene
 		this.entityManager.addEntity(new Paddle()).getComponent(ComponentTransform.class).transform.setPosition(-5, 0, 0);
 
 		this.controller = new FirstPersonCameraController(this.camera);
-		inputs.getDefaultContext().addListener(0, this.controller);
 	}
 
 	@Override
 	protected void onSceneUpdate()
 	{
-		this.controller.update();
+		this.controller.update(ENGINE.getInputEngine());
 	}
 
 	@Override
 	protected void onSceneDestroy()
 	{
-		ENGINE.getInputEngine().getDefaultContext().removeListener(this.controller);
 	}
 
 	public EntityManager getEntityManager()

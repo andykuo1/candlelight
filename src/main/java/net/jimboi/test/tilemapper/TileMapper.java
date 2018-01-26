@@ -71,7 +71,7 @@ public class TileMapper implements Tickable, RenderFramework
 		TileMapper mapper = new TileMapper();
 		TickEngine tickEngine = new TickEngine(60, mapper);
 		RenderEngine renderEngine = new RenderEngine(window, mapper);
-		InputEngine inputEngine = new InputEngine(window);
+		InputEngine inputEngine = new InputEngine();
 		//Remove the polling from the handler into the manager.
 		//MouseHandler mouse = new MouseHandler(window);
 
