@@ -26,9 +26,7 @@ import org.bstone.util.parser.json.JSONFormatParser;
 import org.bstone.window.Window;
 import org.lwjgl.opengl.GL20;
 import org.qsilver.ResourceLocation;
-import org.zilar.in.InputEngine;
-import org.zilar.in.provider.KeyboardHandler;
-import org.zilar.in.provider.MouseHandler;
+import org.zilar.in4.InputEngine;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -44,11 +42,6 @@ public class GameEngine implements Framework, Game
 
 	protected Mouse mouse;
 	protected Keyboard keyboard;
-
-	protected MouseHandler mouseHandler;
-	protected KeyboardHandler keyboardHandler;
-	//protected final InputEngine inputEngine;
-	//protected InputContext input;
 
 	protected final RenderEngine renderEngine;
 	protected final TickEngine tickEngine;
@@ -87,14 +80,9 @@ public class GameEngine implements Framework, Game
 	{
 		this.window.setSize(640, 480).setTitle("Application").show();
 
-		this.mouse = new Mouse(this.window, null);
-		this.keyboard = new Keyboard(this.window, null);
-
-		this.mouseHandler = new MouseHandler();
-		this.mouse.addEventListener(this.mouseHandler);
-		this.keyboardHandler = new KeyboardHandler();
-		this.keyboard.addEventListener(this.keyboardHandler);
-		this.inputEngine.addProvider(this.mouseHandler).addProvider(this.keyboardHandler);
+		this.mouse = new Mouse(this.window, this.inputEngine);
+		this.keyboard = new Keyboard(this.window, this.inputEngine);
+		this.inputEngine.addContext("main");
 
 		this.assetManager.registerLoader("bitmap", new BitmapLoader());
 		this.assetManager.registerLoader("texture", new TextureLoader(this.assetManager));
@@ -218,14 +206,14 @@ public class GameEngine implements Framework, Game
 		return inputEngine;
 	}
 
-	public MouseHandler getMouse()
+	public Mouse getMouse()
 	{
-		return this.mouseHandler;
+		return this.mouse;
 	}
 
-	public KeyboardHandler getKeyboard()
+	public Keyboard getKeyboard()
 	{
-		return this.keyboardHandler;
+		return this.keyboard;
 	}
 
 	public AssetManager getAssetManager()

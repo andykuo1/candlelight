@@ -46,4 +46,9 @@ public class InputEvent
 		this.src = src;
 		this.id = id;
 	}
+
+	public String getEventID()
+	{
+		return this.src.getName() + "@" + this.id;
+	}
 }

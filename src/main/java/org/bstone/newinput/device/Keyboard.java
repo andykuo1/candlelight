@@ -6,13 +6,15 @@ import org.bstone.window.Window;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCharCallbackI;
 import org.lwjgl.glfw.GLFWKeyCallbackI;
-import org.zilar.in2.InputEngine;
+import org.zilar.in4.InputEngine;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Queue;
 
 /**
  * Created by Andy on 1/22/18.
+ *
+ * All methods should only be called on the same thread.
  */
 public class Keyboard implements InputDevice
 {
@@ -21,7 +23,7 @@ public class Keyboard implements InputDevice
 	private final Window window;
 	private final InputEngine inputEngine;
 
-	private final List<InputEventListener> listeners = new ArrayList<>();
+	private final Queue<InputEventListener> listeners = new ArrayDeque<>();
 
 	private boolean charEnabled = false;
 
@@ -60,7 +62,6 @@ public class Keyboard implements InputDevice
 
 	public Keyboard addEventListener(InputEventListener listener)
 	{
-		//TODO: Should be prioritized...
 		this.listeners.add(listener);
 		return this;
 	}
@@ -69,6 +70,19 @@ public class Keyboard implements InputDevice
 	{
 		this.listeners.remove(listener);
 		return this;
+	}
+
+	public void clearEventListeners()
+	{
+		this.listeners.clear();
+	}
+
+	public void destroy()
+	{
+		this.clearEventListeners();
+
+		GLFW.glfwSetKeyCallback(this.window.handle(), null);
+		GLFW.glfwSetCharCallback(this.window.handle(), null);
 	}
 
 	@Override
@@ -82,7 +96,7 @@ public class Keyboard implements InputDevice
 			}
 		}
 
-		if (this.inputEngine != null) this.inputEngine.queueEvent(event);
+		if (this.inputEngine != null) this.inputEngine.addToEventQueue(event);
 	}
 
 	protected void onKey(long handle, int key, int scancode, int action, int mods)
@@ -123,5 +137,11 @@ public class Keyboard implements InputDevice
 	public Window getWindow()
 	{
 		return this.window;
+	}
+
+	@Override
+	public String getName()
+	{
+		return "keyboard";
 	}
 }

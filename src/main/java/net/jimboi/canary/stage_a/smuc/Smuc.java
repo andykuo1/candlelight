@@ -11,8 +11,8 @@ import org.qsilver.ResourceLocation;
 import org.zilar.gui.GuiFrame;
 import org.zilar.gui.GuiPanel;
 import org.zilar.gui.GuiRenderer;
-import org.zilar.in.adapter.newadapt.AxisAdapter;
-import org.zilar.in.adapter.newadapt.ButtonAdapter;
+import org.zilar.in4.adapter.AxisAdapter;
+import org.zilar.in4.adapter.ButtonReleaseAdapter;
 
 /**
  * Created by Andy on 11/21/17.
@@ -42,10 +42,10 @@ public class Smuc extends GameEngine
 		super.onFixedUpdate();
 
 		this.frame.setCursorPosition(
-				this.inputEngine.getRangeOrDefault("main", "mousex", 0),
-				this.inputEngine.getRangeOrDefault("main", "mousey", 0));
+				this.inputEngine.getRange("mousex"),
+				this.inputEngine.getRange("mousey"));
 		this.frame.setCursorAction(
-				this.inputEngine.getActionOrDefault("main", "mouseleft", 0) < 0);
+				this.inputEngine.getAction("mouseleft"));
 	}
 
 	@Override
@@ -69,9 +69,9 @@ public class Smuc extends GameEngine
 		tab.addTileSheet(0, 0, 16, 16, 0, 0, 16, 16);
 		this.assetManager.cacheResource("texture_atlas", "font", tab.bake());
 
-		this.inputEngine.register("main", "mousex", new AxisAdapter(this.getMouse().getAxis(Mouse.AXIS_CURSORX)));
-		this.inputEngine.register("main", "mousey", new AxisAdapter(this.getMouse().getAxis(Mouse.AXIS_CURSORY)));
-		this.inputEngine.register("main", "mouseleft", new ButtonAdapter(this.getMouse().getButton(Mouse.BUTTON_MOUSE_LEFT)));
+		this.inputEngine.registerInput("main", "mousex", new AxisAdapter(this.getMouse().getAxis(Mouse.AXIS_CURSORX)));
+		this.inputEngine.registerInput("main", "mousey", new AxisAdapter(this.getMouse().getAxis(Mouse.AXIS_CURSORY)));
+		this.inputEngine.registerInput("main", "mouseleft", new ButtonReleaseAdapter(this.getMouse().getButton(Mouse.BUTTON_MOUSE_LEFT)));
 
 		this.console = new Console(this.window.getView().getCurrentViewPort(),
 				this.assetManager,

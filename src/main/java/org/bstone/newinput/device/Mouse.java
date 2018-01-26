@@ -7,13 +7,15 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWScrollCallbackI;
-import org.zilar.in2.InputEngine;
+import org.zilar.in4.InputEngine;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Queue;
 
 /**
  * Created by Andy on 1/22/18.
+ *
+ * All methods should only be called on the same thread.
  */
 public class Mouse implements InputDevice
 {
@@ -31,7 +33,7 @@ public class Mouse implements InputDevice
 	private final Window window;
 	private final InputEngine inputEngine;
 
-	private final List<InputEventListener> listeners = new ArrayList<>();
+	private final Queue<InputEventListener> listeners = new ArrayDeque<>();
 
 	private boolean locked;
 
@@ -78,7 +80,6 @@ public class Mouse implements InputDevice
 
 	public Mouse addEventListener(InputEventListener listener)
 	{
-		//TODO: Should be prioritized...
 		this.listeners.add(listener);
 		return this;
 	}
@@ -87,6 +88,20 @@ public class Mouse implements InputDevice
 	{
 		this.listeners.remove(listener);
 		return this;
+	}
+
+	public void clearEventListeners()
+	{
+		this.listeners.clear();
+	}
+
+	public void destroy()
+	{
+		this.clearEventListeners();
+
+		GLFW.glfwSetMouseButtonCallback(this.window.handle(), null);
+		GLFW.glfwSetScrollCallback(this.window.handle(), null);
+		GLFW.glfwSetCursorPosCallback(this.window.handle(), null);
 	}
 
 	@Override
@@ -100,7 +115,7 @@ public class Mouse implements InputDevice
 			}
 		}
 
-		if (this.inputEngine != null) this.inputEngine.queueEvent(event);
+		if (this.inputEngine != null) this.inputEngine.addToEventQueue(event);
 	}
 
 	protected void onMouseButton(long handle, int button, int action, int mods)
@@ -133,7 +148,6 @@ public class Mouse implements InputDevice
 
 	public void setCursorMode(boolean locked)
 	{
-		//TODO: this needs to be called on the input thread, NOT THE MAIN!
 		if (this.locked == locked) return;
 		this.locked = locked;
 
@@ -148,5 +162,11 @@ public class Mouse implements InputDevice
 	public Window getWindow()
 	{
 		return this.window;
+	}
+
+	@Override
+	public String getName()
+	{
+		return "mouse";
 	}
 }

@@ -13,4 +13,10 @@ public final class TextEvent extends InputEvent
 	{
 		super(src, id);
 	}
+
+	@Override
+	public String getEventID()
+	{
+		return super.getEventID() + ":TEXT";
+	}
 }

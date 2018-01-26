@@ -16,4 +16,10 @@ public final class ButtonEvent extends InputEvent
 	{
 		super(src, id);
 	}
+
+	@Override
+	public String getEventID()
+	{
+		return super.getEventID() + ":BUTTON." + this.state;
+	}
 }

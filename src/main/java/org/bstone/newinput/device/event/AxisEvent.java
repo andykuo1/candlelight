@@ -13,4 +13,10 @@ public final class AxisEvent extends InputEvent
 	{
 		super(src, id);
 	}
+
+	@Override
+	public String getEventID()
+	{
+		return super.getEventID() + ":AXIS";
+	}
 }
