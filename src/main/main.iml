@@ -10,11 +10,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="org.slf4j:slf4j-api:1.7.25" level="project" />
-    <orderEntry type="library" name="org.joml:joml:1.9.9" level="project" />
-    <orderEntry type="library" name="org.lwjgl:lwjgl-glfw:3.1.6" level="project" />
-    <orderEntry type="library" name="org.lwjgl:lwjgl-stb:3.1.6" level="project" />
-    <orderEntry type="library" name="org.lwjgl:lwjgl-opengl:3.1.6" level="project" />
-    <orderEntry type="library" name="org.lwjgl:lwjgl-openal:3.1.6" level="project" />
     <orderEntry type="library" name="io.netty:netty-all:4.1.22.Final" level="project" />
+    <orderEntry type="library" name="org.joml:joml:1.9.9" level="project" />
+    <orderEntry type="library" name="lwjgl" level="project" />
   </component>
 </module>
