@@ -1,0 +1,32 @@
+{
+  "header": {
+    "version": "0.0.0",
+    "type": "asset"
+  },
+  "asset": [
+    {
+      "id": "v_billboard",
+      "type": "shader",
+      "param": [
+        "res:shader/billboard.vsh",
+        "int:GL20.GL_VERTEX_SHADER"
+      ]
+    },
+    {
+      "id": "f_billboard",
+      "type": "shader",
+      "param": [
+        "res:shader/billboard.fsh",
+        "int:GL20.GL_FRAGMENT_SHADER"
+      ]
+    },
+    {
+      "id": "billboard",
+      "type": "program",
+      "param": [
+        "asset:shader.v_billboard",
+        "asset:shader.f_billboard"
+      ]
+    }
+  ]
+}

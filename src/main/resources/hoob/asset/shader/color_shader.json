@@ -1,0 +1,32 @@
+{
+  "header": {
+    "version": "0.0.0",
+    "type": "asset"
+  },
+  "asset": [
+    {
+      "id": "v_color",
+      "type": "shader",
+      "param": [
+        "res:shader/color.vsh",
+        "int:GL20.GL_VERTEX_SHADER"
+      ]
+    },
+    {
+      "id": "f_color",
+      "type": "shader",
+      "param": [
+        "res:shader/color.fsh",
+        "int:GL20.GL_FRAGMENT_SHADER"
+      ]
+    },
+    {
+      "id": "color",
+      "type": "program",
+      "param": [
+        "asset:shader.v_color",
+        "asset:shader.f_color"
+      ]
+    }
+  ]
+}

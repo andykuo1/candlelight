@@ -1,8 +1,0 @@
-{
-    "texture.crate": "lantern:texture_wooden_crate.res",
-    "bitmap.crate": "base:wooden_crate.jpg",
-    "mesh.sphere": "base:sphere.obj",
-    "program.simple": "lantern:program_simple.res",
-    "vertex_shader.simple": "base:simple.vsh",
-    "fragment_shader.simple": "base:simple.fsh"
-}

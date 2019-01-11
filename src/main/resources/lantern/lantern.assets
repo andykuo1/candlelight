@@ -1,0 +1,8 @@
+{
+    "texture.crate": "lantern:texture_wooden_crate.res",
+    "bitmap.crate": "glim:texture/wooden_crate.jpg",
+    "mesh.sphere": "glim:model/sphere.obj",
+    "program.simple": "lantern:program_simple.res",
+    "vertex_shader.simple": "base:simple.vsh",
+    "fragment_shader.simple": "base:simple.fsh"
+}

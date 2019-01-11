@@ -1,0 +1,66 @@
+plugins {
+  // Apply the java plugin to add support for Java
+  id 'java'
+
+  // Apply the application plugin to add support for building an application
+  id 'application'
+}
+
+import org.gradle.internal.os.OperatingSystem
+
+project.ext.lwjglVersion = "3.2.1"
+project.ext.jomlVersion = "1.9.12"
+
+switch (OperatingSystem.current()) {
+  case OperatingSystem.WINDOWS:
+    project.ext.lwjglNatives = "natives-windows"
+    break
+  case OperatingSystem.LINUX:
+    project.ext.lwjglNatives = "natives-linux"
+    break
+  case OperatingSystem.MAC_OS:
+    project.ext.lwjglNatives = "natives-macos"
+
+    applicationDefaultJvmArgs.push("-XstartOnFirstThread")
+    break
+}
+
+distributions {
+  main {
+    contents {
+      from('src/main/resources') {
+        /*HACK: This is due to how old Andrew loaded stuff incorrectly...*/
+        into 'bin/src/main/resources'
+      }
+    }
+  }
+}
+
+repositories {
+  // Use jcenter for resolving your dependencies.
+  // You can declare any Maven/Ivy/file repository here.
+  jcenter()
+}
+
+dependencies {
+  implementation fileTree(include: ['*.jar'], dir: 'libs')
+  implementation "org.lwjgl:lwjgl:$lwjglVersion"
+  implementation "org.lwjgl:lwjgl-assimp:$lwjglVersion"
+  implementation "org.lwjgl:lwjgl-glfw:$lwjglVersion"
+  implementation "org.lwjgl:lwjgl-openal:$lwjglVersion"
+  implementation "org.lwjgl:lwjgl-opengl:$lwjglVersion"
+  implementation "org.lwjgl:lwjgl-stb:$lwjglVersion"
+  runtimeOnly "org.lwjgl:lwjgl:$lwjglVersion:$lwjglNatives"
+  runtimeOnly "org.lwjgl:lwjgl-assimp:$lwjglVersion:$lwjglNatives"
+  runtimeOnly "org.lwjgl:lwjgl-glfw:$lwjglVersion:$lwjglNatives"
+  runtimeOnly "org.lwjgl:lwjgl-openal:$lwjglVersion:$lwjglNatives"
+  runtimeOnly "org.lwjgl:lwjgl-opengl:$lwjglVersion:$lwjglNatives"
+  runtimeOnly "org.lwjgl:lwjgl-stb:$lwjglVersion:$lwjglNatives"
+  implementation "org.joml:joml:${jomlVersion}"
+
+  // Use JUnit canary.test framework
+  testImplementation 'junit:junit:4.12'
+}
+
+// Define the main class for the application
+mainClassName = 'canary.lantern.Lantern'
